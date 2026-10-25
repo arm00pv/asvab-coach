@@ -843,6 +843,8 @@ class _ReviewQueueCard extends StatelessWidget {
     final app = context.watch<AppState>();
     final due = app.dueReviews();
     if (due.isEmpty) return const SizedBox.shrink();
+    final questions = app.dueReviewQuestions;
+    if (questions.isEmpty) return const SizedBox.shrink();
     final c = context.colors;
     final oldest = due.first;
     final overdue = DateTime.now().difference(oldest.dueAt).inDays;
@@ -894,7 +896,7 @@ class _ReviewQueueCard extends StatelessWidget {
             onPressed: () => AppRoutes.exam(
               context,
               ExamBuilder.review(
-                app.dueReviewQuestions,
+                questions,
                 seed: DateTime.now().millisecondsSinceEpoch % 100000,
               ),
             ),
