@@ -66,6 +66,8 @@ class _JobsScreenState extends State<JobsScreen> {
               const SizedBox(height: Space.lg),
               if (summary != null) _SummaryStrip(summary: summary),
               const SizedBox(height: Space.lg),
+              const _EnlistmentFacts(),
+              const SizedBox(height: Space.lg),
               TextField(
                 decoration: const InputDecoration(
                   hintText: 'Search by code, title or category',
@@ -634,6 +636,114 @@ class _OfficerSection extends StatelessWidget {
             ),
           ),
       ],
+    );
+  }
+}
+
+/// The numbers a candidate actually needs before any MOS even matters.
+class _EnlistmentFacts extends StatelessWidget {
+  const _EnlistmentFacts();
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    const facts = <(String, String, String)>[
+      (
+        'Minimum AFQT',
+        '31',
+        'Category IIIB. The lowest accepted test score category in AR 601-210.',
+      ),
+      (
+        'Age',
+        '17 to 42',
+        'Non-prior service. Older applicants need an age waiver.',
+      ),
+      (
+        'Officer gate',
+        'GT 110',
+        'OCS, warrant officer and WOFT. Explicitly not waiverable for WOCS.',
+      ),
+      (
+        'Score waivers',
+        'None',
+        'There is no score waiver. Only a retest after the waiting period.',
+      ),
+      (
+        'Retest spacing',
+        '30 / 30 / 180 days',
+        'Then every six months. A Cat IV retest may need an AFQT gain of 20 points.',
+      ),
+      (
+        'Computer test',
+        'Answer everything',
+        'On the CAT-ASVAB a blank item scores as though you guessed at random.',
+      ),
+    ];
+    return AppCard(
+      padding: const EdgeInsets.all(Space.lg),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Icon(Icons.military_tech_outlined, size: 17, color: c.primary),
+              const SizedBox(width: Space.sm),
+              Text(
+                'Enlistment requirements',
+                style: context.text.titleSmall?.copyWith(color: c.textPrimary),
+              ),
+            ],
+          ),
+          const SizedBox(height: Space.md),
+          for (final fact in facts)
+            Padding(
+              padding: const EdgeInsets.only(bottom: Space.sm),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    width: 118,
+                    child: Text(
+                      fact.$1,
+                      style: context.text.bodySmall?.copyWith(
+                        color: c.textMuted,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 108,
+                    child: Text(
+                      fact.$2,
+                      style: context.text.labelMedium?.copyWith(
+                        color: c.primary,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      fact.$3,
+                      style: context.text.bodySmall?.copyWith(
+                        color: c.textSecondary,
+                        fontSize: 11,
+                        height: 1.4,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          Text(
+            'Sources: AR 601-210 (20 Mar 2026) paragraphs 2-8 and 9-10, '
+            'goarmy.com eligibility, and the official ASVAB fact sheet. '
+            'Confirm with a recruiter - these change.',
+            style: context.text.bodySmall?.copyWith(
+              color: c.textMuted,
+              fontSize: 10.5,
+              height: 1.4,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
