@@ -23,6 +23,28 @@ const List<Question> mechanicalExtraBank = <Question>[
         'the block.',
     difficulty: Difficulty.medium,
     skills: <String>['mc.levers'],
+    figure: McFigure(
+      caption:
+          'A six foot pry bar lifting a 400 pound rock, with a block acting as '
+          'fulcrum 1 foot from the rock and the effort applied at the far end, '
+          'both arms marked underneath.',
+      prims: <McPrim>[
+        McPrim.line(Pt(0.06, 0.66), Pt(0.94, 0.66), weight: 3),
+        McPrim.box(Pt(0.06, 0.46), Pt(0.20, 0.66)),
+        McPrim.text('400 lb rock', Pt(0.17, 0.38)),
+        McPrim.line(Pt(0.20, 0.46), Pt(0.92, 0.46), weight: 5),
+        McPrim.box(Pt(0.27, 0.46), Pt(0.37, 0.66)),
+        McPrim.text('fulcrum', Pt(0.36, 0.37)),
+        McPrim.arrow(Pt(0.90, 0.20), Pt(0.90, 0.44)),
+        McPrim.text('? effort', Pt(0.86, 0.13)),
+        McPrim.dashed(Pt(0.20, 0.80), Pt(0.92, 0.80)),
+        McPrim.dashed(Pt(0.20, 0.68), Pt(0.20, 0.80)),
+        McPrim.dashed(Pt(0.32, 0.68), Pt(0.32, 0.80)),
+        McPrim.dashed(Pt(0.92, 0.68), Pt(0.92, 0.80)),
+        McPrim.text('1 ft', Pt(0.26, 0.89)),
+        McPrim.text('5 ft', Pt(0.62, 0.89)),
+      ],
+    ),
   ),
   Question(
     id: 'mc-x02',
@@ -58,6 +80,24 @@ const List<Question> mechanicalExtraBank = <Question>[
         'entirely, which is the usual inclined plane slip.',
     difficulty: Difficulty.medium,
     skills: <String>['mc.pulleys'],
+    figure: McFigure(
+      caption:
+          'A 200 pound barrel being pushed up a 10 foot ramp that rises 2.5 '
+          'feet to a dock, with the effort along the ramp marked with a '
+          'question mark.',
+      prims: <McPrim>[
+        McPrim.line(Pt(0.08, 0.80), Pt(0.94, 0.80), weight: 4),
+        McPrim.line(Pt(0.14, 0.80), Pt(0.80, 0.52), weight: 4),
+        McPrim.box(Pt(0.80, 0.52), Pt(0.94, 0.80)),
+        McPrim.box(Pt(0.31, 0.60), Pt(0.41, 0.694)),
+        McPrim.text('200 lb', Pt(0.36, 0.54)),
+        McPrim.arrow(Pt(0.62, 0.641), Pt(0.44, 0.718)),
+        McPrim.text('?', Pt(0.66, 0.625)),
+        McPrim.dashed(Pt(0.14, 0.84), Pt(0.80, 0.84)),
+        McPrim.text('10 ft', Pt(0.47, 0.91)),
+        McPrim.text('2.5 ft', Pt(0.87, 0.64)),
+      ],
+    ),
   ),
   Question(
     id: 'mc-x04',
@@ -75,6 +115,29 @@ const List<Question> mechanicalExtraBank = <Question>[
         'two-section or three-section tackle.',
     difficulty: Difficulty.medium,
     skills: <String>['mc.pulleys'],
+    figure: McFigure(
+      caption:
+          'A block and tackle with a fixed block at the top and a movable '
+          'block joined by four rope sections, the load labelled with its 2 '
+          'foot lift and the rope to haul marked with a question mark.',
+      prims: <McPrim>[
+        McPrim.line(Pt(0.24, 0.10), Pt(0.76, 0.10), weight: 4),
+        McPrim.line(Pt(0.50, 0.10), Pt(0.50, 0.14)),
+        McPrim.box(Pt(0.36, 0.14), Pt(0.64, 0.30)),
+        McPrim.box(Pt(0.36, 0.56), Pt(0.64, 0.72)),
+        McPrim.line(Pt(0.42, 0.30), Pt(0.42, 0.56)),
+        McPrim.line(Pt(0.48, 0.30), Pt(0.48, 0.56)),
+        McPrim.line(Pt(0.54, 0.30), Pt(0.54, 0.56)),
+        McPrim.line(Pt(0.60, 0.30), Pt(0.60, 0.56)),
+        McPrim.box(Pt(0.43, 0.72), Pt(0.57, 0.86)),
+        McPrim.text('load', Pt(0.50, 0.79)),
+        McPrim.arrow(Pt(0.71, 0.88), Pt(0.71, 0.74)),
+        McPrim.text('2 ft', Pt(0.80, 0.81)),
+        McPrim.line(Pt(0.64, 0.22), Pt(0.78, 0.22)),
+        McPrim.arrow(Pt(0.78, 0.22), Pt(0.78, 0.46)),
+        McPrim.text('?', Pt(0.78, 0.56)),
+      ],
+    ),
   ),
   Question(
     id: 'mc-x05',
@@ -92,6 +155,28 @@ const List<Question> mechanicalExtraBank = <Question>[
         'more slowly.',
     difficulty: Difficulty.easy,
     skills: <String>['mc.pulleys'],
+    figure: McFigure(
+      caption:
+          'A screw jack with 10 threads per inch: a threaded body on a base, a '
+          'load on top and a handle across the screw, with the rise marked '
+          'with a question mark.',
+      prims: <McPrim>[
+        McPrim.box(Pt(0.24, 0.82), Pt(0.62, 0.92)),
+        McPrim.box(Pt(0.30, 0.56), Pt(0.56, 0.82)),
+        McPrim.line(Pt(0.30, 0.62), Pt(0.56, 0.62)),
+        McPrim.line(Pt(0.30, 0.68), Pt(0.56, 0.68)),
+        McPrim.line(Pt(0.30, 0.74), Pt(0.56, 0.74)),
+        McPrim.line(Pt(0.43, 0.28), Pt(0.43, 0.56), weight: 5),
+        McPrim.line(Pt(0.14, 0.34), Pt(0.72, 0.34), weight: 4),
+        McPrim.disc(Pt(0.72, 0.34), 0.022),
+        McPrim.box(Pt(0.32, 0.14), Pt(0.54, 0.28)),
+        McPrim.text('load', Pt(0.43, 0.21)),
+        McPrim.text('handle', Pt(0.20, 0.27)),
+        McPrim.line(Pt(0.62, 0.66), Pt(0.578, 0.66)),
+        McPrim.text('10 threads per inch', Pt(0.76, 0.66)),
+        McPrim.text('? rise', Pt(0.76, 0.42)),
+      ],
+    ),
   ),
   Question(
     id: 'mc-x06',
@@ -109,6 +194,22 @@ const List<Question> mechanicalExtraBank = <Question>[
         'that these two gears do not have.',
     difficulty: Difficulty.easy,
     skills: <String>['mc.pulleys'],
+    figure: McFigure(
+      caption:
+          'A 40 tooth gear turning at 60 rpm meshed with a 10 tooth gear whose '
+          'speed is marked with a question mark.',
+      prims: <McPrim>[
+        McPrim.circle(Pt(0.32, 0.50), 0.30, weight: 4),
+        McPrim.disc(Pt(0.32, 0.50), 0.018),
+        McPrim.text('40 T', Pt(0.32, 0.64)),
+        McPrim.circle(Pt(0.5405, 0.50), 0.075, weight: 4),
+        McPrim.disc(Pt(0.5405, 0.50), 0.015),
+        McPrim.line(Pt(0.568, 0.47), Pt(0.64, 0.42)),
+        McPrim.text('10 T', Pt(0.72, 0.38)),
+        McPrim.text('? rpm', Pt(0.72, 0.50)),
+        McPrim.text('driver 60 rpm', Pt(0.32, 0.90)),
+      ],
+    ),
   ),
   Question(
     id: 'mc-x07',
@@ -132,6 +233,26 @@ const List<Question> mechanicalExtraBank = <Question>[
         'on the way in it gives back on the way out.',
     difficulty: Difficulty.medium,
     skills: <String>['mc.pulleys'],
+    figure: McFigure(
+      caption:
+          'A driving gear turning clockwise that drives an idler gear, which '
+          'in turn drives an output gear of the same size, marked with a '
+          'question mark.',
+      prims: <McPrim>[
+        McPrim.circle(Pt(0.231, 0.52), 0.22, weight: 4),
+        McPrim.circle(Pt(0.490, 0.52), 0.22, weight: 4),
+        McPrim.circle(Pt(0.749, 0.52), 0.22, weight: 4),
+        McPrim.disc(Pt(0.231, 0.52), 0.016),
+        McPrim.disc(Pt(0.490, 0.52), 0.016),
+        McPrim.disc(Pt(0.749, 0.52), 0.016),
+        McPrim.arrow(Pt(0.18, 0.34), Pt(0.29, 0.34)),
+        McPrim.text('A', Pt(0.231, 0.64)),
+        McPrim.text('idler', Pt(0.490, 0.64)),
+        McPrim.text('B', Pt(0.749, 0.64)),
+        McPrim.text('clockwise', Pt(0.231, 0.20)),
+        McPrim.text('?', Pt(0.749, 0.84)),
+      ],
+    ),
   ),
   Question(
     id: 'mc-x08',
@@ -211,6 +332,21 @@ const List<Question> mechanicalExtraBank = <Question>[
         'about an axis.',
     difficulty: Difficulty.hard,
     skills: <String>['mc.structure'],
+    figure: McFigure(
+      caption:
+          'A simple roof truss: two rafters meeting at the ridge, with the '
+          'bottom horizontal member between their feet marked with a question '
+          'mark.',
+      prims: <McPrim>[
+        McPrim.line(Pt(0.18, 0.72), Pt(0.50, 0.24), weight: 4),
+        McPrim.line(Pt(0.50, 0.24), Pt(0.82, 0.72), weight: 4),
+        McPrim.line(Pt(0.18, 0.72), Pt(0.82, 0.72), weight: 5),
+        McPrim.line(Pt(0.285, 0.45), Pt(0.355, 0.468)),
+        McPrim.text('rafter', Pt(0.23, 0.42)),
+        McPrim.text('?', Pt(0.50, 0.81)),
+        McPrim.text('bottom member', Pt(0.50, 0.90)),
+      ],
+    ),
   ),
   Question(
     id: 'mc-x12',
@@ -310,6 +446,31 @@ const List<Question> mechanicalExtraBank = <Question>[
         'instead of dividing gives 18 inches, which would create energy out of nothing.',
     difficulty: Difficulty.medium,
     skills: <String>['mc.pressure'],
+    figure: McFigure(
+      caption:
+          'A hydraulic press with a 4 square inch piston driven 3 inches down '
+          'and a 24 square inch piston whose rise is marked with a question '
+          'mark.',
+      prims: <McPrim>[
+        McPrim.line(Pt(0.14, 0.26), Pt(0.14, 0.82), weight: 3),
+        McPrim.line(Pt(0.28, 0.26), Pt(0.28, 0.68), weight: 3),
+        McPrim.line(Pt(0.28, 0.68), Pt(0.58, 0.68), weight: 3),
+        McPrim.line(Pt(0.58, 0.26), Pt(0.58, 0.68), weight: 3),
+        McPrim.line(Pt(0.86, 0.26), Pt(0.86, 0.82), weight: 3),
+        McPrim.line(Pt(0.14, 0.82), Pt(0.86, 0.82), weight: 3),
+        McPrim.line(Pt(0.14, 0.42), Pt(0.28, 0.42), weight: 4),
+        McPrim.dashed(Pt(0.14, 0.50), Pt(0.28, 0.50)),
+        McPrim.line(Pt(0.21, 0.42), Pt(0.21, 0.26), weight: 3),
+        McPrim.arrow(Pt(0.21, 0.12), Pt(0.21, 0.24)),
+        McPrim.text('3 in', Pt(0.34, 0.46)),
+        McPrim.text('4 sq in', Pt(0.21, 0.60)),
+        McPrim.line(Pt(0.58, 0.38), Pt(0.86, 0.38), weight: 4),
+        McPrim.line(Pt(0.72, 0.38), Pt(0.72, 0.24), weight: 3),
+        McPrim.text('?', Pt(0.72, 0.15)),
+        McPrim.text('24 sq in', Pt(0.72, 0.54)),
+        McPrim.text('fluid', Pt(0.43, 0.75)),
+      ],
+    ),
   ),
   Question(
     id: 'mc-x17',
@@ -333,6 +494,21 @@ const List<Question> mechanicalExtraBank = <Question>[
         'shallow tank would never trouble.',
     difficulty: Difficulty.medium,
     skills: <String>['mc.pressure'],
+    figure: McFigure(
+      caption:
+          'A narrow pipe holding water 8 feet deep standing beside a wide '
+          'barrel holding water only 2 feet deep, with both depths marked.',
+      prims: <McPrim>[
+        McPrim.box(Pt(0.14, 0.16), Pt(0.22, 0.86)),
+        McPrim.dashed(Pt(0.14, 0.20), Pt(0.22, 0.20)),
+        McPrim.text('8 ft', Pt(0.18, 0.52)),
+        McPrim.box(Pt(0.46, 0.52), Pt(0.76, 0.86)),
+        McPrim.dashed(Pt(0.46, 0.70), Pt(0.76, 0.70)),
+        McPrim.text('2 ft', Pt(0.61, 0.78)),
+        McPrim.text('pipe', Pt(0.18, 0.92)),
+        McPrim.text('barrel', Pt(0.61, 0.92)),
+      ],
+    ),
   ),
   Question(
     id: 'mc-x18',

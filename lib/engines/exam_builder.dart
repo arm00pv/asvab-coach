@@ -139,6 +139,34 @@ abstract final class ExamBuilder {
     );
   }
 
+  /// A spaced-repetition session: the given questions, untimed, grouped by
+  /// subtest so the candidate is not jolted between subjects.
+  static Exam review(List<Question> due, {required int seed, int cap = 24}) {
+    final picked = due.take(cap).toList(growable: false);
+    final bySubtest = <Subtest, List<Question>>{};
+    for (final q in picked) {
+      bySubtest.putIfAbsent(q.subtest, () => <Question>[]).add(q);
+    }
+    final sections = <ExamSection>[];
+    for (final s in Subtest.administrationOrder) {
+      final list = bySubtest[s];
+      if (list == null || list.isEmpty) continue;
+      sections.add(
+        ExamSection(
+          subtest: s,
+          questions: list.map((q) => _serve(q, seed)).toList(growable: false),
+          minutes: 999,
+        ),
+      );
+    }
+    return Exam(
+      id: 'review-' + seed.toString(),
+      kind: ExamKind.review,
+      sections: sections,
+      title: 'Review session',
+    );
+  }
+
   /// A short mastery check for one skill, used at the end of a lesson.
   static Exam lessonQuiz(String skillId, {required int seed, int count = 4}) {
     final pool = QuestionBank.all

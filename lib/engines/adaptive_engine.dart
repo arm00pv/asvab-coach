@@ -123,7 +123,21 @@ abstract final class AdaptiveEngine {
     required List<Attempt> history,
     required GoalProfile goal,
     required int diagnosticCount,
+    int dueReviews = 0,
   }) {
+    // Retrieval practice beats new material, so a backlog in the review queue
+    // outranks everything else.
+    if (dueReviews >= 3) {
+      return NextAction(
+        kind: NextActionKind.review,
+        title: 'Clear your review queue',
+        body:
+            'You have $dueReviews question${dueReviews == 1 ? '' : 's'} due from '
+            'earlier attempts. Coming back to what you missed is the single '
+            'highest-value thing you can do today.',
+        cta: 'Start review',
+      );
+    }
     if (history.isEmpty && diagnosticCount == 0) {
       return const NextAction(
         kind: NextActionKind.diagnostic,
@@ -193,7 +207,7 @@ class SkillPriority {
   final int correct;
 }
 
-enum NextActionKind { diagnostic, lesson, drill, mock, jobs }
+enum NextActionKind { diagnostic, lesson, drill, mock, jobs, review }
 
 class NextAction {
   const NextAction({

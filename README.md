@@ -35,6 +35,8 @@ per-MOS source reference, plus nine officer and warrant officer pathways and the
 GT 110 requirement behind them. Eligibility is computed against your real score,
 with a near-miss list and the arithmetic for closing each gap.
 
+**Revisits what you missed.** Every question you miss or flag enters a spaced-repetition queue and comes back after one day, then three, then seven, then twenty-one, and graduates after four clean retrievals. A backlog outranks every other recommendation on the dashboard, because coming back to a missed question is worth more than new material.
+
 **Then teaches.** 48 reinforcement lessons, one per skill, selected by weakest
 skill and finished with a mastery check. Every question in the bank carries a
 worked explanation that is reused inside the lesson flow.
@@ -111,8 +113,9 @@ flutter test
 | --- | --- |
 | `bank_integrity_test` | No duplicate ids, four distinct choices, every item has a teachable explanation, every skill has questions behind it, every AO puzzle has exactly one legal assembly in both item families, mirroring a piece is rejected while rotating it is accepted, and the item-quality audit is clean. |
 | `scoring_test` | Half-right lands on the national mean, the conversion is monotonic and clamped, every Army composite returns 100 for an average applicant, GT follows the published slope, AFQT is monotonic and clamped, category bands match the 1997 scale. |
-| `exam_flow_test` | The mock has the official structure (9 sections, 135 items, 197 minutes), shuffling never breaks the answer mapping, answering everything correctly maxes the report while answering nothing bottoms it out, a session advances through every section, and a finished attempt survives a JSON round trip. |
+| `exam_flow_test` | The mock has the official structure (10 sections over 9 subtests, because Auto and Shop are administered separately, 135 items, 197 minutes), shuffling never breaks the answer mapping, answering everything correctly maxes the report while answering nothing bottoms it out, a session advances through every section, and a finished attempt survives a JSON round trip. |
 | `personas_test` | Seven synthetic learners scored through the real engines: a strong candidate outscores a weak one, a pure guesser stays below the AFQT 31 floor, an officer-minded candidate clears GT 110, a maths-anxious candidate is coached on maths, and eligibility grows with ability. |
+| `review_queue_test` | A missed or flagged question enters the queue due tomorrow, a correct first answer does not, intervals widen 1 to 3 to 7 to 21 days, four clean retrievals graduate it, a wrong review resets it, and a review session contains exactly the questions that were due. |
 | `widget_test` | Onboarding renders, advances through all four steps, and lands on the dashboard. |
 
 The persona harness is also available in-app under **Settings > QA lab**, so the

@@ -40,6 +40,23 @@ const List<Question> mechanicalBank = <Question>[
         'the weights and ignoring distance, which is the usual moment mistake.',
     difficulty: Difficulty.medium,
     skills: <String>['mc.levers'],
+    figure: McFigure(
+      caption:
+          'A seesaw with a 60 pound child 3 feet left of the fulcrum and a 20 '
+          'pound child on the right arm, whose distance is marked with a '
+          'question mark.',
+      prims: <McPrim>[
+        McPrim.line(Pt(0.14, 0.50), Pt(0.84, 0.50), weight: 5),
+        McPrim.triangle(Pt(0.34, 0.50), Pt(0.28, 0.66), Pt(0.40, 0.66)),
+        McPrim.box(Pt(0.10, 0.38), Pt(0.18, 0.50)),
+        McPrim.text('60 lb', Pt(0.14, 0.30)),
+        McPrim.box(Pt(0.78, 0.38), Pt(0.86, 0.50)),
+        McPrim.text('20 lb', Pt(0.82, 0.30)),
+        McPrim.dashed(Pt(0.14, 0.74), Pt(0.84, 0.74)),
+        McPrim.text('3 ft', Pt(0.24, 0.83)),
+        McPrim.text('? ft', Pt(0.60, 0.83)),
+      ],
+    ),
   ),
   Question(
     id: 'mc-003',
@@ -78,6 +95,22 @@ const List<Question> mechanicalBank = <Question>[
         'inches without converting the units is what produces a nonsense answer below one.',
     difficulty: Difficulty.hard,
     skills: <String>['mc.levers'],
+    figure: McFigure(
+      caption:
+          'A class 1 lever with a load 8 inches from the fulcrum and a '
+          'downward effort 2 feet from it, with both arms marked underneath.',
+      prims: <McPrim>[
+        McPrim.line(Pt(0.15, 0.52), Pt(0.93, 0.52), weight: 5),
+        McPrim.triangle(Pt(0.345, 0.52), Pt(0.285, 0.68), Pt(0.405, 0.68)),
+        McPrim.box(Pt(0.115, 0.40), Pt(0.175, 0.52)),
+        McPrim.text('load', Pt(0.145, 0.33)),
+        McPrim.arrow(Pt(0.86, 0.28), Pt(0.86, 0.50)),
+        McPrim.text('effort', Pt(0.86, 0.20)),
+        McPrim.dashed(Pt(0.145, 0.76), Pt(0.86, 0.76)),
+        McPrim.text('8 in', Pt(0.245, 0.85)),
+        McPrim.text('2 ft', Pt(0.60, 0.85)),
+      ],
+    ),
   ),
   Question(
     id: 'mc-005',
@@ -94,6 +127,23 @@ const List<Question> mechanicalBank = <Question>[
         'light hand pressure.',
     difficulty: Difficulty.medium,
     skills: <String>['mc.levers'],
+    figure: McFigure(
+      caption:
+          'A steering wheel 16 inches across turning a shaft 2 inches across, '
+          'with both diameters marked.',
+      prims: <McPrim>[
+        McPrim.circle(Pt(0.40, 0.46), 0.28, weight: 4),
+        McPrim.disc(Pt(0.40, 0.46), 0.035),
+        McPrim.line(Pt(0.40, 0.495), Pt(0.40, 0.74)),
+        McPrim.line(Pt(0.3822, 0.4425), Pt(0.2574, 0.32)),
+        McPrim.line(Pt(0.4178, 0.4425), Pt(0.5426, 0.32)),
+        McPrim.line(Pt(0.43, 0.49), Pt(0.62, 0.62)),
+        McPrim.text('wheel', Pt(0.18, 0.21)),
+        McPrim.text('2 in across', Pt(0.76, 0.66)),
+        McPrim.dashed(Pt(0.235, 0.86), Pt(0.565, 0.86)),
+        McPrim.text('16 in across', Pt(0.40, 0.91)),
+      ],
+    ),
   ),
   Question(
     id: 'mc-006',
@@ -129,6 +179,31 @@ const List<Question> mechanicalBank = <Question>[
         'answers would match only two or three supporting sections.',
     difficulty: Difficulty.medium,
     skills: <String>['mc.pulleys'],
+    figure: McFigure(
+      caption:
+          'A block and tackle with a fixed block at the top and a movable '
+          'block carrying a 240 pound load, joined by six rope sections, with '
+          'the pull marked with a question mark.',
+      prims: <McPrim>[
+        McPrim.line(Pt(0.22, 0.10), Pt(0.78, 0.10), weight: 4),
+        McPrim.line(Pt(0.50, 0.10), Pt(0.50, 0.14)),
+        McPrim.box(Pt(0.32, 0.14), Pt(0.68, 0.30)),
+        McPrim.box(Pt(0.32, 0.56), Pt(0.68, 0.72)),
+        McPrim.line(Pt(0.36, 0.30), Pt(0.36, 0.56)),
+        McPrim.line(Pt(0.42, 0.30), Pt(0.42, 0.56)),
+        McPrim.line(Pt(0.48, 0.30), Pt(0.48, 0.56)),
+        McPrim.line(Pt(0.54, 0.30), Pt(0.54, 0.56)),
+        McPrim.line(Pt(0.60, 0.30), Pt(0.60, 0.56)),
+        McPrim.line(Pt(0.66, 0.30), Pt(0.66, 0.56)),
+        McPrim.box(Pt(0.42, 0.72), Pt(0.58, 0.88)),
+        McPrim.text('240 lb', Pt(0.50, 0.80)),
+        McPrim.line(Pt(0.68, 0.22), Pt(0.78, 0.22)),
+        McPrim.arrow(Pt(0.78, 0.22), Pt(0.78, 0.46)),
+        McPrim.text('?', Pt(0.78, 0.56)),
+        McPrim.line(Pt(0.26, 0.43), Pt(0.345, 0.43)),
+        McPrim.text('6 sections', Pt(0.145, 0.43)),
+      ],
+    ),
   ),
   Question(
     id: 'mc-008',
@@ -150,6 +225,22 @@ const List<Question> mechanicalBank = <Question>[
         'them. Speed depends on tooth counts, not on direction.',
     difficulty: Difficulty.medium,
     skills: <String>['mc.pulleys'],
+    figure: McFigure(
+      caption:
+          'Two meshed gears: the driving gear is turning clockwise and the '
+          'driven gear is marked with a question mark.',
+      prims: <McPrim>[
+        McPrim.circle(Pt(0.30, 0.50), 0.28, weight: 4),
+        McPrim.circle(Pt(0.63, 0.50), 0.28, weight: 4),
+        McPrim.disc(Pt(0.30, 0.50), 0.02),
+        McPrim.disc(Pt(0.63, 0.50), 0.02),
+        McPrim.arrow(Pt(0.25, 0.26), Pt(0.35, 0.26)),
+        McPrim.text('A', Pt(0.30, 0.66)),
+        McPrim.text('B', Pt(0.63, 0.66)),
+        McPrim.text('turns clockwise', Pt(0.30, 0.90)),
+        McPrim.text('?', Pt(0.63, 0.90)),
+      ],
+    ),
   ),
   Question(
     id: 'mc-009',
@@ -166,6 +257,24 @@ const List<Question> mechanicalBank = <Question>[
         'answer multiplies instead of dividing, and 300 rpm would need a 4 to 1 ratio.',
     difficulty: Difficulty.hard,
     skills: <String>['mc.pulleys'],
+    figure: McFigure(
+      caption:
+          'A motor driving a 12 tooth sprocket that is chained to a 36 tooth '
+          'sprocket, whose speed is marked with a question mark.',
+      prims: <McPrim>[
+        McPrim.box(Pt(0.05, 0.39), Pt(0.18, 0.61)),
+        McPrim.text('motor', Pt(0.115, 0.50)),
+        McPrim.line(Pt(0.18, 0.50), Pt(0.281, 0.50), weight: 3),
+        McPrim.circle(Pt(0.34, 0.50), 0.10, weight: 4),
+        McPrim.circle(Pt(0.66, 0.50), 0.30, weight: 4),
+        McPrim.line(Pt(0.318, 0.407), Pt(0.595, 0.221), weight: 2),
+        McPrim.line(Pt(0.362, 0.593), Pt(0.725, 0.779), weight: 2),
+        McPrim.text('12 T', Pt(0.34, 0.50)),
+        McPrim.text('36 T', Pt(0.66, 0.50)),
+        McPrim.text('1200 rpm', Pt(0.34, 0.72)),
+        McPrim.text('?', Pt(0.66, 0.90)),
+      ],
+    ),
   ),
   Question(
     id: 'mc-010',
@@ -202,6 +311,24 @@ const List<Question> mechanicalBank = <Question>[
         'slip, and 300 psi would be the reading if the piston were exactly one square inch.',
     difficulty: Difficulty.medium,
     skills: <String>['mc.pressure'],
+    figure: McFigure(
+      caption:
+          'A piston with an area of 3 square inches pushed with 300 pounds, '
+          'with the pressure it creates inside the cylinder marked with a '
+          'question mark.',
+      prims: <McPrim>[
+        McPrim.line(Pt(0.30, 0.34), Pt(0.30, 0.88), weight: 3),
+        McPrim.line(Pt(0.56, 0.34), Pt(0.56, 0.88), weight: 3),
+        McPrim.line(Pt(0.28, 0.88), Pt(0.58, 0.88), weight: 3),
+        McPrim.line(Pt(0.30, 0.46), Pt(0.56, 0.46), weight: 4),
+        McPrim.line(Pt(0.43, 0.46), Pt(0.43, 0.26), weight: 4),
+        McPrim.arrow(Pt(0.43, 0.10), Pt(0.43, 0.24)),
+        McPrim.text('300 lb', Pt(0.33, 0.15)),
+        McPrim.line(Pt(0.56, 0.46), Pt(0.64, 0.46)),
+        McPrim.text('3 sq in', Pt(0.77, 0.46)),
+        McPrim.text('pressure ?', Pt(0.43, 0.62)),
+      ],
+    ),
   ),
   Question(
     id: 'mc-012',
@@ -218,6 +345,31 @@ const List<Question> mechanicalBank = <Question>[
         'the wrong direction, and 100 lb from doubling instead of using the full area ratio.',
     difficulty: Difficulty.hard,
     skills: <String>['mc.pressure'],
+    figure: McFigure(
+      caption:
+          'A hydraulic lift with 50 pounds on a 2 square inch piston feeding a '
+          '20 square inch piston, whose output force is marked with a question '
+          'mark.',
+      prims: <McPrim>[
+        McPrim.line(Pt(0.14, 0.26), Pt(0.14, 0.82), weight: 3),
+        McPrim.line(Pt(0.28, 0.26), Pt(0.28, 0.68), weight: 3),
+        McPrim.line(Pt(0.28, 0.68), Pt(0.58, 0.68), weight: 3),
+        McPrim.line(Pt(0.58, 0.26), Pt(0.58, 0.68), weight: 3),
+        McPrim.line(Pt(0.86, 0.26), Pt(0.86, 0.82), weight: 3),
+        McPrim.line(Pt(0.14, 0.82), Pt(0.86, 0.82), weight: 3),
+        McPrim.line(Pt(0.14, 0.42), Pt(0.28, 0.42), weight: 4),
+        McPrim.line(Pt(0.21, 0.42), Pt(0.21, 0.26), weight: 3),
+        McPrim.arrow(Pt(0.21, 0.10), Pt(0.21, 0.24)),
+        McPrim.text('50 lb', Pt(0.30, 0.15)),
+        McPrim.text('2 sq in', Pt(0.21, 0.54)),
+        McPrim.line(Pt(0.58, 0.38), Pt(0.86, 0.38), weight: 4),
+        McPrim.line(Pt(0.72, 0.38), Pt(0.72, 0.26), weight: 3),
+        McPrim.box(Pt(0.63, 0.14), Pt(0.81, 0.26)),
+        McPrim.text('?', Pt(0.72, 0.20)),
+        McPrim.text('20 sq in', Pt(0.72, 0.54)),
+        McPrim.text('fluid', Pt(0.43, 0.75)),
+      ],
+    ),
   ),
   Question(
     id: 'mc-013',
@@ -301,6 +453,30 @@ const List<Question> mechanicalBank = <Question>[
         'sagging beam shows.',
     difficulty: Difficulty.medium,
     skills: <String>['mc.structure'],
+    figure: McFigure(
+      caption:
+          'A beam sagging on two supports under a load hung at its middle, '
+          'with the top and bottom surfaces each marked with a question mark.',
+      prims: <McPrim>[
+        McPrim.line(Pt(0.14, 0.40), Pt(0.29, 0.475), weight: 4),
+        McPrim.line(Pt(0.29, 0.475), Pt(0.50, 0.525), weight: 4),
+        McPrim.line(Pt(0.50, 0.525), Pt(0.71, 0.475), weight: 4),
+        McPrim.line(Pt(0.71, 0.475), Pt(0.86, 0.40), weight: 4),
+        McPrim.line(Pt(0.14, 0.44), Pt(0.29, 0.515), weight: 4),
+        McPrim.line(Pt(0.29, 0.515), Pt(0.50, 0.565), weight: 4),
+        McPrim.line(Pt(0.50, 0.565), Pt(0.71, 0.515), weight: 4),
+        McPrim.line(Pt(0.71, 0.515), Pt(0.86, 0.44), weight: 4),
+        McPrim.line(Pt(0.14, 0.40), Pt(0.14, 0.44), weight: 4),
+        McPrim.line(Pt(0.86, 0.40), Pt(0.86, 0.44), weight: 4),
+        McPrim.triangle(Pt(0.14, 0.44), Pt(0.08, 0.60), Pt(0.20, 0.60)),
+        McPrim.triangle(Pt(0.86, 0.44), Pt(0.80, 0.60), Pt(0.92, 0.60)),
+        McPrim.line(Pt(0.50, 0.565), Pt(0.50, 0.62)),
+        McPrim.box(Pt(0.42, 0.62), Pt(0.58, 0.74)),
+        McPrim.text('load', Pt(0.50, 0.68)),
+        McPrim.text('top ?', Pt(0.66, 0.40)),
+        McPrim.text('bottom ?', Pt(0.69, 0.63)),
+      ],
+    ),
   ),
   Question(
     id: 'mc-017',

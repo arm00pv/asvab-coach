@@ -68,6 +68,8 @@ class DashboardScreen extends StatelessWidget {
                 _FirstRunCard(onStart: () => _startDiagnostic(context))
               else
                 _ReadinessHero(report: report, app: app),
+              const SizedBox(height: Space.md),
+              const _ReviewQueueCard(),
               const SizedBox(height: Space.lg),
               if (report != null)
                 _NextActionCard(
@@ -412,6 +414,7 @@ class _NextActionCard extends StatelessWidget {
       history: app.attempts,
       goal: app.goal ?? GoalProfile.defaults,
       diagnosticCount: app.diagnosticCount,
+      dueReviews: app.dueReviewCount,
     );
     return AppCard(
       accent: c.primary,
@@ -473,6 +476,14 @@ class _NextActionCard extends StatelessWidget {
                       onNavigate(1);
                     }
                   }
+                case NextActionKind.review:
+                  AppRoutes.exam(
+                    context,
+                    ExamBuilder.review(
+                      app.dueReviewQuestions,
+                      seed: DateTime.now().millisecondsSinceEpoch % 100000,
+                    ),
+                  );
                 case NextActionKind.drill:
                   AppRoutes.exam(
                     context,
@@ -498,6 +509,7 @@ class _NextActionCard extends StatelessWidget {
     NextActionKind.drill => Icons.bolt_outlined,
     NextActionKind.mock => Icons.timer_outlined,
     NextActionKind.jobs => Icons.workspaces_outline,
+    NextActionKind.review => Icons.refresh_rounded,
   };
 }
 
@@ -818,5 +830,78 @@ class _AttemptRow extends StatelessWidget {
     if (diff.inHours < 24) return '${diff.inHours} h ago';
     if (diff.inDays == 1) return 'yesterday';
     return '${diff.inDays} days ago';
+  }
+}
+
+/// The spaced-repetition backlog. Shown only when something is actually due, so
+/// it earns its space on the dashboard.
+class _ReviewQueueCard extends StatelessWidget {
+  const _ReviewQueueCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final app = context.watch<AppState>();
+    final due = app.dueReviews();
+    if (due.isEmpty) return const SizedBox.shrink();
+    final c = context.colors;
+    final oldest = due.first;
+    final overdue = DateTime.now().difference(oldest.dueAt).inDays;
+
+    return AppCard(
+      accent: c.accent,
+      padding: const EdgeInsets.all(Space.lg),
+      child: Row(
+        children: <Widget>[
+          Container(
+            width: 40,
+            height: 40,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: c.accentSoft,
+              borderRadius: BorderRadius.circular(Radii.md),
+            ),
+            child: Text(
+              '${due.length}',
+              style: context.text.titleMedium?.copyWith(color: c.accent),
+            ),
+          ),
+          const SizedBox(width: Space.lg),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  due.length == 1
+                      ? 'One question is due for review'
+                      : '${due.length} questions are due for review',
+                  style: context.text.titleSmall?.copyWith(
+                    color: c.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  overdue > 0
+                      ? 'Oldest is $overdue day${overdue == 1 ? '' : 's'} overdue. '
+                            'Coming back to what you missed is worth more than new material.'
+                      : 'Scheduled retrieval of what you missed. This is how it sticks.',
+                  style: context.text.bodySmall,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: Space.md),
+          FilledButton(
+            onPressed: () => AppRoutes.exam(
+              context,
+              ExamBuilder.review(
+                app.dueReviewQuestions,
+                seed: DateTime.now().millisecondsSinceEpoch % 100000,
+              ),
+            ),
+            child: const Text('Review now'),
+          ),
+        ],
+      ),
+    );
   }
 }

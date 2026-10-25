@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/mos.dart';
+import '../models/review_item.dart';
 import '../models/score.dart';
 import 'serialization.dart';
 
@@ -15,6 +16,7 @@ class PersistedState {
     required this.darkMode,
     required this.soundOn,
     required this.onboarded,
+    required this.reviews,
   });
 
   final GoalProfile? goal;
@@ -27,6 +29,9 @@ class PersistedState {
   final bool soundOn;
   final bool onboarded;
 
+  /// Spaced-repetition queue: questions missed or flagged, with due dates.
+  final List<ReviewItem> reviews;
+
   static const empty = PersistedState(
     goal: null,
     attempts: <Attempt>[],
@@ -34,6 +39,7 @@ class PersistedState {
     darkMode: false,
     soundOn: true,
     onboarded: false,
+    reviews: <ReviewItem>[],
   );
 }
 
@@ -44,6 +50,7 @@ abstract final class Storage {
   static const _kTheme = 'asvab.dark.v1';
   static const _kSound = 'asvab.sound.v1';
   static const _kOnboarded = 'asvab.onboarded.v1';
+  static const _kReviews = 'asvab.reviews.v1';
 
   static Future<PersistedState> load() async {
     try {
@@ -87,11 +94,36 @@ abstract final class Storage {
         darkMode: prefs.getBool(_kTheme) ?? false,
         soundOn: prefs.getBool(_kSound) ?? true,
         onboarded: prefs.getBool(_kOnboarded) ?? false,
+        reviews: _reviewsFrom(prefs.getString(_kReviews)),
       );
     } catch (_) {
       // Corrupt or unavailable storage must never brick the app.
       return PersistedState.empty;
     }
+  }
+
+  static List<ReviewItem> _reviewsFrom(String? raw) {
+    if (raw == null) return <ReviewItem>[];
+    try {
+      final out = <ReviewItem>[];
+      for (final entry in jsonDecode(raw) as List) {
+        final item = ReviewItem.fromJson(
+          (entry as Map).cast<String, dynamic>(),
+        );
+        if (item != null) out.add(item);
+      }
+      return out;
+    } catch (_) {
+      return <ReviewItem>[];
+    }
+  }
+
+  static Future<void> saveReviews(List<ReviewItem> reviews) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+      _kReviews,
+      jsonEncode(<Map<String, dynamic>>[for (final r in reviews) r.toJson()]),
+    );
   }
 
   static Future<void> saveGoal(GoalProfile goal) async {

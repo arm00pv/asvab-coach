@@ -2,8 +2,11 @@ import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 
+import '../data/bank/question_bank.dart';
 import '../data/models/catalog.dart';
 import '../data/models/mos.dart';
+import '../data/models/question.dart';
+import '../data/models/review_item.dart';
 import '../data/models/score.dart';
 import '../data/repos/storage.dart';
 
@@ -16,6 +19,7 @@ class AppState extends ChangeNotifier {
   List<Attempt> _attempts = <Attempt>[];
   Map<String, Map<String, List<int>>> _orders =
       <String, Map<String, List<int>>>{};
+  List<ReviewItem> _reviews = <ReviewItem>[];
   bool _darkMode = false;
   bool _soundOn = true;
   bool _onboarded = false;
@@ -28,6 +32,32 @@ class AppState extends ChangeNotifier {
   bool get onboarded => _onboarded;
   bool get loading => _loading;
   bool get hasGoal => _goal != null;
+
+  /// The spaced-repetition queue, soonest due first.
+  List<ReviewItem> get reviews => List<ReviewItem>.unmodifiable(_reviews);
+
+  /// Queue entries whose scheduled moment has arrived.
+  List<ReviewItem> dueReviews([DateTime? now]) {
+    final at = now ?? DateTime.now();
+    final due = _reviews.where((r) => r.isDue(at)).toList()
+      ..sort((a, b) => a.dueAt.compareTo(b.dueAt));
+    return due;
+  }
+
+  int get dueReviewCount => dueReviews().length;
+
+  /// The questions to serve in the next review session.
+  List<Question> get dueReviewQuestions {
+    final out = <Question>[];
+    for (final item in dueReviews()) {
+      final q = QuestionBank.byId(item.questionId);
+      if (q != null) out.add(q);
+    }
+    return out;
+  }
+
+  /// Questions still in the queue, including those not yet due.
+  int get reviewQueueSize => _reviews.length;
 
   /// Most recent finished attempt, if any.
   Attempt? get lastAttempt => _attempts.isEmpty ? null : _attempts.last;
@@ -103,6 +133,7 @@ class AppState extends ChangeNotifier {
     _darkMode = persisted.darkMode;
     _soundOn = persisted.soundOn;
     _onboarded = persisted.onboarded;
+    _reviews = List<ReviewItem>.of(persisted.reviews);
     _loading = false;
     notifyListeners();
   }
@@ -123,8 +154,67 @@ class AppState extends ChangeNotifier {
       ..._orders,
       attempt.id: orderByQuestion,
     };
+    _applyToReviewQueue(attempt);
     notifyListeners();
     await Storage.saveAttempts(_attempts, _orders);
+    await Storage.saveReviews(_reviews);
+  }
+
+  /// Feeds a finished attempt into the spaced-repetition queue.
+  ///
+  /// A normal attempt only ever adds or resets: anything missed or flagged comes
+  /// back tomorrow. A review session is what advances the interval, so a
+  /// question only graduates after four successful retrievals on the days it was
+  /// scheduled for.
+  void _applyToReviewQueue(Attempt attempt) {
+    final now = DateTime.now();
+    final queue = <String, ReviewItem>{
+      for (final r in _reviews) r.questionId: r,
+    };
+    final isReview = attempt.kind == ExamKind.review;
+
+    for (final response in attempt.responses) {
+      final question = QuestionBank.byId(response.questionId);
+      if (question == null) continue;
+      final answered = response.selectedIndex != null;
+      final correct =
+          answered && response.selectedIndex == question.answerIndex;
+      final existing = queue[response.questionId];
+
+      if (isReview) {
+        if (existing == null) continue;
+        if (correct) {
+          final next = existing.answeredCorrectly(now);
+          if (next.graduated) {
+            queue.remove(response.questionId);
+          } else {
+            queue[response.questionId] = next;
+          }
+        } else {
+          queue[response.questionId] = existing.answeredWrong(now);
+        }
+        continue;
+      }
+
+      if (!correct || response.flagged) {
+        queue[response.questionId] = ReviewItem(
+          questionId: response.questionId,
+          dueAt: now.add(Duration(days: ReviewItem.intervals.first)),
+          timesMissed: (existing?.timesMissed ?? 0) + 1,
+          lastSeenAt: now,
+        );
+      }
+    }
+
+    _reviews = queue.values.toList()
+      ..sort((a, b) => a.dueAt.compareTo(b.dueAt));
+  }
+
+  /// Kept for tests and for the reset path.
+  Future<void> clearReviewQueue() async {
+    _reviews = <ReviewItem>[];
+    notifyListeners();
+    await Storage.saveReviews(_reviews);
   }
 
   Future<void> setDarkMode(bool value) async {

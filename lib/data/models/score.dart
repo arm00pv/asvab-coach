@@ -131,7 +131,8 @@ enum ExamKind {
   lessonQuiz(
     'Lesson Check',
     'A short mastery check after a reinforcement lesson.',
-  );
+  ),
+  review('Review', 'Questions you missed, coming back at widening intervals.');
 
   const ExamKind(this.label, this.blurb);
   final String label;
