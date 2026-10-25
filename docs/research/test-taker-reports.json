@@ -1,0 +1,252 @@
+{
+  "meta": {
+    "title": "ASVAB test-taker reports, 2024-2026",
+    "compiled": "this session; live retrieval from Reddit (Redlib mirror + pullpush.io archive), Hacker News, Quora, asvabhero.com platform data, officialasvab.com",
+    "corpus": "139 opened threads (r/ASVAB, r/Militaryfaq, r/AirForceRecruits, r/newtothenavy, r/nationalguard, r/USMC) + ~1460 archived comments from 2024-01-01 onward across 4 subs",
+    "labelling": "corroboration = count of DISTINCT independent threads/articles, 2024+ unless flagged older; single anecdotes are marked in the claim text",
+    "gaps": [
+      "no verified item-level leakage",
+      "no credible per-subtest pacing data",
+      "no adaptive step-size reports",
+      "no 2024-2026 AO family-split report",
+      "YouTube/TikTok comments not harvestable",
+      "Quora yielded only undated generic answers"
+    ]
+  },
+  "reports": [
+    {
+      "subtest": "AR",
+      "claim": "AR includes literal algebraic equation solving (ax+b=c, x/n+b=c), negative-number sign handling, and large mixed-number arithmetic, not just arithmetic word problems.",
+      "corroboration": 1,
+      "sources": [
+        "https://www.reddit.com/r/ASVAB/comments/1wmccjj/"
+      ],
+      "confidence": "low"
+    },
+    {
+      "subtest": "AR",
+      "claim": "Generic 'AR/MK wrecked me' complaints dominate study threads; ~20+ distinct 2024-2026 threads are about math anxiety specifically.",
+      "corroboration": 20,
+      "sources": [
+        "https://www.reddit.com/r/ASVAB/",
+        "https://www.reddit.com/r/Militaryfaq/"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "subtest": "AR",
+      "claim": "One 2026 test-taker with Algebra+Geometry background said the math was 'different than anything I've ever seen'.",
+      "corroboration": 1,
+      "sources": [
+        "https://www.reddit.com/r/Militaryfaq/comments/1v3l9ow/"
+      ],
+      "confidence": "low"
+    },
+    {
+      "subtest": "WK",
+      "claim": "Vocabulary breadth is the top complaint from non-native / long-out-of-school candidates; one 2026 report recognised only one word on the WK section.",
+      "corroboration": 1,
+      "sources": [
+        "https://www.reddit.com/r/Militaryfaq/comments/1v63fvi/"
+      ],
+      "confidence": "low"
+    },
+    {
+      "subtest": "WK",
+      "claim": "WK stem convention is 'WORD most nearly means' with four short options (format corroborated across independent sources).",
+      "corroboration": 2,
+      "sources": [
+        "https://news.ycombinator.com/item?id=45174625",
+        "https://www.reddit.com/r/ASVAB/"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "subtest": "WK",
+      "claim": "No 2024-2026 report lists specific words actually seen on the live form.",
+      "corroboration": 0,
+      "sources": [],
+      "confidence": "low"
+    },
+    {
+      "subtest": "PC",
+      "claim": "PC difficulty is in distractor design: longer passages with near-identical options requiring literal textual support rather than main-idea inference.",
+      "corroboration": 1,
+      "sources": [
+        "https://www.reddit.com/r/ASVAB/comments/1wmccjj/"
+      ],
+      "confidence": "low"
+    },
+    {
+      "subtest": "PC",
+      "claim": "Some 2026 passages use heavy colloquial/dialect register and hinge on a minor literal detail (reported against practice material).",
+      "corroboration": 1,
+      "sources": [
+        "https://www.reddit.com/r/Militaryfaq/comments/1v63fvi/"
+      ],
+      "confidence": "low"
+    },
+    {
+      "subtest": "PC",
+      "claim": "Counter-report: other 2026 test-takers call reading and word knowledge the easiest part of the test.",
+      "corroboration": 2,
+      "sources": [
+        "https://www.reddit.com/r/Militaryfaq/comments/1v3l9ow/"
+      ],
+      "confidence": "low"
+    },
+    {
+      "subtest": "MK",
+      "claim": "MK concepts felt familiar but 'presented differently', and geometry was drilled in prep yet barely appeared on one 2026 form.",
+      "corroboration": 1,
+      "sources": [
+        "https://www.reddit.com/r/ASVAB/comments/1wmccjj/"
+      ],
+      "confidence": "low"
+    },
+    {
+      "subtest": "MK",
+      "claim": "Tutor consensus (2026) is that MK means fractions, decimals, percents, order of operations, one/two-step algebra and geometry formulas; plugging in answers is taught as a strategy.",
+      "corroboration": 3,
+      "sources": [
+        "https://www.reddit.com/r/ASVAB/comments/1wt0c5z/",
+        "https://www.reddit.com/r/ASVAB/comments/1wq3qpz/"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "subtest": "MK",
+      "claim": "Practice-platform data (60,534 answers, 2026) ranks geometry as the hardest math topic at 54.6% correct; MK overall 58% correct.",
+      "corroboration": 1,
+      "sources": [
+        "https://asvabhero.com/hardest-asvab-topics"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "subtest": "GS",
+      "claim": "GS is described as broad shallow common-sense recall; prep books overshoot into complicated physics.",
+      "corroboration": 2,
+      "sources": [
+        "https://www.reddit.com/r/Militaryfaq/comments/1v3l9ow/",
+        "https://www.reddit.com/r/ASVAB/comments/1f9qt28/"
+      ],
+      "confidence": "low"
+    },
+    {
+      "subtest": "EI",
+      "claim": "Electronics/shop questions were the surprise section for a 2026 test-taker who otherwise scored 74.",
+      "corroboration": 1,
+      "sources": [
+        "https://www.reddit.com/r/Militaryfaq/comments/1v3l9ow/"
+      ],
+      "confidence": "low"
+    },
+    {
+      "subtest": "EI",
+      "claim": "Series & parallel circuits are the single hardest topic in practice data (45.2% correct), EI overall 47.6%.",
+      "corroboration": 1,
+      "sources": [
+        "https://asvabhero.com/hardest-asvab-topics"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "subtest": "AS",
+      "claim": "Auto & Shop is a frequent self-diagnosed weak area, and often the lowest line score even for strong candidates (AS 46 vs AFQT 91 on one 2026 score sheet).",
+      "corroboration": 2,
+      "sources": [
+        "https://www.reddit.com/r/ASVAB/comments/1avokmw/",
+        "https://www.reddit.com/r/Militaryfaq/comments/1suhq5p/"
+      ],
+      "confidence": "low"
+    },
+    {
+      "subtest": "MC",
+      "claim": "Mechanical Comprehension is the hardest subtest in practice data (46.8%), with gears/wheels/axles (45.3%) and forces/friction/pressure (45.7%) hardest.",
+      "corroboration": 1,
+      "sources": [
+        "https://asvabhero.com/hardest-asvab-topics"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "subtest": "MC",
+      "claim": "No 2024-2026 first-person report in the corpus describes a specific MC item seen on the test.",
+      "corroboration": 0,
+      "sources": [],
+      "confidence": "low"
+    },
+    {
+      "subtest": "AO",
+      "claim": "Assembling Objects is described by a 2026 test-taker as 'more logical reasoning than anything' and is frequently a candidate's highest technical subscore (AO 70 vs AS 46).",
+      "corroboration": 2,
+      "sources": [
+        "https://www.reddit.com/r/Militaryfaq/comments/1smkkzr/",
+        "https://www.reddit.com/r/Militaryfaq/comments/1suhq5p/"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "subtest": "AO",
+      "claim": "No 2024-2026 report distinguishes the fit-together family from the labelled-line/connection family; the official description names only fit-together.",
+      "corroboration": 0,
+      "sources": [
+        "https://www.officialasvab.com/applicants/sample-questions/"
+      ],
+      "confidence": "low"
+    },
+    {
+      "subtest": "AO",
+      "claim": "Pre-2024 threads are full of 'I can't do assembling objects at all' complaints, which the 2024-2026 record does not reproduce.",
+      "corroboration": 2,
+      "sources": [
+        "https://www.reddit.com/r/newtothenavy/comments/yewuz6/",
+        "https://www.reddit.com/r/AirForceRecruits/comments/p35kns/"
+      ],
+      "confidence": "low"
+    }
+  ],
+  "hardestSubtests": [
+    "AR and MK math are the dominant reported difficulty and the dominant anxiety in 2024-2026 threads (20+ distinct threads).",
+    "WK/PC vocabulary for candidates not schooled in English (3 distinct 2026 threads; one reported recognising a single word).",
+    "EI and AS are the 'nobody studied this' surprise sections (2 distinct 2026 reports plus platform accuracy data).",
+    "MC scores worst in practice-platform data (46.8% correct) but is rarely described in first person.",
+    "GS and AO are never named as the hardest thing faced; AO is often shrugged at or unmentioned."
+  ],
+  "pacingNotes": [
+    "Home PiCAT is untimed; the ASVAB at MEPS is timed - repeated by 3+ commenters 2025-2026 and consistent with the official PiCAT description.",
+    "In ~139 threads there are zero credible 'I had N minutes left' reports; candidates describe anxiety and confidence loss, not the clock.",
+    "Prep-site timings (e.g. 8 minutes for General Science) were not echoed by any 2024-2026 test-taker.",
+    "Design implication: practise untimed first then add pressure; do not build a 30-second-per-item simulator."
+  ],
+  "adaptiveObservations": [
+    "Official rule: correct answer -> harder next item, incorrect -> easier next item (officialasvab.com/applicants/cat-asvab).",
+    "Candidates believe and state the direction correctly ('the better you do the harder questions'), 2 threads 2026.",
+    "Nobody describes the moment difficulty steps up or how many questions in - no step-size evidence exists.",
+    "Harder-feeling forms get misread as failure; candidates explicitly wonder whether an odd form means a bad score.",
+    "PiCAT -> ASVAB drift reported: 86 AFQT -> 73; 98 on a recruiter PiCAT at home before the real sitting (2 reports, different forms plus a verification step complicate attribution)."
+  ],
+  "practiceTestsMisleading": [
+    "DDRPT 74/80/84 on practice, then missed the real AFQT cut by 4 points after ~5 months of study (r/ASVAB 2026) - practice over-predicted.",
+    "PiCAT 86 AFQT -> real ASVAB 73 (r/ASVAB Oct 2026).",
+    "Recruiter's short screening test 35 -> real ASVAB 73 a week later (r/ASVAB Oct 2026) - practice under-predicted; a recruiter in-thread agrees the screening test is diagnostic, not predictive.",
+    "Geometry drilled heavily (triangle/circle area, circumference, 1/2bh, factorials) yet 'barely saw geometry' on the real form.",
+    "AR practiced as arithmetic word problems but real form emphasised solving equations, sign handling and large mixed numbers.",
+    "EI/AS under-weighted everywhere; a 74 scorer was surprised by the electric/shop questions.",
+    "PC prep teaches main-idea finding but real items need literal support discrimination between near-identical options.",
+    "WK prep uses schoolbook vocabulary while reported items use low-frequency and colloquial English.",
+    "Home PiCAT being untimed inflates practice scores relative to the timed test at MEPS.",
+    "Free sites and the US Army ASVAB Challenge app reported as 'ancient' and 'starts getting repetitive' (2024-2026).",
+    "One 2026 commenter claims Grammar Hero questions appeared verbatim on the ASVAB - unverified, single source."
+  ],
+  "aoObservations": [
+    "Official AO description names only the fit-together family ('how an object will look when its parts are put together').",
+    "The two-family structure (parts assembly vs connect-labelled-points) is real in prep material but no 2024-2026 test-taker distinguishes them on the live form.",
+    "AO is not in the AFQT composite and no 2024-2026 thread blames AO for a lost score.",
+    "2026 score sheets show AO among a candidate's higher scores (AO 70 vs AS 46).",
+    "Practice-platform data puts AO at 50.8% correct, mid-pack: 3-D visualisation 46.5%, spatial counting/orientation 50.1%.",
+    "Pre-2024 perception was the opposite ('I can't comprehend assembly object at all', 2021-2022 threads).",
+    "Recommendation: ship both families, weight fit-together higher per the official description, do not invest in AO as a differentiator (medium confidence)."
+  ]
+}

@@ -45,6 +45,17 @@ class ResultsScreen extends StatelessWidget {
           children: <Widget>[
             _Hero(report: report, previous: previous),
             const SizedBox(height: Space.lg),
+            const Callout(
+              tone: PillTone.warning,
+              icon: Icons.info_outline_rounded,
+              title: 'An estimate, and practice tends to flatter',
+              text:
+                  'Candidates routinely score higher on an untimed run '
+                  'than at MEPS, and the home PiCAT is known to inflate. Treat '
+                  'this as a direction rather than a prediction, and confirm '
+                  'anything that matters on the real test.',
+            ),
+            const SizedBox(height: Space.lg),
             _SectionTitle('Line scores'),
             const SizedBox(height: Space.sm),
             _LineScoreTable(report: report, goal: app.goal),

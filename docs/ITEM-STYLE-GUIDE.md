@@ -160,3 +160,43 @@ dart run tool/audit.dart
 ```
 
 If the audit reports an error, the item is broken, not the checker.
+
+
+
+
+---
+
+## Rules added from 2024-2026 test-taker evidence
+
+These come from `docs/research/test-taker-reports.md`, which harvested 139
+threads with about 35 first-person "I sat it" narratives. They are the patterns
+where practice material most often diverges from the real thing.
+
+**Paragraph Comprehension: make the wrong answer the better-sounding one.** Real
+PC difficulty lives in the options, not the passage. Multiple options read as
+near-identical, and the correct one is usually the **boring literal detail**,
+while the trap is the **plausible main-idea summary** that sounds like what the
+passage is "about". Author PC items so the tempting distractor is the more
+eloquent, more sweeping statement and the key is the modest, exactly-supported
+one.
+
+**Do not over-weight geometry in AR or MK.** Candidates who drilled triangle and
+circle formulas reported barely seeing geometry, while real AR leaned on literal
+`ax + b = c` solving, sign decisions and subtraction of large mixed numbers.
+Geometry earns its stated share, not more.
+
+**EI and AS are the surprise sections.** Across both practice-platform data and
+test-taker reports, series versus parallel circuits and gears and axles are the
+two hardest topics in the battery, and both sections surprise candidates who
+over-prepared on the AFQT subtests. Keep them fully stocked and keep the items
+concrete.
+
+**Assembling Objects is not a differentiator.** No 2024-2026 test-taker named it
+as hard, and it is frequently a candidate's strongest technical subscore. Build
+both item families correctly, but do not spend disproportionate authoring effort
+here.
+
+**Never imply that a practice score is a prediction.** Calibration is unreliable
+in both directions in the real world: candidates have overshot the real AFQT by
+more than twenty points and missed a cut by four after five months of drilling.
+The app must keep saying that this is an estimate.

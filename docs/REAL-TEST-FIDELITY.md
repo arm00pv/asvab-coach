@@ -177,3 +177,28 @@ of the real items.
 4. **AO pieces are grid polygons**, not drawn line art.
 5. **Bank size.** 338 items against a 135-item mock means a determined user will
    see repeats across many attempts. The real CAT draws from a far larger pool.
+
+---
+
+## What candidates who actually sat it say
+
+`docs/research/test-taker-reports.md` harvested 139 threads with about 35
+first-person accounts from 2024 to 2026. Four findings changed how items are
+written and are now enforced in the style guide:
+
+- **Paragraph Comprehension difficulty is in the distractors.** The correct option
+  tends to be the boring, exactly-stated detail; the trap is the eloquent
+  main-idea summary. Items are authored so the better-sounding option is wrong.
+- **Prep over-weights geometry.** Candidates drilled area and circumference
+  formulas and then barely saw geometry, while AR served literal linear-equation
+  solving and large mixed-number subtraction.
+- **EI and AS are the surprise sections.** Series versus parallel circuits and
+  gears and axles are consistently the hardest topics reported, and both sections
+  catch candidates who only prepared the AFQT subtests.
+- **A practice score is not a prediction, in either direction.** Candidates have
+  overshot the real AFQT by more than twenty points and missed a cut by four after
+  five months of study. The score report now says so on the screen where the
+  number appears.
+
+Assembling Objects, meanwhile, is consistently reported as *not* hard and is
+frequently a candidate's strongest technical subscore.
