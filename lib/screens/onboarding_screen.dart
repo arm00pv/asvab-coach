@@ -89,6 +89,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Expanded(
               child: PageBody(
                 maxWidth: 560,
+                centerVertically: true,
                 padding: const EdgeInsets.symmetric(
                   horizontal: Space.xl,
                   vertical: Space.xxl,

@@ -337,12 +337,16 @@ class _LineScoreTable extends StatelessWidget {
                   SizedBox(
                     width: 96,
                     child: MeterBar(
-                      value: (report.lineFor(rows[i]) / 200).clamp(0.0, 1.0),
+                      value: rows[i].isVe
+                          ? (report.lineFor(rows[i]) / 99).clamp(0.0, 1.0)
+                          : (report.lineFor(rows[i]) / 200).clamp(0.0, 1.0),
                       target: 0.5,
                       height: 6,
-                      color: report.lineFor(rows[i]) >= 100
-                          ? c.success
-                          : c.warning,
+                      color: rows[i].isVe
+                          ? c.info
+                          : (report.lineFor(rows[i]) >= 100
+                                ? c.success
+                                : c.warning),
                     ),
                   ),
                   const SizedBox(width: Space.md),
@@ -565,9 +569,10 @@ class _PaceBlock extends StatelessWidget {
     final c = context.colors;
     final report = attempt.report;
     final answered = report.totalAnswered;
-    final perQuestion = answered == 0
+    final secondsUsed = attempt.duration.inSeconds < 0
         ? 0
-        : (attempt.duration.inSeconds / answered).round();
+        : attempt.duration.inSeconds;
+    final perQuestion = answered == 0 ? 0 : (secondsUsed / answered).round();
     final flagged = attempt.responses.where((r) => r.flagged).length;
     final blank = attempt.responses.where((r) => !r.isAnswered).length;
     return AppCard(
@@ -578,7 +583,7 @@ class _PaceBlock extends StatelessWidget {
         children: <Widget>[
           StatTile(
             label: 'Time used',
-            value: '${attempt.duration.inMinutes}',
+            value: '${(secondsUsed / 60).floor()}',
             suffix: 'min',
             compact: true,
           ),

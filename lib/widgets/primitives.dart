@@ -324,12 +324,17 @@ class PageBody extends StatelessWidget {
     this.maxWidth = 1060,
     this.padding,
     this.scrollable = true,
+    this.centerVertically = false,
   });
 
   final Widget child;
   final double maxWidth;
   final EdgeInsetsGeometry? padding;
   final bool scrollable;
+
+  /// Vertically centres short content (onboarding steps) while still scrolling
+  /// when the viewport is too short to fit it.
+  final bool centerVertically;
 
   @override
   Widget build(BuildContext context) {
@@ -339,13 +344,21 @@ class PageBody extends StatelessWidget {
           horizontal: context.isCompact ? Space.lg : Space.xxl,
           vertical: context.isCompact ? Space.lg : Space.xl,
         );
-    final inner = Align(
-      alignment: Alignment.topCenter,
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: maxWidth),
-        child: Padding(padding: pad, child: child),
-      ),
+    final content = ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: maxWidth),
+      child: Padding(padding: pad, child: child),
     );
+    if (centerVertically) {
+      return LayoutBuilder(
+        builder: (context, constraints) => SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: Center(child: content),
+          ),
+        ),
+      );
+    }
+    final inner = Align(alignment: Alignment.topCenter, child: content);
     return scrollable ? SingleChildScrollView(child: inner) : inner;
   }
 }

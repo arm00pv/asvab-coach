@@ -111,7 +111,8 @@ enum LineScore {
     'VE',
     'Verbal Expression',
     'Optimal WK/PC composite on the subtest scale. Feeds GT and the AFQT.',
-    nominalFormula: 'WK + PC (PC weighted at 0.619 of WK)',
+    nominalFormula:
+        'WK + PC (PC weighted at 0.619 of WK) - subtest scale, mean 50',
     isVe: true,
   );
 

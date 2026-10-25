@@ -124,7 +124,7 @@ abstract final class AdaptiveEngine {
     required GoalProfile goal,
     required int diagnosticCount,
   }) {
-    if (diagnosticCount == 0) {
+    if (history.isEmpty && diagnosticCount == 0) {
       return const NextAction(
         kind: NextActionKind.diagnostic,
         title: 'Start with the placement diagnostic',

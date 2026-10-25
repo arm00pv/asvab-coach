@@ -373,12 +373,12 @@ class _ReadinessHero extends StatelessWidget {
       return 'Category I. You are in the top 7 percent.';
     }
     if (report.afqtPercentile >= 65) {
-      return 'Category II. Strong scores across the board.';
+      return 'Category II. Ahead of roughly three in four test takers.';
     }
     if (report.afqtPercentile >= 50) {
-      return 'Category IIIA. You clear the floor comfortably.';
+      return 'Category IIIA. At or above the national median.';
     }
-    return 'Category IIIB. You clear the floor - now build margin.';
+    return 'Category IIIB. Over the floor - now build margin from here.';
   }
 
   String _explain(ScoreReport report) {
