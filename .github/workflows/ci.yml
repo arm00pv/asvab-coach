@@ -35,6 +35,9 @@ jobs:
       - name: Run test suite
         run: flutter test --reporter expanded
 
+      - name: Audit the question bank
+        run: dart run tool/audit.dart --strict
+
       - name: Build web release
         run: flutter build web --release --base-href "/${{ github.event.repository.name }}/"
 

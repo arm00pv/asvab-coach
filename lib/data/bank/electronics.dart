@@ -166,9 +166,9 @@ const List<Question> electronicsBank = <Question>[
     stem: 'On a schematic diagram, a capacitor is drawn as the symbol that looks like',
     choices: <String>[
       'A zigzag line',
-      'Two parallel lines with a gap between them',
-      'A triangle touching a straight line',
-      'An arrow pointing into a circle',
+      'Two parallel plates with a gap',
+      'A triangle against a line',
+      'An arrow into a circle',
     ],
     answerIndex: 1,
     explanation:

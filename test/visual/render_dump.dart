@@ -12,6 +12,7 @@ import 'dart:io';
 import 'package:asvab_guard_coach/screens/onboarding_screen.dart';
 import 'package:asvab_guard_coach/core/theme/app_theme.dart';
 import 'package:asvab_guard_coach/data/models/catalog.dart';
+import 'package:asvab_guard_coach/data/models/question.dart';
 import 'package:asvab_guard_coach/data/models/mos.dart';
 import 'package:asvab_guard_coach/data/models/question.dart';
 import 'package:asvab_guard_coach/data/models/score.dart';
@@ -23,6 +24,7 @@ import 'package:asvab_guard_coach/screens/progress_screen.dart';
 import 'package:asvab_guard_coach/screens/results_screen.dart';
 import 'package:asvab_guard_coach/screens/test_center_screen.dart';
 import 'package:asvab_guard_coach/data/bank/mechanical_figures.dart';
+import 'package:asvab_guard_coach/data/bank/mechanical_figures_extra.dart';
 import 'package:asvab_guard_coach/state/app_state.dart';
 import 'package:asvab_guard_coach/widgets/mc_figure_view.dart';
 import 'package:flutter/material.dart';
@@ -220,7 +222,10 @@ void main() {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: <Widget>[
-              for (final q in mechanicalFigureBank)
+              for (final q in <Question>[
+                ...mechanicalFigureBank,
+                ...mechanicalFigureExtraBank,
+              ])
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: McFigureView(figure: q.figure!),
@@ -230,6 +235,28 @@ void main() {
         ),
       ),
       size: const Size(900, 1500),
+    );
+  });
+
+  testWidgets('mc_figures_extra', (tester) async {
+    await _shoot(
+      tester,
+      'mc_figures_extra',
+      Scaffold(
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: <Widget>[
+              for (final q in mechanicalFigureExtraBank)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: McFigureView(figure: q.figure!),
+                ),
+            ],
+          ),
+        ),
+      ),
+      size: const Size(900, 2400),
     );
   });
 

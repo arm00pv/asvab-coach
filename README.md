@@ -39,6 +39,10 @@ with a near-miss list and the arithmetic for closing each gap.
 skill and finished with a mastery check. Every question in the bank carries a
 worked explanation that is reused inside the lesson flow.
 
+**Paces you.** The target date and daily minutes you set at onboarding become a
+week-by-week schedule: how many skill cycles fit, how many full mocks fit, and a
+straight answer on whether the budget is enough.
+
 **Shows you the trend.** Attempt history, per-subtest sparklines, a skill mastery
 grid and streaks, all persisted locally in the browser.
 
@@ -66,7 +70,7 @@ lib/
   core/routes.dart     navigation helpers
   data/models/         catalog (subtests, skills), question, polyomino,
                        line_score, score, exam, mos, lesson
-  data/bank/           338 questions, 48 lessons, 32 spatial puzzles
+  data/bank/           348 questions, 48 lessons, 32 spatial puzzles
   data/repos/          MOS catalogue, serialization, browser storage
   engines/             scoring, exam builder, adaptive coach,
                        eligibility, persona simulation
@@ -169,7 +173,7 @@ Set Pages to **Source: GitHub Actions** and the app is served from
 - Scores are an estimate. ETS item-response equating cannot be reproduced from a
   practice test; the model treats difficulty-weighted accuracy as a percentile of
   ability and says so.
-- The bank is 338 items. A mock draws the official item count per subtest, so
+- The bank is 348 items. A mock draws the official item count per subtest, so
   heavy repeat use will start to repeat questions across attempts.
 - Assembling Objects uses polyomino puzzles. They enforce the real subtest's
   rules - rotation allowed, mirroring not, no overlap, one joined body - but real

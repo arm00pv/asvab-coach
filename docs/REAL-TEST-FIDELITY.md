@@ -72,6 +72,12 @@ practice, but the exam builder enforces the computer convention: a PC section
 picks items with **distinct passages**, so no passage is ever shown twice in one
 section. Matched at serve time.
 
+The option design also follows the real pattern, which runs opposite to most
+practice material: the key is the **plain, literal, exactly-stated detail**, and
+the attractive trap is the **polished generalisation** that sounds like the point
+of the passage. The audit enforces this - an item whose correct option is the
+longest of the four is flagged, because that is the item pulling the wrong way.
+
 ### Mathematics Knowledge (MK)
 **Real format:** concepts and algorithms, rendered symbolically. It is never a
 narrative word problem; "word problems" is the official description of AR, not
@@ -109,7 +115,7 @@ renders real diagrams: a lever with its fulcrum and arms, an inclined plane with
 a crate on the slope, a gear train with an idler, a beam on two supports, a wheel
 and axle, and a fixed pulley. The figures are drawn from a Flutter-free primitive
 model, so the bank still loads outside a rendering engine.
-**Divergence:** the majority of MC items remain verbal, and no item places its
+**Divergence:** most MC items remain verbal, and no item places its
 answer choices inside the drawing.
 
 ### Assembling Objects (AO)
@@ -173,16 +179,16 @@ of the real items.
 
 ## Known gaps, ranked by how much they cost a candidate
 
-1. **Most Mechanical Comprehension items are still verbal.** The figure renderer
-   works and sixteen items now use it, but the rest of the pool is text only. The
-   real subtest is figure-led throughout.
+1. **Mechanical Comprehension is not fully figure-based.** The figure renderer
+   works and sixteen of the fifty-four MC items use it, but the rest are text only.
+   The real subtest is figure-led throughout.
 2. **Assembling Objects pieces are grid polygons**, not the drawn line art of the
    real items. The rules are enforced exactly; the artwork is a simplification.
 3. **Auto & Shop tool items are textual.** The real Auto and Shop halves include
    picture-based tool identification.
 4. **Arithmetic Reasoning options carry units** ("420 miles"). The real test
    prints bare numerals. Units are kept for clarity in review.
-5. **Bank size.** 338 items against a 135-item mock means a determined user will
+5. **Bank size.** 348 items against a 135-item mock means a determined user will
    see repeats across many attempts. The real computer form draws from a far
    larger pool, and up to 15 unscored tryout items may appear on top of that.
 

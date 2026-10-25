@@ -137,10 +137,10 @@ const List<Question> mechanicalBank = <Question>[
         'Two gears are meshed, and the driving gear turns clockwise. Which way does the driven '
         'gear turn?',
     choices: <String>[
-      'Counter-clockwise',
-      'Clockwise',
-      'Clockwise at half the driving speed',
-      'Clockwise at twice the driving speed',
+      'Counter-clockwise at the same speed',
+      'Clockwise at the same speed',
+      'Clockwise at half the speed',
+      'Clockwise at twice the speed',
     ],
     answerIndex: 0,
     explanation:

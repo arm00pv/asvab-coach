@@ -121,10 +121,12 @@ abstract final class BankAudit {
         final lengths = q.choices.map((c) => c.trim().length).toList()..sort();
         final shortest = lengths.first;
         final longest = lengths.last;
-        final meanLength = lengths.reduce((a, b) => a + b) / lengths.length;
-        // Only prose-style options can telegraph the answer by length. Numeric
-        // answers ("17", "-17") and bare synonyms are legitimately uneven.
-        final proseOptions = meanLength >= 10 && longest >= 16;
+        // Only sentence-length options can telegraph an answer by length. A set
+        // of technical terms ("Halogens" beside "Alkaline earth metals") or of
+        // numeric answers is legitimately uneven, so require a high median
+        // before applying the rule at all.
+        final median = (lengths[1] + lengths[2]) / 2;
+        final proseOptions = median >= 24 && longest >= 30;
         final ratio = q.subtest == Subtest.wk ? 3.4 : maxLengthRatio;
         if (proseOptions && shortest > 0 && longest / shortest > ratio) {
           warn(
@@ -215,7 +217,7 @@ abstract final class BankAudit {
               q.id,
             );
           }
-          if (q.stem.length < 34) {
+          if (q.stem.length < 24) {
             warn(
               'ar-too-short',
               'This reads too short to be a multi-step word problem',

@@ -8,6 +8,7 @@ import '../data/bank/question_bank.dart';
 import '../data/models/catalog.dart';
 import '../data/models/lesson.dart';
 import '../engines/adaptive_engine.dart';
+import '../engines/study_planner.dart';
 import '../state/app_state.dart';
 import '../widgets/primitives.dart';
 import '../widgets/puzzle_view.dart';
@@ -42,6 +43,8 @@ class PlanScreen extends StatelessWidget {
                 style: context.text.bodySmall?.copyWith(color: c.textMuted),
               ),
               const SizedBox(height: Space.lg),
+              const _ScheduleCard(),
+              const SizedBox(height: Space.xl),
               if (report == null)
                 const Callout(
                   tone: PillTone.info,
@@ -252,6 +255,188 @@ class _SkillLessonChip extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Week-by-week pacing against the target date, with the arithmetic shown.
+class _ScheduleCard extends StatelessWidget {
+  const _ScheduleCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final app = context.watch<AppState>();
+    final c = context.colors;
+    final goal = app.goal;
+    final report = app.lastReport;
+    if (goal == null) return const SizedBox.shrink();
+
+    final plan = StudyPlanner.build(
+      report: report,
+      goal: goal,
+      now: DateTime.now(),
+    );
+    final tone = switch (plan.verdict) {
+      PlanVerdict.comfortable || PlanVerdict.sufficient => PillTone.success,
+      PlanVerdict.tight => PillTone.warning,
+      _ => PillTone.danger,
+    };
+
+    return AppCard(
+      padding: const EdgeInsets.all(Space.lg),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Icon(Icons.calendar_month_outlined, size: 17, color: c.primary),
+              const SizedBox(width: Space.sm),
+              Text(
+                'Your schedule',
+                style: context.text.titleSmall?.copyWith(color: c.textPrimary),
+              ),
+              const Spacer(),
+              Pill(plan.verdictLabel, tone: tone, dense: true),
+            ],
+          ),
+          const SizedBox(height: Space.md),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: StatTile(
+                  label: 'Days left',
+                  value: '${plan.daysUntilTest}',
+                  compact: true,
+                ),
+              ),
+              Expanded(
+                child: StatTile(
+                  label: 'Time available',
+                  value: '${(plan.availableMinutes / 60).round()}',
+                  suffix: 'h',
+                  compact: true,
+                ),
+              ),
+              Expanded(
+                child: StatTile(
+                  label: 'Work outstanding',
+                  value: '${(plan.neededMinutes / 60).round()}',
+                  suffix: 'h',
+                  compact: true,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: Space.md),
+          MeterBar(
+            value: plan.neededMinutes == 0
+                ? 1
+                : (plan.availableMinutes / plan.neededMinutes).clamp(0.0, 1.0),
+            height: 6,
+            color: tone == PillTone.success ? c.success : c.warning,
+          ),
+          const SizedBox(height: Space.xs),
+          Text(
+            plan.availableMinutes >= plan.neededMinutes
+                ? 'You have enough time for ${plan.focus.length} skill cycles '
+                      'and ${plan.mocksPlanned} full mock${plan.mocksPlanned == 1 ? '' : 's'}.'
+                : 'The outstanding work needs about ${plan.neededMinutes - plan.availableMinutes} '
+                      'more minutes than you have.',
+            style: context.text.bodySmall?.copyWith(color: c.textMuted),
+          ),
+          if (plan.weeks.isNotEmpty) ...<Widget>[
+            const SizedBox(height: Space.md),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: <Widget>[
+                  for (final w in plan.weeks.take(8))
+                    Padding(
+                      padding: const EdgeInsets.only(right: Space.sm),
+                      child: Container(
+                        width: 132,
+                        padding: const EdgeInsets.all(Space.sm),
+                        decoration: BoxDecoration(
+                          color: c.surfaceSunken,
+                          borderRadius: BorderRadius.circular(Radii.sm),
+                          border: Border.all(color: c.border),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              'Week ${w.index}',
+                              style: context.text.labelSmall?.copyWith(
+                                color: c.primary,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              w.skills.isEmpty
+                                  ? 'Consolidate'
+                                  : w.skillObjects.first.label,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: context.text.bodySmall?.copyWith(
+                                color: c.textPrimary,
+                                fontSize: 11,
+                                height: 1.3,
+                              ),
+                            ),
+                            if (w.mockThisWeek) ...<Widget>[
+                              const SizedBox(height: 4),
+                              Row(
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.timer_outlined,
+                                    size: 10,
+                                    color: c.accent,
+                                  ),
+                                  const SizedBox(width: 3),
+                                  Text(
+                                    'Mock',
+                                    style: context.text.labelSmall?.copyWith(
+                                      color: c.accent,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+          for (final note in plan.notes)
+            Padding(
+              padding: const EdgeInsets.only(top: Space.sm),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Icon(
+                    Icons.info_outline_rounded,
+                    size: 13,
+                    color: c.textMuted,
+                  ),
+                  const SizedBox(width: Space.sm),
+                  Expanded(
+                    child: Text(
+                      note,
+                      style: context.text.bodySmall?.copyWith(
+                        color: c.textMuted,
+                        fontSize: 11,
+                        height: 1.4,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
       ),
     );
   }

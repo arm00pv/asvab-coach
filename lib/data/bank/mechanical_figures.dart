@@ -1,5 +1,4 @@
 import '../models/catalog.dart';
-import '../models/mc_figure.dart';
 import '../models/question.dart';
 
 /// Figure-based Mechanical Comprehension items.

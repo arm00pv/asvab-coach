@@ -16,6 +16,7 @@ import 'mathematics_extra.dart';
 import 'mechanical.dart';
 import 'mechanical_extra.dart';
 import 'mechanical_figures.dart';
+import 'mechanical_figures_extra.dart';
 import 'paragraph_comprehension.dart';
 import 'paragraph_comprehension_extra.dart';
 import 'word_knowledge.dart';
@@ -41,6 +42,7 @@ abstract final class QuestionBank {
     ...mechanicalBank,
     ...mechanicalExtraBank,
     ...mechanicalFigureBank,
+    ...mechanicalFigureExtraBank,
     ...assemblingObjectsBank,
     ...assemblingObjectsConnectionBank,
   ]);
