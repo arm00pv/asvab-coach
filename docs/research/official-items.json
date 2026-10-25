@@ -1,0 +1,419 @@
+{
+  "meta": {
+    "title": "ASVAB official item presentation & format facts",
+    "generated": "2026-10-25",
+    "preparedFor": "ASVAB Coach study app (2026 ASVAB candidates)",
+    "evidenceTags": {
+      "VERIFIED": "Fetched from the primary official document on 2026-10-25 and read directly; URL supplied.",
+      "SECONDARY": "Computed or inferred from a verified primary source, or from a credible non-official source; reasoning stated.",
+      "UNVERIFIED": "Widely repeated claim or inference not confirmable in an official document; do not encode without further checking."
+    },
+    "copyrightNote": "Quoted stems are short excerpts of US Government-published sample items (DoD ASVAB programme). All 'illustrative*' entries are original constructions written to the documented convention, not reproductions of real ASVAB items.",
+    "knownSpecConflict": "The 2026 ASVAB Fact Sheet prints a CAT-ASVAB total of 135 questions, while the per-subtest lengths it lists on the same page sum to 130 and the website states 130 scored items. Per-subtest cell values agree across both sources; the '135' total appears to be legacy. [VERIFIED observation, UNVERIFIED cause]"
+  },
+  "subtests": [
+    {
+      "abbr": "GS",
+      "presentation": "Standalone four-option multiple choice with no stimulus. Predominantly incomplete-sentence stems using a causal or definitional connective ('because', 'is called', 'are called'); a minority of direct questions.",
+      "answerOptionCount": 4,
+      "passagePerItem": null,
+      "diagram": true,
+      "formatNotes": [
+        "Technical Bulletin No. 4 lists GS among the six ASVAB subtests that include graphics, but none of the 8 officially published GS sample items is a figure item. [VERIFIED: TB4 §3.2.2]",
+        "Options are capitalised noun phrases or clauses, sentence-cased, each ending in a period. [VERIFIED]",
+        "Content taxonomy: life science (botany, zoology, anatomy and physiology, ecology); earth and space (astronomy, geology, meteorology, oceanography); physical (force and motion mechanics, energy, fluids, atomic structure, chemistry). [VERIFIED: CEP Overview FEB 2026 p.17]",
+        "CAT/iCAT/PiCAT: 15 items, 12 min (25 min if tryout items are added). Paper: 25 items, 11 min. [VERIFIED]"
+      ],
+      "exampleConventions": [
+        "Air is less dense than water because ___ [VERIFIED, official sample]",
+        "Salt helps to melt ice because it ___ [VERIFIED, official sample]",
+        "The principal gas in the earth's atmosphere is ___ [VERIFIED, official sample]",
+        "Substances that hasten chemical reaction time without themselves undergoing change are called ___ [VERIFIED, official sample]"
+      ],
+      "sources": [
+        "https://www.officialasvab.com/general-science-gs/",
+        "https://www.officialasvab.com/wp-content/uploads/2019/08/asvab_techbulletin_4.pdf",
+        "https://prod-media.asvabprogram.com/CEP_PDF_Contents/ASVAB_CEP_Overview.pdf"
+      ]
+    },
+    {
+      "abbr": "AR",
+      "presentation": "Word problems only, one or more steps, in everyday contexts. No bare computation and no figure items. Four bare numeric or currency options.",
+      "answerOptionCount": 4,
+      "passagePerItem": null,
+      "diagram": false,
+      "formatNotes": [
+        "TB4's graphics list does not include AR, and none of the 8 official AR samples has a figure. [VERIFIED]",
+        "Official description: one-step and multi-step word problems requiring addition, subtraction, multiplication, division and correct order of operations; content covers whole numbers, rational numbers, ratio and proportion, interest and percentage, measurement. [VERIFIED: CEP Overview FEB 2026 p.18]",
+        "Options are numerals or currency amounts, usually ascending, carrying no explanatory words. Official items show inconsistent currency spacing ($ 870 vs $1,250) — do not imitate the typographic glitch. [VERIFIED]",
+        "No calculator permitted; 'the ability to do math without a calculator is assessed on the ASVAB'. [VERIFIED: officialasvab.com FAQ]",
+        "CAT: 15 items, 55 min (113 with tryouts). Paper: 30 items, 36 min. [VERIFIED]"
+      ],
+      "exampleConventions": [
+        "If the tire of a car rotates at a constant speed of 552 times in one minute, how many times will the tire rotate in half-an-hour? [VERIFIED, official sample]",
+        "A motorcycle costs $7,250. If it depreciates by 12% per year, how much will it be worth after one year? [VERIFIED, official sample]",
+        "It takes 5 seconds for 20 gallons of water to come out of a faucet. At this rate, how many gallons of water comes out in 7 seconds? [VERIFIED, official sample]",
+        "How many 36-passenger buses will it take to carry 144 people? [VERIFIED, official sample]"
+      ],
+      "sources": [
+        "https://www.officialasvab.com/arithmetic-reasoning-ar/",
+        "https://prod-media.asvabprogram.com/CEP_PDF_Contents/ASVAB_CEP_Overview.pdf",
+        "https://www.officialasvab.com/applicants/faqs/"
+      ]
+    },
+    {
+      "abbr": "WK",
+      "presentation": "Two official presentations, both required: (a) a bare underlined target word followed by 'most nearly means', and (b) a single short sentence containing the underlined target with NO trailing prompt at all. Four single-word (occasionally two-word) options.",
+      "answerOptionCount": 4,
+      "passagePerItem": null,
+      "diagram": false,
+      "formatNotes": [
+        "The official subtest description names both forms: 'Ability to select the correct meaning of words presented in context and to identify best synonym for a given word.' [VERIFIED: 2026 Fact Sheet p.2; /counselors-educators/subtests/; /applicants/what-to-expect/]",
+        "Of the four items published at /word-knowledge-wk/, three are bare-word and one is in-context; the target is underlined in the rendered stem (confirmed in the page's quiz markup). [VERIFIED]",
+        "The CEP Overview FEB 2026 booklet likewise carries both forms. [VERIFIED]",
+        "Options are lower-case single words or short phrases; in the website rendering each ends with a period (embarrass. / struggle. / provoke. / worship.). [VERIFIED]",
+        "The programme's WK enemy-item algorithm 'extract[s] the focal word from item stems and the corresponding keyed responses', confirming one focal word per stem. [VERIFIED: DACMPT 2022 slide 12]",
+        "CAT: 15 items, 9 min (18 with tryouts). Paper: 35 items, 11 min — the longest paper subtest. [VERIFIED]"
+      ],
+      "exampleConventions": [
+        "Antagonize most nearly means [official sample; target underlined]",
+        "Wilted most nearly means [official sample; target underlined]",
+        "Quiver most nearly means [official sample; target underlined]",
+        "His record provides no reason for apprehension. [official sample; in-context form, no trailing prompt, options are bare words]",
+        "Small most nearly means [official CEP worked example]",
+        "The wind is variable today. [official CEP sample; in-context form]",
+        "Rudiments most nearly means [official CEP sample; bare-word form]"
+      ],
+      "sources": [
+        "https://www.officialasvab.com/word-knowledge-wk/",
+        "https://www.officialasvab.com/wp-content/uploads/2026/10/ASVAB-Fact_Sheet.pdf",
+        "https://prod-media.asvabprogram.com/CEP_PDF_Contents/ASVAB_CEP_Overview.pdf",
+        "https://dacmpt.com/wp-content/uploads/2022/12/04-CAT-and-PP-ASVAB-Pool-Form-Development-DACMPT-12-15-22.pdf"
+      ]
+    },
+    {
+      "abbr": "PC",
+      "presentation": "A reading passage followed by a question. On CAT-ASVAB, iCAT and PiCAT each passage carries exactly ONE question (10 passages / 10 items). On the paper form each passage carries FIVE questions (3 passages / 15 items).",
+      "answerOptionCount": 4,
+      "passagePerItem": 1,
+      "passagePerItemNote": "1 for CAT-ASVAB, iCAT and PiCAT (10 items). 5 for the paper-and-pencil form (15 items from 3 passages). [VERIFIED: TB4 §3.2.2 and §3.2.3; TB1 Item Pool Development ch. p.2-2; DACMPT 2022 slide 29]",
+      "diagram": false,
+      "formatNotes": [
+        "TB4: 'In Forms 23–26, PC had five items associated with each reading passage.' [VERIFIED]",
+        "TB1 (2006): P&P passages are 'followed by several questions referring to the same passage'; 'Consequently, CAT-ASVAB items were written to have a single question per passage.' [VERIFIED]",
+        "DACMPT 2022 slide 29 restates it as a live problem: passing a fifteen-item PC test to one-question-per-passage stimuli 'would result in increasing the number of paragraphs from three to fifteen', and a 2022 recommendation proposed a 10-item paper PC. The 2026 Fact Sheet still prints paper PC at 15 items / 13 min. [VERIFIED recommendation; UNVERIFIED whether implemented]",
+        "Content taxonomy: stated and reworded facts, sequence of events, drawing conclusions, main ideas, author's purpose and tone, style and technique; passages are 'different types of passages of varying lengths'. [VERIFIED: CEP Technical Summary p.3; CEP Overview p.21]",
+        "Options are sentence-cased fragments that complete the stem grammatically, each ending in a period. [VERIFIED]",
+        "CAT: 10 items, 27 min (75 with tryouts). Paper: 15 items, 13 min. [VERIFIED]"
+      ],
+      "exampleConventions": [
+        "According to the passage, some artists work with titanium because it ___ [VERIFIED, official sample]",
+        "According to this statement, to make a home livable ___ [VERIFIED, official CEP example]",
+        "The author implies that the look and atmosphere of east Texas does NOT resemble that of the ___ [VERIFIED, official sample]",
+        "The \"deception\" referred to in the passage is that ___ [VERIFIED, official sample]",
+        "How much water should each tree be given? [VERIFIED, official CEP sample]",
+        "To prevent crime, it is each individual's responsibility to ___ [VERIFIED, official CEP sample]"
+      ],
+      "sources": [
+        "https://www.officialasvab.com/paragraph-comprehension-pc/",
+        "https://www.officialasvab.com/wp-content/uploads/2019/08/asvab_techbulletin_4.pdf",
+        "https://www.officialasvab.com/wp-content/uploads/2019/08/asvab_techbulletin_1.pdf",
+        "https://prod-media.asvabprogram.com/CEP_PDF_Contents/ASVAB_CEP_Technical_Chapter.pdf"
+      ]
+    },
+    {
+      "abbr": "MK",
+      "presentation": "Symbolic and conceptual mathematics: expressions, equations, fractions, radicals, exponents, ratios, plus geometry/measurement items with figures carrying labelled dimensions. Word problems are rare and never the defining form.",
+      "answerOptionCount": 4,
+      "passagePerItem": null,
+      "diagram": true,
+      "formatNotes": [
+        "Official description: 'The problems focus on concepts and algorithms and involve number theory, numeration, algebraic operations and equations, geometry and measurement, and probability.' Note that 'word problems' is the official description of AR, not MK — MK is described as 'Knowledge of high school mathematics principles'. [VERIFIED: CEP Overview p.19; 2026 Fact Sheet p.2]",
+        "Of 8 official MK samples, 6 are bare expressions/equations, 1 is a figure item phrased as a noun clause (brick volume with edges 8, 3, 4), and 1 is a short applied question (area of a square). None is a multi-sentence story problem. [VERIFIED items; SECONDARY generalisation]",
+        "Math is rendered as graphics: typeset fractions, radicals and superscripts (square root of 3; x^2 - y^2; 36 : 12), and solids drawn with dashed hidden edges. [VERIFIED — images mk1-equals.jpg and mk2.jpg]",
+        "Options are bare expressions or values; no 'cannot be determined'. [VERIFIED]",
+        "No calculator permitted. [VERIFIED]",
+        "CAT: 15 items, 31 min (65 with tryouts). Paper: 25 items, 24 min. [VERIFIED]"
+      ],
+      "exampleConventions": [
+        "If x - y is not equal to 0, then (x^2 - y^2) / (x - y) = [official sample; rendered as a typeset fraction]",
+        "The ratio 36 : 12 is the same as [official sample]",
+        "The volume of the brick is ___ [official sample; accompanying drawing labels edges 8, 3 and 4]",
+        "What is the area of this square? [official CEP sample]",
+        "If X + 6 = 7, then X is equal to [official CEP sample]"
+      ],
+      "sources": [
+        "https://www.officialasvab.com/mathematics-knowledge-mk/",
+        "https://prod-media.asvabprogram.com/CEP_PDF_Contents/ASVAB_CEP_Technical_Chapter.pdf",
+        "https://prod-media.asvabprogram.com/CEP_PDF_Contents/ASVAB_CEP_Overview.pdf"
+      ]
+    },
+    {
+      "abbr": "EI",
+      "presentation": "Mixed: verbal items (direct questions, 'Which of the following ...', completion stems) plus a minority of circuit-diagram items in which the schematic is the whole stimulus.",
+      "answerOptionCount": 4,
+      "passagePerItem": null,
+      "diagram": true,
+      "formatNotes": [
+        "TB4 lists EI among the six graphics-bearing subtests. [VERIFIED]",
+        "Content taxonomy: electrical tools, symbols, devices and materials; electrical circuits; electrical and electronic systems; electrical currents. [VERIFIED: CEP Overview p.22]",
+        "Options are lower-case noun phrases ending in a period; the ohmmeter item's options are bare quantity names (voltage, resistance, inductance, capacitance); numeric circuit options carry units ('5 volts.'). [VERIFIED]",
+        "Of the 8 official EI items, 2 are diagram-based and 6 verbal. [SECONDARY count from verified items]",
+        "CAT: 15 items, 10 min (21 with tryouts). Paper: 20 items, 9 min. [VERIFIED]"
+      ],
+      "exampleConventions": [
+        "The current in the 2-ohm resistor is ___ [official sample; with circuit schematic]",
+        "The circuit shown in the diagram contains a battery and two light bulbs. If one light bulb burns out, the other will ___ [official CEP sample]",
+        "Because solid state diodes have no filament, they ___ [official sample]",
+        "Which of the following is measured using an ohmmeter? [official sample]",
+        "What does the abbreviation AC stand for? [official sample]",
+        "Which of the following has the least resistance? [official CEP sample]"
+      ],
+      "sources": [
+        "https://www.officialasvab.com/electronics-information-ei/",
+        "https://prod-media.asvabprogram.com/CEP_PDF_Contents/ASVAB_CEP_Overview.pdf",
+        "https://www.officialasvab.com/wp-content/uploads/2019/08/asvab_techbulletin_4.pdf"
+      ]
+    },
+    {
+      "abbr": "AS",
+      "presentation": "One reported score built from automobile and shop content. On the computer it is delivered as two separate 10-item tests, Auto Information (AI) then Shop Information (SI); on paper it is one 25-item block (13 AI + 12 SI). Items are component/function recall, tool identification from a picture, diagram call-out (options are bare numerals keyed to the figure), and fault diagnosis.",
+      "answerOptionCount": 4,
+      "passagePerItem": null,
+      "diagram": true,
+      "formatNotes": [
+        "2026 Fact Sheet p.2 note: 'AI and SI are administered as separate tests in the CAT-ASVAB, but combined into one single score (labeled AS). AI and SI are combined into one test (AS) in the P&P-ASVAB.' [VERIFIED]",
+        "Paper AS = 25 items = 13 AI + 12 SI. [VERIFIED: DACMPT 2022 slide 25]",
+        "CAT administration is AI (10 items, 7 min; 18 with tryouts) then SI (10 items, 6 min; 17 with tryouts). Paper AS: 25 items, 11 min. [VERIFIED]",
+        "Content taxonomy: automotive components, automotive systems, automotive tools, troubleshooting and repair, shop tools, building materials, building and construction procedures. [VERIFIED: CEP Overview p.23]",
+        "Diagram call-out items use bare numerals as options ('Where does combustion take place?  A. 3  B. 4  C. 5  D. 6'), keyed to numbered call-outs printed on the figure. [VERIFIED, official sample]",
+        "Tool-identification items supply a picture and use a sentence-completion stem ('The clamp shown is called a ___'). Diagnosis items use plural noun options with no periods ('A car uses too much oil when which of the following parts are worn?'). [VERIFIED]"
+      ],
+      "exampleConventions": [
+        "The radiator on a car is part of the ___ [official sample]",
+        "Where does combustion take place? [official sample; options are numerals 3/4/5/6 keyed to a diagram]",
+        "The clamp shown is called a ___ [official sample; picture is the stimulus]",
+        "The saw shown is used mainly to cut ___ [official CEP sample; picture is the stimulus]",
+        "Which handsaw should be used to make a rough cut with the grain in a thick board? [official sample]",
+        "Sanding blocks are used to ___ [official sample]"
+      ],
+      "sources": [
+        "https://www.officialasvab.com/auto-information-ai/",
+        "https://www.officialasvab.com/shop-information-si/",
+        "https://www.officialasvab.com/wp-content/uploads/2026/10/ASVAB-Fact_Sheet.pdf",
+        "https://dacmpt.com/wp-content/uploads/2022/12/04-CAT-and-PP-ASVAB-Pool-Form-Development-DACMPT-12-15-22.pdf"
+      ]
+    },
+    {
+      "abbr": "MC",
+      "presentation": "Almost entirely figure-based: a drawing of a physical situation, then a question about it. Two official option styles: (a) the four choices are the bare letters A/B/C/D printed inside the figure at the features in question; (b) the choices are short verbal statements about the drawn situation.",
+      "answerOptionCount": 4,
+      "passagePerItem": null,
+      "diagram": true,
+      "formatNotes": [
+        "All 9 officially published MC items (5 on officialasvab.com plus 4 in the CEP Overview FEB 2026) are figure-based. [VERIFIED items]",
+        "No official statement says every MC item has a diagram; TB4 only lists MC among graphics-bearing subtests and the description is knowledge-phrased ('Knowledge of mechanical and physical principles'). Purely verbal MC items are therefore a legitimate minority for coverage but should not be the default. [SECONDARY / UNVERIFIED]",
+        "Letter-option style: the figure itself carries 'A' 'B' 'C' 'D' labels and the answer choices are just the letters, e.g. 'In which direction does friction act on this skier?' with A/B/C/D. [VERIFIED, official sample]",
+        "Verbal-option style: 'Extending the reach of this crane will shift its  A. total weight.  B. allowable speed.  C. center of gravity.  D. center of buoyancy.' [VERIFIED, official sample]",
+        "Content taxonomy: simple machines, compound machines, mechanical motion, fluid dynamics; also structural support and properties of materials. [VERIFIED: CEP Overview p.25]",
+        "CAT: 15 items, 22 min (42 with tryouts). Paper: 25 items, 19 min. [VERIFIED]"
+      ],
+      "exampleConventions": [
+        "Extending the reach of this crane will shift its ___ [official sample; verbal options]",
+        "In which direction does friction act on this skier? [official sample; options are the letters A/B/C/D]",
+        "Why does the intake valve open on this pump when the piston goes down? [official sample; options compare air pressure at points X, Y, Z]",
+        "Which shelf will support the most weight? [official sample; options are A/B/C/D]",
+        "What type of gear arrangement is this? [official sample; options spur / bevel / rack and pinion / worm and wheel]",
+        "Which post holds up the greater part of the load? [official CEP sample; options post A / post B / both equal / not clear]"
+      ],
+      "sources": [
+        "https://www.officialasvab.com/mechanical-comprehension-mc/",
+        "https://prod-media.asvabprogram.com/CEP_PDF_Contents/ASVAB_CEP_Overview.pdf",
+        "https://www.officialasvab.com/wp-content/uploads/2019/08/asvab_techbulletin_4.pdf"
+      ]
+    },
+    {
+      "abbr": "AO",
+      "presentation": "Entirely pictorial, no words in the stimulus. Two and only two item families: (1) labeled-connection items, where two or more shapes carry lettered dots plus a key line showing which letters to join ('if the letters for each object are matched'); (2) fit-together puzzle items, where three or four unlabeled loose pieces must be assembled ('if they are fit together'). Both use four lettered figure options A-D.",
+      "answerOptionCount": 4,
+      "passagePerItem": null,
+      "diagram": true,
+      "formatNotes": [
+        "The programme's own tryout taxonomy names the two types: 'AP = AO Puzzles' and 'AC = AO Connections'. [VERIFIED: DACMPT 2022 slide 5]",
+        "Connections stem, verbatim: 'Which figure best shows how the objects in the left box will touch if the letters for each object are matched?' [VERIFIED]",
+        "Puzzles stem, verbatim: 'Which figure best shows how the objects in the left box will appear if they are fit together?' [VERIFIED]",
+        "Connections stimulus design: left box with two shapes, each carrying a small dot labeled with a lower-case letter, plus a tiny key diagram showing the two letters joined by a straight segment. Options show the same two shapes joined by a straight connector, differing in connector angle/length and in each shape's rotation about its connection point; shapes are not resized or mirrored. [VERIFIED from the official image ao-2.jpg]",
+        "Puzzles stimulus design: left box with three or four loose, unlabeled pieces (wedge/sector/blade shapes at assorted rotations). Options show the completed closed outline subdivided by different internal seam lines. Pieces are rotated and translated only. [VERIFIED from the official image ao1.jpg]",
+        "AO is not administered in the school / Career Exploration Program (STP); it is given only in the Enlistment Testing Program. The CEP Overview FEB 2026 booklet therefore contains 32 sample questions and no AO section. [VERIFIED: officialasvab.com FAQ and CEP Overview content]",
+        "CAT: 15 items, 18 min (38 with tryouts). Paper: 25 items, 15 min. [VERIFIED]"
+      ],
+      "exampleConventions": [
+        "Which figure best shows how the objects in the left box will touch if the letters for each object are matched? [VERIFIED, official Connections item]",
+        "Which figure best shows how the objects in the left box will appear if they are fit together? [VERIFIED, official Puzzles item]"
+      ],
+      "sources": [
+        "https://www.officialasvab.com/assembling-objects-ao/",
+        "https://www.officialasvab.com/wp-content/uploads/2024/03/ao-2.jpg",
+        "https://www.officialasvab.com/wp-content/uploads/2024/03/ao1.jpg",
+        "https://dacmpt.com/wp-content/uploads/2022/12/04-CAT-and-PP-ASVAB-Pool-Form-Development-DACMPT-12-15-22.pdf",
+        "https://www.officialasvab.com/applicants/faqs/"
+      ]
+    }
+  ],
+  "practiceResources": [
+    {
+      "name": "ASVAB programme subtest sample questions (officialasvab.com)",
+      "url": "https://www.officialasvab.com/applicants/sample-questions/",
+      "items": 38,
+      "free": true,
+      "verified": true,
+      "breakdown": "GS 4, AR 4, WK 4, PC 4, MK 4, EI 4, AI 4, SI 3, MC 5, AO 2 — every item 4 options; counted from page markup 2026-10-25.",
+      "notes": "Interactive: reveals the answer per item. No login. No full-length form."
+    },
+    {
+      "name": "ASVAB programme sample questions — educators mirror",
+      "url": "https://www.officialasvab.com/counselors-educators/sample-questions/",
+      "items": 38,
+      "free": true,
+      "verified": true,
+      "notes": "Same sample set, presented under the Counselors & Educators section."
+    },
+    {
+      "name": "ASVAB Fact Sheet (2026 edition, 4 pp.)",
+      "url": "https://www.officialasvab.com/wp-content/uploads/2026/10/ASVAB-Fact_Sheet.pdf",
+      "items": 0,
+      "free": true,
+      "verified": true,
+      "notes": "Authoritative CAT and paper test lengths, time limits, subtest descriptions, retest policy."
+    },
+    {
+      "name": "ASVAB Career Exploration Program Overview booklet (DD Form 1304-5OV, FEB 2026)",
+      "url": "https://prod-media.asvabprogram.com/CEP_PDF_Contents/ASVAB_CEP_Overview.pdf",
+      "items": 32,
+      "free": true,
+      "verified": true,
+      "breakdown": "32 numbered sample questions plus 8 worked examples (one per subtest) = 40 items; answer key on p.28. GS 4, AR 4, MK 4, WK 4, PC 4, EI 4, AS 4, MC 4 — no AO, because AO is not a CEP subtest.",
+      "notes": "The CEP's own published practice material and the richest single official source of item examples plus per-subtest content taxonomies."
+    },
+    {
+      "name": "ASVAB CEP Technical Summary",
+      "url": "https://prod-media.asvabprogram.com/CEP_PDF_Contents/ASVAB_CEP_Technical_Chapter.pdf",
+      "items": 0,
+      "free": true,
+      "verified": true,
+      "notes": "Source of the official reading-level statement and of the PC/MK/AR content taxonomies; also documents DIF and sensitivity review."
+    },
+    {
+      "name": "ASVAB Technical Bulletins 1-4 (DMDC / Personnel Testing Division)",
+      "url": "https://www.officialasvab.com/wp-content/uploads/2019/08/asvab_techbulletin_4.pdf",
+      "items": 0,
+      "free": true,
+      "verified": true,
+      "notes": "TB4 (P&P Forms 23-27, 2009 rev. 2012) is the key format source: four-response options, five PC items per passage, graphics-subtest list, .75/.45 p-value bands, distractor screening criteria. TB1 (2006) documents the CAT one-question-per-passage PC decision. TB2/TB3 cover CAT Forms 3-4 and 5-9."
+    },
+    {
+      "name": "Understanding ASVAB Scores (applicant page)",
+      "url": "https://www.officialasvab.com/applicants/scores/",
+      "items": 0,
+      "free": true,
+      "verified": true,
+      "notes": "Standard scores (mean 50, SD 10), AFQT percentile definition, AFQT categories I-V, 1997 norming reference group."
+    },
+    {
+      "name": "What to Expect When You Take the ASVAB",
+      "url": "https://www.officialasvab.com/applicants/what-to-expect/",
+      "items": 0,
+      "free": true,
+      "verified": true,
+      "notes": "Full CAT and paper length tables, tryout-question policy (2-4 subtests, up to 15 items each), AI/SI vs AS explanation, PiCAT and paper procedures."
+    },
+    {
+      "name": "Official Statement Regarding Deceptive ASVAB Test Preparation Claims",
+      "url": "https://www.officialasvab.com/applicants/asvab-test-preparation-disclaimer/",
+      "items": 0,
+      "free": true,
+      "verified": true,
+      "notes": "Names the only three prep routes the programme sanctions. Critical for any product making 'official questions' claims."
+    },
+    {
+      "name": "March 2 Success (US Army)",
+      "url": "https://www.march2success.com/",
+      "items": 0,
+      "free": true,
+      "verified": false,
+      "notes": "Free with registration; offers ASVAB practice tests. The official ASVAB programme recommends it. Exact ASVAB test and item counts are behind registration and were NOT verified."
+    },
+    {
+      "name": "PiCAT & APT User's Guide v5.8 (Oct 2023)",
+      "url": "https://etoolbox.cnrc.navy.mil/assets/ARM/PiCAT-APT_UserGuide_v5.8_20231025.pdf",
+      "items": 0,
+      "free": true,
+      "verified": true,
+      "notes": "Navy-hosted, CUI-marked, publicly reachable. Defines iCAT, confirms CAT subtest lengths, states that all examinees start at average difficulty, and documents early termination after five subtests if AFQT is too low. Dated 2023, i.e. slightly older than the 2024-2026 window."
+    },
+    {
+      "name": "CAT-ASVAB Pool + P&P-ASVAB Form Development (DACMPT briefing, HumRRO, Dec 2022)",
+      "url": "https://dacmpt.com/wp-content/uploads/2022/12/04-CAT-and-PP-ASVAB-Pool-Form-Development-DACMPT-12-15-22.pdf",
+      "items": 0,
+      "free": true,
+      "verified": true,
+      "notes": "Most recent public statement of test lengths and blueprints; names the two AO item families (AP Puzzles / AC Connections); states AS paper = 13 AI + 12 SI; documents one-question-per-passage PC on CAT and the 10-item paper PC recommendation. Dated 2022."
+    }
+  ],
+  "readingLevel": "Officially grade 10 or higher. [VERIFIED] ASVAB CEP Technical Summary: 'The vocabulary and comprehension levels of the ASVAB test questions and directions are well within the range of the target audience which is students in grade 10 or higher. For example, vocabulary words on the Word Knowledge test are often found in books used by high school students and Paragraph Comprehension passages are generally written for a target audience of 10th graders.' Corroborated by TB4 §3.2.2, which states vocabulary level / reading grade level was controlled to the specified grade levels, with an explicit exception for technical terms needed to measure the content area in math, science and technical subtests. No official readability formula, Lexile range or grade-equivalent table is published. The widely repeated prep-industry claim of a '9th-grade reading level' is [UNVERIFIED] and contradicted by the official grade-10 statement.",
+  "picaDifferences": [
+    "Item formats are identical across paper, CAT-ASVAB, iCAT and PiCAT. The programme states explicitly: 'the test content is the same across both versions' (paper vs computer). [VERIFIED: /applicants/prepare/]",
+    "The ONE substantive item-type difference is Paragraph Comprehension structure: one question per passage on CAT-ASVAB / iCAT / PiCAT (10 items, 10 passages), versus five questions per passage on the paper form (15 items from 3 passages). [VERIFIED: TB1, TB4, DACMPT 2022]",
+    "PiCAT has the same subtests and 'a similar number of questions' as CAT-ASVAB, with NO time limits for individual subtests and NO tryout items. [VERIFIED: PiCAT/APT guide; /recruiters/picat/; /applicants/what-to-expect/]",
+    "iCAT is the official name for the internet-based CAT-ASVAB delivered at Military Entrance Test (MET) sites; 'iCAT' is also the name of the recruiter-facing delivery and reporting web applications. [VERIFIED: PiCAT & APT User's Guide v5.8 §1.1]",
+    "All computer forms (CAT, iCAT, PiCAT) are adaptive: 'All examinees begin the test with an item of average difficulty', then step up or down by response. The paper form is a fixed form containing items 'from very easy to very hard'. [VERIFIED]",
+    "Computer administration forbids returning to an answered item and penalises under-completion as if remaining items were answered at random; the paper form allows review within a subtest and has no guessing penalty, so the advice is to fill in every bubble. [VERIFIED]",
+    "Subtest set differs by PROGRAMME not by platform: AI and SI are administered as separate tests on computer but merged into one AS score; AO is administered in the Enlistment Testing Program but NOT in the school Student/Career Exploration Program. [VERIFIED: 2026 Fact Sheet; /applicants/faqs/]",
+    "PiCAT early termination: 'If the examinee's AFQT score is too low after five subtests, the test will end, and the remaining five subtests will not be administered.' [VERIFIED: PiCAT/APT guide]",
+    "PiCAT must be verified by a proctored Vtest before the score becomes the score of record: officialasvab.com says within 45 days; PiCAT guide v5.8 says the Vtest may only be given within 30 days. The two official sources disagree — flag rather than assert. [VERIFIED disagreement]",
+    "PiCAT eligibility also differs between sources: officialasvab.com (page updated 2025-07-15) says it 'can be taken only once and is available only to those who have never taken the ASVAB before'; the Oct 2023 guide says 'once every two years'. Prefer the website wording for 2026. [VERIFIED both]"
+  ],
+  "difficultyCalibration": {
+    "pValueDefinitionAndBands": "p value = proportion of examinees answering correctly. 'Although the definitions of easy, medium, and hard vary by subtest, in general, the easy ASVAB items had a p value greater than .75, medium difficulty items had a p value between .75 and .45, and hard items had a p value less than .45.' [VERIFIED: Technical Bulletin No. 4, §3.2.3]",
+    "easy": "p > .75",
+    "medium": "p between .75 and .45",
+    "hard": "p < .45",
+    "caveat": "The .75/.45 cut points are the programme's own general guidance and it explicitly states they VARY BY SUBTEST. Do not build a single universal scale. [VERIFIED]",
+    "howManyPerCandidate": "Not published anywhere. [VERIFIED by absence across TB1-TB4, the 2026 Fact Sheet, the CAT-ASVAB pages, the PiCAT/APT guide and the DACMPT deck] Paper forms are built to internal target difficulty distributions plus item-by-item matching to reference Form 8A. Computer forms have no fixed mix by design: item selection is adaptive from a pool spanning very easy to very hard, and every examinee starts at average difficulty, so the mix is an output of the examinee's own performance.",
+    "tryoutItems": "Each examinee receives tryout (unscored) questions in 2 to 4 of the subtests, randomly dispersed, up to 15 items per selected subtest, with extra time granted. No tryout items on the PiCAT. [VERIFIED: /applicants/what-to-expect/]",
+    "formLevelMeanP": {
+      "AO": 0.72,
+      "PC": 0.67,
+      "WK": 0.67,
+      "GS": 0.58,
+      "MC": 0.56,
+      "EI": 0.54,
+      "MK": 0.53,
+      "AS": 0.51,
+      "AR": 0.47,
+      "basis": "[SECONDARY] Computed by me from TB4 Table 6.1 raw-score means divided by item count, P&P Forms 23A/23B, N about 10,750 each. These are FORM averages on an applicant population, not per-item targets."
+    },
+    "guessingParameter": "[SECONDARY] TB4 Tables 6.5-6.13 report 3-PL c parameters with subtest means of 0.20-0.25, consistent with a 1-in-4 chance floor and therefore with four-option items."
+  },
+  "wordingConventions": {
+    "synonymFormula": "'X most nearly means' — the standard WK wrapper. All five official WK synonym items use it. [VERIFIED]",
+    "whichOfTheFollowing": "Used but sparingly: about 4 of the roughly 70 published official sample items and worked examples. Not the default wrapper. [SECONDARY count]",
+    "whichOfTheFollowingBestDescribes": "Not found in any official ASVAB sample item I read. Treat as [UNVERIFIED] as an ASVAB convention.",
+    "figureOptionStyle": "For MC, and for some AS/EI items, the four answer choices are the bare letters A/B/C/D printed at points inside the figure. [VERIFIED]",
+    "numericCalloutStyle": "AS/EI diagram items may use bare numerals as options, keyed to numbered call-outs on the figure. [VERIFIED]",
+    "bannedByObservation": "No 'all of the above', 'none of the above' or 'both A and B' appeared in any of the roughly 70 official sample items. [VERIFIED by absence]",
+    "negativeStems": "Negative and superlative stems occur but are rare ('does NOT resemble', 'least resistance', 'least load'). [VERIFIED]",
+    "punctuation": "Verbal and in-context options are sentence-cased and end with a period; bare single-word WK options are lower case (web rendering also adds a period); numeric options are bare or carry currency/units; figure-letter options are just 'A. / B. / C. / D.'. [VERIFIED]",
+    "documentedDistractorScreening": "[VERIFIED: TB4 §3.4.3] An item was rejected if the key's biserial was not significantly positive; if a distractor with a significant p was chosen by higher-scoring examinees; if a distractor's p was not significantly lower for high scorers; if high scorers had less than p = .5 probability of answering correctly; or if the p values of the highest and lowest distractors were too close.",
+    "keyBalance": "'Item key balance' is a formal constraint in modern Automated Test Assembly, so the key should be distributed evenly across A/B/C/D. [VERIFIED: DACMPT 2022 slide 26]"
+  },
+  "openQuestions": [
+    "Whether the recommended reduction of paper PC from 15 to 10 items was implemented. [UNVERIFIED]",
+    "The exact easy/medium/hard item quota in any operational form. [UNVERIFIED]",
+    "Whether any MC item is ever purely verbal. 9 of 9 published samples are figure-based, but no official statement covers this. [UNVERIFIED]",
+    "The live interactive sample set on asvabprogram.com/student — the site is an Angular SPA behind a strict CSP and returned only a 5.5 KB shell for every route. The CEP Overview PDF (FEB 2026) was used as the CEP's authoritative sample material instead. [VERIFIED for the PDF; UNVERIFIED for the live site]",
+    "March 2 Success ASVAB practice-test item counts. [UNVERIFIED]",
+    "Any MEPCOM-hosted ASVAB format fact sheet — mepcom.army.mil returned HTTP 403. [UNVERIFIED]",
+    "Whether the ASVAB changes subtest structure in 2026-2027. CAT pools 11-15 were expected operational 2023-2025 with pools 16-20 in development per a 2022 briefing; no official announcement of format change was found. [SECONDARY for the 2022 plan; UNVERIFIED after 2025]"
+  ]
+}

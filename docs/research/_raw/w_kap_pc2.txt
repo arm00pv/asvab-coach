@@ -1,0 +1,135 @@
+﻿Title: Paragraph Comprehension – Kaplan Test Prep
+
+URL Source: https://www.kaptest.com/study/asvab/whats-on-the-asvab-paragraph-comprehension
+
+Markdown Content:
+The ASVAB measures your 
+suitability for the military and your potential for specific jobs. Paragraph Comprehension is a key part of this exam. It helps form your [Verbal Expression score](https://www.kaptest.com/st
+udy/asvab/what-is-the-afqt). This score is very important because it is doubled when calculating your [AFQT percentile](https://www.kaptest.com/study/asvab/what-is-the-afqt), which determine
+s if you can enlist. You do not need any outside knowledge for this section, as all answers are in the provided text.
+
+## What is the Format of the Paragraph Comprehension Section of the A
+SVAB?
+
+The [ASVAB](https://www.kaptest.com/study/asvab/what-is-the-asvab) includes a reading section among its several subtests. This section, called the ASVAB Paragraph Comprehension (PC)
+ section, presents short passages (30-120 words) for you to read and then asks questions based on those passages. While the subject matter of each passage will vary, no outside knowledge is 
+required to answer the questions correctly. For each question in this section, everything you need to answer the question will be contained in the passage above it.
+
+*   On the paper-and-p
+encil version of the ASVAB, the PC section will ask 15 questions about 13 or 14 short passages. Timing is extremely important in this version of the test, as you are only given 13 minutes to
+ answer these 15 questions.
+*   On the CAT-ASVAB, you are given 27 minutes to answer 10 questions. The extra time allows for the fact that question difficulty can increase as you accumulate
+ correct answers.
+
+### The Kaplan Method for Answering ASVAB Paragraph Comprehension Questions
+
+To be successful in both the paper and pencil and CAT versions of the ASVAB Paragraph Comp
+rehension subtest, you will need to read the passages in an effective and efficient manner. Keep in mind that your goal in this section is not to learn the subject matter of the passages but
+ simply to answer the questions correctly. Therefore, your focus should be on understanding each question’s task rather than absorbing every detail in the passage.
+
+Having a consistent and
+ repeatable method will help you quickly and confidently answer questions in this section. Use Kaplan’s 4-Step Method for [Paragraph Comprehension Questions](https://www.kaptest.com/study/as
+vab/asvab-word-knowledge-and-paragraph-comprehension-practice-questions) to attack every question you see in your practice and on Test Day.
+
+## How to Answer ASVAB Paragraph Comprehension 
+Questions
+
+Below are strategies and examples of each type of [Paragraph Comprehension questions](https://www.kaptest.com/study/asvab/asvab-word-knowledge-and-paragraph-comprehension-practi
+ce-questions) to help you correctly answer these questions on the ASVAB.
+
+#### Global Questions
+
+A common question type in the ASVAB Paragraph Comprehension section is one that asks you 
+to identify a passage’s main idea or theme, the author’s purpose, or the tone of the passage. Here’s what a Global question stem might look like:
+
+Which of the following is the main idea o
+f the passage?
+
+*   The author’s tone in the passage above can be characterized as
+*   The purpose of the passage above is to
+*   The passage above is primarily concerned with
+
+To find
+ the main idea in a passage, you must be able to distinguish the values an author assigns to different statements. In each passage that asks you to determine a main idea, the author will use
+ supporting details to establish a main idea. Things like simple facts, other people’s opinions, and background information can all operate as supporting details in a passage. Those details 
+are then used to support an author’s claim, which often comes in the form of a strong opinion, a recommendation, a prediction, or a rebuttal to another person’s position.
+
+Sometimes, like 
+when the author expresses a strong opinion, the main idea will be clear. Words and phrases like thus, therefore, I suggest, and I believe all indicate that the author is providing a strong c
+onclusion. Other times, a passage’s main idea will be harder to identify. In those passages, be prepared to work a little harder to separate supporting ideas from the main idea.
+
+Often, on
+e of the tricks to zeroing in on the main idea of a passage is to pay attention to structural clues that indicate a contrast. Words such as but, though, however, although, and yet provide su
+btle clues into an author’s point of view: the statement after the contrast word is frequently a reflection of the author’s opinion, especially in passages where the author disagrees with so
+meone else’s opinion.
+
+Finally, on Global questions it is often easy to eliminate a few answer choices immediately. Wrong answer choices for Global questions usually do one of the followin
+g:
+
+*   They’re too specific, dealing with just one small detail of the passage.
+*   They’re too general, going beyond the scope of the passage.
+*   They’re contradictory to the informat
+ion presented in the passage.
+*   They’re too extreme; that is, they distort the author’s opinion by overstating it
+
+#### Detail Questions
+
+Detail questions ask you to find specific inf
+ormation that is explicitly stated within the passage. Here are some examples of Detail question stems:
+
+*   According to the author, which of the following is a type of rug found in Frenc
+h castles?
+*   The second step in constructing a picket fence is to
+*   Which of the following is cited in the passage as an advantage of a retirement account?
+
+Notice how these question
+s are very different from Global questions. In these types of questions, you do not have to read for the author’s main idea. In fact, it is crucial in Detail questions not to overanalyze or 
+read too much into the question. The correct answer to these questions will almost always be a paraphrase of something found directly in the passage.
+
+Beware of the difference between simp
+ly recognizing text from the passage and recognizing text from the passage that answers the question. Wrong answer choices will sometimes be pulled from irrelevant areas of the given text.
+
+
+For Detail questions, always research the text, make a prediction, and then find a match for that prediction among the answer choices.
+
+#### Inference Questions
+
+Sometimes the ASVAB wi
+ll ask you questions about the passage to which the answers are not directly stated in the text, but are instead implied by the passage. Here are just a few of the ways an Inference question
+ might be worded:
+
+*   Which of the following is implied by the passage?
+*   The author apparently feels that It can be inferred from the passage that
+*   As you can see, the wording in
+
+
+Inference questions rarely point you to a specific part of the passage, as Detail questions do. And Inference questions won’t necessarily ask you about the ideas that are most important t
+o the author, as Global questions do. Instead, Inference questions require you to consider multiple statements in a passage and, from them, determine what else the author must believe. Becau
+se there are many inferences that can be made from a given piece of text, it’s not necessary to predict before considering the answer choices. Rather, paraphrase the passage and move through
+ the answer choices, selecting the one that is supported by the given text.
+
+Because the correct answer to an Inference question is simply the one answer choice that is strongly supported 
+by what is stated in the passage, you can also eliminate wrong answer choices because they commit one of the following errors:
+
+*   They contradict information in the passage.
+*   They br
+ing in outside information that is not discussed in the passage.
+*   They distort the information presented in the passage.
+*   They make an extreme claim that is not completely supported 
+by the passage.
+
+#### Vocabulary-in-Context Questions
+
+One final type of question found in the PC section will ask you for the meaning of a word used in the paragraph. These questions, w
+hich we call Vocabulary-in-Context questions, are pretty straightforward. The correct answer will be a word that can replace the word in question without altering the meaning of the sentence
+.
+
+To handle this question type, focus on the word in the question stem while you are reading the passage. Then, predict an answer by defining the word as it is used in context. Finally, a
+ttack the answer choices by looking for a word that matches your prediction. Once you have selected an answer choice, reread the initial sentence with the answer choice in place of the vocab
+ulary word to be sure the meaning is the same.
+
+* * *
+
+_Written by Kaplan experts, reviewed by Jacob Zampier. Jacob is College & STEM Commercial Manager at Kaplan, overseeing several pro
+ducts including ASVAB, Police and TOEFL._
+

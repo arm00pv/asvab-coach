@@ -339,6 +339,18 @@ abstract final class Skills {
       label: "Author's purpose & tone",
       summary: 'Why the author wrote it and how the wording signals attitude.',
     ),
+    Skill(
+      id: 'pc.vocabulary',
+      subtest: Subtest.pc,
+      label: 'Vocabulary in context',
+      summary: 'What a word means as it is used in this passage, not in a dictionary.',
+    ),
+    Skill(
+      id: 'pc.sequence',
+      subtest: Subtest.pc,
+      label: 'Sequence & technique',
+      summary: 'Order of events, cause and effect, and how the author builds the point.',
+    ),
 
     // General Science
     Skill(
@@ -395,6 +407,14 @@ abstract final class Skills {
       label: 'Electrical safety & tools',
       summary: 'Meters, grounding, insulation and shop safety practice.',
     ),
+    Skill(
+      id: 'ei.systems',
+      subtest: Subtest.ei,
+      label: 'Electrical systems',
+      summary:
+          'Generators, motors, transformers, batteries in series and parallel, '
+          'and household wiring.',
+    ),
 
     // Auto & Shop
     Skill(
@@ -423,6 +443,26 @@ abstract final class Skills {
       summary:
           'Arc and gas welding, brazing, and the safety rules that follow.',
     ),
+    Skill(
+      id: 'as.drivetrain',
+      subtest: Subtest.as,
+      label: 'Drivetrain, brakes & suspension',
+      summary: 'Clutch, transmission, differential, brakes, steering and suspension.',
+    ),
+    Skill(
+      id: 'as.electrical',
+      subtest: Subtest.as,
+      label: 'Automotive electrical & ignition',
+      summary:
+          'Battery, alternator, starter, ignition timing and tracing a fault.',
+    ),
+    Skill(
+      id: 'as.construction',
+      subtest: Subtest.as,
+      label: 'Construction & building',
+      summary:
+          'Framing, foundations, concrete, roofing and reading a set of plans.',
+    ),
 
     // Mechanical Comprehension
     Skill(
@@ -447,8 +487,24 @@ abstract final class Skills {
     Skill(
       id: 'mc.structure',
       subtest: Subtest.mc,
-      label: 'Structure & motion',
-      summary: 'Beams, stress, friction, inertia and how load is carried.',
+      label: 'Structural support & loads',
+      summary:
+          'Beams in tension and compression, trusses, and how load reaches the '
+          'ground.',
+    ),
+    Skill(
+      id: 'mc.motion',
+      subtest: Subtest.mc,
+      label: 'Motion & friction',
+      summary: 'Velocity, acceleration, inertia, friction and lubrication.',
+    ),
+    Skill(
+      id: 'mc.materials',
+      subtest: Subtest.mc,
+      label: 'Properties of materials',
+      summary:
+          'Strength, elasticity, hardness, density and why material choice '
+          'matters.',
     ),
 
     // Assembling Objects
@@ -457,6 +513,14 @@ abstract final class Skills {
       subtest: Subtest.ao,
       label: 'Mental rotation',
       summary: "Tracking how a piece's outline changes when it turns.",
+    ),
+    Skill(
+      id: 'ao.connection',
+      subtest: Subtest.ao,
+      label: 'Matching connection points',
+      summary:
+          'Joining pieces at the matching lettered attachment points, not merely '
+          'at any edge that happens to touch.',
     ),
     Skill(
       id: 'ao.pieces',

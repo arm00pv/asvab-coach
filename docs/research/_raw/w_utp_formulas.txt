@@ -1,0 +1,92 @@
+﻿ Important Math Formulas to Know for the ASVAB ASVAB Sign in Sign up Cram Course Practice Tests Practice Lessons Flashcards Study Guides Classroom Premium dropdown#hide keydown.esc->dropdown
+#escape"> dropdown#click focusin->dropdown#show touchstart->dropdown#touch" data-dropdown-target="button"> Open nav menu Cram Course Practice Tests Practice Lessons Flashcards Study Guides C
+lassroom Premium Resources Back to All Posts Important Math Formulas to Know for the ASVAB What Type of Math Is on the ASVAB? Mathematics for the ASVAB test is much more than just numbers - 
+it involves understanding the principles and methodologies that drive the solutions to problems. The breadth of math concepts that you may encounter in this test is wide. It begins with basi
+c arithmetic operations like addition, subtraction, multiplication, and division, which form the foundation for many other math concepts. You should be proficient in performing these operati
+ons not just with whole numbers but also with fractions, decimals, and percentages, as these form the crux of many practical problems. Moving up the complexity ladder, the test includes more
+ advanced topics such as algebra, geometry, statistics, and probability. Algebra involves understanding how to solve equations, inequalities, and working with expressions and polynomials. It
+’s about finding unknown variables and establishing relationships between different quantities. Geometry involves a spatial understanding of shapes and figures, calculations of area, volume,
+ and understanding key theorems like the Pythagorean theorem. Statistics and probability, while less common, deal with data interpretation, understanding the likelihood of events, and making
+ predictions. The ASVAB consists of two key sections that test your math skills - the Arithmetic Reasoning (AR) and Mathematics Knowledge (MK) sections. The AR section focuses more on your p
+roblem-solving skills. It measures your ability to interpret and solve word problems that often replicate real-life scenarios. These could include calculating distances if you were given spe
+ed and time, figuring out costs based on price and quantity, or working out times based on schedules. This section tests not just your raw mathematical ability but also your logical and reas
+oning skills. Your performance on the MK section, together with your score in the AR section, contributes to your overall Armed Forces Qualification Test (AFQT) score . The MK section assess
+es your direct knowledge and application of high school math principles. The topics are more specific and detailed in this section, necessitating a strong grasp of high school level math. Wh
+ile the AR section involves more practical, real-world applications, the MK section is about mastering more academic, theory-based mathematical knowledge. Understanding algebra, including ho
+w to solve equations and inequalities, interpreting algebraic expressions, and working with polynomials is crucial. Geometry too plays a significant part - you need to understand the basic p
+roperties of shapes and figures, calculate areas and volumes, and know the Pythagorean theorem. How To Prepare for the ASVAB Math Sections Planning a study schedule well in advance of your t
+est date can be very helpful. This gives you ample time to review these mathematical principles and concepts thoroughly. Make this schedule consistent and allocate regular time for each topi
+c, ensuring you cover all bases. To help you, we have compiled the essential arithmetic formulas you’ll need for both math parts of the ASVAB. You won’t have access to these formulas during 
+the test, so it is important to master them before test day. The first two charts below pertain to the Arithmetic Reasoning section of the ASVAB, and the last two refer to concepts included 
+in the Mathematics Knowledge section. We think you will find all of them extremely useful as you study. Online practice tests are another great resource that can boost your performance. They
+ help to evaluate your knowledge level and familiarize you with the test format of the ASVAB. Regular practice can help you identify areas where you might need additional review. Finally, it
+’s important to maintain a positive mindset throughout your preparation. Math can indeed be challenging, but remember that every problem has a solution. Stay dedicated, practice regularly, a
+nd believe in your ability to learn and solve. A calm and focused mind can learn faster and perform better. We wish you the best of luck in your preparation and for your ASVAB test! ASVAB Ar
+ithmetic Reasoning Test Formulas for Arithmetic Questions Formula Symbols Comment Basic Properties of Numbers \(a+b=b+a\) \(a \cdot b=b \cdot a\) a,b = any constant or variable Commutative p
+roperty Basic Properties of Numbers \(a+(b+c)=(a+b)+c\) \(a \cdot (b \cdot c)=(a \cdot b) \cdot c\) a,b,c = any constant or variable Associative property Basic Properties of Numbers \(a \cdo
+t(b+c) = a \cdot b + a \cdot c\) a,b,c = any constant or variable Distributive property Basic Properties of Numbers \(a+0=a\) a = any constant or variable Identity property of addition Basic
+ Properties of Numbers \(a \cdot 1 = a\) a = any constant or variable Identity property of multiplication Rules of Operations \(e \pm e = e\) \(e \pm o = o\) \(o \pm o = e\) e = even number 
+o = odd number Rules of addition Rules of Operations \(e \cdot e = e\) \(e \cdot o = e\) \(o \cdot o = o\) \(p \cdot p = p\) \(n \cdot n = p\) \(p \cdot n = n\) e = even number o = odd numbe
+r p = positive number n = negative number Rules of multiplication Fractions \(\frac{a}{b} + \frac{c}{d} = \frac{(a \cdot d)+(c \cdot b)}{(b \cdot d)}\) a,b,c,d = any real number Remember to 
+simplify the fraction (if possible). Fractions \(\frac{a}{b} \cdot \frac{(a \cdot c)}{(b \cdot d)}\) a,b,c,d = any real number Remember to simplify the fraction (if possible). Fractions \(\f
+rac{a}{b} \div \frac{(a \cdot d)}{(b \cdot c)}\) a,b,c,d = any real number Remember to simplify the fraction (if possible). Fractions \(a\frac{b}{c} = \frac{(a \cdot c) + b}{c}\) a,b,c = any
+ real number Remember to simplify the fraction (if possible). Exponents \(x^a \times x^b = x^{a+b}\) a,b,x = any real number Exponents \(\frac{x^a}{x^b} = x^{a-b}\) a,b,x = any real number E
+xponents \((x^a)^b =x ^{a \cdot b}\) a,b,x = any real number Exponents \((x \cdot y)^a = x^a \cdot y^a\) a,x,y = any real number Exponents \(x^1=x\) x = any real number Exponents \(x^0=1\) x
+ = any real number Exponents \(x^{-a} = \frac{1}{x^a}\) a,x = any real number Percents % a in b = \(\frac{a}{b} \cdot 100\) a, b = any real number Percents \(a \cdot b \% = a \cdot \frac{b}{
+100}\) a = any real number b % = any precent Remember to simplify the fraction (if possible). Percents \(\% = \frac{|b-a|}{b} \cdot 100 = \frac{c}{b} \cdot 100\) % = % increase or decrease a
+ = new value b = original value c = amount of change Formulas for Probability and Problem-Solving Questions Formula Symbols Comment \(\overline{x} = \dfrac{\Sigma x_i}{n}\) \(\overline{x}\) 
+= sample mean \(x_i\) = value of each measurement \(n\) = number of measurements \(Md = (\frac{n+1}{2})^{th} \ term\) \(Md\) = median \(n\) = number of measurements (odd) \(Md = \dfrac{(\fra
+c{n}{2})^{th} \ term + (\frac{n}{2} +1)^{th} \ term}{2}\) \(Md\) = median \(n\) = number of measurements (even) \(s = \sqrt{\Sigma(x_i- \overline{x})^2 / (n-1)}\) \(s\) = standard deviation 
+\(\overline{x}\) = mean \(x_i\) = value of each measurement \(n\) = number of measurements \(V = s^2\) \(V\) = variance \(s\) = standard deviation \(CV = RSD = 100 \cdot \frac{s}{\overline{x
+}}\) \(CV\) = coefficient of variation \(RSD\) = relative standard deviation \(s\) = standard deviation \(\overline{x}\) = Mean \(p= \frac{d}{t}\) \(p\) = probability of an event \(d\) = num
+ber of ways desired event can occur \(t\) = total number of possible events \(P(A \cup B) = P(A) + P(B) - P(A \cap B)\) \(P(A \cup B)\) = probability of A or B \(P(A)\) = probability of A \(
+P(B)\) = probability of B \(P(A \cap B)\) = probability of A and B Rule of addition \(P(A \cap B) = P(A) \cdot P(B)\) \(P(A \cap B)\) = probability of A and B \(P(A)\) = probability of A \(P
+(B)\) = probability of B Independent events \(P(A \cap B) = 0\) \(P(A \cap B)\) = probability of A and B Mutually exclusive Events \(P(A|B) = \frac{P(A \cap B)}{P(B)}\) \(P(A|B)\) = probabil
+ity of A given B \(P(A \cap B)\) probability of A and B \(P(B)\) = probability of B Conditional probability \(SI= P \cdot IR \cdot t\) \(SI\) = simple interest \(P\) = principal (amount borr
+owed \(IR\) = interest rate \(t\) = time (same units as in IR \(A_{SI} = P + SI = P \cdot (1+IR \cdot t)\) \(A_{SI}\) = future value to be paid (for \(SI\)) \(P\) = principal (amount to be p
+aid) \(SI\) = simple interest \(IR\) = interest rate \(t\) = time (same units as in \(IR\)) \(A_{CI} = P \cdot (1 + \frac{IR}{n})^{n \cdot t}\) \(A_{CI}\) = future value to be paid (for \(CI
+\)) \(P\) = principal (amount borrowed) \(IR\) = interest rate \(n\) = number of times interest is compounded per time unit \(t\) = time (same units as \(IR\)) \(d= r \cdot t\) \(w = r \cdot
+ t\) \(W = r \cdot t\) \(d\) = distance \(w\) = wage \(W\) = work done \(r\) = rate \(t\) = time \(TW = WA + WB\) \(TW\) = total work done \(WA\) = work done by A \(WB\) = work done B Combin
+ed work \(\frac{1}{t} = \frac{1}{t_A} + \frac{1}{t_B}\) \(t\)= total time \(t_A\)= time consumed by A \(t_B\) = time consumed by B Combined work \(D_u=S_u \cdot \frac{D_u}{S_u} = S_u \cdot C
+F\) \(D_u\) = desired unit \(S_u\) = starting unit \(CF\) = conversion factor Multiple steps may be needed. \(a \cdot b\% = a \cdot \frac{b}{100}\) \(a\) = any real number \(b\%\) = any perc
+ent Remember to simplify (if possible) \(\% = \frac{|b-a|}{b} \cdot 100 = \frac{c}{b} \cdot 100\) \(\%\) = % increase or decrease \(a\) = new value \(b\) = original value \(x_n = x_1 + d(n-1
+)\) \(x_n = n^{th}\) element of an arithmetic sequence \(x_1 = 1^{st}\) element of an arithmetic sequence \(d\) = common difference \(n\) = the number of terms in the sequence Arithmetic seq
+uence \(x_n = x_1 \cdot r^{n-1}\) \(x_n = n^{th}\) element of a geometric sequence \(x_1 = 1^{st}\) element of a geometric sequence \(r\) = common ratio \(n\) = the number of terms in the se
+quence Geometric sequence ASVAB Mathematics Knowledge Test Formulas for Algebra Questions Category Formula Symbols Comment General Algebra \(x+a=b \Rightarrow x=b-a\) \(x-a=b \Rightarrow x=b
+-a\) \(x\cdot a = b \Rightarrow x=b \div a\) \(x \div a = b \Rightarrow x = b \cdot a\) \(x^a=v \Rightarrow x=b^a\) \(\sqrt[a]{x} = b \Rightarrow x= b^a\) \(a^x=b \Rightarrow x = \frac{log b
+}{log a}\) a, b = constants x = variable General Algebra \(x^a+x^a=2x^a\) a , b , x = any real number General Algebra \(x^a \cdot x^b=x^{a+b}\) a , b , x = any real number General Algebra \(
+\frac{x^a}{x^b}=x^{a-b}\) a , b , x = any real number General Algebra \((x^a)^b = x^{a \cdot b}\) a , b , x = any real number General Algebra \((x \cdot y)^a = x^a \cdot y^a\) a , b , y = an
+y real number General Algebra \(x^1 = x\) x = any real number General Algebra \(x^0 = 1\) x = any real number General Algebra \(x^{-a} = \frac {1}{x^a}\) a , x = any real number General Alge
+bra \(x^{\frac {a}{b}} = \sqrt[b]{x^a} = (\sqrt[b]{x})^a\) a , b , x = any real number General Algebra \(\frac{x}{\sqrt{y}} \cdot \frac {\sqrt{y}}{\sqrt{y}} = \frac{x \sqrt{y}}{y}\) x , y = 
+any real number Quadratic Equations \((a \pm b)^2 = a^2 \pm 2 \cdot a \cdot b + b^2\) a , b = constants or variables Perfect Squares Quadratic Equations \(a^2 - b^2 = (a-b) \cdot (a+b)\) a ,
+ b = constants or variables Difference of squares Cubic Equations \(a^3 - b^3 = (a-b) \cdot (a^2+ab+b^2)\) a , b = constants or variables Difference of cubes Cubic Equations \(a^3 + b^3 = (a
++b) \cdot (a^2-ab+b^2)\) a , b = constants or variables Sum of cubes Linear Equations \(A \cdot x + B \cdot y = C\) A , B , C = any real number y = dependent variable x = independent variabl
+e Standard form Linear Equations \(y= m \cdot x +b\) y = dependent variable m = slope x = independent variable b = y-axis intercept Slope intercept form. Try to convert any given linear equa
+tion to this format. Linear Equations \(m = \frac{(y_2 - y_1)}{(x_2 - x_1)}\) m = slope \(y_n\) = independent variable (point n ) \(x_n\) = dependent variable (point n ) | This is a rearrang
+ement of the point-slope form Linear Equations \(y-y_1 = m(x-x_1)\) \((x_1,y_1)\) = point on the line m = slope y = independent variable x = dependent variable Point-slope form Quadratic Equ
+ations \(y = ax^2 + bx + c\) a , b , c = constants c = y axis intercept x = variable Standard form Quadratic Equations \(y = a(x-h)^2 + k\) k = y coordinate of the vertex a = constant h = x 
+coordinate of vertex x = variable Vertex form Quadratic Equations \(x= \frac{-b}{2a}\) a , b = constants x = x-coordinate of axis of symmetry Axis of symmetry for an equation in the form \(a
+x^2+bx+c=0\) Quadratic Equations \(x= \frac{-b \pm \sqrt{b^-4ac}}{2a}\) a , b = constants c = constant (y-axis intercept) x = variable Quadratic formula for an equation in the form \(ax^2+bx
++c=0\) Formulas for Geometry Questions Category Formula Symbols Comment Coordinate Geometry \(Ax+By=C\) A, B, C = any real number y = dependent variable x = independent variable Standard for
+m Coordinate Geometry \(y=m \cdot x+b\) y = dependent variable m = slope x = independent variable b = y-axis intercept Slope intercept form: Try to convert any given linear equation to this 
+form. Coordinate Geometry \(m= \frac{(y_2-y_1)}{(x_2-x_1)}\) m = slope \(y_n\) = dependent variable (point n) \(x_n\) = independent variable (point n) This is a rearranged version of the poi
+nt- slope form Coordinate Geometry \(y-y_1=m(x-x_1)\) \((x_1, y_1)\) = point on the line y = dependent variable x = independent variable m = slope Point-slope form Coordinate Geometry \(d= \
+sqrt{(y_2-y_1)^2 + (x_2-x_1)^2}\) d = distance between two points \((x_1, y_1)\) = first point \((x_2, y_2)\) = second point Regular Polygons \(\Sigma \theta = 180 \cdot (n-2)\) \(\Sigma \th
+eta\) = sum of the interior angles n = number of sides Regular Polygons \(\theta =\frac{180 \cdot (n-2)}{n}\) \(\theta\) = measure of interior angle n = number of sides Triangles \(P=s_1+s_2
++s_3\) P =perimeter of a triangle \(s_n\) = side length Triangles \(A= \frac{1}{2} b \cdot h\) A = area of a triangle b = base h = height (altitude) Triangles \(\Sigma \theta = 180^\circ\) \
+(\Sigma \theta\) = sum of the interior angles Triangles \(a^2+b^2=c^2\) a, b = legs of a right triangle c = hypotenuse of a right triangle Pythagorean Theorem Quadrilaterals \(P=4 \cdot s\) 
+P = perimeter of a square s = side length Quadrilaterals \(P = (2 \cdot l)+(2 \cdot w)\) P = perimeter of a rectangle l - length w = width Quadrilaterals \(A= s^2\) A - area of a square s = 
+side length Quadrilaterals \(A = l \cdot w\) A = area of a rectangle l = length w = width Quadrilaterals \(A = h \cdot \frac{(b_1+b_2)}{2}\) A = area of a trapezoid \(b_n\) = base n h = heig
+ht Circles \((x-h)^2 + (y-k)^2 = r^2\) (h, k) = center of a circle r = radius x, y = variables Standard form of a circle Circles \(x^2+y^2+Ax+By+C = 0\) x, y = variables A, B, C = constants 
+General form of a circle Circles \(C = 2 \cdot \pi \cdot r\) \(C = \pi d\) C = circumference (perimeter) of a circle r = radius d = diameter \(\pi\) = 3.14 Circles \(s=r \cdot \theta\) s = a
+rc length r = radius \(\theta\) = central angle in radians Circles \(A=\pi \cdot r^2\) A = area of a circle r = radius \(\pi\) = 3.14 Prisms \(V = l \cdot w \cdot h\) V = volume of a rectang
+ular prism l = length w = width h = height Prisms \(SA = \Sigma A_{fi}\) SA = surface area of a prism \(A_{fi}\) = area of face i Pyramids \(V= \frac{1}{3} b \cdot h\) V = volume of a pyrami
+d b = area of the base h = height Pyramids \(SA = \Sigma A_{fi} +b\) SA - surface area of a pyramid \(A_{fi} =\) area of face i b = area of the base Cones \(V= \frac{1}{3} \pi \cdot r^2 \cdo
+t h\) V = volume of a cone r = radius of the cone h = height of the cone \(\pi\) = 3.14 Cylinders \(V= \pi \cdot r^2 \cdot h\) V = volume of a cylinder r = radius h = height Cylinders \(SA =
+ 2b + (c \cdot h)\) SA = surface area of a cylinder b = area of the base c = circumference of the base h = height Keep Reading Armed Services Vocational Aptitude Battery Blog What is the ASV
+AB Test? The Armed Services Vocational Aptitude Battery, known as the ASVAB, is &hellip; Armed Services Vocational Aptitude Battery Blog Military MOS Codes Military Occupational Specialty (M
+OS) codes are an integral part of the&hellip; Armed Services Vocational Aptitude Battery Blog U.S. Army Height and Weight Standards for Females The U.S. Army’s commitment to maintaining a ro
+bust, physically fit, and&hellip; Test Prep Cram Course Practice Lessons Practice Tests Flashcards Study Guides Essay Grader Resources FAQ Support Contact Help Leave a review Company About U
+s Blog FAQ Get an instant quote Legal Policies Privacy Policy Terms of Service &copy; 2026 Union Media LLC . All Rights Reserved. The ASVAB is a function of the U.S. Department of Defense, w
+hich is unaffiliated, not a sponsor of, nor associated with this website. All other trademarks, service marks, and product names used herein are the property of their respective owners. 
+

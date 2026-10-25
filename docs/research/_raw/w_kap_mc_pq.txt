@@ -1,0 +1,425 @@
+﻿Title: ASVAB Mechanical Comprehension Practice Questions – Kaplan Test Prep
+
+URL Source: https://www.kaptest.com/study/asvab/asvab-mechanical-comprehension-practice-questions
+
+Markdown C
+ontent:
+Master the ASVAB at your own pace with 1,000+ practice questions and expert-led video lessons.
+
+Start Now
+
+[](https://www.kaptest.com/study/asvab/asvab-mechanical-comprehension-
+practice-questions)
+
+[![Image 3](https://kaptest.cdn.prismic.io/kaptest%2Ff01cbc26-9d17-4970-92fc-1ec8b0f224f8_kaplan_logo_purple_726.png)](https://www.kaptest.com/study)
+
+[☰](javascript
+:void(0);)
+
+*   What is the ASVAB? ▼
+    *   [What's Tested on the ASVAB?](https://www.kaptest.com/study/asvab/what-is-the-asvab)
+    *   [What is the AFQT?](https://www.kaptest.com/stud
+y/asvab/what-is-the-afqt)
+    *   [What's on the ASVAB: Paragraph Comprehension](https://www.kaptest.com/study/asvab/whats-on-the-asvab-paragraph-comprehension)
+    *   [What's on the ASVA
+B: Word Knowledge](https://www.kaptest.com/study/asvab/whats-on-the-asvab-word-knowledge)
+    *   [What's on the ASVAB: Technical Subtests](https://www.kaptest.com/study/asvab/whats-on-the-
+asvab-technical-subtests)
+
+*   Studying for the ASVAB ▼
+    *   [ASVAB Math Strategies](https://www.kaptest.com/study/asvab/asvab-math-strategies)
+    *   [ASVAB Technical Subtest Strate
+gies](https://www.kaptest.com/study/asvab/asvab-technical-subtest-strategies)
+    *   [Kaplan ASVAB 2018-2019 Prep Plus](https://www.kaptest.com/asvab/books)
+
+*   Free ASVAB Practice ▼
+ 
+   *   [Arithmetic Reasoning and Mathematical Knowledge Practice Questions](https://www.kaptest.com/study/asvab/asvab-arithmetic-reasoning-and-mathematics-knowledge-practice-questions)
+    
+*   [Word Knowledge and Paragraph Comprehension Practice Questions](https://www.kaptest.com/study/asvab/asvab-word-knowledge-and-paragraph-comprehension-practice-questions)
+    *   [General
+ Science Practice Questions](https://www.kaptest.com/study/asvab/asvab-general-science-practice-questions)
+    *   [Automotive Information Practice Questions](https://www.kaptest.com/study/
+asvab/asvab-automotive-information-practice-questions)
+    *   [Mechanical Information Practice Questions](https://www.kaptest.com/study/asvab/asvab-mechanical-comprehension-practice-questi
+ons)
+    *   [Assembling Objects Practice Questions](https://www.kaptest.com/study/asvab/asvab-assembling-objects-practice-questions)
+
+*   [ASVAB Prep](https://www.kaptest.com/asvab)
+
+[
+![Image 4: ASVAB Mechanical Comprehension Practice Questions](https://www.kaptest.com/study/wp-content/uploads/ASVAB-Mechanical-Comprehension-Practice-Questions.jpg)](https://www.kaptest.com
+/study/wp-content/uploads/ASVAB-Mechanical-Comprehension-Practice-Questions.jpg "ASVAB Mechanical Comprehension Practice Questions")
+
+# [ASVAB Mechanical Comprehension Practice Questions](
+https://www.kaptest.com/study/asvab/asvab-mechanical-comprehension-practice-questions "Permanent Link: ASVAB Mechanical Comprehension Practice Questions")
+
+July 22, 2026/in [ASVAB](https:/
+/www.kaptest.com/study/category/asvab)/by [admin](https://www.kaptest.com/study/author/admin "Posts by admin")
+
+Planning on taking the [ASVAB](https://www.kaptest.com/asvab/books "asvab") 
+Mechanical Comprehension Technical Subtest? Try out a few practice questions!
+
+  
+
+**Question 1**  
+ If a ball is dropped from a height of 5 m, what will be its approximate speed when i
+t hits the ground?  
+ A.cannot be determined because the mass is unknown.  
+ B.cannot be determined because the time it takes to reach the ground is unknown.  
+ C.5 m/s  
+ D.10 m/s
+
+  
+
+
+Answer 1
+
+**D:**Although the mass and time are unknown, they are not needed to solve the problem. When the ball is 5 m above the ground all its energy is PE, but when it hits the groun
+d all its energy is KE. Since energy is conserved, set PE = KE or mgh = (1/2)v^2. The mass cancels out and, since the question asks for the approximate speed, g = 10 will suffice. 2 × 10 × 5
+ = v^2 and 100 = v^2, so v = 10.
+
+  
+
+**Question 2**  
+ A hydraulic lift is set up as depicted below. Which of the following must be true?
+
+![Image 5: A hydraulic lift is set up as de
+picted below. Which of the following must be true?](https://wpapp.kaptest.com/study/wp-content/uploads/j9iEY7xlQOehygrrApMh_ASVAB_Mechanical___Question_2.png)
+
+A.The work done by Force 2 i
+s greater than the work done by Force 1, since Force 2 is applied over a longer distance.  
+ B.To do the same amount of work, Force 2 must be smaller than Force 1, but applied over a larger
+ distance.  
+ C.Force 1 must be greater than Force 2, because more work must be done by Force 1.  
+ D.The pressure in the left side of the lift must be greater than the pressure in the rig
+ht side of the lift, since Force 1 is larger
+
+  
+
+Answer 2
+
+**B:**Since the pressure is the same throughout a closed hydraulic system and force is equal to pressure times the area over
+ which it is applied, F1 must be greater than F2. Also, the work (force times distance) must be equal on both sides. Since F1 > F2, it follows that d2 > d1.
+
+  
+
+**Question 3**  
+ Which
+ of the answer choices best describes the topics that are included in the area of physics known as “mechanics?”  
+ A.the proper use of tools and measuring devices  
+ B.machines that transm
+it or use energy  
+ C.the laws of motion, energy, and forces  
+ D.the laws of trajectories, energy, and forces
+
+  
+
+Answer 3
+
+**C:**Tools do use the principles of mechanics but measu
+ring devices do not. Similarly, machines that transmit or use energy are governed by these principles, but the study of mechanics is not limited to machines. While trajectories are a type of
+ motion, the more broad category of “motion” is the proper answer.
+
+  
+
+**Question 4**  
+ Based on the diagram below, approximately what minimum force must be applied to the rope to lif
+t the object?
+
+![Image 6: ABSVAB_Mechanical_Question_4](https://www.kaptest.com/study/wp-content/uploads/6BKE2RMSdS5Zp4s0krYJ_ASVAB_Mechanical_Question_4.png)
+
+A.25 N  
+ B.50 N  
+ C.10
+0 N  
+ D.250 N
+
+  
+
+Answer 4
+
+**D:**The first step is to convert the mass given into a force, which will be its weight. The force of the weight is mg = 100 kg x 10 m/s^2 = 1,000 N. Si
+nce there are 4 pulleys, the mechanical advantage is 4:1, meaning that 1/4 of the force can be applied over 4 times the distance to pull up the mass. Since the weight is 1,000 N, the force a
+pplied would be 250 N.
+
+  
+
+**Question 5**  
+ The force of friction between two surfaces moving past each other DOES NOT depend on  
+ A.the normal force  
+ B.the nature of the surface
+s in contact with each other  
+ C.the area of the surfaces in contact with each other  
+ D.the speed at which the surfaces are moving past each other
+
+  
+
+Answer 5
+
+**D:**Kinetic fri
+ction is exhibited when surfaces/objects move past one another. The normal force, which is a factor of the weight of the object, will affect friction (for example: move your hand across a ta
+ble lightly and then again with more force; increased force leads to increased friction). The nature and area of the surfaces in contact with each other will also affect the friction that de
+velops between two surfaces (for example: moving your hand across a desk with oil on it is a lot easier than with honey; also, moving one finger across a desk develops less friction than mov
+ing your entire hand). The speed at which the surfaces move past each other, however, does not impact the frictional forces (though more heat may be generated).
+
+  
+
+Want more practice l
+ike this? Check out Kaplan’s ASVAB Total Prep Book!
+
+[ASVAB Total Prep Book](https://amzn.to/4ajHIUk)
+
+**Tags:**[ASVAB](https://www.kaptest.com/study/tag/asvab)
+
+##### Share this entry
+
+
+*   [Share on Facebook](https://www.facebook.com/sharer.php?u=/study/asvab/asvab-mechanical-comprehension-practice-questions/&t=ASVAB%20Mechanical%20Comprehension%20Practice%20Questions)
+
+*   [Share on Twitter](https://twitter.com/share?text=ASVAB%20Mechanical%20Comprehension%20Practice%20Questions&url=/study/?p=23308)
+
+/study/wp-content/uploads/ASVAB-Mechanical-Comprehen
+sion-Practice-Questions.jpg 616 1503 admin http://wpapp.kaptest.com/wp-content/uploads/2020/09/kaplan_logo_purple_726-4.png admin 2026-07-22 09:12:04 2026-07-22 14:19:12 ASVAB Mechanical Com
+prehension Practice Questions
+
+##### You might also like
+
+[![Image 7: ASVAB Word Knowledge and Paragraph Comprehension Practice Questions](https://www.kaptest.com/study/wp-content/upload
+s/ASVAB-Word-Knowledge-and-Paragraph-Comprehension-Practice-Questions.jpg)**ASVAB Word Knowledge and Paragraph Comprehension Practice Questions**](https://www.kaptest.com/study/asvab/asvab-w
+ord-knowledge-and-paragraph-comprehension-practice-questions "ASVAB Word Knowledge and Paragraph Comprehension Practice Questions")
+
+[![Image 8: ASVAB technical subtests article image](htt
+ps://www.kaptest.com/study/wp-content/uploads/ASVAB-technical-subtests-article-image.jpg)**What's on the ASVAB Technical Subtests?**](https://www.kaptest.com/study/asvab/whats-on-the-asvab-t
+echnical-subtests "What's on the ASVAB Technical Subtests?")
+
+[![Image 9: ASVAB Automotive Information Practice Questions](https://www.kaptest.com/study/wp-content/uploads/ASVAB-Automotive
+-Information-Practice-Questions.jpg)**ASVAB Automotive Information Practice Questions**](https://www.kaptest.com/study/asvab/asvab-automotive-information-practice-questions "ASVAB Automotive
+ Information Practice Questions")
+
+[![Image 10: asvab word knowledge](https://www.kaptest.com/study/wp-content/uploads/asvab-word-knowledge.jpg)**What's on the ASVAB: Word Knowledge**](htt
+ps://www.kaptest.com/study/asvab/whats-on-the-asvab-word-knowledge "What's on the ASVAB: Word Knowledge")
+
+[![Image 11: ASVAB Shop Information Practice Questions](https://www.kaptest.com/s
+tudy/wp-content/uploads/ASVAB-Shop-Information-Practice-Questions.jpg)**ASVAB Shop Information Practice Questions**](https://www.kaptest.com/study/asvab/asvab-shop-information-practice-quest
+ions "ASVAB Shop Information Practice Questions")
+
+[![Image 12: What subjects does the ASVAB test](https://www.kaptest.com/study/wp-content/uploads/What-subjects-does-the-ASVAB-test.jpg)**
+What's Tested on the ASVAB?**](https://www.kaptest.com/study/asvab/what-is-the-asvab "What's Tested on the ASVAB?")
+
+### ASVAB PREP BOOK
+
+[![Image 13: Kaplan ASVAB Book](https://m.media-
+amazon.com/images/I/71EOVXcd8qL._SY385_.jpg)](https://amzn.to/4ajHIUk)![Image 14](https://m.media-amazon.com/images/I/71EOVXcd8qL._SY385_.jpg)
+
+### ASVAB INFO & RESOURCES
+
+*   [What’s Te
+sted on the ASVAB?](https://www.kaptest.com/study/asvab/what-is-the-asvab)
+    *   [ASVAB Strategies](https://www.kaptest.com/study/asvab/asvab-strategies)
+
+*   [ASVAB Technical Subtests:
+ What’s Tested?](https://www.kaptest.com/study/asvab/whats-on-the-asvab-technical-subtests)
+    *   [Technical Subtest Strategies](https://www.kaptest.com/study/asvab/asvab-technical-subtes
+t-strategies)
+
+*   [ASVAB Math Strategies](https://www.kaptest.com/study/asvab/asvab-math-strategies)
+    *   [Arithmetic Reasoning & Mathematics Knowledge Practice Questions](https://www
+.kaptest.com/study/asvab/asvab-arithmetic-reasoning-and-mathematics-knowledge-practice-questions)
+
+*   [ASVAB Paragraph Comprehension: What’s Tested?](https://www.kaptest.com/study/asvab/w
+hats-on-the-asvab-paragraph-comprehension)
+*   [ASVAB Word Knowledge: What’s Tested?](https://www.kaptest.com/study/asvab/whats-on-the-asvab-word-knowledge)
+    *   [Word Knowledge & Parag
+raph Comprehension Practice Questions](https://www.kaptest.com/study/asvab/asvab-word-knowledge-and-paragraph-comprehension-practice-questions)
+
+*   [ASVAB General Science Practice Questio
+ns](https://www.kaptest.com/study/asvab/asvab-general-science-practice-questions)
+*   [ASVAB Electronics Information Practice Questions](https://www.kaptest.com/study/asvab/asvab-electronic
+s-information-practice-questions)
+*   [ASVAB Automotive Information Practice Questions](https://www.kaptest.com/study/asvab/asvab-automotive-information-practice-questions)
+*   [ASVAB Shop
+ Information Practice Questions](https://www.kaptest.com/study/asvab/asvab-shop-information-practice-questions)
+*   [ASVAB Mechanical Comprehension Practice Questions](https://www.kaptest.c
+om/study/asvab/asvab-mechanical-comprehension-practice-questions)
+*   [ASVAB Assembling Objects Practice Questions](https://www.kaptest.com/study/asvab/asvab-assembling-objects-practice-que
+stions)
+
+[![Image 15: Kaplan logo](https://www.kaptest.com/study/wp-content/uploads/kaplan-white.png)](https://www.kaptest.com/study/asvab/asvab-mechanical-comprehension-practice-questions
+)
+### Need Help?
+
+Call 1-800-KAP-TEST or email [customer.care@kaplan.com](mailto:customer.care@kaplan.com)
+
+All organizational test names and other marks are trademarks or registered tr
+ademarks of their respective owners. None of the trademark holders are affiliated with Kaplan or any of its subsidiaries. Visit [kaplan.com/trademark-directory](https://www.kaplan.com/tradem
+ark-directory) for details.
+
+### Prep for an Exam
+
+[MCAT Test Prep](https://www.kaptest.com/mcat)
+
+[LSAT Test Prep](https://www.kaptest.com/lsat)
+
+[GRE Test Prep](https://www.kaptest
+.com/gre)
+
+[GMAT Test Prep](https://www.kaptest.com/gmat)
+
+[SAT Test Prep](https://www.kaptest.com/sat)
+
+[ACT Test Prep](https://www.kaptest.com/act)
+
+[DAT Test Prep](https://www.kap
+test.com/dat)
+
+[NCLEX Test Prep](https://www.kaptest.com/nclex)
+
+[USMLE Test Prep](https://www.kaptest.com/usmle)
+
+[ASVAB Test Prep](https://www.kaptest.com/asvab)
+
+[AP Test Prep](ht
+tps://www.kaptest.com/ap)
+
+### Courses by Location
+
+[NCLEX Locations](https://www.kaptest.com/study/locations/nclex/)
+
+[GRE Locations](https://www.kaptest.com/study/locations/gre/)
+
+
+[SAT Locations](https://www.kaptest.com/study/locations/sat/)
+
+[LSAT Locations](https://www.kaptest.com/study/locations/lsat/)
+
+[MCAT Locations](https://www.kaptest.com/study/locations/m
+cat/)
+
+[GMAT Locations](https://www.kaptest.com/study/locations/gmat/)
+
+### Useful Links
+
+[Kaplan Test Prep](https://www.kaptest.com/study/asvab/asvab-mechanical-comprehension-practice
+-questions)  
+[Contact Us](mailto:customer.care@kaplan.com)  
+[Partner Solutions](https://www.kaptest.com/advisors/kaplan-partner-solutions)  
+[Work for Kaplan](https://www.kaptest.com/ca
+reers)  
+[Terms and Conditions](https://www.kaptest.com/terms-and-conditions)  
+[Privacy Policy](https://www.kaptest.com/privacy-policy)  
+[CA Privacy Policy](https://www.kaptest.com/ca-p
+rivacy-policy-addendum)  
+[Trademark Directory](https://kaplan.com/trademark-directory)
+
+© Copyright Kaplan, Inc. All Rights Reserved. 
+*   [Twitter](https://twitter.com/kaplannews "Twit
+ter")
+*   [Facebook](https://www.facebook.com/Kaplan "Facebook")
+*   [Instagram](https://www.instagram.com/kaplantestprep "Instagram")
+
+[ASVAB General Science Practice Questions![Image 1
+6: ASVAB General Science Practice Questions](https://www.kaptest.com/study/wp-content/uploads/ASVAB-General-Science-Practice-Questions.jpg)](https://www.kaptest.com/study/asvab/asvab-general
+-science-practice-questions)[![Image 17: ASVAB Shop Information Practice Questions](https://www.kaptest.com/study/wp-content/uploads/ASVAB-Shop-Information-Practice-Questions.jpg)ASVAB Shop 
+Information Practice Questions](https://www.kaptest.com/study/asvab/asvab-shop-information-practice-questions)
+
+[Scroll to top](https://www.kaptest.com/study/asvab/asvab-mechanical-compreh
+ension-practice-questions#top "Scroll to top")
+
+## This website uses cookies
+
+We use cookies and other tracking technologies to improve your browsing experience on our websites, to show 
+you personalized content and targeted ads, to analyze our website traffic, and to understand our consumers. Except for cookies that are strictly necessary for the website to function, you ca
+n control your settings through your browser. Blocking some types of cookies may impact your experience of the website and the services we are able to offer. We respect your privacy and choi
+ce. Learn more at [privacy policy.](https://www.kaptest.com/privacy-policy)
+
+Cookies Settings Allow All
+
+![Image 19: Company Logo](https://cdn-ukwest.onetrust.com/logos/f12ff1f8-470d-450
+6-ab26-3ba7abb26f27/15a3b82e-7614-4fbe-95aa-a9ca5f850d3c/5e4ef12c-064f-4965-9b13-4087634fd882/Kaplan_logo_PNG1.png)
+
+## Privacy Preference Center
+
+When you visit any website, it may stor
+e or retrieve information on your browser, mostly in the form of cookies. This information might be about you, your preferences, or your device, and is mostly used to make the site work as y
+ou expect. The information does not usually identify you directly, but it can give you a more personalized web experience. Because we respect your right to privacy, you can choose not to all
+ow some types of cookies. Click on the different category headings to learn more and change our default settings. Blocking some types of cookies may impact your experience of the site and th
+e services we are able to offer.   
+[More information](https://cookiepedia.co.uk/giving-consent-to-cookies)
+
+Allow All
+### Manage Consent Preferences
+
+#### Strictly Necessary Cookies
+
+
+Always Active
+
+These cookies are necessary for the website to function and cannot be switched off in our systems. They are usually only set in response to actions made by you which amoun
+t to a request for services, such as setting your privacy preferences, logging in or filling in forms. You can set your browser to block or alert you about these cookies, but some parts of t
+he site will not then work. These cookies do not store any personally identifiable information.
+
+#### Functional Cookies
+
+- [x] Functional Cookies 
+
+These cookies enable the website to
+ provide enhanced functionality and personalisation. They may be set by us or by third party providers whose services we have added to our pages. If you do not allow these cookies then some 
+or all of these services may not function properly.
+
+#### Performance Cookies
+
+- [x] Performance Cookies 
+
+These cookies allow us to count visits and traffic sources so we can measure 
+and improve the performance of our site. They help us to know which pages are the most and least popular and see how visitors move around the site. All information these cookies collect is a
+ggregated and therefore anonymous. If you do not allow these cookies we will not know when you have visited our site, and will not be able to monitor its performance.
+
+#### Targeting Cooki
+es
+
+- [x] Targeting Cookies 
+
+These cookies may be set through our site by our advertising partners. They may be used by those companies to build a profile of your interests and show you
+ relevant adverts on other sites. They do not store directly personal information, but are based on uniquely identifying your browser and internet device. If you do not allow these cookies, 
+you will experience less targeted advertising.
+
+### Cookie List
+
+Clear
+*   - [x] checkbox label label 
+
+Apply Cancel
+
+Consent Leg.Interest
+
+- [x] checkbox label label
+
+- [x] che
+ckbox label label
+
+- [x] checkbox label label
+
+Confirm My Choices
+
+[![Image 20: Powered by Onetrust](https://cdn-ukwest.onetrust.com/logos/static/powered_by_logo.svg)](https://www.onet
+rust.com/solutions/consent-and-preferences/)
+
+![Image 21](https://bat.bing.com/action/0?ti=5947830&tm=gtm002&Ver=2&mid=d56b23b7-a74b-462d-bbcf-8768e875c6b1&bo=3&sid=0fd08cb0d08d11f1b9ded90
+10d6a3738&vid=0fd09150d08d11f1ad16e3f5054f1ba7&vids=1&msclkid=N&pi=918639831&lg=en-US&sw=1280&sh=1280&sc=24&tl=ASVAB%20Mechanical%20Comprehension%20Practice%20Questions%20%E2%80%93%20Kaplan%
+20Test%20Prep&p=https%3A%2F%2Fwww.kaptest.com%2Fstudy%2Fasvab%2Fasvab-mechanical-comprehension-practice-questions%2F&r=&lt=4282&evt=pageLoad&sv=2&asc=G&cdb=AQET&rn=188600)
+
+BDOW!
+
+![Imag
+e 22](https://sumome.com/api/event/?site_id=84652ca491c7395c1881281f1b040512ace69338b100ad09c7619388e41b2464&app_id=156085c5-0017-4150-b225-a731ad248f38&shortcut_id=undefined&visitor_id=8269
+6169b143db7c1d8a4c30aa65bd24a41aa6ff8f6aee6a6b5594f38d670323&event=popup&href=https%3A%2F%2Fwww.kaptest.com%2Fstudy%2Fasvab%2Fasvab-mechanical-comprehension-practice-questions%2F&ref=null&ca
+che=0.39282846528130355)![Image 23](https://sumome.com/api/event/?site_id=84652ca491c7395c1881281f1b040512ace69338b100ad09c7619388e41b2464&app_id=156085c5-0017-4150-b225-a731ad248f38.9da05fe
+34d9f15c30534a3936ff06a755a48c3e348dadcbf7faff92967ef2b9e&shortcut_id=undefined&visitor_id=82696169b143db7c1d8a4c30aa65bd24a41aa6ff8f6aee6a6b5594f38d670323&event=popup&href=https%3A%2F%2Fwww
+.kaptest.com%2Fstudy%2Fasvab%2Fasvab-mechanical-comprehension-practice-questions%2F&ref=null&cache=0.7514857233831507)![Image 24](https://sumome.com/api/event/?site_id=84652ca491c7395c188128
+1f1b040512ace69338b100ad09c7619388e41b2464&app_id=156085c5-0017-4150-b225-a731ad248f38.7899cbd90aaf6a9a130b1afb8da392f279d2665249428ab6be960b20f6ee4f00&shortcut_id=undefined&visitor_id=82696
+169b143db7c1d8a4c30aa65bd24a41aa6ff8f6aee6a6b5594f38d670323&event=popup&href=https%3A%2F%2Fwww.kaptest.com%2Fstudy%2Fasvab%2Fasvab-mechanical-comprehension-practice-questions%2F&ref=null&cac
+he=0.35220195703847)![Image 25](https://sumome.com/api/event/?site_id=84652ca491c7395c1881281f1b040512ace69338b100ad09c7619388e41b2464&app_id=156085c5-0017-4150-b225-a731ad248f38.9da05fe34d9
+f15c30534a3936ff06a755a48c3e348dadcbf7faff92967ef2b9e.7899cbd90aaf6a9a130b1afb8da392f279d2665249428ab6be960b20f6ee4f00&shortcut_id=undefined&visitor_id=82696169b143db7c1d8a4c30aa65bd24a41aa6
+ff8f6aee6a6b5594f38d670323&event=popup&href=https%3A%2F%2Fwww.kaptest.com%2Fstudy%2Fasvab%2Fasvab-mechanical-comprehension-practice-questions%2F&ref=null&cache=0.7599644026968985)
+

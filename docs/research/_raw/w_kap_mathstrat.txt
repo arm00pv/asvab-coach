@@ -1,0 +1,102 @@
+﻿Title: ASVAB Math Strategies – Kaplan Test Prep
+
+URL Source: https://www.kaptest.com/study/asvab/asvab-math-strategies
+
+Markdown Content:
+To maximize your score on the ASVAB Math Exam, 
+which prohibits calculators and rewards only correct answers, this article will help you understand the concepts tested in the two quantitative sections: Arithmetic Reasoning and Mathematics
+ Knowledge. You will learn the four steps of the Kaplan Method for approaching every question strategically, alongside key time-saving shortcuts like Backsolving and Picking Numbers, to solv
+e complex problems quickly and accurately.
+
+## Know What to Expect on the ASVAB Math Exam
+
+Often the most efficient way to get the correct answer to a math problem is to use a strategy r
+ather than just to “do the math.” That’s especially true on the ASVAB Math Exam, since you cannot use a calculator on the exam. On some math tests, if you get the wrong answer but show that 
+you set up at least some of the math correctly, you’ll still get partial credit. On the [ASVAB](https://www.kaptest.com/asvab/books), you only get credit for a right answer. One advantage of
+ this is that you will get credit for the correct answer regardless of how you get to it.
+
+The two math sections on the ASVAB are called “[Arithmetic Reasoning](https://www.kaptest.com/stu
+dy/asvab/asvab-arithmetic-reasoning-and-mathematics-knowledge-practice-questions)” and “[Mathematics Knowledge](https://www.kaptest.com/study/asvab/asvab-arithmetic-reasoning-and-mathematics
+-knowledge-practice-questions).” Together they form the quantitative half of the [Armed Forces Qualifying Test (AFQT)](https://www.kaptest.com/study/asvab/what-is-the-afqt), so you’ll want t
+o do well on these sections no matter what your ultimate vocational aim in the military.
+
+*   #### ASVAB Arithmetic Reasoning (AR)
+
+The**Arithmetic Reasoning** section tests your ability
+ to handle arithmetic word problems. The CAT version of this section gives you 42 minutes to answer 15 questions, while the paper-and-pencil version gives you 36 minutes for 30 questions. Th
+is section is designed to measure your ability to apply reasoning to solve problems involving common math concepts. Many of the questions will be in the format of word problems. Typical AR t
+opics involve number properties, rates, percentages, ratios, proportions, averages, and unit conversions. 
+  
+*   #### ASVAB Mathematics Knowledge (MK)
+
+The**Mathematics Knowledge** sect
+ion tests your understanding of a wide range of concepts in applied arithmetic, algebra, and geometry. The CAT version gives you 23 minutes to answer 15 questions; the paper-and-pencil versi
+on gives you 24 minutes to answer 25 questions. This section is designed to measure general mathematical knowledge. You may see the occasional word problem on the MK section of the ASVAB, bu
+t in general the questions are more direct than the word problems found on the AR section. For this reason, you are given less time per question on this section than on the AR section. 
+  
+
+
+**[ TRY KAPLAN’S PRACTICE QUESTIONS:**[](https://www.kaptest.com/study/asvab/asvab-math-strategies/ASVAB%20Arithmetic%20Reasoning%20and%20Mathematics%20Knowledge%20Practice%20Questions)[A
+SVAB Arithmetic Reasoning and Mathematics Knowledge](https://www.kaptest.com/study/asvab/asvab-math-strategies/ASVAB%20Arithmetic%20Reasoning%20and%20Mathematics%20Knowledge%20Practice%20Que
+stions)**]**
+
+## The Kaplan Method for ASVAB Math Questions
+
+Working quickly and efficiently is essential to maximizing your score on these sections. To accomplish this, use the Kaplan M
+ethod for [ASVAB Math Questions](https://www.kaptest.com/study/asvab/asvab-arithmetic-reasoning-and-mathematics-knowledge-practice-questions).
+
+## Strategies for Solving ASVAB Math Questio
+ns
+
+Several methods are extremely useful when you don’t know—or don’t have time to use—the textbook approach to solving the question. In addition, performing all the calculations called fo
+r in the question can often be more time-consuming than using a strategic approach and can increase the potential for mistakes.
+
+Two problem-solving strategies that may be new to you are B
+acksolving and Picking Numbers. These strategies are a great way to make confusing problems more concrete. If you know how to apply these strategies, you’ll nail the correct answer every tim
+e you use them.
+
+### 1) Backsolving
+
+Sometimes it’s easiest to work backward from the answer choices. Since many Arithmetic Reasoning questions are word problems with numbers in the answ
+er choices, you can often use this to your advantage by using Backsolving. After all, the test gives you the correct answer—it’s just mixed in with the wrong answer choices. If you try an an
+swer choice in the question and it fits with the information given, then you’ve got the right answer.
+
+Here’s how it works.
+
+When the answer choices are numbers, you can expect them to b
+e arranged from small to large (or occasionally from large to small). Start by trying either choice (B) or (C). If that number works when you plug it into the problem, you’ve found the corre
+ct answer. If it doesn’t work, you can usually figure out whether to try a larger or smaller answer choice next. Even better, if you deduce that you need a smaller (or larger) number, and on
+ly one such smaller (or larger) number appears among the answer choices, that choice must be correct. You do not have to try that answer choice: simply select it and move on to the next ques
+tion.
+
+By backsolving strategically this way, you won’t have to try out more than two answer choices before you zero in on the correct answer.
+
+**[ GOOD TO KNOW:**[What is the AFQT?](htt
+ps://www.kaptest.com/study/asvab/what-is-the-afqt)**]**
+
+### 2) Picking Numbers
+
+Another strategy that comes in handy on many Mathematics Knowledge questions and also on some Arithmetic 
+Reasoning questions is Picking Numbers. Just because the question contains numbers in the answer choices, that doesn’t mean that you can always backsolve. There may be numbers in the answer 
+choices, but sometimes you won’t have enough information in the question to easily match up an answer choice to a specific value in the question stem.
+
+For example, a problem might present
+ an equation with many variables, or it might give you information about percentages of some unknown quantity and ask you for another percent. If the test maker hasn’t provided you with a qu
+antity that would be really helpful to have in order to solve the problem, you may be able to simply pick a value to assign to that unknown. The other case in which you can pick numbers is w
+hen there are variables in the answer choices.
+
+When you are picking numbers, be sure that the numbers you select are permissible (follow the rules of the problem) and manageable (easy to 
+work with). In general, it’s a good idea to avoid picking −1, 0, or 1 because they have unique number properties that can skew your results.
+
+Strategic Guessing Using Logic and using a com
+bination of approaches are other useful shortcuts to getting more correct answers more quickly. Remember, you get points for correct answers, not for how you got those answers, so efficiency
+ is key to maximizing your score.
+
+**[****KEEP STUDYING**: [ASVAB Strategies](https://www.kaptest.com/study/asvab/asvab-strategies) •[ASVAB Technical Subset Strategies](https://www.kaptest
+.com/study/asvab/asvab-technical-subtest-strategies)**]**
+
+* * *
+
+_Written by Kaplan experts, reviewed by Jacob Zampier. Jacob is College & STEM Commercial Manager at Kaplan, overseeing 
+several products including ASVAB, Police and TOEFL._
+

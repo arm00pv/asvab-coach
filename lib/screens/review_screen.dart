@@ -10,6 +10,7 @@ import '../data/models/question.dart';
 import '../data/models/score.dart';
 import '../state/app_state.dart';
 import '../widgets/primitives.dart';
+import '../widgets/mc_figure_view.dart';
 import '../widgets/puzzle_view.dart';
 
 enum _Filter { all, missed, flagged }
@@ -236,6 +237,10 @@ class _ReviewCard extends StatelessWidget {
               ),
             ),
           ],
+          if (q.figure != null) ...<Widget>[
+            const SizedBox(height: Space.md),
+            McFigureView(figure: q.figure!, maxHeight: 170),
+          ],
           const SizedBox(height: Space.md),
           Text(
             q.stem,
@@ -246,7 +251,11 @@ class _ReviewCard extends StatelessWidget {
           ),
           const SizedBox(height: Space.md),
           if (q.puzzle != null) ...<Widget>[
-            LoosePieces(pieces: q.puzzle!.pieces, cell: 18),
+            LoosePieces(
+              pieces: q.puzzle!.pieces,
+              cell: 18,
+              stemLabels: q.puzzle!.stemLabels,
+            ),
             const SizedBox(height: Space.md),
             Wrap(
               spacing: Space.sm,
@@ -261,6 +270,7 @@ class _ReviewCard extends StatelessWidget {
                       poly: q.puzzle!.silhouette(i),
                       selected: item.displaySelected == i,
                       cell: 11,
+                      labels: q.puzzle!.optionLabels(i),
                       onTap: () {},
                       state: i == item.served.displayAnswerIndex
                           ? OptionState.correct

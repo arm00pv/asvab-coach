@@ -1,0 +1,155 @@
+﻿Title: Word Knowledge – Kaplan Test Prep
+
+URL Source: https://www.kaptest.com/study/asvab/whats-on-the-asvab-word-knowledge
+
+Markdown Content:
+The Word Knowledge (WK) subsection of the 
+[ASVAB](https://www.kaptest.com/study/asvab/what-is-the-asvab) is essentially a test of your vocabulary. However, that’s not the entire story. While knowing the definitions of many words wil
+l certainly help you in this section, there are other ways to identify the correct answer and eliminate the wrong answers in ASVAB word knowledge questions.
+
+## ASVAB Word Knowledge: CAT v
+s. Paper
+
+There are slight variations in the amount of time you have to complete the Word Knowledge section and how many questions you will need to answer depending on the format you choos
+e to take the ASVAB.
+
+*   If you are taking the CAT-ASVAB, you will have 9 minutes to answer 15 vocabulary questions.
+*   If you are taking the paper-and-pencil ASVAB, you have 11 minutes
+ to complete a total of 35 questions.
+
+Whichever version of the test you’re taking, your goal is the same: find the synonym for a given word in a fraction of a minute.
+
+## ASVAB Word Kno
+wledge Question Format
+
+A little more than half of the questions in the WK section will ask you to define words with no context. These types of questions can be called No-Context WK questi
+ons.
+
+Although these question types do not provide you with context clues, there are decoding strategies, or ways of guessing a word’s meaning, that can help you answer these questions cor
+rectly. Decoding strategies that involve understanding words’ prefixes, suffixes, and roots will be a major emphasis of doing well on Word Knowledge questions.
+
+The other type of question 
+you’re likely to see in this section will ask you to define a word that appears in the context of a sentence. We’ll call these In-Context WK questions.
+
+### The Kaplan Method for Word Know
+ledge Questions
+
+Below is the method Kaplan recommends using to answer Word Knowledge questions on the ASVAB correctly.
+
+#### The Kaplan Method for ASVAB Word Knowledge Questions
+
+**St
+ep 1:** Identify the word’s meaning, or apply decoding strategies to guess its meaning.  
+**Step 2:** Make a prediction.  
+**Step 3:** Look for your prediction among the answer choices, or
+ strategically eliminate incorrect answers.
+
+## Word Knowledge Practice Question
+
+Practice applying the Kaplan Method to answer this sample Word Knowledge question.
+
+| Question | Analy
+sis |
+| --- | --- |
+| The unusually cold weather was an anomaly. | **Step 1:** Anomaly means “something unusual,” or “something that doesn’t seem to fit expectations.” |
+| **Answers Choic
+es:** | **Step 2:** Make a prediction before looking at the choices: the answer choice will mean “out of the ordinary” or “unexpected.” |
+| (A) oddity | **Step 3:**Correct. Oddity closely m
+atches that prediction. |
+| (B) ally | An ally is a friend. Incorrect. |
+| (C) anonymity | Anonymity is the state of not being known. Incorrect. |
+| (D) heat wave | A heat wave is not, by
+ definition, out of the ordinary. Also, in the context of the sentence, a heat wave does not make sense. Incorrect. |
+
+## Decoding Strategies for Guessing the Meaning of a Word
+
+Below ar
+e useful decoding strategies you can use to answer Word Knowledge questions on the ASVAB.
+
+### How to Break Words Apart
+
+One of the most effective decoding strategies is to break a word 
+into parts. We can do this because many long words in English are composed of a prefix (a first part that affects the word’s meaning) and/or a suffix (a final part that can also affect the w
+ord’s meaning), plus a word root (a middle part that often derives from a Greek or Latin word).
+
+For example, consider the word convolution. It breaks into parts like this:
+
+*   con + vo
+lu + tion
+*   prefix + word root + suffix
+
+Suppose that you didn’t know what the word convolution means, but you did know that the prefix con– means “together” and that the word root volu
+ means “turning” or “rolling.” The suffix –tion indicates that the word is a noun. So you could guess that a convolution is something rolled up together. And that’s a pretty good guess: In f
+act, convolution means a “coil or twist” or “the act of coiling.” It can also refer to a complicated thought process that might be described as “twisty.”
+
+### How to Use Positive or Negati
+ve Charge
+
+One of the secrets to success in the WK section of the ASVAB is knowing that you don’t actually need precise definitions of the words that are being tested. As long as you can c
+onfidently eliminate three answer choices as being incorrect, you’ll find your way to the correct answer. That means that many times, just knowing if a word is positive, negative, or neutral
+ will be enough to answer the question correctly.
+
+Do you know what the word gregarious means? If so, then great, this is an easy question for you. But let’s say you don’t know what it mea
+ns. What do you do then? Well, you can start by breaking the word down into parts.
+
+But let’s imagine that you aren’t familiar with the root greg. While you may be tempted to throw in the 
+towel and give up, try something else: do you think gregarious has a positive, negative, or neutral charge?
+
+If you’ve ever heard the word gregarious used in conversation, then you probabl
+y heard it used to describe a person. And was the person using the word gregarious delivering a compliment or an insult?
+
+Now, you may be thinking to yourself, “hmm, okay, I don’t really k
+now what gregarious means, but I’m pretty sure I’ve heard it used to compliment someone, so this is a positive word.” Now look through the answer choices. Which of them, if applied to a pers
+on, would be considered positive?
+
+Three answer choices are either negative or neutral. Only one is positive when applied to a person. So select the one that is positive when applied to a 
+person and move on.
+
+Of course, using a word’s positive or negative charge should never be your first strategy when tackling a WK question. Use this approach only when you have a general b
+ut not specific understanding of the word.
+
+> The root greg means “to flock to,” and the suffix –ious means “to be full of.” Therefore, gregarious means “living with others, like a flock o
+f animals.”
+> 
+> ASVAB Expert Tip
+
+### How to Use Real-World Context to Guess the Meaning of a Word
+
+One of the most common—and effective—ways of guessing a word’s meaning is to place 
+the word in context. Even if you may not know a textbook definition of the word, perhaps you remember it being used in a specific phrase. Ask yourself, “where have I heard this word before?”
+ Sometimes, you will realize that you did know the meaning of the word.
+
+Unfortunately, broach is one of those words that comes from Middle English, so knowing Latin and Greek roots won’t 
+be very helpful. And if you can’t rattle off a specific definition of the word right away, you may think that this is a lost point. But ask yourself if you have heard this word used in a com
+mon phrase before. Does “broaching the subject” ring a bell?
+
+Perhaps you’ve heard a parent, teacher, or television character use this phrase. Something along the lines of: “Well, I didn’t
+ want to talk about it, but Donny broached the subject anyway.” Using the context of how the word is used in a phrase you’ve heard before is a remarkable way to understand the “fuzzy definit
+ion” of a word. In this example, broach would mean something like “bring up” or “start to discuss.”
+
+## How to Make the Most of In-Context WK Questions
+
+In addition to the decoding strat
+egies discussed above, you can also use the sentence itself to help you answer In-Context WK questions. Context simply means the words or phrases surrounding an underlined word, and using co
+ntext involves looking for clues in those other words in order to help you guess at the underlined word’s meaning.
+
+There are several ways context can be helpful. Sometimes the sentence si
+gnals that the underlined word resembles another idea in the sentence. In other cases, sentences may contain words that signal that the underlined word contrasts with or forms an unexpected 
+combination with another idea in the sentence. Sometimes context merely tells you whether an underlined word has a negative or positive connotation. In many cases, this deduction may be enou
+gh to answer the WK question. Finally, sometimes the context surrounding an underlined word’s meaning simply defines that word or hints at its meaning.
+
+## How to Eliminate WK Answer Choic
+es Based on Logic
+
+If you really can’t come up with a prediction, or if context is proving to be no help, then you may in some cases be able to eliminate answer choices by thinking logical
+ly about them. For example, if two answer choices mean nearly the same thing, they must be wrong, since the ASVAB has only one right answer for each question.
+
+If two answer choices have o
+pposite meanings, it may be likely that one of them is correct. That’s because test makers often include an answer choice that means the opposite of the correct answer. So eliminating answer
+ choices based on logic usually helps you to narrow choices down to two. You may need to use another strategy or simply guess in order to select from the remaining two choices.
+
+* * *
+
+_
+Written by Kaplan experts, reviewed by Jacob Zampier. Jacob is College & STEM Commercial Manager at Kaplan, overseeing several products including ASVAB, Police and TOEFL._
+

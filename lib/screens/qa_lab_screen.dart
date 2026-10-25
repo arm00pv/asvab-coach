@@ -235,6 +235,8 @@ class _QaLabScreenState extends State<QaLabScreen> {
                 ),
               ),
             const SizedBox(height: Space.xl),
+            const _BankPanel(),
+            const SizedBox(height: Space.xl),
             Eyebrow('Persona results'),
             const SizedBox(height: Space.sm),
             for (final r in _results)
@@ -310,6 +312,156 @@ class _QaLabScreenState extends State<QaLabScreen> {
           color: context.colors.textMuted,
         ),
       ),
+    );
+  }
+}
+
+/// Bank health: how much content exists, how it is distributed, and whether
+/// any item breaks a quality rule. This is the panel that keeps the content
+/// honest as the bank grows.
+class _BankPanel extends StatelessWidget {
+  const _BankPanel();
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final findings = QuestionBank.audit;
+    final errors = findings.where((f) => f.isError).toList();
+    final warnings = findings.where((f) => !f.isError).toList();
+    final coverage = QuestionBank.skillCoverage;
+    final thin = coverage.entries.toList()
+      ..sort((a, b) => a.value.compareTo(b.value));
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Eyebrow('Question bank'),
+        const SizedBox(height: Space.sm),
+        AppCard(
+          padding: const EdgeInsets.all(Space.lg),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Text(
+                    '${QuestionBank.total}',
+                    style: context.text.headlineLarge,
+                  ),
+                  const SizedBox(width: Space.sm),
+                  Text(
+                    'items across 9 subtests',
+                    style: context.text.bodySmall,
+                  ),
+                  const Spacer(),
+                  Pill(
+                    '${errors.length} errors  ${warnings.length} warnings',
+                    tone: errors.isEmpty ? PillTone.success : PillTone.danger,
+                    dense: true,
+                  ),
+                ],
+              ),
+              const SizedBox(height: Space.md),
+              for (final s in Subtest.administrationOrder)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 6),
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 34,
+                        child: Text(
+                          s.abbr,
+                          style: context.text.labelMedium?.copyWith(
+                            color: c.textMuted,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 46,
+                        child: Text(
+                          '${QuestionBank.countFor(s)}',
+                          style: context.text.labelLarge?.copyWith(
+                            color: QuestionBank.countFor(s) >= s.questionCount
+                                ? c.textPrimary
+                                : c.danger,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: MeterBar(
+                          value: (QuestionBank.countFor(s) / 45).clamp(
+                            0.0,
+                            1.0,
+                          ),
+                          height: 5,
+                          color: QuestionBank.countFor(s) >= s.questionCount
+                              ? c.primary
+                              : c.danger,
+                        ),
+                      ),
+                      const SizedBox(width: Space.sm),
+                      Text(
+                        '${s.questionCount} needed',
+                        style: context.text.labelSmall?.copyWith(
+                          color: c.textMuted,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+        if (findings.isNotEmpty) ...<Widget>[
+          const SizedBox(height: Space.lg),
+          Eyebrow('Audit findings'),
+          const SizedBox(height: Space.sm),
+          for (final f in findings.take(24))
+            Padding(
+              padding: const EdgeInsets.only(bottom: Space.xs),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Icon(
+                    f.isError
+                        ? Icons.cancel_rounded
+                        : Icons.info_outline_rounded,
+                    size: 13,
+                    color: f.isError ? c.danger : c.warning,
+                  ),
+                  const SizedBox(width: Space.sm),
+                  Expanded(
+                    child: Text(
+                      '${f.questionId ?? f.code}: ${f.message}',
+                      style: context.text.bodySmall?.copyWith(
+                        color: c.textSecondary,
+                        fontSize: 11,
+                        height: 1.4,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
+        const SizedBox(height: Space.lg),
+        Eyebrow('Thinnest skills'),
+        const SizedBox(height: Space.sm),
+        Wrap(
+          spacing: Space.sm,
+          runSpacing: Space.sm,
+          children: <Widget>[
+            for (final entry in thin.take(10))
+              Pill(
+                '${Skills.byId(entry.key).label} (${entry.value})',
+                tone: entry.value == 0
+                    ? PillTone.danger
+                    : (entry.value < 3 ? PillTone.warning : PillTone.neutral),
+                dense: true,
+              ),
+          ],
+        ),
+      ],
     );
   }
 }

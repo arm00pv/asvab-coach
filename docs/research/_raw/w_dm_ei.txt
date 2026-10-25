@@ -1,0 +1,54 @@
+﻿ Helpful Tips for the ASVAB Electronic Information Test | dummies Create co-branded content that converts with Dummies Custom Solutions. Request info today! Create co-branded content that co
+nverts with Custom For Dummies books, AI, videos, infographics, and more. Request info today! Dummies AI Browse Book & Article Categories Book & Article Categories close Technology Academics
+ & The Arts Home, Auto, & Hobbies Body, Mind, & Spirit Business, Careers, & Money Collections Collections Explore all collections close BYOB (Be Your Own Boss) Be a Rad Dad Career Shifting C
+ontemplating the Cosmos For Those Seeking Peace of Mind For the Aspiring Aficionado For the Budding Cannabis Enthusiast For the College Bound For the Exam-Season Crammer For the Game Day Pre
+pper Custom Solutions Book & Article Categories Collections Custom Solutions Dummies AI Main Menu Book & Article Categories Technology Academics & The Arts Home, Auto, & Hobbies Body, Mind, 
+& Spirit Business, Careers, & Money Dummies AI Main Menu Book & Article Categories Technology Academics & The Arts Home, Auto, & Hobbies Body, Mind, & Spirit Business, Careers, & Money Dummi
+es AI Main Menu Collections Explore all collections BYOB (Be Your Own Boss) Be a Rad Dad Career Shifting Contemplating the Cosmos For Those Seeking Peace of Mind For the Aspiring Aficionado 
+For the Budding Cannabis Enthusiast For the College Bound For the Exam-Season Crammer For the Game Day Prepper Dummies AI Home Academics & The Arts Articles Study Skills & Test Prep Articles
+ Armed Services Articles Helpful Tips for the ASVAB Electronic Information Test By Angie Papple Johnston Updated 2018-11-01 2:17:36 From the book No items found. Share Download E-Book Person
+al Finance For Dummies Explore Book 2023/2024 ASVAB For Dummies (+ 7 Practice Tests, Flashcards, & Videos Online) Explore Book Buy Now Subscribe on Perlego Download E-Book Personal Finance F
+or Dummies Explore Book 2023/2024 ASVAB For Dummies (+ 7 Practice Tests, Flashcards, & Videos Online) Explore Book Buy Now Subscribe on Perlego When it comes to the ASVAB Electronic Informat
+ion subtest, don’t feel like you have to know as much as Ben Franklin to get a passing score. Just keep a few basic principles in mind, and use your common sense. If a question asks, “What’s
+ the safest way to run an extension cord to a reading light?” the answer “across the middle of the floor” is probably going to be wrong. You can also figure out quite a few answers if you re
+member these units of measure: Current: Amperes (or amps) Voltage: Volts Resistance: Ohms Power: Watts Energy: Watt-hours If you commit the following principles to memory, you’ll have an eas
+ier time succeeding on the Electronics Information subtest: Ohm’s law: Current = Voltage / Resistance Power Watts = Voltage (volts) × Current (amperes) or P = EI . Current flows from a negat
+ive pole to a positive pole. A closed circuit must exist for electricity to flow. (Think NASCAR.) Alternating current (AC) changes direction constantly at a constant rate. The number of time
+s a current completes two alternations of direction per second is known as its frequency; the unit of measurement for frequency is the hertz (Hz). Electronic devices operate at very high fre
+quencies. Electronic devices often require a specific capacitive or inductive reactance to work. Capacitors and inductors are devices used in circuits to provide the type of reactance needed
+. Devices that change alternating current to direct current are called rectifiers. A transistor can amplify a signal. About This Article This article is from the book: No items found. About 
+the book author: Angie Papple Johnston joined the U.S. Army in 2006 as a Chemical, Biological, Radiological, and Nuclear Specialist. During her second deployment as part of Operation Iraqi F
+reedom, Angie became her battalion’s public affairs representative. She also served as the Lead Cadre for the Texas Army National Guard’s Recruit Sustainment program. This article can be fou
+nd in the category: Armed Services Hot off the press Explore Related content Resources Books Armed Services Articles What Is the ASVAB Test? If you're planning to join a U.S. military branch
+, you need to take the ASVAB test. Find out what it is and how to take it. View [type] Articles Button Text Armed Services Articles Mastering the Science of Movement Training for the ACFT Di
+scover the differences between movement training and muscle training and where the ACFT events fall in the 4Q model's quadrants. View [type] Articles Button Text Armed Services Articles ACFT
+ Event: Two-Mile Run The Two-Mile Run ACFT event measures aerobic endurance, which is needed for dismounted operations, rucking, and infiltration/extraction. View [type] Articles Button Text
+ Armed Services Articles ACFT Event: Sprint-Drag-Carry The Sprint-Drag-Carry event on the ACFT measures agility, anaerobic endurance, muscular strength, and muscular endurance. View [type] A
+rticles Button Text Armed Services Articles ACFT Event: Leg Tuck The Leg Tuck event on the ACFT is how the Army measures muscular strength and endurance and is notoriously tough. View [type]
+ Articles Button Text Armed Services Articles ACFT Event: Hand Release Push-Up—Arm Extension The Hand Release Push-Up—Arm Extension event on the ACFT measures upper body endurance used durin
+g wartime operations. View [type] Articles Button Text Armed Services Articles ACFT Event: Standing Power Throw The Standing Power Throw event on the ACFT represents the ability to execute q
+uick, explosive movements used to move equipment or people. View [type] Articles Button Text Armed Services Articles ACFT Event: 3 Repetition Maximum Deadlift The 3 Repetition Maximum Deadli
+ft event on the ACFT represents the ability to safely and effectively lift heavy loads from the ground. View [type] Articles Button Text Armed Services Articles Alternate Events for the Modi
+fied ACFT Learn about the modified ACFT for soldiers on a permanent profile who have clearance from their medical provider. View [type] Articles Button Text Armed Services Articles The ACFT:
+ 6 Events, Preparation Drill, Recovery Drill ACFT events cover muscular strength and endurance, balance, agility, cardiovascular endurance, anaerobic endurance, and range of motion. View [ty
+pe] Articles Button Text Armed Services Articles Scoring for the 6 ACFT Events Learn how the Army Combat Fitness Test is scored, the order of events, and how failing one event impacts the ot
+her five events. View [type] Articles Button Text Armed Services Articles How to Eat Right to Pass the ACFT Your body needs the right fuel to be able to prepare for and pass the Army Combat 
+Fitness Test. Learn nutrition basics with this cheat sheet. View [type] Articles Button Text Armed Services Cheat Sheet ACFT For Dummies Cheat Sheet The first step toward acing the Army Comb
+at Fitness Test, or ACFT, is to study each test event and understand the expectations. View [type] Cheat Sheet Button Text Armed Services Articles Knowing about Kinetic Energy & Resistance f
+or the ASVAB On the ASVAB Mechanical Comprehension subtest, you need to know the definition of work and the basics of potential and kinetic energy and resistance. View [type] Articles Button
+ Text Armed Services Articles ASVAB Math Subtest: Getting to the Root of the Problems Learn the basics of square roots, perfect squares, irrational numbers, and other root basics to ensure y
+ou score well the ASVAB Math subtest. View [type] Articles Button Text Armed Services Articles You Are What You Speak: Improving Your Vocabulary, Improving Yourself Learn some ways to improv
+e your vocabulary before you take the ASVAB test, particularly the Word Knowledge subtest and the Reading Comprehension subtest. View [type] Articles Button Text Armed Services Articles ASVA
+B Scores for Marine Corps Enlisted Jobs Scan this table and see if you find a Marine Corps enlisted job that interests you. The table shows entry-level MOSs and the ASVAB line scores require
+d. View [type] Articles Button Text Armed Services Articles ASVAB Scores for Navy Enlisted Jobs Scan this table and see if you find a Navy enlisted job that interests you. The table shows en
+try-level NOSs and the ASVAB line scores required. View [type] Articles Button Text Armed Services Articles ASVAB Scores for Air Force Enlisted Jobs Scan this table and see if you find an Ai
+r Force enlisted job that interests you. The table shows entry-level AFSCs and the ASVAB line scores required. View [type] Articles Button Text Armed Services Articles ASVAB Scores for Army 
+Enlisted Jobs Scan this table and see if you find an Army enlisted job that interests you. The table shows entry-level MOSs and the ASVAB line scores required. View [type] Articles Button Te
+xt 2023/2024 ASVAB For Dummies (+ 7 Practice Tests, Flashcards, & Videos Online) Explore Book 2024/2025 ASVAB For Dummies Explore Book ACFT Army Combat Fitness Test For Dummies Explore Book 
+ASVAB AFQT For Dummies Explore Book 2026/2027 ASVAB For Dummies: Book + 7 Practice Tests, Flashcards, and Videos Online Explore Book ASVAB: 1001 Practice Questions For Dummies (+ Online Prac
+tice) Explore Book ASVAB AFQT: 1,001 Practice Questions For Dummies Explore Book No items found. Quick Links About For Dummies Contact Us Activate Online Content Site Map Connect About Dummi
+es Dummies has always stood for taking on complex concepts and making them easy to understand. Dummies helps everyone be more knowledgeable and confident in applying what they know. Whether 
+it's to pass that big test, qualify for that big promotion or even master that cooking technique; people who rely on dummies, rely on it to learn the critical skills and relevant information
+ necessary for success. Terms of Use Privacy Policy Cookies Settings Do Not Sell My Personal Info - CA Only Copyright © 2000-2026 by John Wiley & Sons, Inc. , or related companies. All right
+s reserved, including rights for text and data mining and training of artificial technologies or similar technologies. © 2026 MARVEL Terms of Use Privacy Policy Cookie Settings Do Not Sell M
+y Personal Info Get a Subscription 

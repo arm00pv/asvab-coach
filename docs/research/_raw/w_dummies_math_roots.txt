@@ -1,0 +1,71 @@
+﻿ ASVAB Math Subtest: Getting to the Root of the Problems | dummies Create co-branded content that converts with Dummies Custom Solutions. Request info today! Create co-branded content that c
+onverts with Custom For Dummies books, AI, videos, infographics, and more. Request info today! Dummies AI Browse Book & Article Categories Book & Article Categories close Technology Academic
+s & The Arts Home, Auto, & Hobbies Body, Mind, & Spirit Business, Careers, & Money Collections Collections Explore all collections close BYOB (Be Your Own Boss) Be a Rad Dad Career Shifting 
+Contemplating the Cosmos For Those Seeking Peace of Mind For the Aspiring Aficionado For the Budding Cannabis Enthusiast For the College Bound For the Exam-Season Crammer For the Game Day Pr
+epper Custom Solutions Book & Article Categories Collections Custom Solutions Dummies AI Main Menu Book & Article Categories Technology Academics & The Arts Home, Auto, & Hobbies Body, Mind,
+ & Spirit Business, Careers, & Money Dummies AI Main Menu Book & Article Categories Technology Academics & The Arts Home, Auto, & Hobbies Body, Mind, & Spirit Business, Careers, & Money Dumm
+ies AI Main Menu Collections Explore all collections BYOB (Be Your Own Boss) Be a Rad Dad Career Shifting Contemplating the Cosmos For Those Seeking Peace of Mind For the Aspiring Aficionado
+ For the Budding Cannabis Enthusiast For the College Bound For the Exam-Season Crammer For the Game Day Prepper Dummies AI Home Academics & The Arts Articles Study Skills & Test Prep Article
+s Armed Services Articles ASVAB Math Subtest: Getting to the Root of the Problems By Angie Papple Johnston Updated 2020-04-23 1:31:17 From the book 2026/2027 ASVAB For Dummies: Book + 7 Prac
+tice Tests, Flashcards, and Videos Online Share Download E-Book 2026/2027 ASVAB For Dummies: Book + 7 Practice Tests, Flashcards, and Videos Online Explore Book 2023/2024 ASVAB For Dummies (
++ 7 Practice Tests, Flashcards, & Videos Online) Explore Book Buy Now Subscribe on Perlego Download E-Book 2026/2027 ASVAB For Dummies: Book + 7 Practice Tests, Flashcards, and Videos Online
+ Explore Book 2023/2024 ASVAB For Dummies (+ 7 Practice Tests, Flashcards, & Videos Online) Explore Book Buy Now Subscribe on Perlego Most of the time, the ASVAB Mathematics Knowledge subtes
+t contains only one or two questions testing each specific mathematical concept, such as square roots or irrational numbers. By understanding the basics of square roots, perfect squares, irr
+ational numbers, and other root basics, you should ensure you score well on this subtest. ©Creative Thoughts/Shutterstock.com Square Roots A square root is the factor of a number that, when 
+multiplied by itself, produces the number. Take the number 36, for example. One of the factors of 36 is 6. If you multiply 6 by itself (6 × 6), you come up with 36, so 6 is the square root o
+f 36. The number 36 has other factors, such as 18. But if you multiply 18 by itself (18 × 18), you get 324, not 36. So, 18 isn’t the square root of 36. All whole numbers are grouped into one
+ of two camps when it comes to roots: Perfect squares: Only a few whole numbers, called perfect squares, have exact square roots. For example, the square root of 25 is 5. Irrational numbers:
+ Other whole numbers have square roots that are decimals that go on forever and have no pattern that repeats (nonrepeating, nonterminating decimals), so they’re called irrational numbers. Th
+e square root of 30 is 5.4772255 with no end to the decimal places, so the square root of 30 is an irrational number. The sign for a square root is called the radical sign . It looks like th
+is: . Here’s how you use it: means “the square root of 36” — in other words, 6. Perfect squares Square roots can be difficult to find at times without a calculator, but because you can’t use
+ a calculator during the test, you’re going to have to use your mind and some guessing methods. To find the square root of a number without a calculator, make an educated guess and then veri
+fy your results. To use the educated-guess method (see the next section), you have to know the square roots of a few perfect squares. One good way to do this is to memorize the squares of th
+e square roots 1 through 12: 1 is the square root of 1 (1 × 1 = 1) 2 is the square root of 4 (2 × 2 = 4) 3 is the square root of 9 (3 × 3 = 9) 4 is the square root of 16 (4 × 4 = 16) 5 is th
+e square root of 25 (5 × 5 = 25) 6 is the square root of 36 (6 × 6 = 36) 7 is the square root of 49 (7 × 7 = 49) 8 is the square root of 64 (8 × 8 = 64) 9 is the square root of 81 (9 × 9 = 8
+1) 10 is the square root of 100 (10 × 10 = 100) 11 is the square root of 121 (11 × 11 = 121) 12 is the square root of 144 (12 × 12 = 144) Irrational numbers When the ASVAB asks you to figure
+ square roots of numbers that aren’t perfect squares, the task gets a bit more difficult. In this case, the ASVAB usually asks you to find the square root to the nearest tenth. Suppose you r
+un across this problem: Think about what you know: You know that the square root of 49 is 7, and 54 is slightly greater than 49. You also know that the square root of 64 is 8, and 54 is slig
+htly less than 64. So, if the number 54 is somewhere between 49 and 64, the square root of 54 is somewhere between 7 and 8. Because 54 is closer to 49 than to 64, the square root will be clo
+ser to 7 than to 8, so you can try 7.3 as the square root of 54. Multiply 7.3 by itself: 7.3 × 7.3 = 53.29, which is very close to 54. Now try multiplying 7.4 by itself to see if it’s any cl
+oser to 54: 7.4 × 7.4 = 54.76, which isn’t as close to 54 as 53.29. Therefore, 7.3 is the square root of 54 to the nearest tenth without going over. Other roots The wonderful world of math i
+s also home to concepts like cube roots, fourth roots, fifth roots, and so on. A root is a factor of a number that when cubed (multiplied by itself three times), taken to the fourth power (m
+ultiplied by itself four times), and so on produces the original number. A couple of examples seem to be in order: The cube root of 27 is 3. If you cube 3 (also known as raising it to the th
+ird power or multiplying 3 × 3 × 3), the product is 27. The fourth root of 16 is the number that, when multiplied by itself four times, equals 16. Any guesses? Drumroll, please: 2 is the fou
+rth root of 16 because 2 × 2 × 2 × 2 = 16. About This Article This article is from the book: 2026/2027 ASVAB For Dummies: Book + 7 Practice Tests, Flashcards, and Videos Online About the boo
+k author: Angie Papple Johnston joined the U.S. Army in 2006 as a Chemical, Biological, Radiological, and Nuclear Specialist. During her second deployment as part of Operation Iraqi Freedom,
+ Angie became her battalion’s public affairs representative. She also served as the Lead Cadre for the Texas Army National Guard’s Recruit Sustainment program. This article can be found in t
+he category: Armed Services Hot off the press Explore Related content Resources Books Armed Services Articles What Is the ASVAB Test? If you're planning to join a U.S. military branch, you n
+eed to take the ASVAB test. Find out what it is and how to take it. View [type] Articles Button Text Armed Services Articles Mastering the Science of Movement Training for the ACFT Discover 
+the differences between movement training and muscle training and where the ACFT events fall in the 4Q model's quadrants. View [type] Articles Button Text Armed Services Articles ACFT Event:
+ Two-Mile Run The Two-Mile Run ACFT event measures aerobic endurance, which is needed for dismounted operations, rucking, and infiltration/extraction. View [type] Articles Button Text Armed 
+Services Articles ACFT Event: Sprint-Drag-Carry The Sprint-Drag-Carry event on the ACFT measures agility, anaerobic endurance, muscular strength, and muscular endurance. View [type] Articles
+ Button Text Armed Services Articles ACFT Event: Leg Tuck The Leg Tuck event on the ACFT is how the Army measures muscular strength and endurance and is notoriously tough. View [type] Articl
+es Button Text Armed Services Articles ACFT Event: Hand Release Push-Up—Arm Extension The Hand Release Push-Up—Arm Extension event on the ACFT measures upper body endurance used during warti
+me operations. View [type] Articles Button Text Armed Services Articles ACFT Event: Standing Power Throw The Standing Power Throw event on the ACFT represents the ability to execute quick, e
+xplosive movements used to move equipment or people. View [type] Articles Button Text Armed Services Articles ACFT Event: 3 Repetition Maximum Deadlift The 3 Repetition Maximum Deadlift even
+t on the ACFT represents the ability to safely and effectively lift heavy loads from the ground. View [type] Articles Button Text Armed Services Articles Alternate Events for the Modified AC
+FT Learn about the modified ACFT for soldiers on a permanent profile who have clearance from their medical provider. View [type] Articles Button Text Armed Services Articles The ACFT: 6 Even
+ts, Preparation Drill, Recovery Drill ACFT events cover muscular strength and endurance, balance, agility, cardiovascular endurance, anaerobic endurance, and range of motion. View [type] Art
+icles Button Text Armed Services Articles Scoring for the 6 ACFT Events Learn how the Army Combat Fitness Test is scored, the order of events, and how failing one event impacts the other fiv
+e events. View [type] Articles Button Text Armed Services Articles How to Eat Right to Pass the ACFT Your body needs the right fuel to be able to prepare for and pass the Army Combat Fitness
+ Test. Learn nutrition basics with this cheat sheet. View [type] Articles Button Text Armed Services Cheat Sheet ACFT For Dummies Cheat Sheet The first step toward acing the Army Combat Fitn
+ess Test, or ACFT, is to study each test event and understand the expectations. View [type] Cheat Sheet Button Text Armed Services Articles Knowing about Kinetic Energy & Resistance for the 
+ASVAB On the ASVAB Mechanical Comprehension subtest, you need to know the definition of work and the basics of potential and kinetic energy and resistance. View [type] Articles Button Text A
+rmed Services Articles ASVAB Math Subtest: Getting to the Root of the Problems Learn the basics of square roots, perfect squares, irrational numbers, and other root basics to ensure you scor
+e well the ASVAB Math subtest. View [type] Articles Button Text Armed Services Articles You Are What You Speak: Improving Your Vocabulary, Improving Yourself Learn some ways to improve your 
+vocabulary before you take the ASVAB test, particularly the Word Knowledge subtest and the Reading Comprehension subtest. View [type] Articles Button Text Armed Services Articles ASVAB Score
+s for Marine Corps Enlisted Jobs Scan this table and see if you find a Marine Corps enlisted job that interests you. The table shows entry-level MOSs and the ASVAB line scores required. View
+ [type] Articles Button Text Armed Services Articles ASVAB Scores for Navy Enlisted Jobs Scan this table and see if you find a Navy enlisted job that interests you. The table shows entry-lev
+el NOSs and the ASVAB line scores required. View [type] Articles Button Text Armed Services Articles ASVAB Scores for Air Force Enlisted Jobs Scan this table and see if you find an Air Force
+ enlisted job that interests you. The table shows entry-level AFSCs and the ASVAB line scores required. View [type] Articles Button Text Armed Services Articles ASVAB Scores for Army Enliste
+d Jobs Scan this table and see if you find an Army enlisted job that interests you. The table shows entry-level MOSs and the ASVAB line scores required. View [type] Articles Button Text 2023
+/2024 ASVAB For Dummies (+ 7 Practice Tests, Flashcards, & Videos Online) Explore Book 2024/2025 ASVAB For Dummies Explore Book ACFT Army Combat Fitness Test For Dummies Explore Book ASVAB A
+FQT For Dummies Explore Book 2026/2027 ASVAB For Dummies: Book + 7 Practice Tests, Flashcards, and Videos Online Explore Book ASVAB: 1001 Practice Questions For Dummies (+ Online Practice) E
+xplore Book ASVAB AFQT: 1,001 Practice Questions For Dummies Explore Book Where to find shop now Available at these book sellers across the United States. 2026/2027 ASVAB For Dummies: Book +
+ 7 Practice Tests, Flashcards, and Videos Online Find a Book Store Near You Find a Book Store Near You Shop Now Shop Now Quick Links About For Dummies Contact Us Activate Online Content Site
+ Map Connect About Dummies Dummies has always stood for taking on complex concepts and making them easy to understand. Dummies helps everyone be more knowledgeable and confident in applying 
+what they know. Whether it's to pass that big test, qualify for that big promotion or even master that cooking technique; people who rely on dummies, rely on it to learn the critical skills 
+and relevant information necessary for success. Terms of Use Privacy Policy Cookies Settings Do Not Sell My Personal Info - CA Only Copyright © 2000-2026 by John Wiley & Sons, Inc. , or rela
+ted companies. All rights reserved, including rights for text and data mining and training of artificial technologies or similar technologies. © 2026 MARVEL Terms of Use Privacy Policy Cooki
+e Settings Do Not Sell My Personal Info Get a Subscription 
+

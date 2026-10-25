@@ -165,6 +165,33 @@ abstract final class ExamBuilder {
   static int _overlap(Question q, Set<String> wanted) =>
       q.skills.where(wanted.contains).length;
 
+  /// Picks [n] Paragraph Comprehension items that each use a different passage,
+  /// matching the computer form where every reading item has its own text.
+  /// Returns null when the pool cannot supply that many distinct passages, so
+  /// the caller can fall back to the normal pick.
+  static List<Question>? _distinctPassages(
+    List<Question> pool,
+    int n,
+    int seed,
+  ) {
+    final byPassage = <String, List<Question>>{};
+    for (final q in pool) {
+      final key = (q.passage ?? '').trim();
+      if (key.isEmpty) continue;
+      byPassage.putIfAbsent(key, () => <Question>[]).add(q);
+    }
+    if (byPassage.length < n) return null;
+    final rng = math.Random(seed);
+    final passages = byPassage.keys.toList()..shuffle(rng);
+    final picked = <Question>[];
+    for (final key in passages.take(n)) {
+      final options = byPassage[key]!;
+      picked.add(options[rng.nextInt(options.length)]);
+    }
+    picked.shuffle(math.Random(seed ^ 0x1f2e));
+    return picked;
+  }
+
   /// Picks [n] questions spread across difficulties: roughly a fifth easy,
   /// three fifths medium, a fifth hard, then fills from whatever is left.
   /// Deterministic for a given seed so an attempt is reproducible.
@@ -175,6 +202,13 @@ abstract final class ExamBuilder {
       all.shuffle(math.Random(seed));
       return all;
     }
+    // Paragraph Comprehension is one question per passage on the computer test,
+    // so a section built from this pool must never repeat a passage.
+    if (pool.first.subtest == Subtest.pc) {
+      final distinct = _distinctPassages(pool, n, seed);
+      if (distinct != null) return distinct;
+    }
+
     final rng = math.Random(seed);
     final easy = pool.where((q) => q.difficulty == Difficulty.easy).toList()
       ..shuffle(rng);

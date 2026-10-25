@@ -1,7 +1,10 @@
 import 'catalog.dart';
+import 'mc_figure.dart';
 import 'polyomino.dart';
 
-export 'polyomino.dart' show AoPuzzle, GridCell, Poly;
+export 'mc_figure.dart';
+
+export 'polyomino.dart' show AoConnection, AoLabel, AoPuzzle, GridCell, Poly;
 
 class Question {
   const Question({
@@ -15,6 +18,7 @@ class Question {
     required this.skills,
     this.passage,
     this.puzzle,
+    this.figure,
     this.source,
   });
 
@@ -35,6 +39,9 @@ class Question {
   final Difficulty difficulty;
   final List<String> skills;
   final AoPuzzle? puzzle;
+
+  /// Optional diagram, used by Mechanical Comprehension items.
+  final McFigure? figure;
 
   /// Optional short attribution / knowledge reference shown in review.
   final String? source;

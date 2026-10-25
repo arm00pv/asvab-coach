@@ -1,0 +1,414 @@
+﻿Title: ASVAB Arithmetic Reasoning and Mathematics Knowledge Practice Questions – Kaplan Test Prep
+
+URL Source: https://www.kaptest.com/study/asvab/asvab-arithmetic-reasoning-and-mathematic
+s-knowledge-practice-questions
+
+Markdown Content:
+Master the ASVAB at your own pace with 1,000+ practice questions and expert-led video lessons.
+
+Start Now
+
+[](https://www.kaptest.com
+/study/asvab/asvab-arithmetic-reasoning-and-mathematics-knowledge-practice-questions)
+
+[![Image 2](https://kaptest.cdn.prismic.io/kaptest%2Ff01cbc26-9d17-4970-92fc-1ec8b0f224f8_kaplan_logo
+_purple_726.png)](https://www.kaptest.com/study)
+
+[☰](javascript:void(0);)
+
+*   What is the ASVAB? ▼
+    *   [What's Tested on the ASVAB?](https://www.kaptest.com/study/asvab/what-is-th
+e-asvab)
+    *   [What is the AFQT?](https://www.kaptest.com/study/asvab/what-is-the-afqt)
+    *   [What's on the ASVAB: Paragraph Comprehension](https://www.kaptest.com/study/asvab/whats-
+on-the-asvab-paragraph-comprehension)
+    *   [What's on the ASVAB: Word Knowledge](https://www.kaptest.com/study/asvab/whats-on-the-asvab-word-knowledge)
+    *   [What's on the ASVAB: Tec
+hnical Subtests](https://www.kaptest.com/study/asvab/whats-on-the-asvab-technical-subtests)
+
+*   Studying for the ASVAB ▼
+    *   [ASVAB Math Strategies](https://www.kaptest.com/study/asv
+ab/asvab-math-strategies)
+    *   [ASVAB Technical Subtest Strategies](https://www.kaptest.com/study/asvab/asvab-technical-subtest-strategies)
+    *   [Kaplan ASVAB 2018-2019 Prep Plus](ht
+tps://www.kaptest.com/asvab/books)
+
+*   Free ASVAB Practice ▼
+    *   [Arithmetic Reasoning and Mathematical Knowledge Practice Questions](https://www.kaptest.com/study/asvab/asvab-arithm
+etic-reasoning-and-mathematics-knowledge-practice-questions)
+    *   [Word Knowledge and Paragraph Comprehension Practice Questions](https://www.kaptest.com/study/asvab/asvab-word-knowledge
+-and-paragraph-comprehension-practice-questions)
+    *   [General Science Practice Questions](https://www.kaptest.com/study/asvab/asvab-general-science-practice-questions)
+    *   [Automot
+ive Information Practice Questions](https://www.kaptest.com/study/asvab/asvab-automotive-information-practice-questions)
+    *   [Mechanical Information Practice Questions](https://www.kapt
+est.com/study/asvab/asvab-mechanical-comprehension-practice-questions)
+    *   [Assembling Objects Practice Questions](https://www.kaptest.com/study/asvab/asvab-assembling-objects-practice-
+questions)
+
+*   [ASVAB Prep](https://www.kaptest.com/asvab)
+
+[![Image 3: ASVAB Arithmetic Reasoning and Mathematics Knowledge Practice Questions](https://www.kaptest.com/study/wp-content
+/uploads/ASVAB-Arithmetic-Reasoning-and-Mathematics-Knowledge-Practice-Questions.jpg)](https://www.kaptest.com/study/wp-content/uploads/ASVAB-Arithmetic-Reasoning-and-Mathematics-Knowledge-P
+ractice-Questions.jpg "ASVAB Arithmetic Reasoning and Mathematics Knowledge Practice Questions")
+
+# [ASVAB Arithmetic Reasoning and Mathematics Knowledge Practice Questions](https://www.ka
+ptest.com/study/asvab/asvab-arithmetic-reasoning-and-mathematics-knowledge-practice-questions "Permanent Link: ASVAB Arithmetic Reasoning and Mathematics Knowledge Practice Questions")
+
+Ju
+ly 22, 2026/in [ASVAB](https://www.kaptest.com/study/category/asvab)/by [admin](https://www.kaptest.com/study/author/admin "Posts by admin")
+
+Think you’re ready to take the [ASVAB](https:/
+/www.kaptest.com/asvab/books "asvab")? Try out some practice questions!
+
+  
+
+**Question 1**  
+What is the least common multiple of 7, 9, and 21?  
+A.21  
+B.63  
+C.147  
+D.189
+
+  
+
+
+Answer 1
+
+**B:**To find the least common multiple, you should identify the prime factors of each number. The prime factor of 7 is 7, since it is a prime number. The prime factors of 9 a
+re 3 and 3. The prime factors of 21 are 7 and 3. Therefore the LCM must have two factors of 3 and one factor of 7; 3 × 3 × 7 = 63. To check your work, you can confirm that 7, 9 and 21 all di
+vide evenly into 63.
+
+  
+
+**Question 2**  
+A $200 watch is on sale for $160. What is the percent change in the price of the watch?  
+A.25% decrease  
+B.20% decrease  
+C.20% increase 
+ 
+D.25% increase
+
+  
+
+Answer 2
+
+**B:**Since the price of the watch has gone down, the percent change must represent a decrease. Using the formula for percent change, divide the actual
+ change by the original amount. Since the watch was originally $200 and during the sale it is$160, the watch decreased in price by $40. Divide $40 by the original amount of $200 to get 0.2, 
+or 20%.
+
+  
+
+**Question 3**  
+For all positive values of x < 50, how many values are divisible by both 3 and 5?  
+A. 0  
+B. 1  
+C. 2  
+D. 3
+
+  
+
+Answer 3
+
+**D:**Any number div
+isible by both 3 and 5 must be divisible by 3 × 5, since 3 and 5 are both prime numbers. That’s 15, which is the smallest number. Add another 15 to 15 to find the next number, 30. Then add a
+nother 15, which equals 45. The next number would be 60, but that’s above the range of values indicated in the question. So there are 3 possible values: 15, 30, and 45.
+
+  
+
+**Question 4
+**  
+If the straight line in the graph were extended to a point where y = 100, what would be the value of x at that point?  
+![Image 4: If the straight line in the graph were extended to a
+ point where y = 100, what would be the value of x at that point?](https://wpapp.kaptest.com/study/wp-content/uploads/gPXDSKx5ThuxvGqs2wYP_ASVAB_Arithmetic___Question_4.png)  
+A.100  
+B.10
+2  
+C.200  
+D.202
+
+  
+
+Answer 4
+
+**D:**The graph shows a portion of a straight line and asks what would be the value of the x-coordinate if the line were extended so that y = 100. In
+ order to answer this question, you will first need to determine the equation for the line shown on the graph in the standard y = mx + b form. Two good reference points that the line passes 
+through are (2, 0) and (0, −1). The slope, m, is (0 – (-1)) / (2-0) = 1/2.Since b is the y-intercept, the second point (or the graph itself) shows that b = −1. So the line is defined by the 
+equation y = (1/2)x − 1. Substitute 100 for y: 100 = (1/2)x−1. Multiply both sides by 2: 200 = x − 2, so x = 202
+
+  
+
+**Question 5**  
+Which of the following equations describes a strai
+ght line on a standard coordinate plane?  
+A.x = 3  
+B.y = 1/x  
+C.z = 2x + y  
+D.y = x^2 + 3
+
+  
+
+Answer 5
+
+**A:**The question asks you to determine which of the answer choices ca
+n be plotted as a straight line on the coordinate plane. Since x = 3 does not include y in the equation, you might be tempted to eliminate this answer. However, because y does not appear in 
+the equation, x = 3 for all values of y. Thus, this equation represents a straight, vertical line crossing the x-axis at 3. You can verify that y = 1/x is not a straight line by picking 3 nu
+mbers for x such as 1, 2, and 3. The corresponding y values are 1, 1/2 , and 1/3 . Since y decreases by different amounts for the same increase in x, this is not a straight line. Eliminate c
+hoice (B). Choice (C) can be eliminated because it contains three variables; the coordinate plane has only two. (This equation might describe a straight line in three dimensions.) Choice (D)
+ has the term x^2, so it is not a linear equation and therefore would not be graphed with a straight line.
+
+  
+
+Want more practice like this? Check out Kaplan’s ASVAB Total Prep Book!
+
+
+[ASVAB Total Prep Book](https://amzn.to/4ajHIUk)
+
+**Tags:**[ASVAB](https://www.kaptest.com/study/tag/asvab)
+
+##### Share this entry
+
+*   [Share on Facebook](https://www.facebook.com/s
+harer.php?u=/study/asvab/asvab-arithmetic-reasoning-and-mathematics-knowledge-practice-questions/&t=ASVAB%20Arithmetic%20Reasoning%20and%20Mathematics%20Knowledge%20Practice%20Questions)
+* 
+  [Share on Twitter](https://twitter.com/share?text=ASVAB%20Arithmetic%20Reasoning%20and%20Mathematics%20Knowledge%20Practice%20Questions&url=/study/?p=23238)
+
+/study/wp-content/uploads/AS
+VAB-Arithmetic-Reasoning-and-Mathematics-Knowledge-Practice-Questions.jpg 616 1503 admin http://wpapp.kaptest.com/wp-content/uploads/2020/09/kaplan_logo_purple_726-4.png admin 2026-07-22 09:
+07:41 2026-07-22 14:07:08 ASVAB Arithmetic Reasoning and Mathematics Knowledge Practice Questions
+
+##### You might also like
+
+[![Image 5: ASVAB technical subtests article image](https://
+www.kaptest.com/study/wp-content/uploads/ASVAB-technical-subtests-article-image.jpg)**What's on the ASVAB Technical Subtests?**](https://www.kaptest.com/study/asvab/whats-on-the-asvab-techni
+cal-subtests "What's on the ASVAB Technical Subtests?")
+
+[![Image 6: What subjects does the ASVAB test](https://www.kaptest.com/study/wp-content/uploads/What-subjects-does-the-ASVAB-test.j
+pg)**What's Tested on the ASVAB?**](https://www.kaptest.com/study/asvab/what-is-the-asvab "What's Tested on the ASVAB?")
+
+[![Image 7: asvab word knowledge](https://www.kaptest.com/study/wp
+-content/uploads/asvab-word-knowledge.jpg)**What's on the ASVAB: Word Knowledge**](https://www.kaptest.com/study/asvab/whats-on-the-asvab-word-knowledge "What's on the ASVAB: Word Knowledge"
+)
+
+[![Image 8: What is the AFQT?](https://www.kaptest.com/study/wp-content/uploads/What-is-the-AFQT.jpg)**What is the AFQT?**](https://www.kaptest.com/study/asvab/what-is-the-afqt "What is
+ the AFQT?")
+
+[![Image 9: ASVAB General Science Practice Questions](https://www.kaptest.com/study/wp-content/uploads/ASVAB-General-Science-Practice-Questions.jpg)**ASVAB General Science Pr
+actice Questions**](https://www.kaptest.com/study/asvab/asvab-general-science-practice-questions "ASVAB General Science Practice Questions")
+
+[![Image 10: ASVAB Automotive Information Prac
+tice Questions](https://www.kaptest.com/study/wp-content/uploads/ASVAB-Automotive-Information-Practice-Questions.jpg)**ASVAB Automotive Information Practice Questions**](https://www.kaptest.
+com/study/asvab/asvab-automotive-information-practice-questions "ASVAB Automotive Information Practice Questions")
+
+### ASVAB PREP BOOK
+
+[![Image 11: Kaplan ASVAB Book](https://m.media-a
+mazon.com/images/I/71EOVXcd8qL._SY385_.jpg)](https://amzn.to/4ajHIUk)![Image 12](https://m.media-amazon.com/images/I/71EOVXcd8qL._SY385_.jpg)
+
+### ASVAB INFO & RESOURCES
+
+*   [What’s Tes
+ted on the ASVAB?](https://www.kaptest.com/study/asvab/what-is-the-asvab)
+    *   [ASVAB Strategies](https://www.kaptest.com/study/asvab/asvab-strategies)
+
+*   [ASVAB Technical Subtests: 
+What’s Tested?](https://www.kaptest.com/study/asvab/whats-on-the-asvab-technical-subtests)
+    *   [Technical Subtest Strategies](https://www.kaptest.com/study/asvab/asvab-technical-subtest
+-strategies)
+
+*   [ASVAB Math Strategies](https://www.kaptest.com/study/asvab/asvab-math-strategies)
+    *   [Arithmetic Reasoning & Mathematics Knowledge Practice Questions](https://www.
+kaptest.com/study/asvab/asvab-arithmetic-reasoning-and-mathematics-knowledge-practice-questions)
+
+*   [ASVAB Paragraph Comprehension: What’s Tested?](https://www.kaptest.com/study/asvab/wh
+ats-on-the-asvab-paragraph-comprehension)
+*   [ASVAB Word Knowledge: What’s Tested?](https://www.kaptest.com/study/asvab/whats-on-the-asvab-word-knowledge)
+    *   [Word Knowledge & Paragr
+aph Comprehension Practice Questions](https://www.kaptest.com/study/asvab/asvab-word-knowledge-and-paragraph-comprehension-practice-questions)
+
+*   [ASVAB General Science Practice Question
+s](https://www.kaptest.com/study/asvab/asvab-general-science-practice-questions)
+*   [ASVAB Electronics Information Practice Questions](https://www.kaptest.com/study/asvab/asvab-electronics
+-information-practice-questions)
+*   [ASVAB Automotive Information Practice Questions](https://www.kaptest.com/study/asvab/asvab-automotive-information-practice-questions)
+*   [ASVAB Shop 
+Information Practice Questions](https://www.kaptest.com/study/asvab/asvab-shop-information-practice-questions)
+*   [ASVAB Mechanical Comprehension Practice Questions](https://www.kaptest.co
+m/study/asvab/asvab-mechanical-comprehension-practice-questions)
+*   [ASVAB Assembling Objects Practice Questions](https://www.kaptest.com/study/asvab/asvab-assembling-objects-practice-ques
+tions)
+
+[![Image 13: Kaplan logo](https://www.kaptest.com/study/wp-content/uploads/kaplan-white.png)](https://www.kaptest.com/study/asvab/asvab-arithmetic-reasoning-and-mathematics-knowled
+ge-practice-questions)
+### Need Help?
+
+Call 1-800-KAP-TEST or email [customer.care@kaplan.com](mailto:customer.care@kaplan.com)
+
+All organizational test names and other marks are tradem
+arks or registered trademarks of their respective owners. None of the trademark holders are affiliated with Kaplan or any of its subsidiaries. Visit [kaplan.com/trademark-directory](https://
+www.kaplan.com/trademark-directory) for details.
+
+### Prep for an Exam
+
+[MCAT Test Prep](https://www.kaptest.com/mcat)
+
+[LSAT Test Prep](https://www.kaptest.com/lsat)
+
+[GRE Test Prep
+](https://www.kaptest.com/gre)
+
+[GMAT Test Prep](https://www.kaptest.com/gmat)
+
+[SAT Test Prep](https://www.kaptest.com/sat)
+
+[ACT Test Prep](https://www.kaptest.com/act)
+
+[DAT Test 
+Prep](https://www.kaptest.com/dat)
+
+[NCLEX Test Prep](https://www.kaptest.com/nclex)
+
+[USMLE Test Prep](https://www.kaptest.com/usmle)
+
+[ASVAB Test Prep](https://www.kaptest.com/asvab)
+
+
+[AP Test Prep](https://www.kaptest.com/ap)
+
+### Courses by Location
+
+[NCLEX Locations](https://www.kaptest.com/study/locations/nclex/)
+
+[GRE Locations](https://www.kaptest.com/stud
+y/locations/gre/)
+
+[SAT Locations](https://www.kaptest.com/study/locations/sat/)
+
+[LSAT Locations](https://www.kaptest.com/study/locations/lsat/)
+
+[MCAT Locations](https://www.kaptest.
+com/study/locations/mcat/)
+
+[GMAT Locations](https://www.kaptest.com/study/locations/gmat/)
+
+### Useful Links
+
+[Kaplan Test Prep](https://www.kaptest.com/study/asvab/asvab-arithmetic-r
+easoning-and-mathematics-knowledge-practice-questions)  
+[Contact Us](mailto:customer.care@kaplan.com)  
+[Partner Solutions](https://www.kaptest.com/advisors/kaplan-partner-solutions)  
+[
+Work for Kaplan](https://www.kaptest.com/careers)  
+[Terms and Conditions](https://www.kaptest.com/terms-and-conditions)  
+[Privacy Policy](https://www.kaptest.com/privacy-policy)  
+[CA P
+rivacy Policy](https://www.kaptest.com/ca-privacy-policy-addendum)  
+[Trademark Directory](https://kaplan.com/trademark-directory)
+
+© Copyright Kaplan, Inc. All Rights Reserved. 
+*   [Tw
+itter](https://twitter.com/kaplannews "Twitter")
+*   [Facebook](https://www.facebook.com/Kaplan "Facebook")
+*   [Instagram](https://www.instagram.com/kaplantestprep "Instagram")
+
+[What's
+ Tested on the ASVAB?![Image 14: What subjects does the ASVAB test](https://www.kaptest.com/study/wp-content/uploads/What-subjects-does-the-ASVAB-test.jpg)](https://www.kaptest.com/study/asv
+ab/what-is-the-asvab)[![Image 15: ASVAB Assembling Objects Practice Questions](https://www.kaptest.com/study/wp-content/uploads/ASVAB-Assembling-Objects-Practice-Questions.jpg)ASVAB Assembli
+ng Objects Practice Questions](https://www.kaptest.com/study/asvab/asvab-assembling-objects-practice-questions)
+
+[Scroll to top](https://www.kaptest.com/study/asvab/asvab-arithmetic-reason
+ing-and-mathematics-knowledge-practice-questions#top "Scroll to top")
+
+## This website uses cookies
+
+We use cookies and other tracking technologies to improve your browsing experience on
+ our websites, to show you personalized content and targeted ads, to analyze our website traffic, and to understand our consumers. Except for cookies that are strictly necessary for the webs
+ite to function, you can control your settings through your browser. Blocking some types of cookies may impact your experience of the website and the services we are able to offer. We respec
+t your privacy and choice. Learn more at [privacy policy.](https://www.kaptest.com/privacy-policy)
+
+Cookies Settings Allow All
+
+![Image 17: Company Logo](https://cdn-ukwest.onetrust.com/
+logos/f12ff1f8-470d-4506-ab26-3ba7abb26f27/15a3b82e-7614-4fbe-95aa-a9ca5f850d3c/5e4ef12c-064f-4965-9b13-4087634fd882/Kaplan_logo_PNG1.png)
+
+## Privacy Preference Center
+
+When you visit a
+ny website, it may store or retrieve information on your browser, mostly in the form of cookies. This information might be about you, your preferences, or your device, and is mostly used to 
+make the site work as you expect. The information does not usually identify you directly, but it can give you a more personalized web experience. Because we respect your right to privacy, yo
+u can choose not to allow some types of cookies. Click on the different category headings to learn more and change our default settings. Blocking some types of cookies may impact your experi
+ence of the site and the services we are able to offer.   
+[More information](https://cookiepedia.co.uk/giving-consent-to-cookies)
+
+Allow All
+### Manage Consent Preferences
+
+#### Stric
+tly Necessary Cookies
+
+Always Active
+
+These cookies are necessary for the website to function and cannot be switched off in our systems. They are usually only set in response to actions 
+made by you which amount to a request for services, such as setting your privacy preferences, logging in or filling in forms. You can set your browser to block or alert you about these cooki
+es, but some parts of the site will not then work. These cookies do not store any personally identifiable information.
+
+#### Functional Cookies
+
+- [x] Functional Cookies 
+
+These cookie
+s enable the website to provide enhanced functionality and personalisation. They may be set by us or by third party providers whose services we have added to our pages. If you do not allow t
+hese cookies then some or all of these services may not function properly.
+
+#### Performance Cookies
+
+- [x] Performance Cookies 
+
+These cookies allow us to count visits and traffic sou
+rces so we can measure and improve the performance of our site. They help us to know which pages are the most and least popular and see how visitors move around the site. All information the
+se cookies collect is aggregated and therefore anonymous. If you do not allow these cookies we will not know when you have visited our site, and will not be able to monitor its performance.
+
+
+#### Targeting Cookies
+
+- [x] Targeting Cookies 
+
+These cookies may be set through our site by our advertising partners. They may be used by those companies to build a profile of your
+ interests and show you relevant adverts on other sites. They do not store directly personal information, but are based on uniquely identifying your browser and internet device. If you do no
+t allow these cookies, you will experience less targeted advertising.
+
+### Cookie List
+
+Clear
+*   - [x] checkbox label label 
+
+Apply Cancel
+
+Consent Leg.Interest
+
+- [x] checkbox l
+abel label
+
+- [x] checkbox label label
+
+- [x] checkbox label label
+
+Confirm My Choices
+
+[![Image 18: Powered by Onetrust](https://cdn-ukwest.onetrust.com/logos/static/powered_by_logo
+.svg)](https://www.onetrust.com/solutions/consent-and-preferences/)
+
+BDOW!
+
+![Image 19](https://sumome.com/api/event/?site_id=84652ca491c7395c1881281f1b040512ace69338b100ad09c7619388e41b
+2464&app_id=156085c5-0017-4150-b225-a731ad248f38&shortcut_id=undefined&visitor_id=21faa6467521dfc23e228c28e82e85df9594ab451dbd8f321b1fb2749a42b1c1&event=popup&href=https%3A%2F%2Fwww.kaptest.
+com%2Fstudy%2Fasvab%2Fasvab-arithmetic-reasoning-and-mathematics-knowledge-practice-questions%2F&ref=null&cache=0.012188490670036911)![Image 20](https://sumome.com/api/event/?site_id=84652ca
+491c7395c1881281f1b040512ace69338b100ad09c7619388e41b2464&app_id=156085c5-0017-4150-b225-a731ad248f38.9da05fe34d9f15c30534a3936ff06a755a48c3e348dadcbf7faff92967ef2b9e&shortcut_id=undefined&v
+isitor_id=21faa6467521dfc23e228c28e82e85df9594ab451dbd8f321b1fb2749a42b1c1&event=popup&href=https%3A%2F%2Fwww.kaptest.com%2Fstudy%2Fasvab%2Fasvab-arithmetic-reasoning-and-mathematics-knowled
+ge-practice-questions%2F&ref=null&cache=0.9148178309930195)![Image 21](https://sumome.com/api/event/?site_id=84652ca491c7395c1881281f1b040512ace69338b100ad09c7619388e41b2464&app_id=156085c5-
+0017-4150-b225-a731ad248f38.7899cbd90aaf6a9a130b1afb8da392f279d2665249428ab6be960b20f6ee4f00&shortcut_id=undefined&visitor_id=21faa6467521dfc23e228c28e82e85df9594ab451dbd8f321b1fb2749a42b1c1
+&event=popup&href=https%3A%2F%2Fwww.kaptest.com%2Fstudy%2Fasvab%2Fasvab-arithmetic-reasoning-and-mathematics-knowledge-practice-questions%2F&ref=null&cache=0.6202908447194166)![Image 22](htt
+ps://sumome.com/api/event/?site_id=84652ca491c7395c1881281f1b040512ace69338b100ad09c7619388e41b2464&app_id=156085c5-0017-4150-b225-a731ad248f38.9da05fe34d9f15c30534a3936ff06a755a48c3e348dadc
+bf7faff92967ef2b9e.7899cbd90aaf6a9a130b1afb8da392f279d2665249428ab6be960b20f6ee4f00&shortcut_id=undefined&visitor_id=21faa6467521dfc23e228c28e82e85df9594ab451dbd8f321b1fb2749a42b1c1&event=po
+pup&href=https%3A%2F%2Fwww.kaptest.com%2Fstudy%2Fasvab%2Fasvab-arithmetic-reasoning-and-mathematics-knowledge-practice-questions%2F&ref=null&cache=0.7562044962959554)
+

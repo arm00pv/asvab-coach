@@ -1,0 +1,98 @@
+﻿Title: ASVAB Technical Subtest Strategies – Kaplan Test Prep
+
+URL Source: https://www.kaptest.com/study/asvab/asvab-technical-subtest-strategies
+
+Markdown Content:
+Passing the [AFQT](ht
+tps://www.kaptest.com/study/asvab/what-is-the-afqt "asvab") is essential for enlisting in the armed forces. However, perhaps you don’t just want to enlist—you may want to enlist and to quali
+fy for a specific job. There are many varieties of specialized job opportunities in the armed forces, which could form the foundation for a lifelong military career or could prepare you for 
+a successful career in civilian life after you’ve completed your military service. Doing well on the [ASVAB](https://www.kaptest.com/asvab/books "asvab")’s technical subtests, in addition to
+ the AFQT, is important for qualifying for many of those specialized jobs.
+
+There are six technical subtests:
+
+*   **General Science**
+*   **Electronics Information**
+*   **Automotive 
+Information**
+*   **Shop Information**
+*   **Mechanical Comprehension**
+*   **Assembling Objects**
+
+Be sure to speak with a recruiter, do your research, and form a sense of which subtes
+ts are most important for your goals. That knowledge will tell you which topics you need to study most.
+
+**[ RELATED:**[What’s tested on the ASVAB?](https://www.kaptest.com/study/asvab/wha
+t-is-the-asvab)**]**
+
+If you aren’t sure which career path you are interested in, pay attention to your strengths and the parts of the ASVAB you enjoy. If there is a particular topic that 
+is of interest to you and you would like to learn more about it, you can use that passion to help you decide a potential career path. Conducting online research and speaking to a recruiter c
+an help you determine which paths would help you pursue your interests in the best way. This information can help focus your study time on the most beneficial sections of the test for your i
+deal path.
+
+  
+
+Just as with math questions, it’s very important to figure out what your task is. Does the right answer represent the value of a variable? The name of a planet? The defin
+ition of a unit of measure? The name of a type of tool? How much force is required to move an object? and so on.
+
+Often, a quick glance at the answer choices can help point you in the righ
+t direction. Don’t read them in depth at this point—save that for Step 4. Simply use them to get a sense of what your task is. If all the answer choices are numbers followed by “mHz,” you wi
+ll be calculating the frequency of a wave and expressing that frequency in megahertz. If all the answer choices are the names of planets, your job is to identify a planet. If it’s an Auto In
+formation question and all of the answer choices start with verbs, it’s likely you’ll be describing how to go about some type of auto repair.
+
+This step varies quite a bit depending on the
+ subject matter. Therefore, this section will discuss a variety of approaches depending on the information you are given.
+
+Some technical subtest question may include a diagram. On those q
+uestions, ask yourself:
+
+*   What does the diagram represent?
+*   Are there any important relationships depicted in the diagram?
+*   How does the diagram help me to answer the question?
+
+
+Some technical subtest questions resemble math questions. You may be asked to perform calculations, manipulate variables, or apply a formula (especially on Mechanical Comprehension, but o
+n other tests as well). You can often approach these questions using the same tactics you use for the [math subtests](https://www.kaptest.com/study/asvab/asvab-math-strategies "asvab"). For 
+each technical subtest question involving math, ask yourself:
+
+*   How can I simplify the information I’m given?
+*   Am I given a formula or expected to recall one out of my own knowledge
+?
+*   Can I backsolve, pick numbers, or guess strategically using logic, or should I simply do the math?
+
+Some technical subtest questions may include a graphical representation of data. 
+If you see a chart, graph, table, or other visual arrangement of data, ask yourself:
+
+*   How does the graph relate to the information in the question?
+*   What are the units?
+*   What d
+o the axes represent?
+*   Is there a trend or pattern in the data?
+
+If a technical subtest question includes a few sentences of introductory text, take a moment to paraphrase them to ensu
+re that you understand before you move on to Step 3.
+
+Just as on Paragraph Comprehension and Word Knowledge, having a prediction is a great strategy for finding the right answer efficientl
+y and not being distracted by tempting wrong answer choices. After all, it’s easier to recognize the correct answer if you already have a good idea what it is. Always try to predict unless y
+ou’re using a strategic math approach such as Backsolving or Strategic Guessing; those strategies do not require making a prediction. As you practice, put a sticky note or your hand over the
+ answer choices as you’re working through Step 2, above, to get into the habit of predicting. By Test Day, making a prediction will be second nature, and you will not need to cover the answe
+r choices.
+
+Got a solid prediction? Look for it among the choices.  
+ If you don’t have a solid prediction, seek to discard wrong answer choices that do not make sense. You might be able 
+to eliminate choices that:
+
+*   contain numbers that are obviously too large or too small
+*   are expressed using the wrong units · belong to a different category than that you were asked
+ for. For example, if you are asked to name a planet, “Sirius” would be a wrong answer, since it is a star rather than a planet.
+*   are synonyms: each ASVAB question has only one right ans
+wer, so two answer choices that mean the same thing cannot be correct. For example, if you are working on a shop information question and two of the answer choices are “Vise Grips” and “lock
+ing pliers,” cross both those choices off. They both refer to the same tool, so it cannot be the case that one of those answer choices is right and the other is wrong.
+
+Memorize these step
+s as soon as possible. You don’t want to put off learning it. You’ll have lots of content review to do before you take the technical subtests, and you will want the method in place so that y
+ou can use what you learn about the subject matter to your advantage on ASVAB questions.
+
+**[ KEEP STUDYING:**[ASVAB Strategies](https://www.kaptest.com/study/asvab/asvab-strategies) •[ASV
+AB Math Strategies](https://www.kaptest.com/study/asvab/asvab-math-strategies)**]**
+

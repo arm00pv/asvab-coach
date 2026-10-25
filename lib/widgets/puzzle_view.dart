@@ -19,6 +19,8 @@ class PolyView extends StatelessWidget {
     required this.stroke,
     this.strokeWidth = 1.6,
     this.radius = 4,
+    this.labels = const <AoLabel>[],
+    this.labelColor,
   });
 
   final Poly poly;
@@ -27,6 +29,10 @@ class PolyView extends StatelessWidget {
   final Color stroke;
   final double strokeWidth;
   final double radius;
+
+  /// Lettered attachment points drawn on specific cells.
+  final List<AoLabel> labels;
+  final Color? labelColor;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +47,8 @@ class PolyView extends StatelessWidget {
           stroke: stroke,
           strokeWidth: strokeWidth,
           radius: radius,
+          labels: labels,
+          labelColor: labelColor ?? stroke,
         ),
       ),
     );
@@ -55,6 +63,8 @@ class _PolyPainter extends CustomPainter {
     required this.stroke,
     required this.strokeWidth,
     required this.radius,
+    required this.labels,
+    required this.labelColor,
   });
 
   final Poly poly;
@@ -63,6 +73,8 @@ class _PolyPainter extends CustomPainter {
   final Color stroke;
   final double strokeWidth;
   final double radius;
+  final List<AoLabel> labels;
+  final Color labelColor;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -85,6 +97,27 @@ class _PolyPainter extends CustomPainter {
       canvas.drawRRect(rrect, fillPaint);
       canvas.drawRRect(rrect, strokePaint);
     }
+
+    for (final label in labels) {
+      if (!poly.contains(label.at.x, label.at.y)) continue;
+      final center = Offset(
+        (label.at.x - minX) * cell + cell / 2,
+        (label.at.y - minY) * cell + cell / 2,
+      );
+      final tp = TextPainter(
+        text: TextSpan(
+          text: label.text,
+          style: TextStyle(
+            fontSize: cell * 0.62,
+            fontWeight: FontWeight.w800,
+            color: labelColor,
+            height: 1,
+          ),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      tp.paint(canvas, center - Offset(tp.width / 2, tp.height / 2));
+    }
   }
 
   @override
@@ -98,11 +131,15 @@ class LoosePieces extends StatelessWidget {
     required this.pieces,
     this.cell = 22,
     this.gap = Space.lg,
+    this.stemLabels = const <AoLabel>[],
   });
 
   final List<Poly> pieces;
   final double cell;
   final double gap;
+
+  /// Lettered attachment points, parallel to [pieces] for connection items.
+  final List<AoLabel> stemLabels;
 
   @override
   Widget build(BuildContext context) {
@@ -124,12 +161,15 @@ class LoosePieces extends StatelessWidget {
         spacing: gap,
         runSpacing: gap,
         children: <Widget>[
-          for (final p in pieces)
+          for (var i = 0; i < pieces.length; i++)
             PolyView(
-              poly: p,
+              poly: pieces[i],
               cell: cell,
               fill: c.primary.withValues(alpha: 0.16),
               stroke: c.primary,
+              labels: i < stemLabels.length
+                  ? <AoLabel>[stemLabels[i]]
+                  : const <AoLabel>[],
             ),
         ],
       ),
@@ -147,6 +187,7 @@ class AssemblyOption extends StatelessWidget {
     required this.onTap,
     this.state,
     this.cell = 16,
+    this.labels = const <AoLabel>[],
   });
 
   final String label;
@@ -158,6 +199,9 @@ class AssemblyOption extends StatelessWidget {
   final OptionState? state;
 
   final double cell;
+
+  /// Lettered attachment points drawn on the assembly.
+  final List<AoLabel> labels;
 
   @override
   Widget build(BuildContext context) {
@@ -199,6 +243,7 @@ class AssemblyOption extends StatelessWidget {
                       cell: cell,
                       fill: c.textPrimary.withValues(alpha: 0.10),
                       stroke: state == null ? c.textSecondary : border,
+                      labels: labels,
                     ),
                   ),
                 ),

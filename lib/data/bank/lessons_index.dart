@@ -2,12 +2,18 @@ import '../models/lesson.dart';
 import 'lessons_a.dart';
 import 'lessons_b.dart';
 import 'lessons_c.dart';
+import 'lessons_d.dart';
 
 /// All reinforcement lessons, in one place.
 ///
 /// Lessons are authored per skill so the coach can drop exactly the one the
 /// learner needs after a diagnostic, instead of a generic "study math" page.
-List<Lesson> get allLessons => <Lesson>[...lessonsA, ...lessonsB, ...lessonsC];
+List<Lesson> get allLessons => <Lesson>[
+  ...lessonsA,
+  ...lessonsB,
+  ...lessonsC,
+  ...lessonsD,
+];
 
 abstract final class LessonRepository {
   static final Map<String, Lesson> _bySkill = <String, Lesson>{

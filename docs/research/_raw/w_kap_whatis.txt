@@ -1,0 +1,132 @@
+﻿Title: What's Tested on the ASVAB? – Kaplan Test Prep
+
+URL Source: https://www.kaptest.com/study/asvab/what-is-the-asvab
+
+Markdown Content:
+The ASVAB (Armed Services Vocational Aptitude
+ Battery) is the most widely used multiple-aptitude test battery in the world. It measures a test taker’s suitability to enlist in the United States Armed Forces and assesses his or her abil
+ities to be trained in specific civilian or military jobs.
+
+When you take the ASVAB officially, you will be given either a paper-and-pencil version of the test or a computer version (also 
+referred to as a Computer Adaptive Test ASVAB, or CAT-ASVAB). About 70 percent of prospective recruits take the CAT-ASVAB, so that’s likely to be the version you’ll encounter.
+
+In addition
+ to evaluating math and reading skills, the ASVAB also assesses performance in categories such as science, electronics, auto repair, and the ability to assemble objects. While the section to
+pics and question types are the same on both the paper-and-pencil and CAT-ASVAB versions of the test, the amount of time and number of questions will differ slightly on each version. In the 
+table below, you’ll see the order in which the ASVAB subtests are ordered, the material tested in each section, and the differences between the paper-and-pencil and CAT-ASVAB versions. Addit
+ionally, note the sections that are highlighted in gray. These subtests make up the AFQT. In this table, the subtests are listed in the order in which you’ll take them on Test Day.
+
+| Subt
+est | Questions / Time Limit in Minutes (CAT-ASVAB) | Questions / Time Limit in Minutes (Paper & Pencil) | What’s Tested |
+| --- | --- | --- | --- |
+| General Science (GS) | 16 questions /
+ 8 minutes | 25 questions / 11 minutes | Knowledge of general concepts from life, earth and space, and physical sciences |
+| Arithmetic Reasoning (AR) | 16 questions / 39 minutes | 30 quest
+ions / 36 minutes | Ability to answer word problems that involve basic arithmetic calculations |
+| Word Knowledge (WK) | 16 questions / 8 minutes | 35 questions / 11 minutes | Ability to re
+cognize synonyms of words |
+| Paragraph Comprehension (PC) | 11 questions / 22 minutes | 15 questions / 13 minutes | Ability to answer questions based on short passages (of 30–120 words) |
+
+| Mathematics Knowledge (MK) | 16 questions / 20 minutes | 25 questions / 24 minutes | Knowledge of math concepts, including applied arithmetic, algebra, and geometry |
+| Electronics Infor
+mation (EI) | 16 questions / 8 minutes | 20 questions / 9 minutes | Knowledge of electronic principles and terminology and of basic electronic circuitry |
+| Auto and Shop Information (AS*) 
+| 11 questions / 7 minutes; 11 questions / 6 minutes | 25 questions / 11 minutes | Knowledge of automobiles, and of tool and shop practices and terminology |
+| Mechanical Comprehension (MC)
+ | 16 questions / 20 minutes | 25 questions / 19 minutes | Knowledge of basic mechanical and physical principles |
+| Assembling Objects (AO) | 16 questions / 16 minutes | 25 questions / 15 
+minutes | Ability to determine how a disassembled object will look when it is put back together |
+| Totals | 145 questions / 154 minutes | 225 questions / 149 minutes |  |
+
+**On the CAT-A
+SVAB, Auto and Shop Information is split into two parts (Auto Information [AI] and Shop Information [SI]), but one score is reported.
+
+Unless you are taking the ASVAB at your high school a
+s part of the Department of Defense Career Exploration Program, your first step toward registering to take the ASVAB is to visit the local recruiter for the service branch that you wish to j
+oin. The recruiter will help you complete your enlistment application; you will need to provide necessary documentation. Once you have met the basic qualifications for enlistment, the recrui
+ter will schedule your ASVAB test.
+
+ASVAB results are valid for two years. After taking an initial ASVAB test, you may retake it after 30 days. After the first retest, you may take another
+ retest 30 or more days later. If you have had two retests, you must wait at least six months before taking the test again.
+
+Your official ASVAB scores will come in a variety of styles and
+ will be fully explained to you by your guidance counselor or recruiter. All of the scores matter, though some may matter more than others. Here’s a quick breakdown of what you will find.
+
+
+*   #### AFQT Score
+
+You will receive a single numerical score for the AFQT. 
+*   #### Standard Scores
+
+You will receive a “Standard Score” for each of the subtests. These scores are c
+alculated using a comparison of your raw scores to the raw scores of a standard national sample. According to the Department of Defense, roughly half the population achieves a Standard Score
+ of 50 or above but only about 16 percent scores higher than 59. 
+*   #### Service Composite Scores
+
+These score combinations, sometimes called Line Scores, are used to determine whether 
+a test taker has the necessary vocational aptitude to be trained for different job assignments in all the military branches. For example, a Navy “Engineering Aid” composite score (abbreviate
+d “EA”) is the sum of twice the Mathematics Knowledge score plus the Arithmetic Reasoning and General Science scores. An enlistee must achieve a minimum composite score for the vocation of i
+nterest to be able to qualify to be trained for the job. To cite another example, to qualify for electronics training and occupations in the Army, you must attain a certain score that combin
+es your results on the General Science, Arithmetic Reasoning, Mathematics Knowledge, and Electronics Information tests. For more detailed information, contact your local recruiter or visit t
+he website for your service branch of interest. 
+*   #### Career Exploration Scores
+
+In addition to the Standard Scores, students who take the ASVAB in their high schools as part of the C
+areer Exploration Program also receive three Career Exploration Scores in the composite areas of Verbal Skills, Math Skills, and Science and Technical Skills, which are all reported as stand
+ard scores and as percentiles relative to grade in school and gender. 
+
+  
+
+Depending upon your reasons for taking the ASVAB and your stage in the career decision-making process, you wil
+l take on one of the following three versions of the test battery:
+
+This version of the ASVAB, sometimes referred to as the Production Version, is used for enlistment purposes only and is 
+administered to potential enlistees in all branches of the military. A potential recruit’s performance on the ASVAB subtests is used to determine whether the candidate has the necessary apti
+tudes to enlist in a desired branch of service and for which military jobs the candidate is best suited.
+
+This is a paper-and-pencil, eight-subtest version of the ASVAB that is administere
+d, along with an interest inventory, to high school and postsecondary students as part of the Department of Defense’s Career Exploration Program. The content and format of this ASVAB are the
+ same as the enlistment paper-and-pencil version, with two exceptions: the Assembling Objects subtest is not given, and the Auto and Shop Information subtests are combined into one subtest.
+
+
+Also known as the “In-Service” ASVAB, the AFCT is administered to those already in the military who are looking to switch jobs within the military. It is identical to the paper-and-pencil
+ version of the ASVAB given prior to enlistment.
+
+“Computer-adaptive testing,” or CAT for short, is just a fancy way of saying that the difficulty of the questions you get on the test adap
+ts based on your performance up to that point.
+
+The diagram below models how a computer-adaptive test works. In the diagram, each dot represents a question. Each question is labeled with w
+hether the test taker got the question correct (C) or incorrect (I). The graph also shows the difficulty of each question.
+
+The first question you will see will be of medium difficulty—tha
+t is, it will be aligned to the average ability of test takers. Notice that each time you answer a question correctly, you “earn” a more difficult question, which is aligned to a higher scor
+ing level. Each time you give a wrong answer, your next question will be easier and thus aligned to a lower scoring level. The CAT continues to adapt until you are getting roughly half of th
+e questions you see correct. Once your performance has stabilized in this way, the CAT determines your score based on the difficulty level around which your answers are hovering.
+
+![Image 
+1](https://www.kaptest.com/static/blog/prep/wp-content/uploads/sites/21/2019/02/Screen-Shot-2019-02-01-at-3.24.22-PM.png)
+
+Studies have shown that, overall, people perform the same on the 
+ASVAB whether they take the paper or CAT version of the test. There are, however, some individuals who will tend to do better on one version of the test than the other. Now, you may not have
+ a choice regarding which version of the ASVAB you take. If you do have a choice as to which version of the test you will take, here are some of the advantages and disadvantages of taking th
+e CAT versus the paper test:
+
+**Advantages of Taking the CAT-ASVAB**
+
+*   The length of time of many of the subtests has been reduced from the paper-and-pencil ASVAB, and the number of q
+uestions that you are required to answer has been reduced even more.
+*   The test can be scored immediately. You will know how well you did as soon as you finish the test.
+*   The test adm
+inistration is very flexible, so you don’t have to wait for the next scheduled test date to take the test.
+*   There’s no chance of losing points by filling out your answer sheet incorrectl
+y.
+*   The CAT format gives you the chance to work methodically on one question at a time with no other questions there to distract you.
+
+**Disadvantages of Taking the CAT-ASVAB**
+
+*   
+You cannot skip around on this test; you must answer the questions one at a time in the order the computer gives them to you.
+*   If you realize later that you answered a question incorrect
+ly, you cannot go back and change your answer.
+*   You can’t cross off an answer choice, so you’ll have to use your scrap paper to keep track of the answers you’ve eliminated.
+

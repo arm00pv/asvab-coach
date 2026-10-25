@@ -22,7 +22,9 @@ import 'package:asvab_guard_coach/screens/plan_screen.dart';
 import 'package:asvab_guard_coach/screens/progress_screen.dart';
 import 'package:asvab_guard_coach/screens/results_screen.dart';
 import 'package:asvab_guard_coach/screens/test_center_screen.dart';
+import 'package:asvab_guard_coach/data/bank/mechanical_figures.dart';
 import 'package:asvab_guard_coach/state/app_state.dart';
+import 'package:asvab_guard_coach/widgets/mc_figure_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -206,6 +208,28 @@ void main() {
       const ProgressScreen(),
       state: state,
       size: const Size(1280, 1700),
+    );
+  });
+
+  testWidgets('mc_figures', (tester) async {
+    await _shoot(
+      tester,
+      'mc_figures',
+      Scaffold(
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: <Widget>[
+              for (final q in mechanicalFigureBank)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: McFigureView(figure: q.figure!),
+                ),
+            ],
+          ),
+        ),
+      ),
+      size: const Size(900, 1500),
     );
   });
 

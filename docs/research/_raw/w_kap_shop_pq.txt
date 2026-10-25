@@ -1,0 +1,390 @@
+﻿Title: ASVAB Shop Information Practice Questions – Kaplan Test Prep
+
+URL Source: https://www.kaptest.com/study/asvab/asvab-shop-information-practice-questions
+
+Markdown Content:
+[![Imag
+e 2](https://kaptest.cdn.prismic.io/kaptest%2Ff01cbc26-9d17-4970-92fc-1ec8b0f224f8_kaplan_logo_purple_726.png)](https://www.kaptest.com/study)
+
+[☰](javascript:void(0);)
+
+*   What is the 
+ASVAB? ▼
+    *   [What's Tested on the ASVAB?](https://www.kaptest.com/study/asvab/what-is-the-asvab)
+    *   [What is the AFQT?](https://www.kaptest.com/study/asvab/what-is-the-afqt)
+   
+ *   [What's on the ASVAB: Paragraph Comprehension](https://www.kaptest.com/study/asvab/whats-on-the-asvab-paragraph-comprehension)
+    *   [What's on the ASVAB: Word Knowledge](https://www
+.kaptest.com/study/asvab/whats-on-the-asvab-word-knowledge)
+    *   [What's on the ASVAB: Technical Subtests](https://www.kaptest.com/study/asvab/whats-on-the-asvab-technical-subtests)
+
+*
+   Studying for the ASVAB ▼
+    *   [ASVAB Math Strategies](https://www.kaptest.com/study/asvab/asvab-math-strategies)
+    *   [ASVAB Technical Subtest Strategies](https://www.kaptest.com/
+study/asvab/asvab-technical-subtest-strategies)
+    *   [Kaplan ASVAB 2018-2019 Prep Plus](https://www.kaptest.com/asvab/books)
+
+*   Free ASVAB Practice ▼
+    *   [Arithmetic Reasoning a
+nd Mathematical Knowledge Practice Questions](https://www.kaptest.com/study/asvab/asvab-arithmetic-reasoning-and-mathematics-knowledge-practice-questions)
+    *   [Word Knowledge and Paragr
+aph Comprehension Practice Questions](https://www.kaptest.com/study/asvab/asvab-word-knowledge-and-paragraph-comprehension-practice-questions)
+    *   [General Science Practice Questions](h
+ttps://www.kaptest.com/study/asvab/asvab-general-science-practice-questions)
+    *   [Automotive Information Practice Questions](https://www.kaptest.com/study/asvab/asvab-automotive-informa
+tion-practice-questions)
+    *   [Mechanical Information Practice Questions](https://www.kaptest.com/study/asvab/asvab-mechanical-comprehension-practice-questions)
+    *   [Assembling Obje
+cts Practice Questions](https://www.kaptest.com/study/asvab/asvab-assembling-objects-practice-questions)
+
+*   [ASVAB Prep](https://www.kaptest.com/asvab)
+
+[![Image 3: ASVAB Shop Informat
+ion Practice Questions](https://www.kaptest.com/study/wp-content/uploads/ASVAB-Shop-Information-Practice-Questions.jpg)](https://www.kaptest.com/study/wp-content/uploads/ASVAB-Shop-Informati
+on-Practice-Questions.jpg "ASVAB Shop Information Practice Questions")
+
+# [ASVAB Shop Information Practice Questions](https://www.kaptest.com/study/asvab/asvab-shop-information-practice-qu
+estions "Permanent Link: ASVAB Shop Information Practice Questions")
+
+July 22, 2026/in [ASVAB](https://www.kaptest.com/study/category/asvab)/by [admin](https://www.kaptest.com/study/author
+/admin "Posts by admin")
+
+Planning on taking the [ASVAB](https://www.kaptest.com/asvab/books "asvab")Shop Information Technical Subtest? Try out some practice questions!
+
+  
+
+**Questio
+n 1**  
+ “Tinning” is a process that is related to  
+ A.carpentry  
+ B.roofing  
+ C.soldering  
+ D.welding
+
+  
+
+Answer 1
+
+**C:**If two pieces to be joined by soldering are large, 
+it may pay to tin the surfaces before attempting to join them. Heating the surfaces gently while applying flux to them, and then adding solder once the flux has thoroughly cleaned the materi
+al will accomplish this. Since soldering is the process involved, the correct answer is (C).
+
+  
+
+**Question 2**  
+ What is the tool shown below known as?  
+![Image 4: both water pump 
+pliers and Channellock pliers](https://wpapp.kaptest.com/study/wp-content/uploads/LlUMxKpySGKWFrSv1Hzn_ASVAB_Shop_Info_question2.jpg)  
+ A.water pump pliers only  
+ B.retaining ring pliers
+ only  
+ C.Channellock pliers only  
+ D.both water pump pliers and Channellock pliers
+
+  
+
+Answer 2
+
+**D:**When large-diameter objects must be gripped or twisted, a technician would 
+use adjustable joint pliers to get the job done. These are adjustable over a large range of sizes, as they have multiple “arc-joints” that the pliers can be set into. The handles are also ve
+ry long, which gives very good leverage and makes for maximum gripping power. These pliers are also commonly known as water pump pliers or Channellock pliers. Since choice (D) allows for the
+ tools in both choices (A) and (C), it is the correct answer.
+
+  
+
+**Question 3**  
+ To determine the correct socket size needed for a given bolt head, measure the distance between two 
+________ of the bolt head.  
+ A.adjacent sides  
+ B.parallel threads  
+ C.opposite points  
+ D.parallel sides
+
+  
+
+Answer 3
+
+**D:**The size of a socket for a given bolt head is det
+ermined by the distance between two parallel sides of the bolt head.
+
+  
+
+**Question 4**  
+ What force is responsible for allowing wrenches to tighten or loosen fasteners?  
+ A.acceler
+ation  
+ B.torque  
+ C.tension  
+ D.friction
+
+  
+
+Answer 4
+
+**B:**Whenever you see the words “force” and “wrench” in the same sentence, you should immediately think about torque, (B
+). You can think of torque as twisting motion, which is exactly what allows a fastener to be tightened or loosened. Don’t get torque confused with tension, (C), which instead is a pulling fo
+rce associated with a weight on a string or wire.
+
+  
+
+**Question 5**  
+ What is a benefit of using a ball-peen hammer rather than a claw hammer?  
+ A.It is more suitable for hammering
+ on metal because of its generally stronger head.  
+ B.It is more delicate and can thus be used on fragile surfaces.  
+ C.It can remove nails as well as hammer them in.  
+ D.It provides m
+ore leverage.
+
+  
+
+Answer 5
+
+**A:**A ball-peen hammer has one main benefit: it generally has a stronger head made of steel. This matches choice (A). Choice (B) more closely describes a
+ mallet, certainly not a steel hammer, and choice (C) describes a benefit of a claw hammer, so that is the opposite of what you’re looking for. Finally, it makes little sense to talk about (
+D) leverage when discussing striking tools.
+
+  
+
+Want more practice like this? Check out Kaplan’s ASVAB Total Prep!
+
+[ASVAB Total Prep Book](https://amzn.to/4ajHIUk)
+
+**Tags:**[ASVAB
+](https://www.kaptest.com/study/tag/asvab)
+
+##### Share this entry
+
+*   [Share on Facebook](https://www.facebook.com/sharer.php?u=/study/asvab/asvab-shop-information-practice-questions/&
+t=ASVAB%20Shop%20Information%20Practice%20Questions)
+*   [Share on Twitter](https://twitter.com/share?text=ASVAB%20Shop%20Information%20Practice%20Questions&url=/study/?p=23300)
+
+/study/w
+p-content/uploads/ASVAB-Shop-Information-Practice-Questions.jpg 616 1503 admin http://wpapp.kaptest.com/wp-content/uploads/2020/09/kaplan_logo_purple_726-4.png admin 2026-07-22 09:20:50 2026
+-07-22 14:20:22 ASVAB Shop Information Practice Questions
+
+##### You might also like
+
+[![Image 5: General strategies for the ASVAB](https://www.kaptest.com/study/wp-content/uploads/Gener
+al-strategies-for-the-ASVAB.jpg)**ASVAB Strategies**](https://www.kaptest.com/study/asvab/asvab-strategies "ASVAB Strategies")
+
+[![Image 6: ASVAB Mechanical Comprehension Practice Question
+s](https://www.kaptest.com/study/wp-content/uploads/ASVAB-Mechanical-Comprehension-Practice-Questions.jpg)**ASVAB Mechanical Comprehension Practice Questions**](https://www.kaptest.com/study
+/asvab/asvab-mechanical-comprehension-practice-questions "ASVAB Mechanical Comprehension Practice Questions")
+
+[![Image 7: ASVAB Assembling Objects Practice Questions](https://www.kaptest.
+com/study/wp-content/uploads/ASVAB-Assembling-Objects-Practice-Questions.jpg)**ASVAB Assembling Objects Practice Questions**](https://www.kaptest.com/study/asvab/asvab-assembling-objects-pra
+ctice-questions "ASVAB Assembling Objects Practice Questions")
+
+[![Image 8: ASVAB Arithmetic Reasoning and Mathematics Knowledge Practice Questions](https://www.kaptest.com/study/wp-conten
+t/uploads/ASVAB-Arithmetic-Reasoning-and-Mathematics-Knowledge-Practice-Questions.jpg)**ASVAB Arithmetic Reasoning and Mathematics Knowledge Practice Questions**](https://www.kaptest.com/stu
+dy/asvab/asvab-arithmetic-reasoning-and-mathematics-knowledge-practice-questions "ASVAB Arithmetic Reasoning and Mathematics Knowledge Practice Questions")
+
+[![Image 9: What is the AFQT?](
+https://www.kaptest.com/study/wp-content/uploads/What-is-the-AFQT.jpg)**What is the AFQT?**](https://www.kaptest.com/study/asvab/what-is-the-afqt "What is the AFQT?")
+
+[![Image 10: ASVAB t
+echnical subtests article image](https://www.kaptest.com/study/wp-content/uploads/ASVAB-technical-subtests-article-image.jpg)**What's on the ASVAB Technical Subtests?**](https://www.kaptest.
+com/study/asvab/whats-on-the-asvab-technical-subtests "What's on the ASVAB Technical Subtests?")
+
+### ASVAB PREP BOOK
+
+[![Image 11: Kaplan ASVAB Book](https://m.media-amazon.com/images/I
+/71EOVXcd8qL._SY385_.jpg)](https://amzn.to/4ajHIUk)![Image 12](https://m.media-amazon.com/images/I/71EOVXcd8qL._SY385_.jpg)
+
+### ASVAB INFO & RESOURCES
+
+*   [What’s Tested on the ASVAB?]
+(https://www.kaptest.com/study/asvab/what-is-the-asvab)
+    *   [ASVAB Strategies](https://www.kaptest.com/study/asvab/asvab-strategies)
+
+*   [ASVAB Technical Subtests: What’s Tested?](ht
+tps://www.kaptest.com/study/asvab/whats-on-the-asvab-technical-subtests)
+    *   [Technical Subtest Strategies](https://www.kaptest.com/study/asvab/asvab-technical-subtest-strategies)
+
+* 
+  [ASVAB Math Strategies](https://www.kaptest.com/study/asvab/asvab-math-strategies)
+    *   [Arithmetic Reasoning & Mathematics Knowledge Practice Questions](https://www.kaptest.com/study/
+asvab/asvab-arithmetic-reasoning-and-mathematics-knowledge-practice-questions)
+
+*   [ASVAB Paragraph Comprehension: What’s Tested?](https://www.kaptest.com/study/asvab/whats-on-the-asvab-p
+aragraph-comprehension)
+*   [ASVAB Word Knowledge: What’s Tested?](https://www.kaptest.com/study/asvab/whats-on-the-asvab-word-knowledge)
+    *   [Word Knowledge & Paragraph Comprehension 
+Practice Questions](https://www.kaptest.com/study/asvab/asvab-word-knowledge-and-paragraph-comprehension-practice-questions)
+
+*   [ASVAB General Science Practice Questions](https://www.kap
+test.com/study/asvab/asvab-general-science-practice-questions)
+*   [ASVAB Electronics Information Practice Questions](https://www.kaptest.com/study/asvab/asvab-electronics-information-pract
+ice-questions)
+*   [ASVAB Automotive Information Practice Questions](https://www.kaptest.com/study/asvab/asvab-automotive-information-practice-questions)
+*   [ASVAB Shop Information Practi
+ce Questions](https://www.kaptest.com/study/asvab/asvab-shop-information-practice-questions)
+*   [ASVAB Mechanical Comprehension Practice Questions](https://www.kaptest.com/study/asvab/asva
+b-mechanical-comprehension-practice-questions)
+*   [ASVAB Assembling Objects Practice Questions](https://www.kaptest.com/study/asvab/asvab-assembling-objects-practice-questions)
+
+[![Image
+ 13: Kaplan logo](https://www.kaptest.com/study/wp-content/uploads/kaplan-white.png)](https://www.kaptest.com/study/asvab/asvab-shop-information-practice-questions)
+### Need Help?
+
+Call 1
+-800-KAP-TEST or email [customer.care@kaplan.com](mailto:customer.care@kaplan.com)
+
+All organizational test names and other marks are trademarks or registered trademarks of their respectiv
+e owners. None of the trademark holders are affiliated with Kaplan or any of its subsidiaries. Visit [kaplan.com/trademark-directory](https://www.kaplan.com/trademark-directory) for details.
+
+
+### Prep for an Exam
+
+[MCAT Test Prep](https://www.kaptest.com/mcat)
+
+[LSAT Test Prep](https://www.kaptest.com/lsat)
+
+[GRE Test Prep](https://www.kaptest.com/gre)
+
+[GMAT Test Pre
+p](https://www.kaptest.com/gmat)
+
+[SAT Test Prep](https://www.kaptest.com/sat)
+
+[ACT Test Prep](https://www.kaptest.com/act)
+
+[DAT Test Prep](https://www.kaptest.com/dat)
+
+[NCLEX Tes
+t Prep](https://www.kaptest.com/nclex)
+
+[USMLE Test Prep](https://www.kaptest.com/usmle)
+
+[ASVAB Test Prep](https://www.kaptest.com/asvab)
+
+[AP Test Prep](https://www.kaptest.com/ap)
+
+
+### Courses by Location
+
+[NCLEX Locations](https://www.kaptest.com/study/locations/nclex/)
+
+[GRE Locations](https://www.kaptest.com/study/locations/gre/)
+
+[SAT Locations](https://www
+.kaptest.com/study/locations/sat/)
+
+[LSAT Locations](https://www.kaptest.com/study/locations/lsat/)
+
+[MCAT Locations](https://www.kaptest.com/study/locations/mcat/)
+
+[GMAT Locations](h
+ttps://www.kaptest.com/study/locations/gmat/)
+
+### Useful Links
+
+[Kaplan Test Prep](https://www.kaptest.com/study/asvab/asvab-shop-information-practice-questions)  
+[Contact Us](mailto:
+customer.care@kaplan.com)  
+[Partner Solutions](https://www.kaptest.com/advisors/kaplan-partner-solutions)  
+[Work for Kaplan](https://www.kaptest.com/careers)  
+[Terms and Conditions](ht
+tps://www.kaptest.com/terms-and-conditions)  
+[Privacy Policy](https://www.kaptest.com/privacy-policy)  
+[CA Privacy Policy](https://www.kaptest.com/ca-privacy-policy-addendum)  
+[Tradema
+rk Directory](https://kaplan.com/trademark-directory)
+
+© Copyright Kaplan, Inc. All Rights Reserved. 
+*   [Twitter](https://twitter.com/kaplannews "Twitter")
+*   [Facebook](https://www.f
+acebook.com/Kaplan "Facebook")
+*   [Instagram](https://www.instagram.com/kaplantestprep "Instagram")
+
+[ASVAB Mechanical Comprehension Practice Questions![Image 14: ASVAB Mechanical Compre
+hension Practice Questions](https://www.kaptest.com/study/wp-content/uploads/ASVAB-Mechanical-Comprehension-Practice-Questions.jpg)](https://www.kaptest.com/study/asvab/asvab-mechanical-comp
+rehension-practice-questions)[![Image 15: ASVAB Word Knowledge and Paragraph Comprehension Practice Questions](https://www.kaptest.com/study/wp-content/uploads/ASVAB-Word-Knowledge-and-Parag
+raph-Comprehension-Practice-Questions.jpg)ASVAB Word Knowledge and Paragraph Comprehension Practice Questions](https://www.kaptest.com/study/asvab/asvab-word-knowledge-and-paragraph-comprehe
+nsion-practice-questions)
+
+[Scroll to top](https://www.kaptest.com/study/asvab/asvab-shop-information-practice-questions#top "Scroll to top")
+
+## This website uses cookies
+
+We use cook
+ies and other tracking technologies to improve your browsing experience on our websites, to show you personalized content and targeted ads, to analyze our website traffic, and to understand 
+our consumers. Except for cookies that are strictly necessary for the website to function, you can control your settings through your browser. Blocking some types of cookies may impact your 
+experience of the website and the services we are able to offer. We respect your privacy and choice. Learn more at [privacy policy.](https://www.kaptest.com/privacy-policy)
+
+Cookies Settin
+gs Allow All
+
+![Image 17: Company Logo](https://cdn-ukwest.onetrust.com/logos/f12ff1f8-470d-4506-ab26-3ba7abb26f27/15a3b82e-7614-4fbe-95aa-a9ca5f850d3c/5e4ef12c-064f-4965-9b13-4087634fd882
+/Kaplan_logo_PNG1.png)
+
+## Privacy Preference Center
+
+When you visit any website, it may store or retrieve information on your browser, mostly in the form of cookies. This information mi
+ght be about you, your preferences, or your device, and is mostly used to make the site work as you expect. The information does not usually identify you directly, but it can give you a more
+ personalized web experience. Because we respect your right to privacy, you can choose not to allow some types of cookies. Click on the different category headings to learn more and change o
+ur default settings. Blocking some types of cookies may impact your experience of the site and the services we are able to offer.   
+[More information](https://cookiepedia.co.uk/giving-cons
+ent-to-cookies)
+
+Allow All
+### Manage Consent Preferences
+
+#### Strictly Necessary Cookies
+
+Always Active
+
+These cookies are necessary for the website to function and cannot be swit
+ched off in our systems. They are usually only set in response to actions made by you which amount to a request for services, such as setting your privacy preferences, logging in or filling 
+in forms. You can set your browser to block or alert you about these cookies, but some parts of the site will not then work. These cookies do not store any personally identifiable informatio
+n.
+
+#### Functional Cookies
+
+- [x] Functional Cookies 
+
+These cookies enable the website to provide enhanced functionality and personalisation. They may be set by us or by third party 
+providers whose services we have added to our pages. If you do not allow these cookies then some or all of these services may not function properly.
+
+#### Performance Cookies
+
+- [x] Perf
+ormance Cookies 
+
+These cookies allow us to count visits and traffic sources so we can measure and improve the performance of our site. They help us to know which pages are the most and le
+ast popular and see how visitors move around the site. All information these cookies collect is aggregated and therefore anonymous. If you do not allow these cookies we will not know when yo
+u have visited our site, and will not be able to monitor its performance.
+
+#### Targeting Cookies
+
+- [x] Targeting Cookies 
+
+These cookies may be set through our site by our advertisin
+g partners. They may be used by those companies to build a profile of your interests and show you relevant adverts on other sites. They do not store directly personal information, but are ba
+sed on uniquely identifying your browser and internet device. If you do not allow these cookies, you will experience less targeted advertising.
+
+### Cookie List
+
+Clear
+*   - [x] checkbo
+x label label 
+
+Apply Cancel
+
+Consent Leg.Interest
+
+- [x] checkbox label label
+
+- [x] checkbox label label
+
+- [x] checkbox label label
+
+Confirm My Choices
+
+[![Image 18: Powered
+ by Onetrust](https://cdn-ukwest.onetrust.com/logos/static/powered_by_logo.svg)](https://www.onetrust.com/solutions/consent-and-preferences/)
+
+BDOW!
+

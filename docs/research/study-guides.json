@@ -1,0 +1,1070 @@
+{
+  "generated": "2026-10-26",
+  "notes": "difficultyMix is a modelled authoring target (percent shares of a practice set), NOT a published ratio: no 2024-2026 guide publishes an easy/medium/hard split. See study-guides.md sections 6 and 9.",
+  "subtests": [
+    {
+      "abbr": "GS",
+      "items": 15,
+      "minutesCat": 12,
+      "highYieldTopics": [
+        {
+          "topic": "Life science: cells, DNA, genetics, body systems, ecology",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "Mometrix 2026 checklist lists cell structure, prokaryote vs eukaryote, organelles, DNA, Mendelian genetics, evolution, classification, ecosystems, photosynthesis, respiration, human body systems."
+        },
+        {
+          "topic": "Earth and space science",
+          "frequency": "medium",
+          "formulas": [],
+          "notes": "Earth layers, rock cycle/plate tectonics, weathering vs erosion, weather vs climate, atmosphere composition, moon phases/tides, solar system."
+        },
+        {
+          "topic": "Physical science: matter, atoms, energy, waves",
+          "frequency": "high",
+          "formulas": [
+            "F = (9/5)C + 32"
+          ],
+          "notes": "Official GS samples test density reasoning, temperature conversion, freezing-point depression, atmospheric composition."
+        },
+        {
+          "topic": "Chemistry basics",
+          "frequency": "medium",
+          "formulas": [],
+          "notes": "Atomic number = protons; periodic table periods/groups; pH scale; chemical vs physical change."
+        },
+        {
+          "topic": "Scientific method / measurement",
+          "frequency": "low",
+          "formulas": [],
+          "notes": "Dummies devotes an article to the scientific method; rarely a scored item type in official samples."
+        }
+      ],
+      "mustMemorise": [
+        "F = (9/5)C + 32; 0 C = 32 F; 100 C = 212 F; -40 is the crossover",
+        "Air is about 78% nitrogen and 21% oxygen (argon ~0.9%, CO2 ~0.04%)",
+        "Salt melts ice by lowering the freezing point (freezing-point depression), not by a chemical reaction",
+        "Less dense means molecules are farther apart (the official sample's stated reason)",
+        "Mitochondria = cellular respiration/ATP; chloroplast = photosynthesis; ribosome = protein synthesis; nucleus = DNA",
+        "Dominant vs recessive, genotype vs phenotype, Punnett square, DNA base pairing A-T and G-C",
+        "EM spectrum order: radio, microwave, infrared, visible, ultraviolet, X-ray, gamma",
+        "Three rock classes (igneous, sedimentary, metamorphic); weathering breaks rock, erosion moves it",
+        "Conduction (contact/solids), convection (fluids), radiation (no medium)"
+      ],
+      "distractorPatterns": [
+        "All four options are real science; one relation is wrong (e.g. 'molecules farther apart' vs 'closer together' polarity flip)",
+        "Cause vs consequence swap: a true effect offered as the cause ('it is lighter', 'it moves more quickly')",
+        "Wrong anchor value: 100 C = 32 F (the freezing point) or 200 F (doubling slip)",
+        "All-options-are-real-members: argon, neon, oxygen, nitrogen all occur in air; only the stem word 'principal' decides",
+        "Plausible-mechanism fabrication (salt 'forms an acid', 'chemically destroys water molecules')"
+      ],
+      "difficultyMix": {
+        "easy": 30,
+        "medium": 50,
+        "hard": 20
+      }
+    },
+    {
+      "abbr": "AR",
+      "items": 15,
+      "minutesCat": 55,
+      "highYieldTopics": [
+        {
+          "topic": "Percent, percent change, discount, tax, tip",
+          "frequency": "high",
+          "formulas": [
+            "percent change = (new - old) / old x 100",
+            "a x b% = a x b/100"
+          ],
+          "notes": "Highest-frequency AR topic across Dummies, UTP, Mometrix, Kaplan, official samples."
+        },
+        {
+          "topic": "Rate, distance, time and work/rate",
+          "frequency": "high",
+          "formulas": [
+            "d = r t",
+            "w = r t",
+            "1/t = 1/tA + 1/tB",
+            "W = r t"
+          ],
+          "notes": "UTP chart and Kaplan AR topic list both list rates explicitly."
+        },
+        {
+          "topic": "Unit conversion (English and metric)",
+          "frequency": "high",
+          "formulas": [
+            "desired = starting x conversion factor"
+          ],
+          "notes": "Official AR samples use rotations per minute and gallons per second; Dummies uses 5,280 ft/mile."
+        },
+        {
+          "topic": "Ratio and proportion",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "Part-to-whole vs part-to-part; cross-multiplication."
+        },
+        {
+          "topic": "Averages (mean) and simple statistics",
+          "frequency": "medium",
+          "formulas": [
+            "mean = sum / count"
+          ],
+          "notes": "Kaplan AR topic list includes averages; UTP adds median and mode."
+        },
+        {
+          "topic": "Probability",
+          "frequency": "medium",
+          "formulas": [
+            "p = desired / total",
+            "complement = 1 - p"
+          ],
+          "notes": "Two of the ten Dummies free AR items are probability; UTP lists it under problem-solving."
+        },
+        {
+          "topic": "Interest and money arithmetic",
+          "frequency": "medium",
+          "formulas": [
+            "I = P r t",
+            "A = P(1 + r/n)^(n t)",
+            "A_SI = P(1 + r t)"
+          ],
+          "notes": "Simple interest appears in both Dummies' free AR set and the UTP chart."
+        },
+        {
+          "topic": "Time arithmetic and chart/table reading",
+          "frequency": "low",
+          "formulas": [],
+          "notes": "Dummies includes a chart-reading item; official AR has no chart item in the released samples."
+        }
+      ],
+      "mustMemorise": [
+        "percent change = (new - old) / old x 100, and never divide by the new value",
+        "d = r t and its rearrangements; combined work 1/t = 1/tA + 1/tB",
+        "Simple interest I = Prt; compound A = P(1 + r/n)^(nt)",
+        "1 mi = 5,280 ft; 1 gal = 4 qt = 8 pt; 1 yd = 3 ft; 1 lb = 16 oz; 1 kg = 2.2 lb; 1 in = 2.54 cm; 1 km = 0.62 mi",
+        "Probability = desired / total; complement = 1 - p",
+        "Average = sum / count",
+        "Numeric answer choices are arranged ascending, which makes Backsolving from (B) or (C) work"
+      ],
+      "distractorPatterns": [
+        "The unasked intermediate: the depreciation amount, the other party's vote count, the 0.2-mile portion in feet",
+        "The complement or opposite answer: probability of the opposite outcome, or the 'how much was added' instead of the total",
+        "Wrong unit or scale: per-minute vs per-half-hour, per-load one-way vs round trip",
+        "One step stopped early (single-unit price when total is asked)",
+        "Adjacent-unit slips: 24, 26 and 30 gallons around the correct 28; 276 and 8,280 around 16,560"
+      ],
+      "difficultyMix": {
+        "easy": 25,
+        "medium": 45,
+        "hard": 30
+      }
+    },
+    {
+      "abbr": "WK",
+      "items": 15,
+      "minutesCat": 9,
+      "highYieldTopics": [
+        {
+          "topic": "Prefix, root and suffix decoding",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "Kaplan calls decoding 'a major emphasis'; Mometrix and Achievable list the same skill first."
+        },
+        {
+          "topic": "Synonym selection in and out of context",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "Kaplan claims 'a little more than half' of WK items are no-context (SECONDARY); official samples are 3 no-context to 1 in-context."
+        },
+        {
+          "topic": "Antonyms (occasional)",
+          "frequency": "medium",
+          "formulas": [],
+          "notes": "Dummies' current cheat sheet: 'occasionally antonyms'."
+        },
+        {
+          "topic": "Connotation and word charge (positive/negative/neutral)",
+          "frequency": "medium",
+          "formulas": [],
+          "notes": "Kaplan's charge technique; Mometrix lists connotation vs denotation."
+        },
+        {
+          "topic": "Homophones and sound-alike traps",
+          "frequency": "low",
+          "formulas": [],
+          "notes": "Mometrix lists homophones; official items do not show a pure homophone item."
+        },
+        {
+          "topic": "Parts of speech / grammar labelling",
+          "frequency": "low",
+          "formulas": [],
+          "notes": "Mometrix lists nouns, pronouns, verbs, adjectives, adverbs, prepositions, conjunctions; no official WK item tests grammar labels."
+        },
+        {
+          "topic": "Technical and medical vocabulary register",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "Mometrix's 31-word list includes expectorate, paroxysmal, labile, milieu, febrile, viscosity - Latinate technical words, not literary ones."
+        }
+      ],
+      "mustMemorise": [
+        "Roots: volu/volv turn; greg flock; loqu/locu speak; cred believe; duc/duct lead; fer carry; ject throw; mit/miss send; port carry; scrib/script write; spec/spect look; tract pull; vert/vers turn; voc call",
+        "More roots: anthrop human; chron time; geo earth; therm heat; phon sound; graph write; bio life; auto self; tele far; micro small; macro large; poly many; mono one; syn/sym together",
+        "Prefixes: a/an without; ab away; ad toward; bene good; circum around; con/com together; contra against; de down; dis apart/not; e/ex out; in/im not OR into; inter between; intra within; mal bad; mis wrong; ob against; per through; pre before; pro forward; re back/again; sub under; super above; trans across; un not",
+        "Suffixes: -tion/-sion act/noun; -ous/-ious full of; -ity/-ty state; -al/-ic relating to; -ate to make; -able/-ible capable of; -ism doctrine; -ist one who; -ize to make; -less without; -ment result",
+        "The charge test: if you can only place a word as positive, negative or neutral, that is often enough to eliminate three options",
+        "Predict the meaning before reading the options, then match or eliminate (Kaplan method)"
+      ],
+      "distractorPatterns": [
+        "Same-root or same-sound neighbour (anomaly with oddity, ally, anonymity)",
+        "Wrong intensity in the same semantic field (antagonize with embarrass, struggle, worship)",
+        "The word's other dictionary sense, exploited in in-context items (apprehension with endorsement)",
+        "The antonym offered as a decoy (wilted with budding)",
+        "Never nonsense words: the real test offers four real words"
+      ],
+      "difficultyMix": {
+        "easy": 20,
+        "medium": 50,
+        "hard": 30
+      }
+    },
+    {
+      "abbr": "PC",
+      "items": 10,
+      "minutesCat": 27,
+      "highYieldTopics": [
+        {
+          "topic": "Global questions: main idea, author's purpose, tone",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "Kaplan names this as a common type; wrong answers are too specific, too general, contradictory or too extreme."
+        },
+        {
+          "topic": "Detail questions: explicit information",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "Correct answer is a paraphrase of something in the passage; decoys are lifted from irrelevant parts of the text."
+        },
+        {
+          "topic": "Inference questions",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "Official PC samples include an 'author implies' and a 'does NOT resemble' item."
+        },
+        {
+          "topic": "Vocabulary-in-context",
+          "frequency": "medium",
+          "formulas": [],
+          "notes": "Kaplan's fourth type; answer must substitute without changing meaning."
+        },
+        {
+          "topic": "Contrast and conclusion signposts",
+          "frequency": "medium",
+          "formulas": [],
+          "notes": "but, though, however, although, yet point to the author's view; thus, therefore, I suggest, I believe mark conclusions."
+        },
+        {
+          "topic": "Text structure",
+          "frequency": "medium",
+          "formulas": [],
+          "notes": "Mometrix lists cause/effect, sequence, chronological, compare/contrast, problem/solution, transition words."
+        },
+        {
+          "topic": "Critical reading: fact vs opinion, bias, fallacies",
+          "frequency": "low",
+          "formulas": [],
+          "notes": "Mometrix lists it; official samples do not appear to test fallacy names."
+        },
+        {
+          "topic": "Qualifier words",
+          "frequency": "medium",
+          "formulas": [],
+          "notes": "UTP's own hint: 'most nearly, most likely, usually, probably' signal best-answer, not only-true."
+        }
+      ],
+      "mustMemorise": [
+        "No outside knowledge is ever needed - every answer is in the passage (Kaplan, official description)",
+        "Four question types: Global, Detail, Inference, Vocabulary-in-Context, with their stem wordings",
+        "Contrast signposts (but, though, however, although, yet) mark the author's view",
+        "Conclusion signposts (thus, therefore, I suggest, I believe) mark the main idea",
+        "Qualifier vocabulary (most nearly, most likely, usually, probably) means pick the best answer, not the only true one",
+        "Passage length about 30-120 words per Kaplan; Dummies' 'few hundred words' claim is contradicted and rejected"
+      ],
+      "distractorPatterns": [
+        "True in the passage but not the answer (the official titanium item's 'does not corrode')",
+        "Too specific / too general / too extreme for Global questions",
+        "Detail answer lifted from an irrelevant part of the passage",
+        "Outside information not discussed in the passage (Inference)",
+        "Negation stem trap ('does NOT resemble') where three options restate the passage"
+      ],
+      "difficultyMix": {
+        "easy": 30,
+        "medium": 50,
+        "hard": 20
+      }
+    },
+    {
+      "abbr": "MK",
+      "items": 15,
+      "minutesCat": 31,
+      "highYieldTopics": [
+        {
+          "topic": "Geometry: perimeter, area, volume, surface area",
+          "frequency": "high",
+          "formulas": [
+            "A = pi r^2; C = 2 pi r",
+            "A = (1/2) b h",
+            "A = l w",
+            "A = (1/2)(b1 + b2) h",
+            "V = l w h",
+            "V = pi r^2 h",
+            "V = (1/3) B h",
+            "V = (4/3) pi r^3",
+            "SA = 2(lw + lh + wh)",
+            "SA = 2 pi r^2 + 2 pi r h",
+            "SA = 4 pi r^2"
+          ],
+          "notes": "Dummies teaches 3-D volume explicitly; official MK sample has a brick-volume item."
+        },
+        {
+          "topic": "Right triangles and coordinate geometry",
+          "frequency": "high",
+          "formulas": [
+            "a^2 + b^2 = c^2",
+            "m = (y2 - y1)/(x2 - x1)",
+            "y = m x + b",
+            "distance = root((x2-x1)^2 + (y2-y1)^2)",
+            "45-45-90: x, x, x root 2",
+            "30-60-90: x, x root 3, 2x"
+          ],
+          "notes": "Triples 3-4-5, 5-12-13, 8-15-17; Mometrix lists coordinate geometry basics."
+        },
+        {
+          "topic": "Algebra: linear equations, systems, polynomials, factoring, quadratics",
+          "frequency": "high",
+          "formulas": [
+            "(a +/- b)^2 = a^2 +/- 2ab + b^2",
+            "a^2 - b^2 = (a - b)(a + b)",
+            "a^3 +/- b^3 factorisations",
+            "x/a = b gives x = ab"
+          ],
+          "notes": "Official MK sample tests (x^2 - y^2)/(x - y)."
+        },
+        {
+          "topic": "Exponents and roots",
+          "frequency": "high",
+          "formulas": [
+            "x^a x^b = x^(a+b)",
+            "x^a / x^b = x^(a-b)",
+            "(x^a)^b = x^(ab)",
+            "(xy)^a = x^a y^a",
+            "x^0 = 1",
+            "x^(-a) = 1/x^a",
+            "x^(a/b) = b-root(x^a)"
+          ],
+          "notes": "UTP's MK chart lists the same six rules."
+        },
+        {
+          "topic": "Number properties: factors, multiples, LCM, GCF, primes, odd/even",
+          "frequency": "medium",
+          "formulas": [],
+          "notes": "UTP lists odd/even and positive/negative multiplication rules; Kaplan's LCM item is an MK-level example."
+        },
+        {
+          "topic": "Ratio, proportion, percent, interest",
+          "frequency": "medium",
+          "formulas": [
+            "percent change = (new - old)/old x 100",
+            "I = P r t"
+          ],
+          "notes": "Shared with AR; official MK sample has a 36:12 ratio item."
+        },
+        {
+          "topic": "Mean, median, mode and simple probability",
+          "frequency": "medium",
+          "formulas": [
+            "mean = sum / count",
+            "median = ((n+1)/2)th term (odd n)"
+          ],
+          "notes": "Mometrix lists these under maths; UTP adds standard deviation - over-scope for the real test."
+        }
+      ],
+      "mustMemorise": [
+        "Area and volume formulas for circle, triangle, rectangle, parallelogram, trapezoid, prism, cylinder, pyramid/cone, sphere",
+        "Pythagorean theorem plus triples 3-4-5, 5-12-13, 8-15-17 and the 45-45-90 and 30-60-90 ratios",
+        "All exponent rules including x^0 = 1 and x^(-a) = 1/x^a",
+        "(a +/- b)^2 and a^2 - b^2 = (a - b)(a + b), and the sum/difference of cubes",
+        "Slope m = (y2-y1)/(x2-x1) and the line form y = m x + b",
+        "No calculator is allowed anywhere in the battery, so estimation and clean-number arithmetic matter",
+        "Items are more direct than AR word problems, and there are 124 seconds per item"
+      ],
+      "distractorPatterns": [
+        "Wrong quantity: perimeter or surface area when volume is asked (official brick item's 36 and 44)",
+        "Dropped one-third or dropped square: pyramid volume answered as base x height, or 1,500 instead of 500",
+        "Sign or coefficient slip on the factored form (x - y, x + 2y, 2x - y around x + y)",
+        "Off-by-one ratio neighbour (2:1, 4:1, 5:1 around 3:1)",
+        "One of the inputs, or the product of only some of the inputs, in LCM/GCF items"
+      ],
+      "difficultyMix": {
+        "easy": 25,
+        "medium": 45,
+        "hard": 30
+      }
+    },
+    {
+      "abbr": "EI",
+      "items": 15,
+      "minutesCat": 10,
+      "highYieldTopics": [
+        {
+          "topic": "Ohm's law and power calculations",
+          "frequency": "high",
+          "formulas": [
+            "V = I R",
+            "I = V / R",
+            "P = V I (Dummies prints P = E I)",
+            "P = I^2 R",
+            "P = V^2 / R"
+          ],
+          "notes": "Official EI sample has a resistor-current calculation with 2 ohms."
+        },
+        {
+          "topic": "Series and parallel circuits",
+          "frequency": "high",
+          "formulas": [
+            "series: R = R1 + R2 + ...; I same",
+            "parallel: 1/R = 1/R1 + 1/R2 + ...; V same"
+          ],
+          "notes": "Mometrix and UTP both list series/parallel rules first."
+        },
+        {
+          "topic": "Electrical units and measurement",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "ampere, volt, ohm, watt, watt-hour, hertz; official item asks what an ohmmeter measures."
+        },
+        {
+          "topic": "Components and their functions",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "resistor, capacitor, inductor, diode/rectifier, transistor, transformer, fuse/breaker, relay, switch, ground."
+        },
+        {
+          "topic": "AC vs DC and frequency",
+          "frequency": "medium",
+          "formulas": [
+            "f = 1 / T"
+          ],
+          "notes": "Official EI sample asks what AC abbreviates; Dummies defines frequency in hertz."
+        },
+        {
+          "topic": "Semiconductors, generators, motors, wiring and safety",
+          "frequency": "medium",
+          "formulas": [],
+          "notes": "Kaplan names household-wiring safety devices explicitly as in scope."
+        },
+        {
+          "topic": "Kirchhoff's laws, resistor colour codes, reactance",
+          "frequency": "low",
+          "formulas": [],
+          "notes": "Mometrix lists all three; no official sample tests them - treat as over-scope."
+        }
+      ],
+      "mustMemorise": [
+        "Units: current ampere, voltage volt, resistance ohm, power watt, energy watt-hour, frequency hertz",
+        "Ohm's law in both notations (V = IR and I = V/R) and power in all three forms (P = VI, P = I^2 R, P = V^2/R)",
+        "Series: one path, current identical, resistances add. Parallel: voltage identical, currents add, resistances reciprocate",
+        "Resistance rises with length and temperature and falls with thickness",
+        "Diode allows one-way current and rectifies AC to DC; transistor amplifies or switches; capacitor stores charge and blocks DC; inductor opposes current change; transformer changes AC voltage only",
+        "A closed circuit is required for current; a fuse or breaker opens on overload; ground is a safety return path",
+        "E is used for voltage in some ASVAB items, so read P = EI as P = VI"
+      ],
+      "distractorPatterns": [
+        "Sibling quantity: voltage, inductance and capacitance offered when an ohmmeter is asked about",
+        "Initialism decoys that fit the letters (AC offered as 'additional charge', 'alternating coil', 'ampere current')",
+        "Reversed-polarity pair: 'requires less operating power' vs 'requires more operating power', plus the obsolete-tube comparison",
+        "Reciprocal or fraction slip around V/R (one-third, one-half, 1, 3 amperes for a 2-ohm resistor)"
+      ],
+      "difficultyMix": {
+        "easy": 30,
+        "medium": 50,
+        "hard": 20
+      }
+    },
+    {
+      "abbr": "AI",
+      "items": 10,
+      "minutesCat": 7,
+      "highYieldTopics": [
+        {
+          "topic": "Engine: four-stroke cycle and major components",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "Mometrix lists 4-stroke cycle, engine components, ignition, fuel, cooling, lubrication, exhaust/emissions."
+        },
+        {
+          "topic": "Drivetrain, transmission, differential",
+          "frequency": "high",
+          "formulas": [
+            "gear ratio = driven teeth / drive teeth"
+          ],
+          "notes": "Kaplan advises systems-level understanding so details can be inferred."
+        },
+        {
+          "topic": "Brakes, suspension, steering, tyres",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "master cylinder, caliper, rotor, shock/strut/spring, rack-and-pinion, tread and pressure."
+        },
+        {
+          "topic": "Electrical system of the vehicle",
+          "frequency": "medium",
+          "formulas": [
+            "P = V I"
+          ],
+          "notes": "12 V nominal battery, negative ground, alternator charges, starter cranks."
+        },
+        {
+          "topic": "Fluids and maintenance",
+          "frequency": "medium",
+          "formulas": [],
+          "notes": "oil, coolant, brake fluid, transmission fluid, power steering fluid and their reservoirs."
+        },
+        {
+          "topic": "Shop vocabulary shared with SI",
+          "frequency": "medium",
+          "formulas": [],
+          "notes": "ferrous vs non-ferrous, welding vs soldering, torque vs horsepower, tolerance, blueprints."
+        },
+        {
+          "topic": "Diagnostics and troubleshooting",
+          "frequency": "low",
+          "formulas": [],
+          "notes": "Not evidenced in official samples; guides emphasise parts and functions, not fault-finding."
+        }
+      ],
+      "mustMemorise": [
+        "Four-stroke order: intake, compression, power, exhaust",
+        "Spark ignition (gasoline) vs compression ignition (diesel)",
+        "Part-function map: alternator charges, starter cranks, radiator cools, oil pump lubricates, catalytic converter cleans exhaust, master cylinder pressurises brakes, differential splits torque on turns",
+        "Gear ratio = driven / drive teeth; lower gear means more torque and less speed",
+        "12 V battery with negative ground; brake fluid is hydraulic, not compressible",
+        "Ferrous contains iron; soldering joins at low temperature, welding at high temperature"
+      ],
+      "distractorPatterns": [
+        "Wrong system's component offered for the question (a cooling part in a brake item)",
+        "Adjacent stroke in the four-stroke cycle",
+        "Reversed cause and effect ('the battery charges the alternator')",
+        "Real part with a wrong function",
+        "NOTE: pattern is SECONDARY - no official AI sample items were verifiable in this study; validate before publishing"
+      ],
+      "difficultyMix": {
+        "easy": 30,
+        "medium": 50,
+        "hard": 20
+      }
+    },
+    {
+      "abbr": "SI",
+      "items": 10,
+      "minutesCat": 6,
+      "highYieldTopics": [
+        {
+          "topic": "Saws and cutting tools",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "Official SI item asks which saw rough-cuts with the grain in a thick board (ripsaw)."
+        },
+        {
+          "topic": "Clamps and holding devices",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "Official SI item asks to name a clamp pictured (bar, web, spring, parallel all offered)."
+        },
+        {
+          "topic": "Drilling, punching and boring tools",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "Dummies has a dedicated article: twist drills and bits, shank vs point, countersink."
+        },
+        {
+          "topic": "Fasteners and threads",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "wood vs machine vs lag screws, bolts, washers, nail types, rivets, screw-head types, thread pitch."
+        },
+        {
+          "topic": "Measuring and layout tools",
+          "frequency": "medium",
+          "formulas": [],
+          "notes": "tape, steel rule, try and combination square, level, plumb, caliper, feeler gauge, chalk line."
+        },
+        {
+          "topic": "Files, abrasives and finishing",
+          "frequency": "medium",
+          "formulas": [],
+          "notes": "Grit numbering (lower = coarser); official item: a sanding block prevents high spots and ridges."
+        },
+        {
+          "topic": "Materials, welding and blueprints",
+          "frequency": "medium",
+          "formulas": [],
+          "notes": "Mometrix lists wood types and grain, lumber dimensions and grades, joints, ferrous vs non-ferrous, welding and soldering, blueprints."
+        },
+        {
+          "topic": "Tool safety and PPE",
+          "frequency": "medium",
+          "formulas": [],
+          "notes": "Listed by Mometrix and Kaplan ('use them safely')."
+        }
+      ],
+      "mustMemorise": [
+        "Ripsaw cuts with the grain (coarse teeth); crosscut saw cuts across the grain (finer teeth); backsaw for joinery; coping saw for curves; hacksaw for metal",
+        "Bar clamp (long jaw), web clamp (band around a frame), spring clamp (light one-hand pressure), parallel clamp (jaws stay parallel)",
+        "A countersink bevels the hole mouth so a screw head sits flush; a twist drill makes the hole; an auger bit bores deep in wood; a cold chisel cuts cold metal",
+        "Screw-head types: flat, Phillips, hex, Torx; righty-tighty to tighten",
+        "A sanding block prevents high spots and ridges on a sanded surface",
+        "Square, level and plumb for layout; grit number lower means coarser abrasive",
+        "36 seconds per item - this subtest is pure identification and is the highest-yield one to drill with images"
+      ],
+      "distractorPatterns": [
+        "Four real tools from a single family, one attribute deciding (ripsaw vs backsaw vs coping saw vs crosscut saw)",
+        "Four real clamp types discriminated only by a picture",
+        "Four plausible purposes for a simple tool (the sanding-block item)",
+        "Never a fabricated tool name - the real test does not use fake options"
+      ],
+      "difficultyMix": {
+        "easy": 35,
+        "medium": 45,
+        "hard": 20
+      }
+    },
+    {
+      "abbr": "MC",
+      "items": 15,
+      "minutesCat": 22,
+      "highYieldTopics": [
+        {
+          "topic": "Work, power, energy",
+          "frequency": "high",
+          "formulas": [
+            "W = F d",
+            "foot-pound = 1 lb lifted 1 ft",
+            "Power = W / t",
+            "KE = (1/2) m v^2",
+            "PE = m g h"
+          ],
+          "notes": "Dummies devotes a full article to work in foot-pounds and to effort vs work."
+        },
+        {
+          "topic": "Levers, pulleys and mechanical advantage",
+          "frequency": "high",
+          "formulas": [
+            "lever MA = effort arm / resistance arm",
+            "pulley MA = number of supporting strands",
+            "inclined plane MA = length / height",
+            "wheel and axle MA = R / r"
+          ],
+          "notes": "Mometrix lists 1st/2nd/3rd class levers, pulleys, inclined planes, wedges, screws, wheel and axle, gears, cams and cranks."
+        },
+        {
+          "topic": "Gears and drives",
+          "frequency": "high",
+          "formulas": [
+            "gear ratio = teeth ratio"
+          ],
+          "notes": "Official MC item: identify a gear arrangement (spur, bevel, rack-and-pinion, worm-and-wheel)."
+        },
+        {
+          "topic": "Centre of gravity, stability, structures",
+          "frequency": "high",
+          "formulas": [
+            "torque = force x distance from pivot"
+          ],
+          "notes": "Official MC item: extending a crane's reach shifts its centre of gravity."
+        },
+        {
+          "topic": "Pressure and fluids",
+          "frequency": "medium",
+          "formulas": [
+            "pressure = force / area",
+            "hydraulic MA = area ratio (Pascal)",
+            "buoyant force = weight of displaced fluid (Archimedes)"
+          ],
+          "notes": "Official MC item: why the intake valve opens as the piston descends (pressure comparison X/Y)."
+        },
+        {
+          "topic": "Friction and Newton's laws",
+          "frequency": "medium",
+          "formulas": [
+            "F = m a",
+            "kinetic friction < static friction"
+          ],
+          "notes": "Official MC item: direction of friction on a skier."
+        },
+        {
+          "topic": "Heat transfer and elasticity",
+          "frequency": "low",
+          "formulas": [
+            "Hooke: F = k x"
+          ],
+          "notes": "Mometrix lists conduction/convection/radiation and Hooke's law; low frequency in official samples."
+        },
+        {
+          "topic": "Bernoulli, momentum, centripetal force",
+          "frequency": "low",
+          "formulas": [
+            "momentum = m v",
+            "centripetal = m v^2 / r"
+          ],
+          "notes": "Mometrix over-scope - no official sample tests these."
+        }
+      ],
+      "mustMemorise": [
+        "W = F x d in foot-pounds, and work is not the same as effort",
+        "Power = work / time",
+        "Lever MA = effort arm / resistance arm; 1st class fulcrum between, 2nd class resistance between (MA > 1), 3rd class effort between (MA < 1)",
+        "Pulley MA = number of rope strands supporting the load; inclined plane MA = length / height",
+        "Touching gears turn in opposite directions; larger driven gear turns slower with more torque",
+        "Pressure = force / area and acts equally in all directions at a depth; hydraulic MA = area ratio",
+        "Centre of gravity: lower and wider means more stable; extending a crane's reach shifts it",
+        "Kinetic friction is less than static friction and does not depend on contact area"
+      ],
+      "distractorPatterns": [
+        "The mirrored inequality is always among the options (X less than Y vs X greater than Y), often with a third-point comparison added",
+        "Sibling technical term one word away (centre of gravity vs centre of buoyancy)",
+        "Four real gear or machine types discriminated by a picture (spur, bevel, rack-and-pinion, worm-and-wheel)",
+        "Same diagram with exactly one changed vector or support (friction direction, which shelf holds more)",
+        "Cause stated as the device's purpose or vice versa"
+      ],
+      "difficultyMix": {
+        "easy": 30,
+        "medium": 50,
+        "hard": 20
+      }
+    },
+    {
+      "abbr": "AO",
+      "items": 15,
+      "minutesCat": 18,
+      "highYieldTopics": [
+        {
+          "topic": "Connection-type items (two parts joined by a line between labelled dots)",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "Official stem: 'how the objects in the left box will touch if the letters for each object are matched'."
+        },
+        {
+          "topic": "Fit-together / jigsaw items (two or more parts assembled)",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "Official stem: 'how the objects in the left box will appear if they are fit together'."
+        },
+        {
+          "topic": "Mental rotation",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "Rotation is legal; reflection is never acceptable."
+        },
+        {
+          "topic": "Mirror-image recognition",
+          "frequency": "high",
+          "formulas": [],
+          "notes": "Dummies names mirror representations as the primary trap; Mometrix lists 'recognize completed shape after reflection'."
+        },
+        {
+          "topic": "Part orientation and edge direction",
+          "frequency": "medium",
+          "formulas": [],
+          "notes": "Mometrix: track edge direction, match angle orientation, compare attachment positions, top/bottom orientation."
+        },
+        {
+          "topic": "Shape relationships and missing/extra features",
+          "frequency": "medium",
+          "formulas": [],
+          "notes": "Mometrix: match touching edges, relative part size, spot missing or extra features, interior vs exterior lines."
+        },
+        {
+          "topic": "Final-outline prediction",
+          "frequency": "medium",
+          "formulas": [],
+          "notes": "Check that all pieces are accounted for before choosing."
+        }
+      ],
+      "mustMemorise": [
+        "Two item families: connection (dot and line) and fit-together (jigsaw)",
+        "Rotation is legal, reflection is not - a mirrored option is always wrong",
+        "Check one feature at a time across all four options (a single dot, a single edge)",
+        "For connection items the discriminating features are the dot's position and where the line enters or exits the shape",
+        "Eliminate any option containing a part you were not given, or missing a notch you were given",
+        "AO does not count toward the AFQT, so triage it last if time is short; 72 seconds per item"
+      ],
+      "distractorPatterns": [
+        "Mirror image of the correct assembly (reflection instead of rotation)",
+        "Correct parts with one part mis-rotated",
+        "Near-touching variant: the dot or edge is adjacent but not attached",
+        "Similar-looking part with a missing or added feature"
+      ],
+      "difficultyMix": {
+        "easy": 30,
+        "medium": 50,
+        "hard": 20
+      }
+    }
+  ],
+  "commonGuideErrors": [
+    "Dummies' live 'Breakdown of the ASVAB Subtests' page (Rod Powers, updated 2016-07-24) still publishes 16-item CAT counts and 8-minute GS/WK/EI limits; official is 15 items, 12/9/10 minutes. https://www.dummies.com/article/academics-the-arts/study-skills-test-prep/armed-services/breakdown-of-the-asvab-subtests-169176/",
+    "The same 2016 page still names Coding Speed as a live subtest 'for a few Navy jobs'.",
+    "Kaplan's ASVAB Math Strategies page gives AR 42 minutes and MK 23 minutes; official is 55 and 31. The 23 matches the retired 2020 official figure. https://www.kaptest.com/study/asvab/asvab-math-strategies/",
+    "Kaplan's own site still links to 'Kaplan ASVAB 2018-2019 Prep Plus' in its navigation, evidence of pages frozen years ago.",
+    "Dummies tells candidates the CAT does not penalise guessing 'unless you're making a lot of guesses at the end of a computerized subtest'; the official 2026 fact sheet says the CAT-ASVAB has a penalty for guessing.",
+    "Dummies describes PC passages as 'usually a few hundred words'; Kaplan says 30-120 words and the official samples are two to four sentences.",
+    "Achievable's AFQT percentages (AR 27-29%, WK 27-33%) are shares of AFQT QUESTIONS, not of score; because VE is doubled, verbal is about 55.6% of AFQT raw weight and AR/MK 16.7% each.",
+    "Achievable states '135-150 questions' and '3 hours 17+ minutes' for the CAT; official is 135 items and 197 minutes of limits.",
+    "Achievable, Mometrix and others still publish per-branch AFQT minimums without a date, which drift whenever a branch changes policy; the Program publishes no such table.",
+    "Peterson's Master the ASVAB in print is the 23rd edition dated May 2018, i.e. written under pre-2020 CAT time limits; it is not a 2024-2026 source.",
+    "No 2024-2026 McGraw-Hill ASVAB edition could be located (2023 product is the newest found), so any 'current' McGraw-Hill citation should be treated as 2023.",
+    "Union Test Prep's ASVAB formula sheet teaches standard deviation, variance, coefficient of variation, conditional probability, arithmetic and geometric sequences and logarithms, none of which appear in official samples or in any guide's own scope list.",
+    "Free line-score and composite-formula pages still circulate formulas containing Numerical Operations (NO) and Coding Speed (CS), two subtests retired from the CAT-ASVAB; only GT = VE + AR is consistently defensible.",
+    "Barron's 14th-edition blurb says '7 full-length practice tests - 4 in the book and 4 online' (4+4 = 8), showing vendor copy is unaudited.",
+    "Mometrix's free checklists include graduate-adjacent topics (Kirchhoff's laws, Bernoulli, Hooke, permutations and combinations) that over-scope the real test and can waste a candidate's remaining study time.",
+    "Study.com's ASVAB pages could not be read at all (CAPTCHA), so nothing attributed to Study.com should be presented as verified.",
+    "The official 2024 fact sheet itself printed a total of 198 minutes while its own subtest times summed to 197; guides that copied it inherited the error."
+  ],
+  "sources": [
+    {
+      "name": "ASVAB Fact Sheet (2026 printing), official U.S. Government",
+      "url": "https://www.officialasvab.com/wp-content/uploads/2019/08/asvab_fact_sheet.pdf",
+      "edition": "2026 fact sheet",
+      "year": 2026
+    },
+    {
+      "name": "ASVAB Fact Sheet (2025 printing)",
+      "url": "https://www.officialasvab.com/wp-content/uploads/2019/08/asvab_fact_sheet.pdf",
+      "edition": "2025 fact sheet",
+      "year": 2025
+    },
+    {
+      "name": "ASVAB Fact Sheet (2024 and 2023 printings)",
+      "url": "https://www.officialasvab.com/wp-content/uploads/2019/08/asvab_fact_sheet.pdf",
+      "edition": "2023-2024 fact sheets",
+      "year": 2024
+    },
+    {
+      "name": "What to Expect When You Take the ASVAB",
+      "url": "https://www.officialasvab.com/applicants/what-to-expect/",
+      "edition": "live page, 2026",
+      "year": 2026
+    },
+    {
+      "name": "ASVAB Sample Questions (all ten subtests)",
+      "url": "https://www.officialasvab.com/applicants/sample-questions/",
+      "edition": "live page, 2026",
+      "year": 2026
+    },
+    {
+      "name": "ASVAB Test Preparation Disclaimer",
+      "url": "https://www.officialasvab.com/applicants/asvab-test-preparation-disclaimer/",
+      "edition": "updated 2025-06-09",
+      "year": 2025
+    },
+    {
+      "name": "ASVAB For Dummies, 2026/2027 edition (Angie Papple Johnston, Wiley, 656 pp)",
+      "url": "https://www.wiley.com/en-us/2026%2F2027+ASVAB+For+Dummies%3A+Book+%2B+7+Practice+Tests%2C+Flashcards%2C+and+Videos+Online-p-9781394401888",
+      "edition": "2026/2027 (ISBN 978-1-394-40188-8)",
+      "year": 2026
+    },
+    {
+      "name": "ASVAB For Dummies, 2025/2026 edition",
+      "url": "https://www.wiley.com/en-us/2025%2F2026+ASVAB+For+Dummies%3A+Book+%2B+7+Practice+Tests%2C+Flashcards%2C+and+Videos+Online-p-9781394323470",
+      "edition": "2025/2026 (ISBN 978-1-394-32347-0)",
+      "year": 2025
+    },
+    {
+      "name": "Dummies, ASVAB For Dummies Cheat Sheet (A. P. Johnston, updated 2025-03-10)",
+      "url": "https://www.dummies.com/article/asvab-for-dummies-cheat-sheet-208900",
+      "edition": "web article from the 2026/2027 book",
+      "year": 2025
+    },
+    {
+      "name": "Dummies, Breakdown of the ASVAB Subtests (R. Powers, updated 2016-07-24 - STALE)",
+      "url": "https://www.dummies.com/article/academics-the-arts/study-skills-test-prep/armed-services/breakdown-of-the-asvab-subtests-169176/",
+      "edition": "web article, 2016",
+      "year": 2016
+    },
+    {
+      "name": "Dummies, ASVAB Arithmetic Reasoning practice questions",
+      "url": "https://www.dummies.com/article/academics-the-arts/study-skills-test-prep/armed-services/asvab-arithmetic-reasoning-practice-150180/",
+      "edition": "web article from ASVAB For Dummies",
+      "year": 2024
+    },
+    {
+      "name": "Dummies, ASVAB Mathematics Knowledge practice: volume",
+      "url": "https://www.dummies.com/article/asvab-mathematics-knowledge-practice-volume-242226",
+      "edition": "web article from ASVAB AFQT: 1001 Practice Questions For Dummies",
+      "year": 2024
+    },
+    {
+      "name": "Dummies, Helpful Tips for the ASVAB Electronic Information Test",
+      "url": "https://www.dummies.com/article/academics-the-arts/study-skills-test-prep/armed-services/helpful-tips-for-the-asvab-electronic-information-test-256918/",
+      "edition": "web article, updated 2018-11-01",
+      "year": 2018
+    },
+    {
+      "name": "Dummies, Mechanical Comprehension: Determining Work; MC tips; Auto and Shop tools; Assembling Objects tips and shapes",
+      "url": "https://www.dummies.com/article/armed-services-33776/asvab-mechanical-comprehension-subtest-determining-work-142340",
+      "edition": "web articles, 2016 series",
+      "year": 2016
+    },
+    {
+      "name": "Kaplan, What's tested on the ASVAB technical subtests",
+      "url": "https://www.kaptest.com/study/asvab/whats-on-the-asvab-technical-subtests/",
+      "edition": "live page, 2026",
+      "year": 2026
+    },
+    {
+      "name": "Kaplan, What's on the ASVAB Word Knowledge section",
+      "url": "https://www.kaptest.com/study/asvab/whats-on-the-asvab-word-knowledge/",
+      "edition": "live page, 2026",
+      "year": 2026
+    },
+    {
+      "name": "Kaplan, What's on the ASVAB Paragraph Comprehension section",
+      "url": "https://www.kaptest.com/study/asvab/whats-on-the-asvab-paragraph-comprehension/",
+      "edition": "live page, 2026",
+      "year": 2026
+    },
+    {
+      "name": "Kaplan, ASVAB Math Strategies (contains wrong AR/MK times)",
+      "url": "https://www.kaptest.com/study/asvab/asvab-math-strategies/",
+      "edition": "live page, 2026",
+      "year": 2026
+    },
+    {
+      "name": "Kaplan, ASVAB Technical Subtest Strategies",
+      "url": "https://www.kaptest.com/study/asvab/asvab-technical-subtest-strategies/",
+      "edition": "live page, 2026",
+      "year": 2026
+    },
+    {
+      "name": "Kaplan, AR and MK practice questions; Assembling Objects practice questions",
+      "url": "https://www.kaptest.com/study/asvab/asvab-arithmetic-reasoning-and-mathematics-knowledge-practice-questions",
+      "edition": "live page, updated 2026-07-22",
+      "year": 2026
+    },
+    {
+      "name": "Kaplan ASVAB Premium Prep 2025-2026 (6 tests, 1000+ questions)",
+      "url": "https://www.simonandschuster.com/books/ASVAB-Premium-Prep-2025-2026-Includes-6-Full-Length-Practice-Tests-1000+-Practice-Questions-+-to/Kaplan-Test-Prep/Kaplan-Test-Prep/9781506297187",
+      "edition": "2025-2026",
+      "year": 2025
+    },
+    {
+      "name": "Kaplan ASVAB Total Prep 2025-2026 (7 tests, 2000+ questions)",
+      "url": "https://www.kaptest.com/asvab/books",
+      "edition": "2025-2026",
+      "year": 2025
+    },
+    {
+      "name": "Kaplan ASVAB Prep Plus 2024-2025",
+      "url": "https://www.amazon.com/ASVAB-Prep-Plus-2024-2025-Strategies-ebook/dp/B0BVWQSBG2",
+      "edition": "2024-2025 (secondary listing)",
+      "year": 2024
+    },
+    {
+      "name": "Barron's ASVAB Study Guide Premium, 13th edition (Terry L. Duran)",
+      "url": "https://www.simonandschuster.net/books/ASVAB-Study-Guide-Premium-6-Practice-Tests-+-Comprehensive-Review-+-Online-Practice/Terry-L-Duran/Barrons-Test-Prep/9781506283647",
+      "edition": "13th, 560 pp, May 2022",
+      "year": 2022
+    },
+    {
+      "name": "Barron's ASVAB Study Guide Premium, 14th edition (Terry L. Duran)",
+      "url": "https://www.simonandschuster.com/books/ASVAB-Study-Guide-Premium-Fourteenth-7-Practice-Tests-+-Comprehensive-Review-+-Online-Practice/Terry-L-Duran/Barrons-Test-Prep/9798349703690",
+      "edition": "14th, 528 pp, Dec 2026",
+      "year": 2026
+    },
+    {
+      "name": "Peterson's Master the ASVAB, 23rd edition",
+      "url": "https://stevensbooks.com/products/master-the-asvab-9780768942415",
+      "edition": "23rd, 608 pp, May 2018 (STALE)",
+      "year": 2018
+    },
+    {
+      "name": "Peterson's ASVAB prep (online, updated for 2026)",
+      "url": "https://www.petersons.com/testprep/asvab/",
+      "edition": "2026 online product",
+      "year": 2026
+    },
+    {
+      "name": "McGraw Hill Education ASVAB (Waller)",
+      "url": "https://www.mheducation.com/highered/product/mcgraw-hill-education-asvab-2023-waller/M9781264277469.html",
+      "edition": "2023 product slug; no 2024-2026 revision located",
+      "year": 2023
+    },
+    {
+      "name": "Mometrix ASVAB Study Guide 2026-2027, 10th edition",
+      "url": "https://www.mometrix.com/academy/asvab-study-guide/",
+      "edition": "10th (ISBN 9781516730841), 2026-01-12",
+      "year": 2026
+    },
+    {
+      "name": "Mometrix ASVAB Checklists PDF (per-subtest topic inventories)",
+      "url": "https://cdn-academy.pressidium.com/academy/wp-content/uploads/2026/03/ASVAB-Checklist.pdf",
+      "edition": "2026 checklist set",
+      "year": 2026
+    },
+    {
+      "name": "Mometrix ASVAB Test page (branch minimums, line scores)",
+      "url": "https://www.mometrix.com/academy/asvab-test/",
+      "edition": "live page, updated 2026-10-14",
+      "year": 2026
+    },
+    {
+      "name": "Union Test Prep, Free Practice Tests for the 2026 ASVAB",
+      "url": "https://uniontestprep.com/asvab/practice-test",
+      "edition": "2026",
+      "year": 2026
+    },
+    {
+      "name": "Union Test Prep, Important Math Formulas to Know for the ASVAB",
+      "url": "https://uniontestprep.com/asvab/resources/important-math-formulas-to-know-for-the-asvab",
+      "edition": "live page, 2026",
+      "year": 2026
+    },
+    {
+      "name": "Union Test Prep subtest practice pages (GS, PC)",
+      "url": "https://uniontestprep.com/asvab/practice-test/general-science/pages/1",
+      "edition": "2026",
+      "year": 2026
+    },
+    {
+      "name": "ASVAB Tutor, Free ASVAB Practice Tests (2026)",
+      "url": "https://asvabtutor.com/asvab-practice-tests/",
+      "edition": "2026",
+      "year": 2026
+    },
+    {
+      "name": "Achievable, ASVAB exam: format, content outline and scoring (2026)",
+      "url": "https://achievable.me/exams/asvab/exam-info/",
+      "edition": "2026",
+      "year": 2026
+    },
+    {
+      "name": "ASVAB Drill, review of ASVAB For Dummies",
+      "url": "https://asvabdrill.com/posts/asvab-for-dummies",
+      "edition": "June 2026 review (secondary)",
+      "year": 2026
+    },
+    {
+      "name": "Honest MOS, ASVAB Line Scores (NO/CS legacy warning)",
+      "url": "https://www.honestmos.com/tools/asvab-line-scores",
+      "edition": "2026 (secondary)",
+      "year": 2026
+    },
+    {
+      "name": "Study.com ASVAB hub (CAPTCHA-blocked; unverified)",
+      "url": "https://study.com/asvab/index.html",
+      "edition": "unverified",
+      "year": 2026
+    }
+  ]
+}

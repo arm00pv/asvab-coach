@@ -11,6 +11,7 @@ import '../state/app_state.dart';
 import '../state/exam_session.dart';
 import '../widgets/charts.dart';
 import '../widgets/primitives.dart';
+import '../widgets/mc_figure_view.dart';
 import '../widgets/puzzle_view.dart';
 
 /// The test runner.
@@ -397,15 +398,20 @@ class _QuestionView extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                    Pill(
-                      q.difficulty.label,
-                      tone: q.difficulty == Difficulty.hard
-                          ? PillTone.danger
-                          : (q.difficulty == Difficulty.easy
-                                ? PillTone.success
-                                : PillTone.neutral),
-                      dense: true,
-                    ),
+                    // The real CAT never tells you how hard an item is, so the
+                    // label is withheld during a mock and offered during
+                    // practice, where it is useful for calibration.
+                    if (session.exam.kind != ExamKind.fullMock &&
+                        session.exam.kind != ExamKind.diagnostic)
+                      Pill(
+                        q.difficulty.label,
+                        tone: q.difficulty == Difficulty.hard
+                            ? PillTone.danger
+                            : (q.difficulty == Difficulty.easy
+                                  ? PillTone.success
+                                  : PillTone.neutral),
+                        dense: true,
+                      ),
                   ],
                 ),
                 const SizedBox(height: Space.md),
@@ -413,8 +419,19 @@ class _QuestionView extends StatelessWidget {
                   _PassageCard(text: q.passage!),
                   const SizedBox(height: Space.lg),
                 ],
+                if (q.figure != null) ...<Widget>[
+                  McFigureView(
+                    figure: q.figure!,
+                    maxHeight: isWide ? 230 : 190,
+                  ),
+                  const SizedBox(height: Space.lg),
+                ],
                 if (q.puzzle != null)
-                  LoosePieces(pieces: q.puzzle!.pieces, cell: isWide ? 24 : 20),
+                  LoosePieces(
+                    pieces: q.puzzle!.pieces,
+                    cell: isWide ? 24 : 20,
+                    stemLabels: q.puzzle!.stemLabels,
+                  ),
                 if (q.puzzle != null) const SizedBox(height: Space.lg),
                 Text(
                   q.stem,
@@ -439,6 +456,7 @@ class _QuestionView extends StatelessWidget {
                           poly: q.puzzle!.silhouette(i),
                           selected: displaySelected == i,
                           cell: isWide ? 15 : 13,
+                          labels: q.puzzle!.optionLabels(i),
                           onTap: () => session.answer(i),
                         ),
                     ],

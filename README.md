@@ -18,13 +18,15 @@ syllabus.
 
 **Tests you under real conditions.** The mock exam is 135 items over 197 minutes
 in the order MEPS administers them, with the official per-section clocks.
-Assembling Objects items are real spatial puzzles: the app renders polyominoes
-and derives the answer from geometry, not from a hand-written key.
+Assembling Objects items are real spatial puzzles in both programme item
+families, fit-together and labeled-connection, rendered from geometry with
+the answer computed rather than hand-keyed. Mechanical Comprehension items
+carry rendered diagrams, because every officially published MC sample does.
 
 **Scores you honestly.** Subtest standard scores (mean 50, SD 10), the Verbal
 Expression composite with its true WK/PC weighting, the AFQT percentile, and all
 ten Army line scores on the Army's average-100 reporting scale using the
-published '97-metric composite weights. The method is documented in
+published '97-metric composite weights. Fidelity to the real item formats is documented in [docs/REAL-TEST-FIDELITY.md](docs/REAL-TEST-FIDELITY.md), and the method in
 [docs/SCORING.md](docs/SCORING.md) and enforced by tests.
 
 **Tells you which jobs that opens.** 97 National Guard MOS transcribed from
@@ -33,7 +35,7 @@ per-MOS source reference, plus nine officer and warrant officer pathways and the
 GT 110 requirement behind them. Eligibility is computed against your real score,
 with a near-miss list and the arithmetic for closing each gap.
 
-**Then teaches.** 39 reinforcement lessons, one per skill, selected by weakest
+**Then teaches.** 48 reinforcement lessons, one per skill, selected by weakest
 skill and finished with a mastery check. Every question in the bank carries a
 worked explanation that is reused inside the lesson flow.
 
@@ -64,7 +66,7 @@ lib/
   core/routes.dart     navigation helpers
   data/models/         catalog (subtests, skills), question, polyomino,
                        line_score, score, exam, mos, lesson
-  data/bank/           176 questions, 39 lessons, 16 spatial puzzles
+  data/bank/           338 questions, 48 lessons, 32 spatial puzzles
   data/repos/          MOS catalogue, serialization, browser storage
   engines/             scoring, exam builder, adaptive coach,
                        eligibility, persona simulation
@@ -103,7 +105,7 @@ flutter test
 
 | Suite | What it proves |
 | --- | --- |
-| `bank_integrity_test` | No duplicate ids, four distinct choices, every item has a teachable explanation, every skill has questions behind it, every AO puzzle has exactly one legal assembly, mirroring a piece is rejected while rotating it is accepted. |
+| `bank_integrity_test` | No duplicate ids, four distinct choices, every item has a teachable explanation, every skill has questions behind it, every AO puzzle has exactly one legal assembly in both item families, mirroring a piece is rejected while rotating it is accepted, and the item-quality audit is clean. |
 | `scoring_test` | Half-right lands on the national mean, the conversion is monotonic and clamped, every Army composite returns 100 for an average applicant, GT follows the published slope, AFQT is monotonic and clamped, category bands match the 1997 scale. |
 | `exam_flow_test` | The mock has the official structure (9 sections, 135 items, 197 minutes), shuffling never breaks the answer mapping, answering everything correctly maxes the report while answering nothing bottoms it out, a session advances through every section, and a finished attempt survives a JSON round trip. |
 | `personas_test` | Seven synthetic learners scored through the real engines: a strong candidate outscores a weak one, a pure guesser stays below the AFQT 31 floor, an officer-minded candidate clears GT 110, a maths-anxious candidate is coached on maths, and eligibility grows with ability. |
@@ -167,7 +169,7 @@ Set Pages to **Source: GitHub Actions** and the app is served from
 - Scores are an estimate. ETS item-response equating cannot be reproduced from a
   practice test; the model treats difficulty-weighted accuracy as a percentile of
   ability and says so.
-- The bank is 176 items. A mock draws the official item count per subtest, so
+- The bank is 338 items. A mock draws the official item count per subtest, so
   heavy repeat use will start to repeat questions across attempts.
 - Assembling Objects uses polyomino puzzles. They enforce the real subtest's
   rules - rotation allowed, mirroring not, no overlap, one joined body - but real

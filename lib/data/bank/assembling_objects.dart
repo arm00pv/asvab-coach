@@ -22,9 +22,7 @@ final List<Question> assemblingObjectsBank = <Question>[
   Question(
     id: 'ao-001',
     subtest: Subtest.ao,
-    stem:
-        'Which of the four figures can be built from the loose pieces shown? '
-        'Pieces may be turned but not flipped, bent or broken.',
+    stem: 'Which of these figures will appear if they are fit together?',
     choices: <String>['Figure A', 'Figure B', 'Figure C', 'Figure D'],
     answerIndex: 0,
     explanation: 'Only the first assembly uses exactly the pieces shown. The second swaps the L-shaped piece for its mirror image, which you cannot get by rotating. The third slides the small piece on top of the long one, so the two overlap. The fourth substitutes a small L for the two-cell piece.',
@@ -43,9 +41,7 @@ final List<Question> assemblingObjectsBank = <Question>[
   Question(
     id: 'ao-002',
     subtest: Subtest.ao,
-    stem:
-        'Which of the four figures can be built from the loose pieces shown? '
-        'Pieces may be turned but not flipped, bent or broken.',
+    stem: 'Which of these figures will appear if they are fit together?',
     choices: <String>['Figure A', 'Figure B', 'Figure C', 'Figure D'],
     answerIndex: 0,
     explanation: 'The first option seats the two-cell piece under the end of the three-cell bar and nothing overlaps. Option two lays the small piece on top of the bar, and option three leaves it disconnected. Option four replaces the two-cell piece with a three-cell corner, which would need an extra cell that the pieces do not have.',
@@ -64,9 +60,7 @@ final List<Question> assemblingObjectsBank = <Question>[
   Question(
     id: 'ao-003',
     subtest: Subtest.ao,
-    stem:
-        'Which of the four figures can be built from the loose pieces shown? '
-        'Pieces may be turned but not flipped, bent or broken.',
+    stem: 'Which of these figures will appear if they are fit together?',
     choices: <String>['Figure A', 'Figure B', 'Figure C', 'Figure D'],
     answerIndex: 0,
     explanation: 'The zig-zag piece has a mirror twin that no rotation can produce, and option two uses that twin. Option three drops the two-cell piece straight onto occupied cells, and option four brings in a T-shaped piece that is not in the set at all. Option one is the only layout that fits together cleanly.',
@@ -85,9 +79,7 @@ final List<Question> assemblingObjectsBank = <Question>[
   Question(
     id: 'ao-004',
     subtest: Subtest.ao,
-    stem:
-        'Which of the four figures can be built from the loose pieces shown? '
-        'Pieces may be turned but not flipped, bent or broken.',
+    stem: 'Which of these figures will appear if they are fit together?',
     choices: <String>['Figure A', 'Figure B', 'Figure C', 'Figure D'],
     answerIndex: 0,
     explanation: 'Two identical L pieces can interlock down the middle, which is what the first option shows. The second option mirrors one piece, the third overlaps the two pieces, and the fourth uses a corner piece with only three cells.',
@@ -106,9 +98,7 @@ final List<Question> assemblingObjectsBank = <Question>[
   Question(
     id: 'ao-005',
     subtest: Subtest.ao,
-    stem:
-        'Which of the four figures can be built from the loose pieces shown? '
-        'Pieces may be turned but not flipped, bent or broken.',
+    stem: 'Which of these figures will appear if they are fit together?',
     choices: <String>['Figure A', 'Figure B', 'Figure C', 'Figure D'],
     answerIndex: 0,
     explanation: 'The T piece has a lone cell hanging below its centre, and the first option hangs the two-cell piece directly under that cell to form one body. The second option lands on occupied cells, the third uses a three-cell corner, and the fourth floats free of the rest.',
@@ -127,9 +117,7 @@ final List<Question> assemblingObjectsBank = <Question>[
   Question(
     id: 'ao-006',
     subtest: Subtest.ao,
-    stem:
-        'Which of the four figures can be built from the loose pieces shown? '
-        'Pieces may be turned but not flipped, bent or broken.',
+    stem: 'Which of these figures will appear if they are fit together?',
     choices: <String>['Figure A', 'Figure B', 'Figure C', 'Figure D'],
     answerIndex: 0,
     explanation: 'The square butts against the flat back of the L piece in the first option. Option two uses the mirrored L, which leaves a gap on the left. Option three drives the L into the square, and option four uses a zig-zag piece that is not in the set.',
@@ -148,9 +136,7 @@ final List<Question> assemblingObjectsBank = <Question>[
   Question(
     id: 'ao-007',
     subtest: Subtest.ao,
-    stem:
-        'Which of the four figures can be built from the loose pieces shown? '
-        'Pieces may be turned but not flipped, bent or broken.',
+    stem: 'Which of these figures will appear if they are fit together?',
     choices: <String>['Figure A', 'Figure B', 'Figure C', 'Figure D'],
     answerIndex: 0,
     explanation: 'Three two-cell pieces can only make a joined figure if they line up end to end, which is the first option. Option two turns one piece upright into a cell that is already taken, option three swaps in a three-cell corner, and option four leaves all three pieces apart.',
@@ -169,9 +155,7 @@ final List<Question> assemblingObjectsBank = <Question>[
   Question(
     id: 'ao-008',
     subtest: Subtest.ao,
-    stem:
-        'Which of the four figures can be built from the loose pieces shown? '
-        'Pieces may be turned but not flipped, bent or broken.',
+    stem: 'Which of these figures will appear if they are fit together?',
     choices: <String>['Figure A', 'Figure B', 'Figure C', 'Figure D'],
     answerIndex: 0,
     explanation: 'The long arm of the L ends at the row of the short foot, so the three-cell bar continues straight out from it in the first option. Option two mirrors the L, option three overlaps the bar with the foot, and option four uses a three-cell corner instead of a straight bar.',
@@ -190,9 +174,7 @@ final List<Question> assemblingObjectsBank = <Question>[
   Question(
     id: 'ao-009',
     subtest: Subtest.ao,
-    stem:
-        'Which of the four figures can be built from the loose pieces shown? '
-        'Pieces may be turned but not flipped, bent or broken.',
+    stem: 'Which of these figures will appear if they are fit together?',
     choices: <String>['Figure A', 'Figure B', 'Figure C', 'Figure D'],
     answerIndex: 0,
     explanation: 'The two zig-zags stack into a staircase in the first option because the upper piece ends where the lower one begins. Option two mirrors the second piece and no longer matches, option three overlaps them, and option four separates them completely.',
@@ -211,9 +193,7 @@ final List<Question> assemblingObjectsBank = <Question>[
   Question(
     id: 'ao-010',
     subtest: Subtest.ao,
-    stem:
-        'Which of the four figures can be built from the loose pieces shown? '
-        'Pieces may be turned but not flipped, bent or broken.',
+    stem: 'Which of these figures will appear if they are fit together?',
     choices: <String>['Figure A', 'Figure B', 'Figure C', 'Figure D'],
     answerIndex: 0,
     explanation: 'The bar sits flush under the square in the first option, sharing a full edge. Option two pushes the bar into the square itself, option three uses a corner piece, and option four places the bar where it touches nothing.',
@@ -232,9 +212,7 @@ final List<Question> assemblingObjectsBank = <Question>[
   Question(
     id: 'ao-011',
     subtest: Subtest.ao,
-    stem:
-        'Which of the four figures can be built from the loose pieces shown? '
-        'Pieces may be turned but not flipped, bent or broken.',
+    stem: 'Which of these figures will appear if they are fit together?',
     choices: <String>['Figure A', 'Figure B', 'Figure C', 'Figure D'],
     answerIndex: 0,
     explanation: 'Two T pieces join along the flat top edge without sharing any cell in the first option. Option two uses a three-cell corner, option three overlaps the pieces by one cell, and option four leaves the second T detached.',
@@ -253,9 +231,7 @@ final List<Question> assemblingObjectsBank = <Question>[
   Question(
     id: 'ao-012',
     subtest: Subtest.ao,
-    stem:
-        'Which of the four figures can be built from the loose pieces shown? '
-        'Pieces may be turned but not flipped, bent or broken.',
+    stem: 'Which of these figures will appear if they are fit together?',
     choices: <String>['Figure A', 'Figure B', 'Figure C', 'Figure D'],
     answerIndex: 0,
     explanation: 'The first option feeds the long arm into the first two-cell piece and closes the shape with the second one under the foot. Option two mirrors the L, option three stacks a piece onto cells that are already used, and option four substitutes a three-cell corner for the last two-cell piece.',
@@ -274,9 +250,7 @@ final List<Question> assemblingObjectsBank = <Question>[
   Question(
     id: 'ao-013',
     subtest: Subtest.ao,
-    stem:
-        'Which of the four figures can be built from the loose pieces shown? '
-        'Pieces may be turned but not flipped, bent or broken.',
+    stem: 'Which of these figures will appear if they are fit together?',
     choices: <String>['Figure A', 'Figure B', 'Figure C', 'Figure D'],
     answerIndex: 0,
     explanation: 'The two-cell piece under the left end of the bar makes a clean joined shape in the first option. Option two lays it across the bar so the cells collide, option three leaves a one-cell gap so the pieces never touch, and option four uses a three-cell corner.',
@@ -295,9 +269,7 @@ final List<Question> assemblingObjectsBank = <Question>[
   Question(
     id: 'ao-014',
     subtest: Subtest.ao,
-    stem:
-        'Which of the four figures can be built from the loose pieces shown? '
-        'Pieces may be turned but not flipped, bent or broken.',
+    stem: 'Which of these figures will appear if they are fit together?',
     choices: <String>['Figure A', 'Figure B', 'Figure C', 'Figure D'],
     answerIndex: 0,
     explanation: 'Two squares side by side share a full edge and form a clean rectangle in the first option. Option two replaces a square with a three-cell corner, option three overlaps the squares by a column, and option four opens a gap between them.',
@@ -316,9 +288,7 @@ final List<Question> assemblingObjectsBank = <Question>[
   Question(
     id: 'ao-015',
     subtest: Subtest.ao,
-    stem:
-        'Which of the four figures can be built from the loose pieces shown? '
-        'Pieces may be turned but not flipped, bent or broken.',
+    stem: 'Which of these figures will appear if they are fit together?',
     choices: <String>['Figure A', 'Figure B', 'Figure C', 'Figure D'],
     answerIndex: 0,
     explanation: 'The first option is the only one that chains all three pieces: two-cell piece in the crook of the L, bar under the foot. Option two mirrors the L, option three overlaps the two-cell piece with the foot, and option four swaps the bar for a corner piece.',
@@ -337,9 +307,7 @@ final List<Question> assemblingObjectsBank = <Question>[
   Question(
     id: 'ao-016',
     subtest: Subtest.ao,
-    stem:
-        'Which of the four figures can be built from the loose pieces shown? '
-        'Pieces may be turned but not flipped, bent or broken.',
+    stem: 'Which of these figures will appear if they are fit together?',
     choices: <String>['Figure A', 'Figure B', 'Figure C', 'Figure D'],
     answerIndex: 0,
     explanation: 'The low right edge of the zig-zag meets the square along its left column in the first option. Option two uses the mirrored zig-zag, option three overlaps the two pieces, and option four sets the square down where nothing touches it.',
