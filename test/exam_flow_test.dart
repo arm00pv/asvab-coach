@@ -13,10 +13,18 @@ void main() {
   group('exam builder', () {
     test('a full mock matches the CAT-ASVAB structure', () {
       final exam = ExamBuilder.fullMock(seed: 42);
-      expect(exam.sections.length, 9);
+      // Auto & Shop is administered as two separate blocks on the computer
+      // form, so a full mock has ten sections for nine subtests.
+      expect(exam.sections.length, 10);
       expect(exam.questionCount, 135);
       expect(exam.minutes, 197);
-      expect(exam.subtests, Subtest.administrationOrder);
+      expect(exam.subtests.toSet(), Subtest.administrationOrder.toSet());
+      final autoShop = exam.sectionsFor(Subtest.as);
+      expect(autoShop.length, 2);
+      expect(autoShop.first.displayLabel, 'Auto Information');
+      expect(autoShop.last.displayLabel, 'Shop Information');
+      expect(autoShop.fold<int>(0, (n, s) => n + s.questions.length), 20);
+      expect(autoShop.fold<int>(0, (n, s) => n + s.minutes), 13);
     });
 
     test('a full mock follows the official item counts per subtest', () {

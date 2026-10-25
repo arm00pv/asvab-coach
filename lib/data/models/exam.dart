@@ -45,11 +45,19 @@ class ExamSection {
     required this.subtest,
     required this.questions,
     required this.minutes,
+    this.label,
   });
 
   final Subtest subtest;
   final List<ServedQuestion> questions;
   final int minutes;
+
+  /// Display name when a subtest is administered in more than one block. The
+  /// computer form gives Auto & Shop as a separate Auto Information block and
+  /// a Shop Information block, so the app does the same.
+  final String? label;
+
+  String get displayLabel => label ?? subtest.label;
 
   int get seconds => minutes * 60;
 }
@@ -79,6 +87,10 @@ class Exam {
 
   List<Subtest> get subtests =>
       sections.map((s) => s.subtest).toList(growable: false);
+
+  /// Sections that make up one subtest, in administration order.
+  List<ExamSection> sectionsFor(Subtest s) =>
+      sections.where((sec) => sec.subtest == s).toList(growable: false);
 
   /// Total questions available in this exam per subtest.
   int countFor(Subtest s) => sections

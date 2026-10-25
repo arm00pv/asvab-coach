@@ -175,6 +175,28 @@ abstract final class BankAudit {
               q.id,
             );
           }
+          // Test-taker evidence: on real PC items the attractive option is the
+          // polished generalisation and the key is the plain literal detail. An
+          // item whose correct option is the longest is usually pulling in the
+          // wrong direction.
+          if (q.answerIndex >= 0 && q.answerIndex < q.choices.length) {
+            final correct = q.choices[q.answerIndex].trim().length;
+            var longestOther = 0;
+            for (var i = 0; i < q.choices.length; i++) {
+              if (i == q.answerIndex) continue;
+              final len = q.choices[i].trim().length;
+              if (len > longestOther) longestOther = len;
+            }
+            if (longestOther > 0 && correct > longestOther * 1.1) {
+              warn(
+                'pc-correct-longest',
+                'The correct option is the longest of the four, so it is the one '
+                    'that sounds most considered. On real PC items the trap is the '
+                    'sweeping summary and the key is the plain detail',
+                q.id,
+              );
+            }
+          }
         case Subtest.mk:
           if (q.stem.length > 260) {
             warn(

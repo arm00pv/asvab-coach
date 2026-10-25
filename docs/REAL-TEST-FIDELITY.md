@@ -92,9 +92,12 @@ series/parallel "one bulb burns out" family and equivalent resistance.
 Shop Information halves are administered separately, 10 items each; on paper they
 merge into a 25-item block. Includes picture-based tool identification.
 
-**This app:** one 20-item AS section modelling the combined computer length (13
-minutes). **Divergence:** the UI does not split the section into a visible Auto
-half and Shop half, and tool items are textual rather than pictorial.
+**This app:** a full mock now administers AS as **two blocks**, Auto Information
+(10 items, 7 minutes) and Shop Information (10 items, 6 minutes), split by skill
+tag, so the section headers a candidate sees match the computer form. Items are
+classified by their skill tags: engine, drivetrain and automotive electrical are
+the Auto half; tools, materials, construction and welding are the Shop half.
+**Divergence:** tool identification is textual rather than pictorial.
 
 ### Mechanical Comprehension (MC)
 **Real format:** figure-led. Every officially published sample item shows a
@@ -170,35 +173,18 @@ of the real items.
 
 ## Known gaps, ranked by how much they cost a candidate
 
-1. **Most MC items are still verbal.** The figure renderer exists and is used, but
-   the bank has not been fully converted.
-2. **AR options carry units.** Cosmetic, but the real test prints bare numerals.
-3. **AS is not visibly split** into its Auto and Shop halves.
-4. **AO pieces are grid polygons**, not drawn line art.
+1. **Most Mechanical Comprehension items are still verbal.** The figure renderer
+   works and sixteen items now use it, but the rest of the pool is text only. The
+   real subtest is figure-led throughout.
+2. **Assembling Objects pieces are grid polygons**, not the drawn line art of the
+   real items. The rules are enforced exactly; the artwork is a simplification.
+3. **Auto & Shop tool items are textual.** The real Auto and Shop halves include
+   picture-based tool identification.
+4. **Arithmetic Reasoning options carry units** ("420 miles"). The real test
+   prints bare numerals. Units are kept for clarity in review.
 5. **Bank size.** 338 items against a 135-item mock means a determined user will
-   see repeats across many attempts. The real CAT draws from a far larger pool.
+   see repeats across many attempts. The real computer form draws from a far
+   larger pool, and up to 15 unscored tryout items may appear on top of that.
 
----
-
-## What candidates who actually sat it say
-
-`docs/research/test-taker-reports.md` harvested 139 threads with about 35
-first-person accounts from 2024 to 2026. Four findings changed how items are
-written and are now enforced in the style guide:
-
-- **Paragraph Comprehension difficulty is in the distractors.** The correct option
-  tends to be the boring, exactly-stated detail; the trap is the eloquent
-  main-idea summary. Items are authored so the better-sounding option is wrong.
-- **Prep over-weights geometry.** Candidates drilled area and circumference
-  formulas and then barely saw geometry, while AR served literal linear-equation
-  solving and large mixed-number subtraction.
-- **EI and AS are the surprise sections.** Series versus parallel circuits and
-  gears and axles are consistently the hardest topics reported, and both sections
-  catch candidates who only prepared the AFQT subtests.
-- **A practice score is not a prediction, in either direction.** Candidates have
-  overshot the real AFQT by more than twenty points and missed a cut by four after
-  five months of study. The score report now says so on the screen where the
-  number appears.
-
-Assembling Objects, meanwhile, is consistently reported as *not* hard and is
-frequently a candidate's strongest technical subscore.
+Nothing on this list stops the app being useful, and each is stated on screen or
+in the docs rather than papered over.

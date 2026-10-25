@@ -122,7 +122,7 @@ class _ExamScreenState extends State<ExamScreen> {
         title: Text(
           session.isLastSection
               ? 'Finish the exam?'
-              : 'Finish ${session.section.subtest.label}?',
+              : 'Finish ${session.section.displayLabel}?',
         ),
         content: Text(
           unanswered == 0
@@ -256,7 +256,7 @@ class _SectionIntro extends StatelessWidget {
                       Eyebrow('Section ${index + 1} of $total'),
                       const SizedBox(height: 2),
                       Text(
-                        section.subtest.label,
+                        section.displayLabel,
                         style: context.text.headlineMedium,
                       ),
                     ],
@@ -623,7 +623,7 @@ class _ExamHeader extends StatelessWidget {
                   style: context.text.labelSmall?.copyWith(color: c.textMuted),
                 ),
                 Text(
-                  session.section.subtest.label,
+                  session.section.displayLabel,
                   style: context.text.titleSmall?.copyWith(
                     color: c.textPrimary,
                   ),

@@ -57,6 +57,12 @@ abstract final class ExamBuilder {
     for (final s in Subtest.administrationOrder) {
       final pool = QuestionBank.bySubtest(s);
       if (pool.isEmpty) continue;
+      if (s == Subtest.as) {
+        // The computer form administers Auto Information and Shop Information
+        // as two separate blocks, so the mock does too.
+        sections.addAll(_autoShopSections(pool, seed));
+        continue;
+      }
       final n = math.min(s.questionCount, pool.length);
       final picked = _balancedPick(pool, n, seed + s.index * 7);
       sections.add(
@@ -164,6 +170,79 @@ abstract final class ExamBuilder {
 
   static int _overlap(Question q, Set<String> wanted) =>
       q.skills.where(wanted.contains).length;
+
+  /// Auto skills identify the Auto Information half of Auto & Shop.
+  static const Set<String> _autoSkills = <String>{
+    'as.engine',
+    'as.drivetrain',
+    'as.electrical',
+  };
+
+  static bool _isAuto(Question q) => q.skills.any(_autoSkills.contains);
+
+  /// Builds the Auto Information and Shop Information blocks: ten items each,
+  /// seven minutes and six minutes, matching the computer form.
+  static List<ExamSection> _autoShopSections(List<Question> pool, int seed) {
+    final auto = pool.where(_isAuto).toList();
+    final shop = pool.where((q) => !_isAuto(q)).toList();
+    const half = 10;
+
+    final autoPick = _balancedPick(
+      auto,
+      math.min(half, auto.length),
+      seed + 91,
+    );
+    final shopPick = _balancedPick(
+      shop,
+      math.min(half, shop.length),
+      seed + 97,
+    );
+
+    // Top up from whatever is left so each block reaches its official size.
+    final used = <String>{
+      for (final q in autoPick) q.id,
+      for (final q in shopPick) q.id,
+    };
+    final spare = pool.where((q) => !used.contains(q.id)).toList();
+    final autoFill = <Question>[];
+    final shopFill = <Question>[];
+    for (final q in spare) {
+      if (autoPick.length + autoFill.length < half) {
+        autoFill.add(q);
+      } else if (shopPick.length + shopFill.length < half) {
+        shopFill.add(q);
+      }
+    }
+
+    final sections = <ExamSection>[];
+    if (autoPick.isNotEmpty || autoFill.isNotEmpty) {
+      sections.add(
+        ExamSection(
+          subtest: Subtest.as,
+          label: 'Auto Information',
+          questions: <Question>[
+            ...autoPick,
+            ...autoFill,
+          ].map((q) => _serve(q, seed)).toList(growable: false),
+          minutes: 7,
+        ),
+      );
+    }
+    if (shopPick.isNotEmpty || shopFill.isNotEmpty) {
+      sections.add(
+        ExamSection(
+          subtest: Subtest.as,
+          label: 'Shop Information',
+          questions: <Question>[
+            ...shopPick,
+            ...shopFill,
+          ].map((q) => _serve(q, seed)).toList(growable: false),
+          minutes: 6,
+        ),
+      );
+    }
+    return sections;
+  }
 
   /// Picks [n] Paragraph Comprehension items that each use a different passage,
   /// matching the computer form where every reading item has its own text.
