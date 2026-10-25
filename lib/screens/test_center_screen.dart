@@ -119,10 +119,14 @@ class TestCenterScreen extends StatelessWidget {
                             children: <Widget>[
                               Row(
                                 children: <Widget>[
-                                  Text(
-                                    s.label,
-                                    style: context.text.titleSmall?.copyWith(
-                                      color: c.textPrimary,
+                                  Flexible(
+                                    child: Text(
+                                      s.label,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: context.text.titleSmall?.copyWith(
+                                        color: c.textPrimary,
+                                      ),
                                     ),
                                   ),
                                   if (s.feedsAfqt) ...<Widget>[

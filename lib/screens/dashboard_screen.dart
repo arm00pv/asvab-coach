@@ -630,10 +630,14 @@ class _SubtestSnapshot extends StatelessWidget {
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            Text(
-                              rows[i].shortLabel,
-                              style: context.text.bodySmall?.copyWith(
-                                color: c.textPrimary,
+                            Flexible(
+                              child: Text(
+                                rows[i].shortLabel,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: context.text.bodySmall?.copyWith(
+                                  color: c.textPrimary,
+                                ),
                               ),
                             ),
                             if (rows[i].feedsAfqt) ...<Widget>[
@@ -707,9 +711,15 @@ class _EligibilityTeaser extends StatelessWidget {
             children: <Widget>[
               Icon(Icons.workspaces_outline, size: 18, color: c.primary),
               const SizedBox(width: Space.sm),
-              Text(
-                'Job eligibility',
-                style: context.text.titleSmall?.copyWith(color: c.textPrimary),
+              Flexible(
+                child: Text(
+                  'Job eligibility',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.text.titleSmall?.copyWith(
+                    color: c.textPrimary,
+                  ),
+                ),
               ),
               const Spacer(),
               Pill(

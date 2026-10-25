@@ -117,7 +117,11 @@ class ResultsScreen extends StatelessWidget {
             const SizedBox(height: Space.sm),
             _PaceBlock(attempt: attempt),
             const SizedBox(height: Space.xxl),
-            Row(
+            // Two long button labels in a Row overflow a phone by a third
+            // of the screen, so they stack instead.
+            Wrap(
+              spacing: Space.md,
+              runSpacing: Space.sm,
               children: <Widget>[
                 FilledButton.icon(
                   onPressed: () {

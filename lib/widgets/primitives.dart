@@ -114,21 +114,34 @@ class Pill extends StatelessWidget {
         color: bg,
         borderRadius: BorderRadius.circular(999),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          if (icon != null) ...<Widget>[
-            Icon(icon, size: dense ? 11 : 13, color: fg),
-            const SizedBox(width: Space.xs),
-          ],
-          Text(
+      // A pill appears both inside a bounded card and inside an unbounded
+      // strip, and a Flexible child in an unbounded Row is a layout error. So
+      // the label only flexes when there is a width to flex into.
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final text = Text(
             label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: context.text.labelMedium?.copyWith(
               color: fg,
               fontWeight: FontWeight.w600,
             ),
-          ),
-        ],
+          );
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              if (icon != null) ...<Widget>[
+                Icon(icon, size: dense ? 11 : 13, color: fg),
+                const SizedBox(width: Space.xs),
+              ],
+              if (constraints.maxWidth.isFinite)
+                Flexible(child: text)
+              else
+                text,
+            ],
+          );
+        },
       ),
     );
   }
@@ -162,26 +175,39 @@ class StatTile extends StatelessWidget {
       children: <Widget>[
         Eyebrow(label),
         const SizedBox(height: Space.xs),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.baseline,
-          textBaseline: TextBaseline.alphabetic,
-          children: <Widget>[
-            Text(
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final number = Text(
               value,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style:
                   (compact
                           ? context.text.headlineMedium
                           : context.text.displaySmall)
                       ?.copyWith(color: tone ?? c.textPrimary),
-            ),
-            if (suffix != null) ...<Widget>[
-              const SizedBox(width: 2),
-              Text(
-                suffix!,
-                style: context.text.titleMedium?.copyWith(color: c.textMuted),
-              ),
-            ],
-          ],
+            );
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                if (constraints.maxWidth.isFinite)
+                  Flexible(child: number)
+                else
+                  number,
+                if (suffix != null) ...<Widget>[
+                  const SizedBox(width: 2),
+                  Text(
+                    suffix!,
+                    style: context.text.titleMedium?.copyWith(
+                      color: c.textMuted,
+                    ),
+                  ),
+                ],
+              ],
+            );
+          },
         ),
         if (caption != null) ...<Widget>[
           const SizedBox(height: 2),

@@ -86,13 +86,17 @@ class PlanScreen extends StatelessWidget {
                       children: <Widget>[
                         SubtestGlyph(abbr: s.abbr, size: 24),
                         const SizedBox(width: Space.sm),
-                        Text(
-                          s.label,
-                          style: context.text.titleSmall?.copyWith(
-                            color: c.textPrimary,
+                        Expanded(
+                          child: Text(
+                            s.label,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: context.text.titleSmall?.copyWith(
+                              color: c.textPrimary,
+                            ),
                           ),
                         ),
-                        const Spacer(),
+                        const SizedBox(width: Space.sm),
                         Text(
                           '${Skills.forSubtest(s).length} skills',
                           style: context.text.labelSmall?.copyWith(

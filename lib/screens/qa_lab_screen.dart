@@ -217,17 +217,27 @@ class _QaLabScreenState extends State<QaLabScreen> {
                       ),
                       const SizedBox(width: Space.md),
                       Expanded(
+                        flex: 3,
                         child: Text(
                           ch.label,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           style: context.text.bodySmall?.copyWith(
                             color: c.textPrimary,
                           ),
                         ),
                       ),
-                      Text(
-                        ch.detail,
-                        style: context.text.labelSmall?.copyWith(
-                          color: c.textMuted,
+                      const SizedBox(width: Space.sm),
+                      Flexible(
+                        flex: 2,
+                        child: Text(
+                          ch.detail,
+                          textAlign: TextAlign.right,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: context.text.labelSmall?.copyWith(
+                            color: c.textMuted,
+                          ),
                         ),
                       ),
                     ],
@@ -349,15 +359,19 @@ class _BankPanel extends StatelessWidget {
                     style: context.text.headlineLarge,
                   ),
                   const SizedBox(width: Space.sm),
-                  Text(
-                    'items across 9 subtests',
-                    style: context.text.bodySmall,
+                  Expanded(
+                    child: Text(
+                      'items across 9 subtests',
+                      style: context.text.bodySmall,
+                    ),
                   ),
-                  const Spacer(),
-                  Pill(
-                    '${errors.length} errors  ${warnings.length} warnings',
-                    tone: errors.isEmpty ? PillTone.success : PillTone.danger,
-                    dense: true,
+                  const SizedBox(width: Space.sm),
+                  Flexible(
+                    child: Pill(
+                      '${errors.length} errors  ${warnings.length} warnings',
+                      tone: errors.isEmpty ? PillTone.success : PillTone.danger,
+                      dense: true,
+                    ),
                   ),
                 ],
               ),

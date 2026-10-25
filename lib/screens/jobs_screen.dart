@@ -325,11 +325,15 @@ class _MosRow extends StatelessWidget {
                 ),
                 Row(
                   children: <Widget>[
-                    Text(
-                      mos.gate.label,
-                      style: context.text.bodySmall?.copyWith(
-                        color: c.textMuted,
-                        fontSize: 11,
+                    Flexible(
+                      child: Text(
+                        mos.gate.label,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.text.bodySmall?.copyWith(
+                          color: c.textMuted,
+                          fontSize: 11,
+                        ),
                       ),
                     ),
                     if (mos.securityClearance) ...<Widget>[
@@ -354,7 +358,9 @@ class _MosRow extends StatelessWidget {
             ),
           ),
           const SizedBox(width: Space.sm),
-          Pill(label, tone: tone, dense: true),
+          // A gate label can be long enough to run the card off a phone, so
+          // the pill shrinks and ellipsises rather than pushing the row.
+          Flexible(child: Pill(label, tone: tone, dense: true)),
         ],
       ),
     );
@@ -688,9 +694,15 @@ class _EnlistmentFacts extends StatelessWidget {
             children: <Widget>[
               Icon(Icons.military_tech_outlined, size: 17, color: c.primary),
               const SizedBox(width: Space.sm),
-              Text(
-                'Enlistment requirements',
-                style: context.text.titleSmall?.copyWith(color: c.textPrimary),
+              Flexible(
+                child: Text(
+                  'Enlistment requirements',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.text.titleSmall?.copyWith(
+                    color: c.textPrimary,
+                  ),
+                ),
               ),
             ],
           ),

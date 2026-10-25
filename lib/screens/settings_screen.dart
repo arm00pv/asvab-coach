@@ -28,14 +28,21 @@ class SettingsScreen extends StatelessWidget {
             _Group(
               title: 'Appearance',
               children: <Widget>[
-                SwitchListTile.adaptive(
-                  contentPadding: EdgeInsets.zero,
-                  value: app.darkMode,
-                  onChanged: app.setDarkMode,
-                  title: Text('Dark mode', style: context.text.titleSmall),
-                  subtitle: Text(
-                    'Easier on the eyes for long evening sessions.',
-                    style: context.text.bodySmall,
+                // The tile has to own a Material: its group is a DecoratedBox
+                // with a background colour, and a ListTile paints its ink on
+                // the nearest Material ancestor, so without this the ripple is
+                // invisible and debug builds assert.
+                Material(
+                  type: MaterialType.transparency,
+                  child: SwitchListTile.adaptive(
+                    contentPadding: EdgeInsets.zero,
+                    value: app.darkMode,
+                    onChanged: app.setDarkMode,
+                    title: Text('Dark mode', style: context.text.titleSmall),
+                    subtitle: Text(
+                      'Easier on the eyes for long evening sessions.',
+                      style: context.text.bodySmall,
+                    ),
                   ),
                 ),
               ],
@@ -84,7 +91,9 @@ class SettingsScreen extends StatelessWidget {
                   style: context.text.bodySmall,
                 ),
                 const SizedBox(height: Space.md),
-                Row(
+                Wrap(
+                  spacing: Space.md,
+                  runSpacing: Space.sm,
                   children: <Widget>[
                     OutlinedButton.icon(
                       onPressed: () async {
