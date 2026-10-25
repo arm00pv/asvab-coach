@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ASVAB Coach for the Army National Guard: placement diagnostic, full-length timed mock exams, honest scoring with AFQT percentile and all ten line scores, National Guard job eligibility, and reinforcement lessons for the skills you actually missed.">
+  <meta name="theme-color" content="#14503F">
+
+  <meta property="og:title" content="ASVAB Coach - Army National Guard">
+  <meta property="og:description" content="Diagnose, drill, score and reinforce for the ASVAB. 176 practice questions, 39 lessons, 97 National Guard MOS mapped to your actual scores.">
+  <meta property="og:type" content="website">
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ASVAB Coach">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>ASVAB Coach - Army National Guard</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #F6F7F4;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      html, body { background: #0C1311; }
+    }
+    #boot {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      transition: opacity 320ms ease;
+    }
+    #boot .mark {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: #14503F;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -1px;
+    }
+    #boot .label {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #75847C;
+    }
+    #boot.hidden { opacity: 0; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <div id="boot">
+    <div class="mark">A</div>
+    <div class="label">Loading your coach</div>
+  </div>
+  <script src="flutter_bootstrap.js" async></script>
+  <script>
+    window.addEventListener('flutter-first-frame', function () {
+      var boot = document.getElementById('boot');
+      if (!boot) return;
+      boot.classList.add('hidden');
+      setTimeout(function () { boot.remove(); }, 400);
+    });
+  </script>
+</body>
+</html>

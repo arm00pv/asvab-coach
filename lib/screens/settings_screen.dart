@@ -1,0 +1,299 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
+import '../core/theme/tokens.dart';
+import '../data/bank/question_bank.dart';
+import '../data/repos/mos_repository.dart';
+import '../state/app_state.dart';
+import '../widgets/primitives.dart';
+import 'qa_lab_screen.dart';
+
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final app = context.watch<AppState>();
+    final c = context.colors;
+    final goal = app.goal;
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Settings')),
+      body: PageBody(
+        maxWidth: 640,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _Group(
+              title: 'Appearance',
+              children: <Widget>[
+                SwitchListTile.adaptive(
+                  contentPadding: EdgeInsets.zero,
+                  value: app.darkMode,
+                  onChanged: app.setDarkMode,
+                  title: Text('Dark mode', style: context.text.titleSmall),
+                  subtitle: Text(
+                    'Easier on the eyes for long evening sessions.',
+                    style: context.text.bodySmall,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: Space.lg),
+            _Group(
+              title: 'Your goal',
+              children: <Widget>[
+                if (goal == null)
+                  Text('No goal set.', style: context.text.bodySmall)
+                else ...<Widget>[
+                  _kv(context, 'Name', goal.displayName),
+                  _kv(
+                    context,
+                    'Target date',
+                    goal.targetDate == null
+                        ? 'not set'
+                        : '${goal.targetDate!.difference(DateTime.now()).inDays} days out',
+                  ),
+                  _kv(context, 'Daily minutes', '${goal.dailyMinutes}'),
+                  _kv(
+                    context,
+                    'Officer track',
+                    goal.officerTrack ? 'yes' : 'no',
+                  ),
+                  _kv(
+                    context,
+                    'Tracked jobs',
+                    goal.targetMosCodes.isEmpty
+                        ? 'none'
+                        : goal.targetMosCodes
+                              .map((c) => MosRepository.byCode(c)?.code ?? c)
+                              .join(', '),
+                  ),
+                ],
+              ],
+            ),
+            const SizedBox(height: Space.lg),
+            _Group(
+              title: 'Your data',
+              children: <Widget>[
+                Text(
+                  '${app.attempts.length} attempts and ${QuestionBank.total} '
+                  'practice questions. Everything is stored in this browser only - '
+                  'no account, no server, nothing leaves the device.',
+                  style: context.text.bodySmall,
+                ),
+                const SizedBox(height: Space.md),
+                Row(
+                  children: <Widget>[
+                    OutlinedButton.icon(
+                      onPressed: () async {
+                        final json = _export(app);
+                        await Clipboard.setData(ClipboardData(text: json));
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('History copied to the clipboard.'),
+                            ),
+                          );
+                        }
+                      },
+                      icon: const Icon(Icons.copy_rounded, size: 15),
+                      label: const Text('Copy history as JSON'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: Space.md),
+                TextButton.icon(
+                  onPressed: () => _confirmReset(context, app),
+                  style: TextButton.styleFrom(foregroundColor: c.danger),
+                  icon: const Icon(Icons.delete_outline_rounded, size: 16),
+                  label: const Text('Erase all data'),
+                ),
+              ],
+            ),
+            const SizedBox(height: Space.lg),
+            _Group(
+              title: 'Quality assurance',
+              children: <Widget>[
+                Text(
+                  'The app ships with synthetic learners that run through the real '
+                  'scoring and coaching engines. Useful for spotting a regression in '
+                  'scoring, eligibility or advice ordering.',
+                  style: context.text.bodySmall,
+                ),
+                const SizedBox(height: Space.md),
+                FilledButton.tonalIcon(
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const QaLabScreen(),
+                    ),
+                  ),
+                  icon: const Icon(Icons.science_outlined, size: 16),
+                  label: const Text('Open QA lab'),
+                ),
+              ],
+            ),
+            const SizedBox(height: Space.lg),
+            _Group(
+              title: 'About',
+              children: <Widget>[
+                Text(
+                  'ASVAB Coach is an independent study tool. It is not affiliated '
+                  'with the Department of Defense, the Army or the Army National '
+                  'Guard, and it does not produce an official score.',
+                  style: context.text.bodySmall,
+                ),
+                const SizedBox(height: Space.md),
+                Text(
+                  'Scoring model sources',
+                  style: context.text.titleSmall?.copyWith(
+                    color: c.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: Space.xs),
+                Text(
+                  'Segall, D. O. (2004), Development and Evaluation of the 1997 ASVAB '
+                  'Score Scale, Defense Manpower Data Center: section 2.2 (standard '
+                  'scores), 2.4 and Table 2.5 (AFQT), 2.5.3 and Table 2.7 (Army '
+                  'composite weights), Table 2.2 (categories). ASVAB Technical '
+                  'Bulletin No. 4, Table C.1. Official ASVAB programme fact sheets '
+                  'for item counts and time limits.',
+                  style: context.text.bodySmall?.copyWith(height: 1.6),
+                ),
+                const SizedBox(height: Space.md),
+                Text(
+                  'Aptitude requirements',
+                  style: context.text.titleSmall?.copyWith(
+                    color: c.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: Space.xs),
+                Text(
+                  'Reference values from published Army aptitude-area tables '
+                  '(DA PAM 611-21 is the governing document and is revised '
+                  'regularly). Confirm every requirement with a recruiter before '
+                  'you sign anything.',
+                  style: context.text.bodySmall?.copyWith(height: 1.6),
+                ),
+              ],
+            ),
+            const SizedBox(height: Space.xxl),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _kv(BuildContext context, String k, String v) {
+    final c = context.colors;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: Space.sm),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(
+            width: 130,
+            child: Text(
+              k,
+              style: context.text.bodySmall?.copyWith(color: c.textMuted),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              v,
+              style: context.text.bodySmall?.copyWith(
+                color: c.textPrimary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _export(AppState app) {
+    final buffer = StringBuffer('{\n  "exportedAt": "')
+      ..write(DateTime.now().toIso8601String())
+      ..write('",\n  "attempts": [\n');
+    for (var i = 0; i < app.attempts.length; i++) {
+      final a = app.attempts[i];
+      buffer
+        ..write('    {"id":"')
+        ..write(a.id)
+        ..write('","kind":"')
+        ..write(a.kind.name)
+        ..write('","afqt":')
+        ..write(a.report.afqtPercentile)
+        ..write(',"gt":')
+        ..write(a.report.gt)
+        ..write(',"correct":')
+        ..write(a.report.totalCorrect)
+        ..write(',"answered":')
+        ..write(a.report.totalAnswered)
+        ..write(',"finishedAt":"')
+        ..write(a.finishedAt.toIso8601String())
+        ..write('"}')
+        ..write(i == app.attempts.length - 1 ? '\n' : ',\n');
+    }
+    buffer.write('  ]\n}');
+    return buffer.toString();
+  }
+
+  void _confirmReset(BuildContext context, AppState app) {
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Erase everything?'),
+        content: const Text(
+          'This deletes your goal and every attempt from this browser. It cannot '
+          'be undone.',
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () async {
+              await app.reset();
+              if (dialogContext.mounted) {
+                Navigator.of(dialogContext).pop();
+                Navigator.of(dialogContext).pushAndRemoveUntil(
+                  MaterialPageRoute<void>(builder: (_) => const SizedBox()),
+                  (route) => false,
+                );
+              }
+            },
+            child: const Text('Erase'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Group extends StatelessWidget {
+  const _Group({required this.title, required this.children});
+  final String title;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Eyebrow(title),
+        const SizedBox(height: Space.sm),
+        AppCard(
+          padding: const EdgeInsets.all(Space.lg),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children,
+          ),
+        ),
+      ],
+    );
+  }
+}

@@ -1,0 +1,461 @@
+{
+  "sourceVersionNote": "Item counts and time limits verified against the official ASVAB Fact Sheet PDF retrieved from https://www.officialasvab.com/wp-content/uploads/2026/10/ASVAB-Fact_Sheet.pdf (the October 2026 upload; identical counts also appear in the 2023-06, 2024-02 and 2025-04 editions) and officialasvab.com/applicants/cat-asvab/. CAT-ASVAB is 15/15/15/10/15/15/10/10/15/15 items = 135 items / 197 minutes; P&P-ASVAB is 25/30/35/15/25/20/25(AS)/25/25 = 225 items / 149 minutes. CAUTION: the widely circulated '16 questions, 8 minutes' figures are NOT the enlistment CAT-ASVAB; 16-item counts match the school ASVAB Career Exploration iCAT (CEP Overview, DD Form 1304-5OV, FEB 2026) and the times match no current official source. Topic lists marked in each domain note are quoted from official documents; all numeric WEIGHTS are estimates (the ASVAB program publishes no per-topic weights). Difficulty bands are official: p > .75 easy, .45 to .75 medium, < .45 hard (DMDC ASVAB Technical Bulletin No. 4, section 3.2.3). AFQT uses only AR, MK, PC and WK and is reported as a 1-99 percentile; VE = WK + PC is a derived composite, not an administered subtest. Line-score composite formulas are NOT published by the ASVAB program and must be treated as approximate.",
+  "subtests": [
+    {
+      "abbr": "GS",
+      "name": "General Science",
+      "catQuestions": 15,
+      "catMinutes": 12,
+      "paperQuestions": 25,
+      "paperMinutes": 11,
+      "domains": [
+        {
+          "topic": "Life science: botany, zoology, anatomy & physiology, ecology",
+          "weight": 0.35,
+          "notes": "Official topic list [OFFICIAL-VERIFIED]; weight estimate [ESTIMATE]. Cell/organ basics, body systems, food webs."
+        },
+        {
+          "topic": "Physical science: chemistry and atomic structure",
+          "weight": 0.25,
+          "notes": "Elements/compounds/mixtures, states of matter, physical vs chemical change, acids-bases, catalysts."
+        },
+        {
+          "topic": "Physical science: force, motion, energy, fluids",
+          "weight": 0.15,
+          "notes": "Density, buoyancy, energy transfer, inertia. Shallower than MC."
+        },
+        {
+          "topic": "Earth & space: astronomy",
+          "weight": 0.1,
+          "notes": "Planets, moon phases, eclipses, seasons (axial tilt), solar system scale."
+        },
+        {
+          "topic": "Earth & space: geology, meteorology, oceanography",
+          "weight": 0.15,
+          "notes": "Rock types, tectonics, weathering, fronts, water cycle, tides, atmosphere composition."
+        }
+      ],
+      "commonMistakes": [
+        "Accepting a restatement as the explanation (density item answered 'it is lighter').",
+        "Confusing solar and lunar eclipse geometry.",
+        "Calling dissolving a chemical change.",
+        "Choosing the most jargon-heavy option; the pool is high-school level.",
+        "Studying advanced topics instead of the officially listed curriculum areas.",
+        "Skipping GS entirely; it feeds science/technical line scores even though it is not in the AFQT."
+      ]
+    },
+    {
+      "abbr": "AR",
+      "name": "Arithmetic Reasoning",
+      "catQuestions": 15,
+      "catMinutes": 55,
+      "paperQuestions": 30,
+      "paperMinutes": 36,
+      "domains": [
+        {
+          "topic": "Multi-step whole-number word problems (rate, work, distance, unit rate)",
+          "weight": 0.25,
+          "notes": "Official operation list; weight [ESTIMATE]. Modal AR item, two or three operations with correct order of operations."
+        },
+        {
+          "topic": "Percent, interest, discount, tax, percent change, depreciation",
+          "weight": 0.22,
+          "notes": "Heavily represented in official samples ($7,250 at 12% depreciation)."
+        },
+        {
+          "topic": "Ratio, proportion and scaling",
+          "weight": 0.18,
+          "notes": "Part-to-part and part-to-whole ('one in every 9'), mixture and recipe scaling."
+        },
+        {
+          "topic": "Rational numbers: fractions, decimals, mixed numbers",
+          "weight": 0.18,
+          "notes": "Fraction of a quantity in a word context; decimal equivalents."
+        },
+        {
+          "topic": "Measurement, unit conversion, area/perimeter in context",
+          "weight": 0.12,
+          "notes": "Feet vs square feet vs square yards (official sample), gallons, time conversion."
+        },
+        {
+          "topic": "Averages and simple data interpretation",
+          "weight": 0.05,
+          "notes": "Mean of a set, weighted average."
+        }
+      ],
+      "commonMistakes": [
+        "Solving for the wrong quantity (party A instead of B; amount lost instead of value left).",
+        "Reporting the percent change instead of the resulting value.",
+        "Unit mismatch: feet vs square feet vs square yards; minutes vs hours.",
+        "Setting the proportion up upside-down.",
+        "Rounding mid-calculation and twice at the end.",
+        "Doing the arithmetic mentally instead of on the provided scratch paper, despite 3.67 minutes per item.",
+        "Leaving items blank at the time limit; the CAT penalty treats unfinished items as random guesses."
+      ]
+    },
+    {
+      "abbr": "WK",
+      "name": "Word Knowledge",
+      "catQuestions": 15,
+      "catMinutes": 9,
+      "paperQuestions": 35,
+      "paperMinutes": 11,
+      "domains": [
+        {
+          "topic": "Single-word synonym ('X most nearly means')",
+          "weight": 0.55,
+          "notes": "Bare stem, four one-word choices. Official format [OFFICIAL-VERIFIED]; weight [ESTIMATE]."
+        },
+        {
+          "topic": "Word used in a sentence, meaning resolved from context",
+          "weight": 0.3,
+          "notes": "Official sample: 'His record provides no reason for apprehension.'"
+        },
+        {
+          "topic": "Secondary/less-common meanings and confusable pairs",
+          "weight": 0.15,
+          "notes": "The difficulty engine: the common meaning is the trap."
+        }
+      ],
+      "commonMistakes": [
+        "Choosing a word you can define rather than the nearest synonym.",
+        "Falling for the secondary-meaning trap when the sentence pins the sense.",
+        "Letting word sound or technicality drive the choice.",
+        "Ignoring the sentence version and answering from the bare word.",
+        "Spending 90 seconds on one item in a 36-second-per-item subtest.",
+        "Studying 5,000-word lists instead of reviewing mid-frequency words with retrieval and spacing."
+      ]
+    },
+    {
+      "abbr": "PC",
+      "name": "Paragraph Comprehension",
+      "catQuestions": 10,
+      "catMinutes": 27,
+      "paperQuestions": 15,
+      "paperMinutes": 13,
+      "domains": [
+        {
+          "topic": "Main idea / primary purpose",
+          "weight": 0.25,
+          "notes": "Whole-passage synthesis; correct answer must cover the whole text. Official concept list; weight [ESTIMATE]."
+        },
+        {
+          "topic": "Explicit detail and reworded facts ('According to the passage')",
+          "weight": 0.25,
+          "notes": "Answer is verbatim or near-verbatim; tests locating, not inferring."
+        },
+        {
+          "topic": "Inference / drawing conclusions / implied meaning",
+          "weight": 0.25,
+          "notes": "Answer must be forced by the text, not merely permitted."
+        },
+        {
+          "topic": "Vocabulary in context",
+          "weight": 0.1,
+          "notes": "Common word in an unusual sense inside the passage."
+        },
+        {
+          "topic": "Author's purpose, tone, attitude",
+          "weight": 0.1,
+          "notes": "Usually signaled by adjectives and concessions."
+        },
+        {
+          "topic": "Sequence of events / style and technique",
+          "weight": 0.05,
+          "notes": "Occasional 'which happened first' or 'the phrase X is used to...' item."
+        }
+      ],
+      "commonMistakes": [
+        "Choosing a statement true in the world but not supported by this passage.",
+        "Answering a main-idea question with a supporting detail.",
+        "Over-inferring: accepting an inference the text permits rather than forces.",
+        "Re-reading the passage for every question instead of answering all its questions in one pass.",
+        "Ignoring absolutes ('always', 'never') that make an option indefensible.",
+        "Skipping passages on the CAT when there are only 10 items in 27 minutes.",
+        "Answering a vocabulary-in-context item from the word's most common meaning."
+      ]
+    },
+    {
+      "abbr": "MK",
+      "name": "Mathematics Knowledge",
+      "catQuestions": 15,
+      "catMinutes": 31,
+      "paperQuestions": 25,
+      "paperMinutes": 24,
+      "domains": [
+        {
+          "topic": "Algebraic operations and equations",
+          "weight": 0.35,
+          "notes": "Official bucket; weight [ESTIMATE]. Linear equations/inequalities, simplify and factor, exponent rules, identities."
+        },
+        {
+          "topic": "Geometry and measurement",
+          "weight": 0.3,
+          "notes": "Angles, triangles, Pythagorean theorem, circles, area/volume, coordinate basics."
+        },
+        {
+          "topic": "Number theory and numeration",
+          "weight": 0.25,
+          "notes": "Factors, multiples, primes, LCM/GCD, fractions/decimals, percents, roots, ratio."
+        },
+        {
+          "topic": "Probability and counting",
+          "weight": 0.1,
+          "notes": "Single-event probability, simple independent events."
+        }
+      ],
+      "commonMistakes": [
+        "Percent direction errors (halving again instead of doubling).",
+        "Sign errors when transposing terms.",
+        "Using the diameter where the radius belongs (area is pi*r*r).",
+        "Using the favorable count instead of the total as a probability denominator.",
+        "Not recognizing factorable forms and attempting long division.",
+        "Treating MK as AR (writing equations for direct computations) or vice versa.",
+        "Unit slips in geometry: perimeter vs area vs volume, square vs cubic units.",
+        "Depending on a calculator that does not exist on the real test."
+      ]
+    },
+    {
+      "abbr": "EI",
+      "name": "Electronics Information",
+      "catQuestions": 15,
+      "catMinutes": 10,
+      "paperQuestions": 20,
+      "paperMinutes": 9,
+      "domains": [
+        {
+          "topic": "Electrical quantities, symbols, units, abbreviations, meters",
+          "weight": 0.15,
+          "notes": "Official topic list; weight [ESTIMATE]. Volt/amp/ohm/watt, AC vs DC, schematic symbols, instrument identification."
+        },
+        {
+          "topic": "DC circuits: series vs parallel, Ohm's law, resistance rules",
+          "weight": 0.3,
+          "notes": "The computational core: V = IR, P = VI, series/parallel behavior, one-bulb-out consequences."
+        },
+        {
+          "topic": "Components and devices",
+          "weight": 0.25,
+          "notes": "Resistor, capacitor, inductor, diode, transistor, relay, transformer, fuse."
+        },
+        {
+          "topic": "Electrical and electronic systems",
+          "weight": 0.2,
+          "notes": "Motors, generators, alternators, batteries, ignition/charging, AC distribution."
+        },
+        {
+          "topic": "Tools, materials, wiring and safety",
+          "weight": 0.1,
+          "notes": "Solder, insulation, wire gauge, conduit, fuses/breakers, grounding."
+        }
+      ],
+      "commonMistakes": [
+        "Series/parallel confusion, especially the one-bulb-burns-out family.",
+        "Rearranging Ohm's law incorrectly (V = I/R) under time pressure.",
+        "Decimal-point errors with currents like 0.1 A.",
+        "Confusing resistance with conductance when the stem says 'least resistance'.",
+        "Mixing voltage (across) with current (through) when reading a schematic.",
+        "Answering from automotive intuition instead of electronics principles.",
+        "Skipping EI, which drives electronics line scores."
+      ]
+    },
+    {
+      "abbr": "AS",
+      "name": "Auto & Shop Information (AI + SI)",
+      "catQuestions": 20,
+      "catMinutes": 13,
+      "paperQuestions": 25,
+      "paperMinutes": 11,
+      "domains": [
+        {
+          "topic": "Shop: hand tools, identification and correct use",
+          "weight": 0.18,
+          "notes": "Official area list; weight [ESTIMATE]. Rip vs crosscut vs coping vs back saws, chisels, clamps, planes, files, measuring tools."
+        },
+        {
+          "topic": "Auto: engine, combustion, lubrication, cooling",
+          "weight": 0.16,
+          "notes": "Four-stroke cycle, piston rings, oil pump, radiator/thermostat/water pump."
+        },
+        {
+          "topic": "Auto: drivetrain, brakes, steering, suspension",
+          "weight": 0.16,
+          "notes": "Transmission/clutch concept, differential, hydraulic brakes, shock absorbers."
+        },
+        {
+          "topic": "Shop: power tools, materials, fasteners",
+          "weight": 0.16,
+          "notes": "Drill press, circular/table saw, wood species and sheet goods, metal stock, screws/nails/bolts, adhesives."
+        },
+        {
+          "topic": "Shop: building and construction procedures",
+          "weight": 0.16,
+          "notes": "Framing, layout, joinery, concrete/masonry basics, finishing, safety."
+        },
+        {
+          "topic": "Auto: automotive electrical and ignition",
+          "weight": 0.09,
+          "notes": "Battery, alternator, starter, spark plugs, ignition timing concept."
+        },
+        {
+          "topic": "Auto: automotive tools, troubleshooting, maintenance",
+          "weight": 0.09,
+          "notes": "Diagnostic reasoning ('uses too much oil when which part is worn'), jack/stand safety, service tasks."
+        }
+      ],
+      "commonMistakes": [
+        "Grain-direction confusion: rip vs crosscut saw (and the same error for plane blades and chisels).",
+        "Naming the part that fails because of wear rather than the part whose wear causes the symptom.",
+        "Confusing systems that share components (oil and coolant both remove heat; battery and alternator both supply electricity).",
+        "Identifying tools by silhouette instead of function (clamp, plier and wrench types).",
+        "Crossing wood and metal shop practice, or choosing the wrong fastener for the material.",
+        "Skipping the subtest on the belief that it requires prior shop class; the pool rewards general mechanical reasoning."
+      ]
+    },
+    {
+      "abbr": "MC",
+      "name": "Mechanical Comprehension",
+      "catQuestions": 15,
+      "catMinutes": 22,
+      "paperQuestions": 25,
+      "paperMinutes": 19,
+      "domains": [
+        {
+          "topic": "Simple machines: levers, pulleys/block-and-tackle, inclined plane, wheel and axle, screw",
+          "weight": 0.28,
+          "notes": "Official topic list; weight [ESTIMATE]. MA = load/effort, effort arm/load arm, rope-segment counting."
+        },
+        {
+          "topic": "Structural support and loads",
+          "weight": 0.18,
+          "notes": "Beam/post load sharing, center of gravity, trusses, tension vs compression."
+        },
+        {
+          "topic": "Gears and gear trains",
+          "weight": 0.15,
+          "notes": "Rotation direction, teeth-to-RPM ratio, compound trains (official: gear A 14 revs, gear B 21)."
+        },
+        {
+          "topic": "Mechanical motion and friction",
+          "weight": 0.15,
+          "notes": "Velocity/acceleration concept, friction direction and effect, work vs power, efficiency."
+        },
+        {
+          "topic": "Fluid dynamics and pressure",
+          "weight": 0.14,
+          "notes": "Hydraulic advantage (force/area), pressure vs depth, buoyancy, valve behavior by pressure differential."
+        },
+        {
+          "topic": "Properties of materials",
+          "weight": 0.1,
+          "notes": "Strength/stiffness/elasticity vs plasticity, corrosion, thermal expansion, material selection."
+        }
+      ],
+      "commonMistakes": [
+        "Counting rope segments wrong (count only those supporting the movable block).",
+        "Inverting the mechanical-advantage ratio (multiplying instead of dividing).",
+        "Gear-direction errors with idler gears, which reverse direction but do not change the ratio.",
+        "Assuming a longer lever is always easier regardless of fulcrum position; confusing lever classes.",
+        "Answering 'total weight' where center of gravity is the issue.",
+        "Reasoning valves by flow direction instead of pressure differential.",
+        "Treating friction as always undesirable when the item asks direction and effect.",
+        "Applying formulas where the item only asks which of four diagrams is strongest."
+      ]
+    },
+    {
+      "abbr": "AO",
+      "name": "Assembling Objects",
+      "catQuestions": 15,
+      "catMinutes": 18,
+      "paperQuestions": 25,
+      "paperMinutes": 15,
+      "domains": [
+        {
+          "topic": "Fit-together (jigsaw) items: pieces rotate and translate to form one object",
+          "weight": 0.6,
+          "notes": "Both formats [OFFICIAL-VERIFIED]; the 60/40 split is [ESTIMATE]. Rules: rotate/translate only, never mirror, flip, stretch or rescale."
+        },
+        {
+          "topic": "Connection items: match labeled attachment points on two or more pieces",
+          "weight": 0.4,
+          "notes": "Tests attachment-point tracking rather than silhouette matching."
+        }
+      ],
+      "commonMistakes": [
+        "Selecting the answer that requires a mirrored or flipped piece.",
+        "Matching the overall silhouette while ignoring an internal notch or tab.",
+        "Assuming a piece may be scaled to fit.",
+        "Losing attachment-point correspondence in the connection format.",
+        "Mentally rotating the whole assembly when only one piece may move.",
+        "Spending too long: at 72 seconds per item, mark and move on; AO is not in the AFQT."
+      ]
+    },
+    {
+      "abbr": "VE",
+      "name": "Verbal Expression (derived composite: WK + PC)",
+      "catQuestions": 25,
+      "catMinutes": 36,
+      "paperQuestions": 50,
+      "paperMinutes": 24,
+      "domains": [
+        {
+          "topic": "Word Knowledge contribution (synonyms in and out of context)",
+          "weight": 0.6,
+          "notes": "Derived, not administered. CAT basis 15 of 25 items; P&P basis 35 of 50 items [OFFICIAL-DERIVED]."
+        },
+        {
+          "topic": "Paragraph Comprehension contribution (main idea, detail, inference, tone)",
+          "weight": 0.4,
+          "notes": "Derived. CAT basis 10 of 25; P&P basis 15 of 50. Feeds AFQT and nearly every line score, including GT = VE + AR."
+        }
+      ],
+      "commonMistakes": [
+        "Treating VE as a separate test to study, when it is only WK plus PC.",
+        "Under-investing in PC because it has only 10 CAT items while it contributes 40% of VE.",
+        "Ignoring VE when selecting an enlistment goal, since GT = VE + AR gates a large share of technical jobs."
+      ]
+    }
+  ],
+  "studyTechniques": [
+    {
+      "name": "Retrieval practice (practice testing)",
+      "what": "Make every review interaction a question the learner must answer before seeing the explanation; never present a summary screen as the primary review loop.",
+      "evidence": "Dunlosky, Rawson, Marsh, Nathan and Willingham (2013), Psychological Science in the Public Interest 14(1), 4-58 - rated high utility. Meta-analytic g about 0.50 (Rowland, 2014, Psychological Bulletin 140(6), 1432-1463); g about 0.61 for practice testing versus restudy (Adesope, Trevisan and Sundararajan, 2017, Review of Educational Research 87(3), 659-701)."
+    },
+    {
+      "name": "Spaced repetition (distributed practice)",
+      "what": "Schedule expanding review intervals tied to mastery, with the final review just before the test date; scale the lag to the retention interval.",
+      "evidence": "Cepeda, Pashler, Vul, Wixted and Rohrer (2006), Psychological Bulletin 132(3), 354-380; Cepeda et al. (2008), Psychological Science 19(11), 1095-1102 - optimal gap about 10-20% of retention interval; Dunlosky et al. (2013) - high utility."
+    },
+    {
+      "name": "Interleaving",
+      "what": "Mix item types within a session (AR: ratio, percent, rate; MK: algebra, geometry, number theory) instead of blocking one type.",
+      "evidence": "Rohrer and Taylor (2007), Instructional Science 35, 481-498; Taylor and Rohrer (2010), JARMAC; Brunmair and Richter (2019), Psychological Bulletin 145(11), 1029-1052 - overall g about 0.42, largest for inductive category learning."
+    },
+    {
+      "name": "Worked-example fading",
+      "what": "For AR, MK, EI and MC, introduce each new item type with a full worked example, then a completion problem with the last step blank, then a standard item; fade the scaffolds as accuracy rises.",
+      "evidence": "Sweller and Cooper (1985), Cognition and Instruction 2(1), 59-89; Renkl and Atkinson (2003) on fading; Kalyuga, Ayres, Chandler and Sweller (2003) - expertise reversal effect, so stop scaffolding once competent."
+    },
+    {
+      "name": "Elaborative interrogation and self-explanation",
+      "what": "After each answer, require an explanation of why the key is right and why the most attractive distractor is wrong; store one reinforcement lesson per misconception.",
+      "evidence": "Dunlosky et al. (2013) - moderate utility; Bisra, Liu, Nesbit, Salimi and Winne (2018), Educational Psychology Review 30, 703-725 - self-explanation prompting g about 0.55."
+    },
+    {
+      "name": "Error-focused corrective feedback",
+      "what": "Immediate, specific feedback that names the error class (wrong quantity, semantic neighbor, inverted ratio), then requeue that item type after a delay.",
+      "evidence": "Butler and Roediger (2008), European Journal of Cognitive Psychology - the testing effect is larger with feedback; Hattie and Timperley (2007), Review of Educational Research 77(1), 81-112."
+    },
+    {
+      "name": "Metacognitive calibration",
+      "what": "Collect a confidence rating before revealing correctness and teach the gap between recognition and production.",
+      "evidence": "Koriat and Bjork (2005), Journal of Experimental Psychology: Learning, Memory, and Cognition 31(2), 187-194; Dunlosky et al. (2013) on judgment-of-learning overconfidence."
+    },
+    {
+      "name": "Format-specific guessing strategy",
+      "what": "P&P: never leave a bubble empty, there is no guessing penalty. CAT/PiCAT/APT: do not blind-guess; unfinished items are scored as random responses and answers cannot be reviewed.",
+      "evidence": "OFFICIAL: ASVAB Fact Sheet (2026 edition), pages 1 and 4; officialasvab.com/researchers/scores/ - CAT penalty function is equivalent to random guessing on unfinished items."
+    }
+  ]
+}

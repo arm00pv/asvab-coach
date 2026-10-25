@@ -1,0 +1,35 @@
+{
+    "name": "ASVAB Coach - Army National Guard",
+    "short_name": "ASVAB Coach",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#0C1311",
+    "theme_color": "#14503F",
+    "description": "Placement diagnostic, timed mock ASVABs, honest scoring with AFQT percentile and Army line scores, National Guard job eligibility, and reinforcement lessons for the skills you missed.",
+    "orientation": "any",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
