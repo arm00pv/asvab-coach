@@ -115,7 +115,7 @@ renders real diagrams: a lever with its fulcrum and arms, an inclined plane with
 a crate on the slope, a gear train with an idler, a beam on two supports, a wheel
 and axle, and a fixed pulley. The figures are drawn from a Flutter-free primitive
 model, so the bank still loads outside a rendering engine.
-**Divergence:** most MC items remain verbal, and no item places its
+**Divergence:** twenty MC items remain verbal by design, and no item places its
 answer choices inside the drawing.
 
 ### Assembling Objects (AO)
@@ -180,7 +180,7 @@ of the real items.
 ## Known gaps, ranked by how much they cost a candidate
 
 1. **Mechanical Comprehension is not fully figure-based.** The figure renderer
-   works and sixteen of the fifty-four MC items use it, but the rest are text only.
+   works and thirty-four of the fifty-four MC items use it, which makes figures the majority as on the real test; the twenty that remain verbal are the ones where a drawing would either print the answer or argue the wrong way.
    The real subtest is figure-led throughout.
 2. **Assembling Objects pieces are grid polygons**, not the drawn line art of the
    real items. The rules are enforced exactly; the artwork is a simplification.

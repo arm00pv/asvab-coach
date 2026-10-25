@@ -74,7 +74,7 @@ Paragraph Comprehension items also carry `passage: '...'`.
 | **MK** | Pure computation, algebra or geometry. Symbolic notation as plain text: x^2, sqrt(3), (x - 3)(x - 4). No word problems, no calculator, no long stems. |
 | **EI** | Quantities with units, circuit behaviour, component identification, or safety. Numeric items must have clean arithmetic. Schematic symbols are described in words. |
 | **AS** | Name a tool by its job, identify a system fault, or pick the right material or procedure. Shop-floor vocabulary, not engineering. |
-| **MC** | Verbal descriptions of simple machines and structures. Mechanical advantage with clean numbers only. Never a diagram: describe the setup in words. |
+| **MC** | Figure-led. Every item except a genuinely non-geometric conceptual one carries an `McFigure` whose drawing matches the stem's numbers exactly, and the caption restates the setup in words. Nothing in the figure may reveal or contradict the answer: if drawing it would print the key (the fulcrum position IS the answer) or argue the wrong way (a bigger footprint for a friction item), leave it verbal. |
 | **AO** | Rendered puzzle. Never text-only. See below. |
 
 ## Distractor engineering
