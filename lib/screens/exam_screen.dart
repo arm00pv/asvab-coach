@@ -11,7 +11,7 @@ import '../state/app_state.dart';
 import '../state/exam_session.dart';
 import '../widgets/charts.dart';
 import '../widgets/primitives.dart';
-import '../widgets/mc_figure_view.dart';
+import '../widgets/sketch_view.dart';
 import '../widgets/puzzle_view.dart';
 
 /// The test runner.
@@ -298,13 +298,18 @@ class _SectionIntro extends StatelessWidget {
                     'scored as a random guess, so never leave one empty.',
               ),
             const SizedBox(height: Space.xl),
-            Row(
+            // A Wrap, not a Row: on a phone the two labels together are wider
+            // than the column, and a Row answers that by painting an overflow
+            // stripe over the primary action.
+            Wrap(
+              spacing: Space.md,
+              runSpacing: Space.sm,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: <Widget>[
                 FilledButton(
                   onPressed: onBegin,
                   child: const Text('Begin section'),
                 ),
-                const SizedBox(width: Space.md),
                 TextButton(onPressed: onQuit, child: const Text('Leave exam')),
               ],
             ),
@@ -380,6 +385,7 @@ class _QuestionView extends StatelessWidget {
         Expanded(
           child: PageBody(
             maxWidth: 780,
+            scrollable: false,
             padding: EdgeInsets.symmetric(
               horizontal: isWide ? Space.xxl : Space.lg,
               vertical: Space.lg,
@@ -387,105 +393,135 @@ class _QuestionView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    const Eyebrow('Question'),
-                    const SizedBox(width: Space.xs),
-                    Text(
-                      '${session.questionIndex + 1} of ${session.sectionQuestionCount}',
-                      style: context.text.labelMedium?.copyWith(
-                        color: c.textMuted,
-                      ),
+                // The question body scrolls and the footer stays pinned.
+                //
+                // This column used to sit directly inside a scroll view with a
+                // Spacer to push the footer down, which is a layout Flutter
+                // rejects: a flex child inside an unbounded parent throws. Long
+                // Paragraph Comprehension and Assembling Objects items need to
+                // scroll, so the scroll belongs here and the flex belongs to the
+                // bounded column above it.
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            const Eyebrow('Question'),
+                            const SizedBox(width: Space.xs),
+                            Text(
+                              '${session.questionIndex + 1} of ${session.sectionQuestionCount}',
+                              style: context.text.labelMedium?.copyWith(
+                                color: c.textMuted,
+                              ),
+                            ),
+                            const Spacer(),
+                            // The real CAT never tells you how hard an item is, so the
+                            // label is withheld during a mock and offered during
+                            // practice, where it is useful for calibration.
+                            if (session.exam.kind != ExamKind.fullMock &&
+                                session.exam.kind != ExamKind.diagnostic)
+                              Pill(
+                                q.difficulty.label,
+                                tone: q.difficulty == Difficulty.hard
+                                    ? PillTone.danger
+                                    : (q.difficulty == Difficulty.easy
+                                          ? PillTone.success
+                                          : PillTone.neutral),
+                                dense: true,
+                              ),
+                          ],
+                        ),
+                        const SizedBox(height: Space.md),
+                        if (q.passage != null) ...<Widget>[
+                          _PassageCard(text: q.passage!),
+                          const SizedBox(height: Space.lg),
+                        ],
+                        if (q.figure != null) ...<Widget>[
+                          SketchView(
+                            figure: q.figure!,
+                            // Generous, because the drawing is the question on
+                            // Mechanical Comprehension and on shop tool items. It only
+                            // binds on tall diagrams, which would otherwise push the
+                            // options off the fold.
+                            maxHeight: isWide ? 330 : 250,
+                          ),
+                          const SizedBox(height: Space.lg),
+                        ],
+                        if (q.puzzle != null)
+                          LoosePieces(
+                            pieces: q.puzzle!.pieces,
+                            cell: isWide ? 24 : 20,
+                            stemLabels: q.puzzle!.stemLabels,
+                          ),
+                        if (q.puzzle != null) const SizedBox(height: Space.lg),
+                        Text(
+                          q.stem,
+                          style: context.text.headlineSmall?.copyWith(
+                            fontSize: 19,
+                            height: 1.4,
+                          ),
+                        ),
+                        const SizedBox(height: Space.lg),
+                        if (q.puzzle != null)
+                          GridView.count(
+                            crossAxisCount: isWide ? 4 : 2,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            mainAxisSpacing: Space.md,
+                            crossAxisSpacing: Space.md,
+                            childAspectRatio: 0.95,
+                            children: <Widget>[
+                              for (var i = 0; i < 4; i++)
+                                AssemblyOption(
+                                  label: String.fromCharCode(65 + i),
+                                  poly: q.puzzle!.silhouette(i),
+                                  selected: displaySelected == i,
+                                  cell: isWide ? 15 : 13,
+                                  labels: q.puzzle!.optionLabels(i),
+                                  onTap: () => session.answer(i),
+                                ),
+                            ],
+                          )
+                        else
+                          Column(
+                            children: <Widget>[
+                              for (
+                                var i = 0;
+                                i < served.displayChoices.length;
+                                i++
+                              )
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    bottom: Space.sm,
+                                  ),
+                                  child: _OptionTile(
+                                    index: i,
+                                    text: served.displayChoices[i],
+                                    selected: displaySelected == i,
+                                    onTap: () => session.answer(i),
+                                  ),
+                                ),
+                              if (displaySelected != null)
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: TextButton.icon(
+                                    onPressed: () => session.answer(null),
+                                    icon: const Icon(
+                                      Icons.close_rounded,
+                                      size: 15,
+                                    ),
+                                    label: const Text('Clear answer'),
+                                  ),
+                                ),
+                            ],
+                          ),
+                      ],
                     ),
-                    const Spacer(),
-                    // The real CAT never tells you how hard an item is, so the
-                    // label is withheld during a mock and offered during
-                    // practice, where it is useful for calibration.
-                    if (session.exam.kind != ExamKind.fullMock &&
-                        session.exam.kind != ExamKind.diagnostic)
-                      Pill(
-                        q.difficulty.label,
-                        tone: q.difficulty == Difficulty.hard
-                            ? PillTone.danger
-                            : (q.difficulty == Difficulty.easy
-                                  ? PillTone.success
-                                  : PillTone.neutral),
-                        dense: true,
-                      ),
-                  ],
+                  ),
                 ),
                 const SizedBox(height: Space.md),
-                if (q.passage != null) ...<Widget>[
-                  _PassageCard(text: q.passage!),
-                  const SizedBox(height: Space.lg),
-                ],
-                if (q.figure != null) ...<Widget>[
-                  McFigureView(
-                    figure: q.figure!,
-                    maxHeight: isWide ? 230 : 190,
-                  ),
-                  const SizedBox(height: Space.lg),
-                ],
-                if (q.puzzle != null)
-                  LoosePieces(
-                    pieces: q.puzzle!.pieces,
-                    cell: isWide ? 24 : 20,
-                    stemLabels: q.puzzle!.stemLabels,
-                  ),
-                if (q.puzzle != null) const SizedBox(height: Space.lg),
-                Text(
-                  q.stem,
-                  style: context.text.headlineSmall?.copyWith(
-                    fontSize: 19,
-                    height: 1.4,
-                  ),
-                ),
-                const SizedBox(height: Space.lg),
-                if (q.puzzle != null)
-                  GridView.count(
-                    crossAxisCount: isWide ? 4 : 2,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    mainAxisSpacing: Space.md,
-                    crossAxisSpacing: Space.md,
-                    childAspectRatio: 0.95,
-                    children: <Widget>[
-                      for (var i = 0; i < 4; i++)
-                        AssemblyOption(
-                          label: String.fromCharCode(65 + i),
-                          poly: q.puzzle!.silhouette(i),
-                          selected: displaySelected == i,
-                          cell: isWide ? 15 : 13,
-                          labels: q.puzzle!.optionLabels(i),
-                          onTap: () => session.answer(i),
-                        ),
-                    ],
-                  )
-                else
-                  Column(
-                    children: <Widget>[
-                      for (var i = 0; i < served.displayChoices.length; i++)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: Space.sm),
-                          child: _OptionTile(
-                            index: i,
-                            text: served.displayChoices[i],
-                            selected: displaySelected == i,
-                            onTap: () => session.answer(i),
-                          ),
-                        ),
-                      if (displaySelected != null)
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: TextButton.icon(
-                            onPressed: () => session.answer(null),
-                            icon: const Icon(Icons.close_rounded, size: 15),
-                            label: const Text('Clear answer'),
-                          ),
-                        ),
-                    ],
-                  ),
-                const Spacer(),
                 _ExamFooter(session: session, onFinishSection: onFinishSection),
               ],
             ),
@@ -681,17 +717,36 @@ class _ExamFooter extends StatelessWidget {
               tooltip: 'Previous (left arrow)',
             ),
             const SizedBox(width: Space.sm),
-            TextButton.icon(
-              onPressed: session.toggleFlag,
-              icon: Icon(
-                session.isFlagged(session.current.id)
-                    ? Icons.flag_rounded
-                    : Icons.flag_outlined,
-                size: 16,
-                color: session.isFlagged(session.current.id) ? c.accent : null,
+            // The label goes away on a phone so the primary action keeps its
+            // full width instead of being squeezed off the edge.
+            if (context.isCompact)
+              IconButton.outlined(
+                onPressed: session.toggleFlag,
+                tooltip: 'Flag for review',
+                icon: Icon(
+                  session.isFlagged(session.current.id)
+                      ? Icons.flag_rounded
+                      : Icons.flag_outlined,
+                  size: 18,
+                  color: session.isFlagged(session.current.id)
+                      ? c.accent
+                      : null,
+                ),
+              )
+            else
+              TextButton.icon(
+                onPressed: session.toggleFlag,
+                icon: Icon(
+                  session.isFlagged(session.current.id)
+                      ? Icons.flag_rounded
+                      : Icons.flag_outlined,
+                  size: 16,
+                  color: session.isFlagged(session.current.id)
+                      ? c.accent
+                      : null,
+                ),
+                label: const Text('Flag'),
               ),
-              label: const Text('Flag'),
-            ),
             const Spacer(),
             if (session.questionIndex == session.sectionQuestionCount - 1)
               FilledButton.icon(

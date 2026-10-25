@@ -103,7 +103,11 @@ merge into a 25-item block. Includes picture-based tool identification.
 tag, so the section headers a candidate sees match the computer form. Items are
 classified by their skill tags: engine, drivetrain and automotive electrical are
 the Auto half; tools, materials, construction and welding are the Shop half.
-**Divergence:** tool identification is textual rather than pictorial.
+**Tool identification is drawn.** Eight items carry a line-art drawing of the
+tool and ask its name or its use, which is what the real Shop half does. The
+drawings are original line art built from the same primitive vocabulary as the
+Mechanical Comprehension figures, and a wrong answer therefore says something
+specific about what the candidate cannot yet recognise by shape.
 
 ### Mechanical Comprehension (MC)
 **Real format:** figure-led. Every officially published sample item shows a
@@ -184,11 +188,9 @@ of the real items.
    The real subtest is figure-led throughout.
 2. **Assembling Objects pieces are grid polygons**, not the drawn line art of the
    real items. The rules are enforced exactly; the artwork is a simplification.
-3. **Auto & Shop tool items are textual.** The real Auto and Shop halves include
-   picture-based tool identification.
-4. **Arithmetic Reasoning options carry units** ("420 miles"). The real test
+3. **Arithmetic Reasoning options carry units** ("420 miles"). The real test
    prints bare numerals. Units are kept for clarity in review.
-5. **Bank size.** 348 items against a 135-item mock means a determined user will
+4. **Bank size.** 356 items against a 135-item mock means a determined user will
    see repeats across many attempts. The real computer form draws from a far
    larger pool, and up to 15 unscored tryout items may appear on top of that.
 

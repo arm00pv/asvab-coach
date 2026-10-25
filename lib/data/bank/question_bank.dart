@@ -6,6 +6,7 @@ import 'assembling_objects.dart';
 import 'assembling_objects_connection.dart';
 import 'auto_shop.dart';
 import 'auto_shop_extra.dart';
+import 'auto_shop_tools.dart';
 import 'bank_audit.dart';
 import 'electronics.dart';
 import 'electronics_extra.dart';
@@ -39,6 +40,7 @@ abstract final class QuestionBank {
     ...electronicsExtraBank,
     ...autoShopBank,
     ...autoShopExtraBank,
+    ...autoShopToolBank,
     ...mechanicalBank,
     ...mechanicalExtraBank,
     ...mechanicalFigureBank,

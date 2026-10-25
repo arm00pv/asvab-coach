@@ -8,7 +8,7 @@ import 'package:asvab_guard_coach/data/models/question.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// Every point carried by one drawing instruction, whichever slot holds it.
-List<Pt> _points(McPrim prim) => <Pt>[
+List<Pt> _points(SketchPrim prim) => <Pt>[
   if (prim.a != null) prim.a!,
   if (prim.b != null) prim.b!,
   if (prim.c != null) prim.c!,
@@ -87,7 +87,7 @@ void main() {
         greaterThanOrEqualTo(5),
         reason: '${q.id}: only ${figure.prims.length} primitives',
       );
-      final labels = figure.prims.where((p) => p.kind == McPrimKind.text);
+      final labels = figure.prims.where((p) => p.kind == SketchPrimKind.text);
       expect(
         labels,
         isNotEmpty,

@@ -1,8 +1,8 @@
 import 'catalog.dart';
-import 'mc_figure.dart';
+import 'sketch.dart';
 import 'polyomino.dart';
 
-export 'mc_figure.dart';
+export 'sketch.dart';
 
 export 'polyomino.dart' show AoConnection, AoLabel, AoPuzzle, GridCell, Poly;
 
@@ -41,7 +41,7 @@ class Question {
   final AoPuzzle? puzzle;
 
   /// Optional diagram, used by Mechanical Comprehension items.
-  final McFigure? figure;
+  final Sketch? figure;
 
   /// Optional short attribution / knowledge reference shown in review.
   final String? source;

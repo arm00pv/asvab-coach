@@ -22,10 +22,14 @@ import 'package:asvab_guard_coach/screens/plan_screen.dart';
 import 'package:asvab_guard_coach/screens/progress_screen.dart';
 import 'package:asvab_guard_coach/screens/results_screen.dart';
 import 'package:asvab_guard_coach/screens/test_center_screen.dart';
+import 'package:asvab_guard_coach/data/bank/auto_shop_tools.dart';
 import 'package:asvab_guard_coach/data/bank/mechanical_figures.dart';
 import 'package:asvab_guard_coach/data/bank/mechanical_figures_extra.dart';
+import 'package:asvab_guard_coach/data/bank/shop_tool_sketches.dart';
+import 'package:asvab_guard_coach/data/models/exam.dart';
+import 'package:asvab_guard_coach/screens/exam_screen.dart';
 import 'package:asvab_guard_coach/state/app_state.dart';
-import 'package:asvab_guard_coach/widgets/mc_figure_view.dart';
+import 'package:asvab_guard_coach/widgets/sketch_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -227,7 +231,7 @@ void main() {
               ])
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
-                  child: McFigureView(figure: q.figure!),
+                  child: SketchView(figure: q.figure!),
                 ),
             ],
           ),
@@ -249,13 +253,74 @@ void main() {
               for (final q in mechanicalFigureExtraBank)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
-                  child: McFigureView(figure: q.figure!),
+                  child: SketchView(figure: q.figure!),
                 ),
             ],
           ),
         ),
       ),
       size: const Size(900, 2400),
+    );
+  });
+
+  testWidgets('shop_tools', (tester) async {
+    await _shoot(
+      tester,
+      'shop_tools',
+      Scaffold(
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: <Widget>[
+              for (final sketch in shopToolSketches)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: SketchView(figure: sketch),
+                ),
+            ],
+          ),
+        ),
+      ),
+      size: const Size(760, 2600),
+    );
+  });
+
+  testWidgets('shop_tool_question', (tester) async {
+    final tool = autoShopToolBank.firstWhere((q) => q.id == 'as-t03');
+    final exam = Exam(
+      id: 'visual-tool',
+      kind: ExamKind.section,
+      title: 'Auto & Shop Information',
+      sections: <ExamSection>[
+        ExamSection(
+          subtest: Subtest.as,
+          label: 'Shop Information',
+          questions: <ServedQuestion>[ServedQuestion.identity(tool)],
+          minutes: 6,
+        ),
+      ],
+    );
+    final state = await _seededState('sam');
+    tester.view.physicalSize = const Size(1280, 1100);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(
+      ChangeNotifierProvider<AppState>.value(
+        value: state,
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.build(Brightness.light),
+          home: ExamScreen(exam: exam),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Begin section'));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('goldens/shop_tool_question.png'),
     );
   });
 

@@ -24,21 +24,21 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
         'hanging at the midpoint.',
     difficulty: Difficulty.medium,
     skills: <String>['mc.structure'],
-    figure: McFigure(
+    figure: Sketch(
       caption:
           'A 600 pound load hanging 2 feet from the left end of a 6 foot beam '
           'carried on two supports, with the right support marked with a '
           'question mark.',
-      prims: <McPrim>[
-        McPrim.line(Pt(0.14, 0.50), Pt(0.86, 0.50), weight: 6),
-        McPrim.triangle(Pt(0.18, 0.50), Pt(0.12, 0.67), Pt(0.24, 0.67)),
-        McPrim.triangle(Pt(0.82, 0.50), Pt(0.76, 0.67), Pt(0.88, 0.67)),
-        McPrim.box(Pt(0.33, 0.27), Pt(0.46, 0.41)),
-        McPrim.line(Pt(0.393, 0.41), Pt(0.393, 0.50), weight: 3),
-        McPrim.text('600 lb', Pt(0.395, 0.19)),
-        McPrim.text('2 ft', Pt(0.285, 0.79)),
-        McPrim.text('4 ft', Pt(0.605, 0.79)),
-        McPrim.text('?', Pt(0.82, 0.79)),
+      prims: <SketchPrim>[
+        SketchPrim.line(Pt(0.14, 0.50), Pt(0.86, 0.50), weight: 6),
+        SketchPrim.triangle(Pt(0.18, 0.50), Pt(0.12, 0.67), Pt(0.24, 0.67)),
+        SketchPrim.triangle(Pt(0.82, 0.50), Pt(0.76, 0.67), Pt(0.88, 0.67)),
+        SketchPrim.box(Pt(0.33, 0.27), Pt(0.46, 0.41)),
+        SketchPrim.line(Pt(0.393, 0.41), Pt(0.393, 0.50), weight: 3),
+        SketchPrim.text('600 lb', Pt(0.395, 0.19)),
+        SketchPrim.text('2 ft', Pt(0.285, 0.79)),
+        SketchPrim.text('4 ft', Pt(0.605, 0.79)),
+        SketchPrim.text('?', Pt(0.82, 0.79)),
       ],
     ),
   ),
@@ -65,19 +65,19 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
         'beam.',
     difficulty: Difficulty.hard,
     skills: <String>['mc.structure'],
-    figure: McFigure(
+    figure: Sketch(
       caption:
           'A beam built into a wall at the left and carrying a hanging load at '
           'its free right end, with a question mark over the beam near the wall.',
-      prims: <McPrim>[
-        McPrim.box(Pt(0.10, 0.14), Pt(0.18, 0.86)),
-        McPrim.triangle(Pt(0.18, 0.50), Pt(0.18, 0.68), Pt(0.30, 0.68)),
-        McPrim.line(Pt(0.18, 0.50), Pt(0.74, 0.50), weight: 6),
-        McPrim.line(Pt(0.70, 0.50), Pt(0.70, 0.60), weight: 3),
-        McPrim.box(Pt(0.63, 0.60), Pt(0.77, 0.74)),
-        McPrim.text('wall', Pt(0.14, 0.09)),
-        McPrim.text('load', Pt(0.70, 0.81)),
-        McPrim.text('?', Pt(0.28, 0.38)),
+      prims: <SketchPrim>[
+        SketchPrim.box(Pt(0.10, 0.14), Pt(0.18, 0.86)),
+        SketchPrim.triangle(Pt(0.18, 0.50), Pt(0.18, 0.68), Pt(0.30, 0.68)),
+        SketchPrim.line(Pt(0.18, 0.50), Pt(0.74, 0.50), weight: 6),
+        SketchPrim.line(Pt(0.70, 0.50), Pt(0.70, 0.60), weight: 3),
+        SketchPrim.box(Pt(0.63, 0.60), Pt(0.77, 0.74)),
+        SketchPrim.text('wall', Pt(0.14, 0.09)),
+        SketchPrim.text('load', Pt(0.70, 0.81)),
+        SketchPrim.text('?', Pt(0.28, 0.38)),
       ],
     ),
   ),
@@ -99,18 +99,18 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
         'is the weight, which sets the limit rather than the force in play.',
     difficulty: Difficulty.easy,
     skills: <String>['mc.motion'],
-    figure: McFigure(
+    figure: Sketch(
       caption:
           'A 100 pound crate on a floor with a 40 pound push arrowed to the '
           'right and an unknown friction force arrowed to the left.',
-      prims: <McPrim>[
-        McPrim.line(Pt(0.08, 0.70), Pt(0.92, 0.70), weight: 4),
-        McPrim.box(Pt(0.34, 0.42), Pt(0.58, 0.70)),
-        McPrim.arrow(Pt(0.10, 0.56), Pt(0.32, 0.56)),
-        McPrim.arrow(Pt(0.82, 0.56), Pt(0.60, 0.56)),
-        McPrim.text('100 lb', Pt(0.46, 0.58)),
-        McPrim.text('40 lb push', Pt(0.20, 0.44)),
-        McPrim.text('friction ?', Pt(0.72, 0.44)),
+      prims: <SketchPrim>[
+        SketchPrim.line(Pt(0.08, 0.70), Pt(0.92, 0.70), weight: 4),
+        SketchPrim.box(Pt(0.34, 0.42), Pt(0.58, 0.70)),
+        SketchPrim.arrow(Pt(0.10, 0.56), Pt(0.32, 0.56)),
+        SketchPrim.arrow(Pt(0.82, 0.56), Pt(0.60, 0.56)),
+        SketchPrim.text('100 lb', Pt(0.46, 0.58)),
+        SketchPrim.text('40 lb push', Pt(0.20, 0.44)),
+        SketchPrim.text('friction ?', Pt(0.72, 0.44)),
       ],
     ),
   ),
@@ -131,23 +131,23 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
         'from the release point.',
     difficulty: Difficulty.medium,
     skills: <String>['mc.motion'],
-    figure: McFigure(
+    figure: Sketch(
       caption:
           'A stone marked at the release point, at 1 second where it has fallen '
           '16 feet, and at 2 seconds where the distance is marked with a '
           'question mark.',
-      prims: <McPrim>[
-        McPrim.dashed(Pt(0.30, 0.10), Pt(0.30, 0.92)),
-        McPrim.disc(Pt(0.30, 0.16), 0.04),
-        McPrim.disc(Pt(0.30, 0.35), 0.04),
-        McPrim.disc(Pt(0.30, 0.86), 0.04),
-        McPrim.dashed(Pt(0.22, 0.35), Pt(0.40, 0.35)),
-        McPrim.dashed(Pt(0.22, 0.86), Pt(0.40, 0.86)),
-        McPrim.text('release', Pt(0.14, 0.16)),
-        McPrim.text('1 s', Pt(0.13, 0.35)),
-        McPrim.text('2 s', Pt(0.13, 0.86)),
-        McPrim.text('16 ft', Pt(0.52, 0.25)),
-        McPrim.text('?', Pt(0.52, 0.66)),
+      prims: <SketchPrim>[
+        SketchPrim.dashed(Pt(0.30, 0.10), Pt(0.30, 0.92)),
+        SketchPrim.disc(Pt(0.30, 0.16), 0.04),
+        SketchPrim.disc(Pt(0.30, 0.35), 0.04),
+        SketchPrim.disc(Pt(0.30, 0.86), 0.04),
+        SketchPrim.dashed(Pt(0.22, 0.35), Pt(0.40, 0.35)),
+        SketchPrim.dashed(Pt(0.22, 0.86), Pt(0.40, 0.86)),
+        SketchPrim.text('release', Pt(0.14, 0.16)),
+        SketchPrim.text('1 s', Pt(0.13, 0.35)),
+        SketchPrim.text('2 s', Pt(0.13, 0.86)),
+        SketchPrim.text('16 ft', Pt(0.52, 0.25)),
+        SketchPrim.text('?', Pt(0.52, 0.66)),
       ],
     ),
   ),
@@ -170,29 +170,29 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
         'difference altogether.',
     difficulty: Difficulty.medium,
     skills: <String>['mc.pressure'],
-    figure: McFigure(
+    figure: Sketch(
       caption:
           'A hydraulic press: a 4 square inch piston pushed down on the left, '
           'joined by a fluid passage to a 20 square inch piston lifting a 600 '
           'pound load on the right.',
-      prims: <McPrim>[
-        McPrim.line(Pt(0.10, 0.30), Pt(0.10, 0.70)),
-        McPrim.line(Pt(0.24, 0.30), Pt(0.24, 0.60)),
-        McPrim.line(Pt(0.24, 0.60), Pt(0.56, 0.60)),
-        McPrim.line(Pt(0.56, 0.20), Pt(0.56, 0.60)),
-        McPrim.line(Pt(0.90, 0.20), Pt(0.90, 0.70)),
-        McPrim.line(Pt(0.10, 0.70), Pt(0.90, 0.70)),
-        McPrim.line(Pt(0.10, 0.38), Pt(0.24, 0.38), weight: 4),
-        McPrim.line(Pt(0.17, 0.38), Pt(0.17, 0.26), weight: 3),
-        McPrim.arrow(Pt(0.17, 0.10), Pt(0.17, 0.24)),
-        McPrim.text('?', Pt(0.32, 0.14)),
-        McPrim.line(Pt(0.56, 0.40), Pt(0.90, 0.40), weight: 4),
-        McPrim.line(Pt(0.73, 0.40), Pt(0.73, 0.28), weight: 3),
-        McPrim.box(Pt(0.62, 0.14), Pt(0.84, 0.28)),
-        McPrim.text('600 lb', Pt(0.73, 0.21)),
-        McPrim.text('4 sq in', Pt(0.17, 0.52)),
-        McPrim.text('20 sq in', Pt(0.73, 0.56)),
-        McPrim.text('fluid', Pt(0.40, 0.65)),
+      prims: <SketchPrim>[
+        SketchPrim.line(Pt(0.10, 0.30), Pt(0.10, 0.70)),
+        SketchPrim.line(Pt(0.24, 0.30), Pt(0.24, 0.60)),
+        SketchPrim.line(Pt(0.24, 0.60), Pt(0.56, 0.60)),
+        SketchPrim.line(Pt(0.56, 0.20), Pt(0.56, 0.60)),
+        SketchPrim.line(Pt(0.90, 0.20), Pt(0.90, 0.70)),
+        SketchPrim.line(Pt(0.10, 0.70), Pt(0.90, 0.70)),
+        SketchPrim.line(Pt(0.10, 0.38), Pt(0.24, 0.38), weight: 4),
+        SketchPrim.line(Pt(0.17, 0.38), Pt(0.17, 0.26), weight: 3),
+        SketchPrim.arrow(Pt(0.17, 0.10), Pt(0.17, 0.24)),
+        SketchPrim.text('?', Pt(0.32, 0.14)),
+        SketchPrim.line(Pt(0.56, 0.40), Pt(0.90, 0.40), weight: 4),
+        SketchPrim.line(Pt(0.73, 0.40), Pt(0.73, 0.28), weight: 3),
+        SketchPrim.box(Pt(0.62, 0.14), Pt(0.84, 0.28)),
+        SketchPrim.text('600 lb', Pt(0.73, 0.21)),
+        SketchPrim.text('4 sq in', Pt(0.17, 0.52)),
+        SketchPrim.text('20 sq in', Pt(0.73, 0.56)),
+        SketchPrim.text('fluid', Pt(0.40, 0.65)),
       ],
     ),
   ),
@@ -221,25 +221,25 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
         'limit.',
     difficulty: Difficulty.hard,
     skills: <String>['mc.pressure'],
-    figure: McFigure(
+    figure: Sketch(
       caption:
           'A hose running from a drum of water up over a wall and down into a '
           'lower tank, with the wall height marked with a question mark.',
-      prims: <McPrim>[
-        McPrim.box(Pt(0.08, 0.44), Pt(0.30, 0.84)),
-        McPrim.dashed(Pt(0.08, 0.52), Pt(0.30, 0.52)),
-        McPrim.box(Pt(0.44, 0.30), Pt(0.50, 0.84)),
-        McPrim.line(Pt(0.20, 0.72), Pt(0.20, 0.24), weight: 3),
-        McPrim.line(Pt(0.20, 0.24), Pt(0.60, 0.24), weight: 3),
-        McPrim.line(Pt(0.60, 0.24), Pt(0.60, 0.72), weight: 3),
-        McPrim.arrow(Pt(0.28, 0.24), Pt(0.40, 0.24)),
-        McPrim.box(Pt(0.52, 0.60), Pt(0.76, 0.84)),
-        McPrim.dashed(Pt(0.52, 0.68), Pt(0.76, 0.68)),
-        McPrim.text('water', Pt(0.13, 0.62)),
-        McPrim.text('?', Pt(0.545, 0.40)),
-        McPrim.text('drum', Pt(0.19, 0.91)),
-        McPrim.text('wall', Pt(0.47, 0.91)),
-        McPrim.text('tank', Pt(0.64, 0.91)),
+      prims: <SketchPrim>[
+        SketchPrim.box(Pt(0.08, 0.44), Pt(0.30, 0.84)),
+        SketchPrim.dashed(Pt(0.08, 0.52), Pt(0.30, 0.52)),
+        SketchPrim.box(Pt(0.44, 0.30), Pt(0.50, 0.84)),
+        SketchPrim.line(Pt(0.20, 0.72), Pt(0.20, 0.24), weight: 3),
+        SketchPrim.line(Pt(0.20, 0.24), Pt(0.60, 0.24), weight: 3),
+        SketchPrim.line(Pt(0.60, 0.24), Pt(0.60, 0.72), weight: 3),
+        SketchPrim.arrow(Pt(0.28, 0.24), Pt(0.40, 0.24)),
+        SketchPrim.box(Pt(0.52, 0.60), Pt(0.76, 0.84)),
+        SketchPrim.dashed(Pt(0.52, 0.68), Pt(0.76, 0.68)),
+        SketchPrim.text('water', Pt(0.13, 0.62)),
+        SketchPrim.text('?', Pt(0.545, 0.40)),
+        SketchPrim.text('drum', Pt(0.19, 0.91)),
+        SketchPrim.text('wall', Pt(0.47, 0.91)),
+        SketchPrim.text('tank', Pt(0.64, 0.91)),
       ],
     ),
   ),
@@ -260,22 +260,22 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
         'ignores the lever, which is why the tray sits close to the wheel.',
     difficulty: Difficulty.medium,
     skills: <String>['mc.levers'],
-    figure: McFigure(
+    figure: Sketch(
       caption:
           'A wheelbarrow with a wheel and axle, a 240 pound load in the tray 2 '
           'feet from the axle, and handles 6 feet from the axle with an upward '
           'effort arrowed and marked with a question mark.',
-      prims: <McPrim>[
-        McPrim.circle(Pt(0.16, 0.70), 0.11, weight: 4),
-        McPrim.disc(Pt(0.16, 0.70), 0.02),
-        McPrim.line(Pt(0.16, 0.70), Pt(0.88, 0.70), weight: 4),
-        McPrim.box(Pt(0.24, 0.52), Pt(0.56, 0.70)),
-        McPrim.box(Pt(0.31, 0.36), Pt(0.47, 0.52)),
-        McPrim.text('240 lb', Pt(0.39, 0.28)),
-        McPrim.arrow(Pt(0.86, 0.70), Pt(0.86, 0.46)),
-        McPrim.text('?', Pt(0.78, 0.56)),
-        McPrim.text('2 ft', Pt(0.275, 0.91)),
-        McPrim.text('6 ft', Pt(0.70, 0.91)),
+      prims: <SketchPrim>[
+        SketchPrim.circle(Pt(0.16, 0.70), 0.11, weight: 4),
+        SketchPrim.disc(Pt(0.16, 0.70), 0.02),
+        SketchPrim.line(Pt(0.16, 0.70), Pt(0.88, 0.70), weight: 4),
+        SketchPrim.box(Pt(0.24, 0.52), Pt(0.56, 0.70)),
+        SketchPrim.box(Pt(0.31, 0.36), Pt(0.47, 0.52)),
+        SketchPrim.text('240 lb', Pt(0.39, 0.28)),
+        SketchPrim.arrow(Pt(0.86, 0.70), Pt(0.86, 0.46)),
+        SketchPrim.text('?', Pt(0.78, 0.56)),
+        SketchPrim.text('2 ft', Pt(0.275, 0.91)),
+        SketchPrim.text('6 ft', Pt(0.70, 0.91)),
       ],
     ),
   ),
@@ -297,23 +297,23 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
         'path alone ignores the thread completely.',
     difficulty: Difficulty.medium,
     skills: <String>['mc.pulleys'],
-    figure: McFigure(
+    figure: Sketch(
       caption:
           'A screw jack: a threaded body on a base plate, a rising screw with a '
           'load on top, and a handle across the screw.',
-      prims: <McPrim>[
-        McPrim.box(Pt(0.26, 0.78), Pt(0.66, 0.88)),
-        McPrim.box(Pt(0.32, 0.52), Pt(0.60, 0.78)),
-        McPrim.line(Pt(0.32, 0.60), Pt(0.60, 0.60)),
-        McPrim.line(Pt(0.32, 0.66), Pt(0.60, 0.66)),
-        McPrim.line(Pt(0.32, 0.72), Pt(0.60, 0.72)),
-        McPrim.line(Pt(0.46, 0.52), Pt(0.46, 0.28), weight: 5),
-        McPrim.line(Pt(0.16, 0.38), Pt(0.74, 0.38), weight: 4),
-        McPrim.box(Pt(0.72, 0.32), Pt(0.78, 0.44)),
-        McPrim.box(Pt(0.34, 0.14), Pt(0.58, 0.28)),
-        McPrim.text('load', Pt(0.46, 0.21)),
-        McPrim.text('handle', Pt(0.22, 0.46)),
-        McPrim.text('pitch 1/4 in', Pt(0.76, 0.56)),
+      prims: <SketchPrim>[
+        SketchPrim.box(Pt(0.26, 0.78), Pt(0.66, 0.88)),
+        SketchPrim.box(Pt(0.32, 0.52), Pt(0.60, 0.78)),
+        SketchPrim.line(Pt(0.32, 0.60), Pt(0.60, 0.60)),
+        SketchPrim.line(Pt(0.32, 0.66), Pt(0.60, 0.66)),
+        SketchPrim.line(Pt(0.32, 0.72), Pt(0.60, 0.72)),
+        SketchPrim.line(Pt(0.46, 0.52), Pt(0.46, 0.28), weight: 5),
+        SketchPrim.line(Pt(0.16, 0.38), Pt(0.74, 0.38), weight: 4),
+        SketchPrim.box(Pt(0.72, 0.32), Pt(0.78, 0.44)),
+        SketchPrim.box(Pt(0.34, 0.14), Pt(0.58, 0.28)),
+        SketchPrim.text('load', Pt(0.46, 0.21)),
+        SketchPrim.text('handle', Pt(0.22, 0.46)),
+        SketchPrim.text('pitch 1/4 in', Pt(0.76, 0.56)),
       ],
     ),
   ),
@@ -340,20 +340,20 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
         'different sizes.',
     difficulty: Difficulty.easy,
     skills: <String>['mc.pulleys'],
-    figure: McFigure(
+    figure: Sketch(
       caption:
           'Two equal pulleys joined by a belt that crosses between them: pulley '
           'A is driven clockwise at 120 rpm and pulley B is marked with a '
           'question mark.',
-      prims: <McPrim>[
-        McPrim.circle(Pt(0.24, 0.46), 0.16, weight: 4),
-        McPrim.circle(Pt(0.76, 0.46), 0.16, weight: 4),
-        McPrim.line(Pt(0.306, 0.347), Pt(0.694, 0.573), weight: 3),
-        McPrim.line(Pt(0.306, 0.573), Pt(0.694, 0.347), weight: 3),
-        McPrim.text('A', Pt(0.24, 0.46)),
-        McPrim.text('B', Pt(0.76, 0.46)),
-        McPrim.text('120 rpm CW', Pt(0.24, 0.75)),
-        McPrim.text('?', Pt(0.76, 0.75)),
+      prims: <SketchPrim>[
+        SketchPrim.circle(Pt(0.24, 0.46), 0.16, weight: 4),
+        SketchPrim.circle(Pt(0.76, 0.46), 0.16, weight: 4),
+        SketchPrim.line(Pt(0.306, 0.347), Pt(0.694, 0.573), weight: 3),
+        SketchPrim.line(Pt(0.306, 0.573), Pt(0.694, 0.347), weight: 3),
+        SketchPrim.text('A', Pt(0.24, 0.46)),
+        SketchPrim.text('B', Pt(0.76, 0.46)),
+        SketchPrim.text('120 rpm CW', Pt(0.24, 0.75)),
+        SketchPrim.text('?', Pt(0.76, 0.75)),
       ],
     ),
   ),
@@ -379,22 +379,22 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
         'and stiffness has nothing to do with which side of a balance falls.',
     difficulty: Difficulty.medium,
     skills: <String>['mc.materials'],
-    figure: McFigure(
+    figure: Sketch(
       caption:
           'A balance beam on a central fulcrum with an aluminum block on the '
           'left end and a steel block of the same size on the right end, the '
           'tilt marked with a question mark.',
-      prims: <McPrim>[
-        McPrim.triangle(Pt(0.50, 0.56), Pt(0.43, 0.76), Pt(0.57, 0.76)),
-        McPrim.line(Pt(0.10, 0.56), Pt(0.90, 0.56), weight: 5),
-        McPrim.line(Pt(0.24, 0.56), Pt(0.24, 0.62), weight: 2),
-        McPrim.line(Pt(0.76, 0.56), Pt(0.76, 0.62), weight: 2),
-        McPrim.box(Pt(0.16, 0.62), Pt(0.32, 0.80)),
-        McPrim.box(Pt(0.68, 0.62), Pt(0.84, 0.80)),
-        McPrim.text('?', Pt(0.50, 0.44)),
-        McPrim.text('aluminum', Pt(0.24, 0.88)),
-        McPrim.text('steel', Pt(0.76, 0.88)),
-        McPrim.text('same size', Pt(0.50, 0.88)),
+      prims: <SketchPrim>[
+        SketchPrim.triangle(Pt(0.50, 0.56), Pt(0.43, 0.76), Pt(0.57, 0.76)),
+        SketchPrim.line(Pt(0.10, 0.56), Pt(0.90, 0.56), weight: 5),
+        SketchPrim.line(Pt(0.24, 0.56), Pt(0.24, 0.62), weight: 2),
+        SketchPrim.line(Pt(0.76, 0.56), Pt(0.76, 0.62), weight: 2),
+        SketchPrim.box(Pt(0.16, 0.62), Pt(0.32, 0.80)),
+        SketchPrim.box(Pt(0.68, 0.62), Pt(0.84, 0.80)),
+        SketchPrim.text('?', Pt(0.50, 0.44)),
+        SketchPrim.text('aluminum', Pt(0.24, 0.88)),
+        SketchPrim.text('steel', Pt(0.76, 0.88)),
+        SketchPrim.text('same size', Pt(0.50, 0.88)),
       ],
     ),
   ),

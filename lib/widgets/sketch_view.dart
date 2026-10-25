@@ -3,16 +3,21 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../core/theme/tokens.dart';
-import '../data/models/mc_figure.dart';
+import '../data/models/sketch.dart';
 
-/// Renders a Mechanical Comprehension diagram from its primitive list.
+/// Renders a [Sketch] from its primitive list.
 ///
-/// The model is plain data, which keeps the bank loadable outside a Flutter
-/// binding; this widget is the only place that knows about Canvas.
-class McFigureView extends StatelessWidget {
-  const McFigureView({super.key, required this.figure, this.maxHeight = 210});
+/// Shared by every picture-led subtest: Mechanical Comprehension setups and
+/// Auto & Shop tool identification. The model is plain data, which keeps the
+/// bank loadable outside a Flutter binding; this widget is the only place that
+/// knows about Canvas.
+class SketchView extends StatelessWidget {
+  const SketchView({super.key, required this.figure, this.maxHeight = 380});
 
-  final McFigure figure;
+  final Sketch figure;
+
+  /// Ceiling on the drawn height. Wide, flat sketches are unaffected; tall
+  /// ones shrink to fit rather than consuming the whole card.
   final double maxHeight;
 
   @override
@@ -29,21 +34,35 @@ class McFigureView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          AspectRatio(
-            aspectRatio: figure.aspect,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: maxHeight),
-              child: Semantics(
-                label: figure.caption,
-                child: CustomPaint(
-                  painter: _FigurePainter(
-                    figure: figure,
-                    ink: c.textPrimary,
-                    accent: c.primary,
+          // Size the drawing from its declared aspect and cap its height.
+          //
+          // A bare AspectRatio cannot be capped: it hands its child tight
+          // constraints, so a ConstrainedBox inside it has no effect. Capping
+          // the *width* instead keeps the aspect exact while still bounding the
+          // vertical space a tall diagram can take on a phone.
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final width = math.min(
+                constraints.maxWidth,
+                maxHeight * figure.aspect,
+              );
+              return Center(
+                child: SizedBox(
+                  width: width,
+                  height: width / figure.aspect,
+                  child: Semantics(
+                    label: figure.caption,
+                    child: CustomPaint(
+                      painter: _SketchPainter(
+                        figure: figure,
+                        ink: c.textPrimary,
+                        accent: c.primary,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
           const SizedBox(height: Space.xs),
           Text(
@@ -59,14 +78,14 @@ class McFigureView extends StatelessWidget {
   }
 }
 
-class _FigurePainter extends CustomPainter {
-  _FigurePainter({
+class _SketchPainter extends CustomPainter {
+  _SketchPainter({
     required this.figure,
     required this.ink,
     required this.accent,
   });
 
-  final McFigure figure;
+  final Sketch figure;
   final Color ink;
   final Color accent;
 
@@ -85,33 +104,48 @@ class _FigurePainter extends CustomPainter {
         ..strokeJoin = StrokeJoin.round;
 
       switch (prim.kind) {
-        case McPrimKind.line:
+        case SketchPrimKind.line:
           canvas.drawLine(_p(prim.a!, size), _p(prim.b!, size), paint);
-        case McPrimKind.dashed:
+        case SketchPrimKind.dashed:
           _dashed(canvas, _p(prim.a!, size), _p(prim.b!, size), paint);
-        case McPrimKind.circle:
+        case SketchPrimKind.circle:
           canvas.drawCircle(_p(prim.c!, size), prim.r * _unit(size), paint);
-        case McPrimKind.disc:
+        case SketchPrimKind.disc:
           canvas.drawCircle(
             _p(prim.c!, size),
             prim.r * _unit(size),
             Paint()..color = ink.withValues(alpha: 0.85),
           );
-        case McPrimKind.box:
+        case SketchPrimKind.box:
           canvas.drawRect(
             Rect.fromPoints(_p(prim.a!, size), _p(prim.b!, size)),
             paint,
           );
-        case McPrimKind.triangle:
+        case SketchPrimKind.triangle:
           final path = Path()
             ..moveTo(_p(prim.a!, size).dx, _p(prim.a!, size).dy)
             ..lineTo(_p(prim.b!, size).dx, _p(prim.b!, size).dy)
             ..lineTo(_p(prim.c!, size).dx, _p(prim.c!, size).dy)
             ..close();
           canvas.drawPath(path, paint);
-        case McPrimKind.arrow:
+        case SketchPrimKind.arrow:
           _arrow(canvas, _p(prim.a!, size), _p(prim.b!, size), paint);
-        case McPrimKind.arc:
+        case SketchPrimKind.poly:
+          final path = Path();
+          for (var i = 0; i < prim.pts.length; i++) {
+            final q = _p(prim.pts[i], size);
+            if (i == 0) {
+              path.moveTo(q.dx, q.dy);
+            } else {
+              path.lineTo(q.dx, q.dy);
+            }
+          }
+          if (prim.closed) path.close();
+          if (prim.fill) {
+            canvas.drawPath(path, Paint()..color = ink.withValues(alpha: 0.12));
+          }
+          canvas.drawPath(path, paint);
+        case SketchPrimKind.arc:
           canvas.drawArc(
             Rect.fromCircle(
               center: _p(prim.c!, size),
@@ -122,7 +156,7 @@ class _FigurePainter extends CustomPainter {
             false,
             paint,
           );
-        case McPrimKind.text:
+        case SketchPrimKind.text:
           final tp = TextPainter(
             text: TextSpan(
               text: prim.text,
@@ -185,6 +219,6 @@ class _FigurePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_FigurePainter old) =>
+  bool shouldRepaint(_SketchPainter old) =>
       old.figure != figure || old.ink != ink;
 }

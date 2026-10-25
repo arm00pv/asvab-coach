@@ -73,9 +73,37 @@ Paragraph Comprehension items also carry `passage: '...'`.
 | **PC** | A passage of 60 to 130 words, then a question. Two questions may share a passage. Ask for main idea, stated detail, inference, purpose or tone, vocabulary in context, or sequence. |
 | **MK** | Pure computation, algebra or geometry. Symbolic notation as plain text: x^2, sqrt(3), (x - 3)(x - 4). No word problems, no calculator, no long stems. |
 | **EI** | Quantities with units, circuit behaviour, component identification, or safety. Numeric items must have clean arithmetic. Schematic symbols are described in words. |
-| **AS** | Name a tool by its job, identify a system fault, or pick the right material or procedure. Shop-floor vocabulary, not engineering. |
-| **MC** | Figure-led. Every item except a genuinely non-geometric conceptual one carries an `McFigure` whose drawing matches the stem's numbers exactly, and the caption restates the setup in words. Nothing in the figure may reveal or contradict the answer: if drawing it would print the key (the fulcrum position IS the answer) or argue the wrong way (a bigger footprint for a friction item), leave it verbal. |
+| **AS** | Name a tool by its job, identify a system fault, or pick the right material or procedure. Shop-floor vocabulary, not engineering. Tool-identification items carry a line-art `Sketch` of the tool, because the real subtest shows a drawing; see below. |
+| **MC** | Figure-led. Every item except a genuinely non-geometric conceptual one carries a `Sketch` whose drawing matches the stem's numbers exactly, and the caption restates the setup in words. Nothing in the figure may reveal or contradict the answer: if drawing it would print the key (the fulcrum position IS the answer) or argue the wrong way (a bigger footprint for a friction item), leave it verbal. |
 | **AO** | Rendered puzzle. Never text-only. See below. |
+
+## Auto & Shop tool identification
+
+The Shop half of the real subtest shows an outline drawing of a hand tool and
+asks for its name or its use. A text-only version of that item measures
+vocabulary, not shop knowledge, so tool items carry a drawing.
+
+**The drawing decides the item.** Three rules follow from that:
+
+- The stem must not name the tool. If it does, the picture is decoration.
+- The caption is the accessible description, and it must describe the shape and
+  never the name. "Outline of a hand tool with a long straight handle, a heavy
+  block at one end, a flat face on one side and a round knob on the other" is
+  right; "outline of a ball-peen hammer" prints the answer to a screen reader.
+  The audit enforces this as `sketch-caption-key`.
+- Distractors are the tools a beginner genuinely confuses with the one drawn:
+  the two hammer families against each other, adjustable against pipe wrench,
+  center punch against nail set and cold chisel. A wrong answer should say
+  something specific about what is missing.
+
+Drawings live in `lib/data/bank/shop_tool_sketches.dart` and are authored in
+normalised 0..1 sketch space. One y-unit is `aspect` times as many pixels as one
+x-unit, so a tool is laid out horizontally and a feature that should look square
+is `aspect` times taller in y-units than it is wide in x-units. Circles are
+exempt: their radius is scaled by the shorter side.
+
+Use-form items ("what is this tool for?") are allowed and encouraged, and their
+answer is a statement rather than a name, so the caption rule does not bind.
 
 ## Distractor engineering
 

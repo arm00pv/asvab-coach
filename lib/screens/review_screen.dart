@@ -10,7 +10,7 @@ import '../data/models/question.dart';
 import '../data/models/score.dart';
 import '../state/app_state.dart';
 import '../widgets/primitives.dart';
-import '../widgets/mc_figure_view.dart';
+import '../widgets/sketch_view.dart';
 import '../widgets/puzzle_view.dart';
 
 enum _Filter { all, missed, flagged }
@@ -239,7 +239,7 @@ class _ReviewCard extends StatelessWidget {
           ],
           if (q.figure != null) ...<Widget>[
             const SizedBox(height: Space.md),
-            McFigureView(figure: q.figure!, maxHeight: 170),
+            SketchView(figure: q.figure!, maxHeight: 220),
           ],
           const SizedBox(height: Space.md),
           Text(

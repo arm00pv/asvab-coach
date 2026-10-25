@@ -45,6 +45,25 @@ abstract final class BankAudit {
   /// correct answer can be spotted by shape alone.
   static const double maxLengthRatio = 2.6;
 
+  /// Stems that talk about a picture. If one of these appears the item had
+  /// better carry a sketch, or the candidate is asked about something that is
+  /// not on the screen.
+  /// A bare mention of "diagram" is not enough: an item can be about diagrams
+  /// ("on a schematic diagram, a capacitor is...") or about drawing marbles out
+  /// of a bag. Only a pointer at *this* item's picture counts.
+  static final RegExp _pictureWords = RegExp(
+    r'\b(shown|pictured|illustrated)\b|\bthe (drawing|diagram|sketch|picture)\b',
+    caseSensitive: false,
+  );
+
+  static List<String> _tokens(String text) => text
+      .toLowerCase()
+      .replaceAll(RegExp(r'[^a-z0-9]+'), ' ')
+      .trim()
+      .split(' ')
+      .where((token) => token.length >= 3)
+      .toList();
+
   /// Runs every rule and returns findings.
   ///
   /// Set [bankLevel] to false when auditing a single authoring file: rules that
@@ -296,6 +315,105 @@ abstract final class BankAudit {
         case Subtest.as:
         case Subtest.mc:
           break;
+      }
+
+      // --- attached sketch -------------------------------------------------
+      final sketch = q.figure;
+      if (sketch != null) {
+        if (sketch.prims.isEmpty) {
+          error(
+            'sketch-empty',
+            'The item declares a sketch but carries no drawing instructions',
+            q.id,
+          );
+        }
+        if (sketch.caption.trim().length < 24) {
+          error(
+            'sketch-no-caption',
+            'A sketch needs a real caption; it is the only description of the '
+                'picture a screen reader can read out',
+            q.id,
+          );
+        }
+        if (sketch.aspect < 0.6 || sketch.aspect > 4.5) {
+          warn(
+            'sketch-aspect',
+            'Aspect ${sketch.aspect} will not fit a question card',
+            q.id,
+          );
+        }
+        for (final prim in sketch.prims) {
+          for (final point in <Pt?>[prim.a, prim.b, prim.c, ...prim.pts]) {
+            if (point == null) continue;
+            if (point.x < -0.02 ||
+                point.x > 1.02 ||
+                point.y < -0.02 ||
+                point.y > 1.02) {
+              error(
+                'sketch-out-of-bounds',
+                'A drawing instruction at $point falls outside the 0..1 sketch '
+                    'box, so it will not be visible',
+                q.id,
+              );
+            }
+          }
+          if (prim.kind == SketchPrimKind.poly && prim.pts.length < 3) {
+            error(
+              'sketch-bad-path',
+              'A path needs at least three points to enclose an area',
+              q.id,
+            );
+          }
+          if ((prim.kind == SketchPrimKind.circle ||
+                  prim.kind == SketchPrimKind.disc ||
+                  prim.kind == SketchPrimKind.arc) &&
+              prim.r <= 0) {
+            error(
+              'sketch-bad-radius',
+              'A round primitive needs a positive radius',
+              q.id,
+            );
+          }
+        }
+        // On a tool-identification item the picture is the question, so a
+        // caption that names the tool prints the answer. Statements about
+        // behaviour are exempt: their captions describe the setup on purpose.
+        if (q.subtest == Subtest.as &&
+            q.answerIndex >= 0 &&
+            q.answerIndex < q.choices.length) {
+          final correct = q.choices[q.answerIndex];
+          if (correct.trim().split(RegExp(r'\s+')).length <= 4) {
+            final otherTokens = <String>{};
+            for (var i = 0; i < q.choices.length; i++) {
+              if (i == q.answerIndex) continue;
+              otherTokens.addAll(_tokens(q.choices[i]));
+            }
+            final captionTokens = _tokens(sketch.caption).toSet();
+            final leaked = _tokens(correct)
+                .where((t) => !otherTokens.contains(t))
+                .where(captionTokens.contains)
+                .toList();
+            if (leaked.isNotEmpty) {
+              error(
+                'sketch-caption-key',
+                'The caption contains $leaked, which is exactly what the drawing '
+                    'is being used to test',
+                q.id,
+              );
+            }
+          }
+        }
+      }
+
+      // A stem that points at a picture has to be showing one.
+      if (q.figure == null &&
+          q.subtest != Subtest.ao &&
+          _pictureWords.hasMatch(q.stem)) {
+        error(
+          'stem-refers-to-missing-sketch',
+          'The stem points at a picture that the item does not carry',
+          q.id,
+        );
       }
 
       // --- duplication -----------------------------------------------------
