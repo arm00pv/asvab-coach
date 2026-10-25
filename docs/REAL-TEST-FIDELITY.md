@@ -190,7 +190,7 @@ of the real items.
    real items. The rules are enforced exactly; the artwork is a simplification.
 3. **Arithmetic Reasoning options carry units** ("420 miles"). The real test
    prints bare numerals. Units are kept for clarity in review.
-4. **Bank size.** 356 items against a 135-item mock means a determined user will
+4. **Bank size.** 372 items against a 135-item mock means a determined user will
    see repeats across many attempts. The real computer form draws from a far
    larger pool, and up to 15 unscored tryout items may appear on top of that.
 

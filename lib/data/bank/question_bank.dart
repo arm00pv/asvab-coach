@@ -19,6 +19,7 @@ import 'mechanical_extra.dart';
 import 'mechanical_figures.dart';
 import 'mechanical_figures_extra.dart';
 import 'paragraph_comprehension.dart';
+import 'skill_depth.dart';
 import 'paragraph_comprehension_extra.dart';
 import 'word_knowledge.dart';
 import 'word_knowledge_extra.dart';
@@ -47,6 +48,7 @@ abstract final class QuestionBank {
     ...mechanicalFigureExtraBank,
     ...assemblingObjectsBank,
     ...assemblingObjectsConnectionBank,
+    ...skillDepthBank,
   ]);
 
   static final Map<Subtest, List<Question>> _bySubtest = () {
