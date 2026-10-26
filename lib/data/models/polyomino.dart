@@ -122,6 +122,56 @@ class AoLabel {
   final GridCell at;
 }
 
+/// Why one candidate assembly is not buildable.
+///
+/// Each code names exactly one of the geometric rules [AoPuzzle.isLegal]
+/// applies, in the order [AoPuzzle.flawFor] checks them, so a figure is only
+/// ever explained by something its geometry actually shows.
+enum AoFlawCode {
+  /// The figure does not carry the same number of pieces as the stem.
+  pieceCount('piece-count'),
+
+  /// A piece appears in mirror image, which no rotation can produce.
+  pieceMirrored('piece-mirrored'),
+
+  /// A piece is bent, shortened or otherwise not in the stem inventory.
+  pieceSubstituted('piece-substituted'),
+
+  /// Two pieces occupy the same cell.
+  overlap('overlap'),
+
+  /// The pieces fall into more than one separate body.
+  disconnected('disconnected'),
+
+  /// A marked attachment point does not sit on its own piece.
+  labelOffPiece('label-off-piece'),
+
+  /// Two marked points that must meet do not touch.
+  wrongConnection('wrong-connection');
+
+  const AoFlawCode(this.code);
+
+  /// Stable machine name, used by the audit and the tests.
+  final String code;
+
+  @override
+  String toString() => code;
+}
+
+/// One computed reason, in the shape the review screen renders: a code for the
+/// tests and a single plain line for the candidate.
+class AoFlaw {
+  const AoFlaw(this.code, this.message);
+
+  final AoFlawCode code;
+
+  /// One line, in the same voice as a hand-written choice note.
+  final String message;
+
+  @override
+  String toString() => '${code.code}: $message';
+}
+
 /// The Assembling Objects payload for a single item.
 ///
 /// Two authentic families are modelled, roughly in the proportions the real
@@ -220,54 +270,89 @@ class AoPuzzle {
 
   static String cellKey(GridCell c) => '${c.x},${c.y}';
 
-  bool _overlaps(List<Poly> assembly) {
+  static const List<(int, int)> _deltas = <(int, int)>[
+    (1, 0),
+    (-1, 0),
+    (0, 1),
+    (0, -1),
+  ];
+
+  /// How many cells of this assembly are claimed by more than one piece.
+  ///
+  /// The count is the witness the review screen quotes, so it is measured
+  /// rather than guessed at.
+  int _sharedCells(List<Poly> assembly) {
     final seen = <String>{};
+    var shared = 0;
     for (final p in assembly) {
       for (final c in p.cells) {
-        if (!seen.add(cellKey(c))) return true;
+        if (!seen.add(cellKey(c))) shared++;
       }
     }
-    return false;
+    return shared;
   }
 
-  bool _isJoined(List<Poly> assembly) {
-    final all = <GridCell>[for (final p in assembly) ...p.cells];
-    if (all.isEmpty) return false;
-    final set = all.map(cellKey).toSet();
-    final start = all.first;
-    final queue = <GridCell>[start];
-    final visited = <String>{cellKey(start)};
-    const deltas = <(int, int)>[(1, 0), (-1, 0), (0, 1), (0, -1)];
-    while (queue.isNotEmpty) {
-      final cur = queue.removeLast();
-      for (final (dx, dy) in deltas) {
-        final key = '${cur.x + dx},${cur.y + dy}';
-        if (set.contains(key) && visited.add(key)) {
-          queue.add(GridCell(cur.x + dx, cur.y + dy));
+  bool _overlaps(List<Poly> assembly) => _sharedCells(assembly) > 0;
+
+  /// How many separate bodies the union of the pieces falls into. One means the
+  /// figure is joined; zero means there is nothing there at all.
+  int bodyCount(List<Poly> assembly) {
+    final set = <String>{
+      for (final p in assembly)
+        for (final c in p.cells) cellKey(c),
+    };
+    if (set.isEmpty) return 0;
+    final visited = <String>{};
+    var bodies = 0;
+    for (final start in set) {
+      if (!visited.add(start)) continue;
+      bodies++;
+      final queue = <GridCell>[_parseCell(start)];
+      while (queue.isNotEmpty) {
+        final cur = queue.removeLast();
+        for (final (dx, dy) in _deltas) {
+          final next = GridCell(cur.x + dx, cur.y + dy);
+          final key = cellKey(next);
+          if (set.contains(key) && visited.add(key)) queue.add(next);
         }
       }
     }
-    return visited.length == set.length;
+    return bodies;
+  }
+
+  static GridCell _parseCell(String key) {
+    final comma = key.indexOf(',');
+    return GridCell(
+      int.parse(key.substring(0, comma)),
+      int.parse(key.substring(comma + 1)),
+    );
+  }
+
+  bool _isJoined(List<Poly> assembly) => bodyCount(assembly) == 1;
+
+  /// The marked cell carrying [label] in one candidate assembly, or null when
+  /// the figure carries no mark for it.
+  GridCell? _pointFor(int optionIndex, String label) {
+    final cells = optionAnchors;
+    if (cells == null || optionIndex < 0 || optionIndex >= cells.length) {
+      return null;
+    }
+    final placed = options[optionIndex];
+    final points = cells[optionIndex];
+    for (var i = 0; i < placed.length && i < points.length; i++) {
+      if (_labelForShape(placed[i]) == label) return points[i];
+    }
+    return null;
   }
 
   /// Every required joint is present: the two marked points are orthogonal
   /// neighbours.
   bool _connectionsSatisfied(int optionIndex) {
     final needed = connections;
-    final cells = optionAnchors;
-    if (needed == null || cells == null) return true;
-    final placed = options[optionIndex];
-    final points = cells[optionIndex];
-    GridCell? pointFor(String label) {
-      for (var i = 0; i < placed.length && i < points.length; i++) {
-        if (_labelForShape(placed[i]) == label) return points[i];
-      }
-      return null;
-    }
-
+    if (needed == null || optionAnchors == null) return true;
     for (final joint in needed) {
-      final a = pointFor(joint.a);
-      final b = pointFor(joint.b);
+      final a = _pointFor(optionIndex, joint.a);
+      final b = _pointFor(optionIndex, joint.b);
       if (a == null || b == null) return false;
       if ((a.x - b.x).abs() + (a.y - b.y).abs() != 1) return false;
     }
@@ -298,6 +383,196 @@ class AoPuzzle {
         _isJoined(assembly) &&
         _anchorsValid(optionIndex) &&
         _connectionsSatisfied(optionIndex);
+  }
+
+  /// The first rule [isLegal] rejects one candidate on, as a single plain line,
+  /// or null when the figure is buildable.
+  ///
+  /// Every reason is read off the same geometry the legality check reads - the
+  /// piece multiset, the occupancy grid, the connectivity walk and the marked
+  /// points - so a review never states a claim the puzzle cannot support, and
+  /// the correct figure gets no reason at all (it is explained by the "Why"
+  /// box instead).
+  AoFlaw? flawFor(int optionIndex) {
+    if (optionIndex < 0 || optionIndex >= options.length) {
+      return const AoFlaw(
+        AoFlawCode.pieceCount,
+        'There is no such figure among the candidates.',
+      );
+    }
+    final assembly = options[optionIndex];
+    if (!piecesMatch(assembly)) return _inventoryFlaw(assembly);
+    final shared = _sharedCells(assembly);
+    if (shared > 0) {
+      return AoFlaw(
+        AoFlawCode.overlap,
+        'Two pieces share ${shared == 1 ? 'a cell' : '$shared cells'}, so '
+        'they overlap instead of fitting together.',
+      );
+    }
+    final bodies = bodyCount(assembly);
+    if (bodies != 1) {
+      return AoFlaw(
+        AoFlawCode.disconnected,
+        bodies == 0
+            ? 'The figure is empty, so it cannot be the assembled pieces.'
+            : 'The pieces fall into $bodies separate bodies; the finished '
+                  'figure has to be one joined outline.',
+      );
+    }
+    if (!_anchorsValid(optionIndex)) return _anchorFlaw(optionIndex);
+    if (!_connectionsSatisfied(optionIndex)) return _jointFlaw(optionIndex);
+    return null;
+  }
+
+  /// One line per candidate, in bank order: null for the figure that works and
+  /// a computed reason for every figure that does not.
+  List<String?> get optionReasons =>
+      List<String?>.generate(options.length, reasonFor, growable: false);
+
+  /// [optionReasons] for one candidate.
+  String? reasonFor(int optionIndex) => flawFor(optionIndex)?.message;
+
+  /// The reasons a review should paint, in the order the attempt served the
+  /// options: `order[displaySlot]` is the bank option shown in that slot, so
+  /// the figures on screen and the reasons beside them always describe the
+  /// same candidate. The keyed figure gets null because the "Why" box owns it.
+  ///
+  /// A slot holding an index this puzzle does not have is left blank rather
+  /// than invented.
+  List<String?> reasonsInOrder(List<int> order) {
+    final keyed = correctIndex;
+    return List<String?>.generate(order.length, (slot) {
+      final bank = order[slot];
+      if (bank < 0 || bank >= options.length) return null;
+      if (bank == keyed) return null;
+      return reasonFor(bank);
+    }, growable: false);
+  }
+
+  /// The outline does not match the stem inventory: a piece is mirrored, bent,
+  /// shortened or present one time too many.
+  AoFlaw _inventoryFlaw(List<Poly> assembly) {
+    if (assembly.length != pieces.length) {
+      return AoFlaw(
+        AoFlawCode.pieceCount,
+        'The figure is built from ${assembly.length} pieces; the set has '
+        '${pieces.length}.',
+      );
+    }
+    final want = <String, int>{};
+    for (final p in pieces) {
+      want.update(p.canonicalKey, (n) => n + 1, ifAbsent: () => 1);
+    }
+    final got = <String, int>{};
+    for (final p in assembly) {
+      got.update(p.canonicalKey, (n) => n + 1, ifAbsent: () => 1);
+    }
+    final surplus = <String>[
+      for (final e in got.entries)
+        if (e.value > (want[e.key] ?? 0)) e.key,
+    ];
+    final shortfall = <String>[
+      for (final e in want.entries)
+        if ((got[e.key] ?? 0) < e.value) e.key,
+    ];
+    if (surplus.isEmpty || shortfall.isEmpty) {
+      // Equal piece counts with no surplus and no shortfall means the multiset
+      // matched, so this cannot happen; keep a truthful fallback anyway.
+      return AoFlaw(
+        AoFlawCode.pieceSubstituted,
+        'The pieces in this figure are not the pieces shown in the set.',
+      );
+    }
+    int sizeOf(List<Poly> source, String key) =>
+        source.firstWhere((p) => p.canonicalKey == key).size;
+    final extraKey = surplus.first;
+    for (final missingKey in shortfall) {
+      final stemPiece = pieces.firstWhere((p) => p.canonicalKey == missingKey);
+      if (stemPiece.flipped().canonicalKey == extraKey) {
+        return AoFlaw(
+          AoFlawCode.pieceMirrored,
+          'The ${stemPiece.size}-cell piece is turned over: the figure shows '
+          'its mirror image, and no rotation of that piece produces it.',
+        );
+      }
+    }
+    final missingKey = shortfall.first;
+    final missingSize = sizeOf(pieces, missingKey);
+    final usedSize = sizeOf(assembly, extraKey);
+    if (missingSize == usedSize) {
+      return AoFlaw(
+        AoFlawCode.pieceSubstituted,
+        'A $usedSize-cell piece is bent into a shape the set does not '
+        'carry, so the outline does not match the pieces shown.',
+      );
+    }
+    if (want.containsKey(extraKey)) {
+      return AoFlaw(
+        AoFlawCode.pieceSubstituted,
+        'The figure uses ${got[extraKey]} copies of the $usedSize-cell '
+        'piece; the set supplies ${want[extraKey]}.',
+      );
+    }
+    return AoFlaw(
+      AoFlawCode.pieceSubstituted,
+      'The figure uses a $usedSize-cell piece where the set supplies a '
+      '$missingSize-cell one, so the outline does not match the pieces '
+      'shown.',
+    );
+  }
+
+  /// A marked point that is not on its own piece.
+  AoFlaw _anchorFlaw(int optionIndex) {
+    if (!isConnectionItem) {
+      return const AoFlaw(
+        AoFlawCode.labelOffPiece,
+        'The figure does not carry the letters the item is matched on.',
+      );
+    }
+    final cells = optionAnchors;
+    if (cells == null ||
+        optionIndex >= cells.length ||
+        cells[optionIndex].length != options[optionIndex].length) {
+      return const AoFlaw(
+        AoFlawCode.labelOffPiece,
+        'The figure does not mark one attachment point per piece, so its '
+        'letters cannot be read.',
+      );
+    }
+    return const AoFlaw(
+      AoFlawCode.labelOffPiece,
+      'A marked point sits off its own piece, so the figure does not show the '
+      'letter where it has to be matched.',
+    );
+  }
+
+  /// A required pair of marked points that does not meet.
+  AoFlaw _jointFlaw(int optionIndex) {
+    final needed = connections ?? const <AoConnection>[];
+    for (final joint in needed) {
+      final a = _pointFor(optionIndex, joint.a);
+      final b = _pointFor(optionIndex, joint.b);
+      if (a == null || b == null) {
+        return AoFlaw(
+          AoFlawCode.wrongConnection,
+          'The figure cannot show where ${joint.a} meets ${joint.b}, so the '
+          'required join is not made.',
+        );
+      }
+      final gap = (a.x - b.x).abs() + (a.y - b.y).abs();
+      if (gap != 1) {
+        return AoFlaw(
+          AoFlawCode.wrongConnection,
+          'The points marked ${joint.a} and ${joint.b} are $gap cells '
+          'apart; the answer has to bring them together.',
+        );
+      }
+    }
+    return const AoFlaw(
+      AoFlawCode.wrongConnection,
+      'The letters this item requires do not meet in this figure.',
+    );
   }
 
   List<bool> get legality =>
