@@ -54,13 +54,35 @@ grid and streaks, all persisted locally in the browser.
 
 ```bash
 flutter pub get
-flutter run -d chrome
+flutter run -d chrome          # web
+flutter run -d <device-id>     # Android phone or tablet
 flutter test
 flutter build web --release --base-href "/asvab-coach/"
+flutter build apk --release    # installable Android app
 ```
 
 Requires Flutter 3.47+ (Dart 3.13+). No native dependencies, no backend: all
-state lives in browser local storage.
+state lives in the browser's local storage on web, and in the app's private
+storage on Android.
+
+### Android
+
+The same codebase builds an installable APK, so the whole coach - 372 items, 48
+lessons, the scoring engine and the personas - lives on the phone with no
+connection, no account and no server.
+
+- **No permissions at all**, not even `INTERNET`. The app never opens a socket,
+  so it has nothing to ask for, and it does not ask.
+- The APK lands at `build/app/outputs/flutter-apk/app-release.apk` (about 52 MB
+  universal; use `--split-per-abi` for ~18 MB per architecture).
+- Release signing uses a keystore kept out of version control; **back up
+  `android/keystore.jks` and `android/key.properties`** or you will not be able
+  to publish an update over an existing install.
+- CI builds an APK on every push and uploads it as an artifact, so there is a
+  downloadable build for any green commit.
+
+Full details, including sideloading and the signing story, are in
+[docs/ANDROID.md](docs/ANDROID.md).
 
 ---
 

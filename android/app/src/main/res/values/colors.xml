@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The app's primary brand green, so the launcher icon and the launch
+         window agree with the UI the candidate is about to see. -->
+    <color name="ic_launcher_background">#14503F</color>
+    <color name="launch_background">#14503F</color>
+</resources>

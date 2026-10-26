@@ -47,3 +47,45 @@ jobs:
           name: web-build
           path: build/web
           retention-days: 14
+
+  android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # The release keystore is not in the repository and must not be: a
+      # committed signing key lets anyone publish an update to this app. Without
+      # android/key.properties the build falls back to the debug key, which is
+      # fine for a smoke build and is not what you distribute.
+      - name: Build release APK
+        run: flutter build apk --release
+
+      - name: Report what the APK asks for
+        run: |
+          set -euo pipefail
+          APK=build/app/outputs/flutter-apk/app-release.apk
+          ls -la "$APK"
+          BUILD_TOOLS=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
+          "$BUILD_TOOLS/aapt" dump permissions "$APK" || true
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: asvab-coach-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 30
