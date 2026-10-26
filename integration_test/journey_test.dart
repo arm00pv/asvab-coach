@@ -12,6 +12,7 @@
 // install, not against a phone somebody is using to revise.
 import 'package:asvab_guard_coach/app.dart';
 import 'package:asvab_guard_coach/core/screen_awake.dart';
+import 'package:asvab_guard_coach/core/theme/app_theme.dart';
 import 'package:asvab_guard_coach/engines/exam_builder.dart';
 import 'package:asvab_guard_coach/screens/exam_screen.dart';
 import 'package:asvab_guard_coach/state/app_state.dart';
@@ -155,10 +156,17 @@ void main() {
   });
 
   // The two behaviours that only exist on the device: the platform channel that
-  // keeps the screen on, and the snapshot that survives the app being sent to
-  // the background. Neither can be proved against a mock.
-  testWidgets('the platform keeps the screen awake, and a backgrounded exam is '
-      'still there afterwards', (tester) async {
+  // keeps the screen on, and the attempt that is still there in the real store
+  // after the runner has been left behind. Neither can be proved against a mock.
+  //
+  // Note what this does not do: it never sends the platform a real
+  // AppLifecycleState.paused. That genuinely stops the engine drawing frames, so
+  // the next pump never completes and the run hangs until the job times out. The
+  // lifecycle path is covered by the widget test, where the state is simulated
+  // rather than delivered.
+  testWidgets('the screen is held awake and the attempt outlives the runner', (
+    tester,
+  ) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
 
@@ -176,7 +184,10 @@ void main() {
     await tester.pumpWidget(
       ChangeNotifierProvider<AppState>.value(
         value: state,
-        child: MaterialApp(home: ExamScreen(exam: exam)),
+        child: MaterialApp(
+          theme: AppTheme.build(Brightness.light),
+          home: ExamScreen(exam: exam),
+        ),
       ),
     );
     await settle(tester);
@@ -185,12 +196,8 @@ void main() {
     await tester.sendKeyEvent(LogicalKeyboardKey.digit2);
     await settle(tester, pumps: 2);
 
-    // Sent to the background the way a phone call does it.
-    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
-    await settle(tester, pumps: 2);
-    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
-    await settle(tester, pumps: 2);
-
+    // Read the attempt back out of the real store, the way a relaunched app
+    // would, without the runner in memory any more.
     final reopened = AppState();
     await reopened.init();
     expect(reopened.hasPendingAttempt, isTrue);

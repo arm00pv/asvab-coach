@@ -53,8 +53,11 @@ jobs:
           emulator-options: >-
             -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
             -no-snapshot -camera-back none -camera-front none
+          # 'timeout' turns a wedged run into a fast, readable failure. A test
+          # that never returns otherwise burns the whole job budget and reports
+          # only 'the operation was canceled'.
           script: |
             adb wait-for-device
             adb shell 'until pm list packages > /dev/null 2>&1; do sleep 2; done'
             adb shell getprop sys.boot_completed
-            flutter test integration_test/journey_test.dart -d emulator-5554
+            timeout 900 flutter test integration_test/journey_test.dart -d emulator-5554
