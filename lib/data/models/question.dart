@@ -4,7 +4,8 @@ import 'polyomino.dart';
 
 export 'sketch.dart';
 
-export 'polyomino.dart' show AoConnection, AoLabel, AoPuzzle, GridCell, Poly;
+export 'polyomino.dart'
+    show AoConnection, AoFlaw, AoFlawCode, AoLabel, AoPuzzle, GridCell, Poly;
 
 class Question {
   const Question({

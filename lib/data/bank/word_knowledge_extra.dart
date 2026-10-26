@@ -292,7 +292,7 @@ const List<Question> wordKnowledgeExtraBank = <Question>[
     subtest: Subtest.wk,
     stem: 'PERTINENT',
     choices: <String>['relevant', 'urgent', 'cautious', 'temporary'],
-    answerIndex: 1,
+    answerIndex: 0,
     choiceNotes: <String>[
       'Pertinent means bearing directly on the matter at hand, and this option names that bearing.',
       'Urgent concerns time pressure rather than subject matter, so a remark can be urgent and off-topic.',

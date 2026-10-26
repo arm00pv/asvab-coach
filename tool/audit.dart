@@ -62,11 +62,12 @@ void main(List<String> args) {
   }
   stdout.writeln('');
 
-  final annotated = questions.where((q) => q.choiceNotes.isNotEmpty).length;
-  stdout.writeln(
-    'Per-choice explanations: $annotated of ${questions.length} items '
-    '(${(100 * annotated / questions.length).round()}%)',
-  );
+  // Assembling Objects cannot carry hand-written notes: its options are
+  // figures, and the reason a figure is wrong is geometric. Those reasons are
+  // computed from the puzzle when the review screen renders it, so an item
+  // counts as covered either way - and only if it explains every wrong option.
+  final explanations = BankAudit.explanationCoverage(questions);
+  stdout.writeln(explanations.line);
   stdout.writeln('');
 
   if (errors.isNotEmpty) {

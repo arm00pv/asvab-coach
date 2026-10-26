@@ -414,6 +414,26 @@ abstract final class BankAudit {
                 q.id,
               );
             }
+            // Review explains an Assembling Objects option by computation, so
+            // an item whose figures do not all yield a reason would show the
+            // candidate a figure with nothing beside it. That is the same
+            // defect as a prose item with a missing note.
+            final reasons = q.puzzle!.optionReasons;
+            final keyed = q.puzzle!.correctIndex;
+            final silent = <int>[
+              for (var i = 0; i < reasons.length; i++)
+                if (i != keyed &&
+                    (reasons[i] == null || reasons[i]!.trim().isEmpty))
+                  i + 1,
+            ];
+            if (silent.isNotEmpty) {
+              error(
+                'ao-unexplained',
+                'Figure(s) ${silent.join(', ')} yield no computed reason, so '
+                    'review would print nothing beside them',
+                q.id,
+              );
+            }
             if (q.puzzle!.isConnectionItem) {
               final keys = q.puzzle!.pieces.map((p) => p.canonicalKey).toList();
               if (keys.toSet().length != keys.length) {

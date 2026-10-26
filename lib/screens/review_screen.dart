@@ -144,13 +144,21 @@ class _ReviewItem {
   final ServedQuestion served;
   final QuestionResponse? response;
 
-  bool get correct => served.isCorrect(response?.selectedIndex);
-
+  /// What the candidate tapped, as the display slot it was shown in.
+  ///
+  /// [QuestionResponse.selectedIndex] is stored in BANK coordinates (the runner
+  /// converts a tap with [ServedQuestion.toBankIndex] so the scorer and the
+  /// persisted report never disagree about what was chosen), so it has to be
+  /// resolved through the attempt's own permutation before it can be compared
+  /// with anything on screen.
   int? get displaySelected {
     final s = response?.selectedIndex;
     if (s == null) return null;
+    if (s < 0 || s >= served.order.length) return null;
     return served.order.indexOf(s);
   }
+
+  bool get correct => served.isCorrect(displaySelected);
 }
 
 class _FilterChip extends StatelessWidget {
@@ -426,23 +434,41 @@ class _ReviewOption extends StatelessWidget {
 ///
 /// The "Why" box above explains the correct answer. That is not where a
 /// candidate who picked B learns anything: the lesson is in why B seemed
-/// right and is not. Renders nothing for items not yet annotated.
+/// right and is not.
+///
+/// A prose item carries hand-written notes in bank coordinates. An Assembling
+/// Objects item cannot: its options are figures, and the reason one of them is
+/// wrong is geometric, so the line is COMPUTED from the puzzle by
+/// [AoPuzzle.reasonFor] instead of written by hand. Both paths are walked in
+/// display order, so the line printed beside a letter always describes the
+/// figure or the option that letter showed.
+///
+/// Renders nothing for an item that has nothing to say about its options yet.
 class _DistractorNotes extends StatelessWidget {
   const _DistractorNotes({required this.served, required this.picked});
 
   final ServedQuestion served;
   final int? picked;
 
+  /// One line per display slot: null where that slot holds the keyed option
+  /// (the "Why" box owns it) or where the item has no note for it.
+  List<String?> _notesInDisplayOrder() {
+    final question = served.base;
+    final puzzle = question.puzzle;
+    if (puzzle != null) return puzzle.reasonsInOrder(served.order);
+    return <String?>[
+      for (final bank in served.order)
+        bank == question.answerIndex ? null : question.noteFor(bank),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
-    final question = served.base;
-    if (question.choiceNotes.isEmpty) return const SizedBox.shrink();
+    final notes = _notesInDisplayOrder();
 
     final rows = <Widget>[];
-    for (var i = 0; i < served.displayChoices.length; i++) {
-      final bank = served.order[i];
-      if (bank == question.answerIndex) continue;
-      final note = question.noteFor(bank);
+    for (var i = 0; i < notes.length; i++) {
+      final note = notes[i];
       if (note == null) continue;
       final chosen = picked == i;
       rows.add(
