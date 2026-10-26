@@ -36,16 +36,34 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # API 30 is the lightest image that is still a realistic modern target and
-      # it boots fastest on a runner. The test itself is API-agnostic.
+      # The plain AOSP image, not Google APIs: this test needs no Play services,
+      # and the leaner image boots sooner and has far fewer background processes
+      # fighting the emulator for the runner's CPU.
       - name: Run the journey on an emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 30
-          target: google_apis
+          target: default
           arch: x86_64
           disable-animations: true
           emulator-options: >-
             -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
-            -camera-back none -camera-front none
-          script: flutter test integration_test/journey_test.dart -d emulator-5554
+            -no-snapshot -camera-back none -camera-front none
+          script: |
+            set -e
+            # The action reports the device as started before the package
+            # manager is serving requests, and 'flutter test' installs
+            # immediately: without this wait the run dies with
+            # "Can't find service: package".
+            adb wait-for-device
+            echo "waiting for the package service"
+            for attempt in $(seq 1 60); do
+              if adb shell pm list packages >/dev/null 2>&1; then
+                echo "package service answered after $((attempt * 5))s"
+                break
+              fi
+              sleep 5
+            done
+            adb shell pm list packages | head -3
+            adb shell getprop sys.boot_completed
+            flutter test integration_test/journey_test.dart -d emulator-5554
