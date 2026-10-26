@@ -115,3 +115,29 @@ the roster settled so it renders real data.
 Settings stutter are fixed with guards. The results overflow at enlarged
 text, the blank-versus-wrong review badge and the jobs table collision at
 411 dp are open.
+
+## Closing status (end of this phase)
+
+**Phase 3 - complete** (69944d4). Engine plus the job sheet: a missed job
+names the cheapest raise and whether it alone opens the job; a met job is
+told so and gets no route card; with no scored attempt the sheet asks for
+one instead of reading every gate as zero. Not built: the one-tap drill
+aimed at the short line score.
+
+**Phase 4 - complete** (d1e8bb7, 9250964). Recruiter sheet engine and the
+screen that shows it, with a copy action and honest empty states.
+
+**Phase 5 - five of six fixed.** Browser copy, dead Submit, Settings
+stutter, the results overflow (18 px, measured) and blank-versus-wrong are
+done with guards. Still open: the jobs requirements table kept at three
+columns on a 411 dp phone, where the value column collides with the
+explanation.
+
+**Deferred on purpose:** job descriptions. `Mos` has no description field
+and none was invented. Writing what 156 jobs actually are needs sourced
+prose, and a guess in that field is worse than a gap, so it is recorded as
+unbuilt rather than half-filled.
+
+Verified at the end of the phase: `flutter test` 460 passing,
+`flutter analyze` clean, `dart run tool/audit.dart --strict` clean with
+447 of 447 items explained.
