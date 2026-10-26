@@ -4,9 +4,11 @@ import 'package:provider/provider.dart';
 import '../data/models/exam.dart';
 import '../data/models/exam_snapshot.dart';
 import '../data/models/score.dart';
+import '../data/repos/mos_repository.dart';
 import '../screens/exam_screen.dart';
 import '../screens/glossary_screen.dart';
 import '../screens/lesson_screen.dart';
+import '../screens/recruiter_sheet_screen.dart';
 import '../screens/review_screen.dart';
 import '../screens/results_screen.dart';
 import '../screens/settings_screen.dart';
@@ -61,6 +63,22 @@ abstract final class AppRoutes {
 
   static Future<void> review(BuildContext context, Attempt attempt) =>
       _push<void>(context, ReviewScreen(attempt: attempt));
+
+  /// The recruiter-ready page for [attempt] (ROADMAP Phase 4).
+  ///
+  /// Everything the page prints is passed in here, including the date and the
+  /// catalogue, so the screen itself reads no clock, no repository and no
+  /// state - which is what makes the page reproducible in a test.
+  static Future<void> recruiterSheet(BuildContext context, Attempt attempt) =>
+      _push<void>(
+        context,
+        RecruiterSheetScreen(
+          report: attempt.report,
+          jobs: MosRepository.all,
+          generatedOn: DateTime.now(),
+          candidateName: context.read<AppState>().goal?.displayName,
+        ),
+      );
 
   static Future<void> lesson(BuildContext context, String skillId) =>
       _push<void>(context, LessonScreen(skillId: skillId));

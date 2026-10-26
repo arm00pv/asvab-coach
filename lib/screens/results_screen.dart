@@ -124,6 +124,8 @@ class ResultsScreen extends StatelessWidget {
             _SectionTitle('Jobs this score opens'),
             const SizedBox(height: Space.sm),
             _EligibilityBlock(report: report),
+            const SizedBox(height: Space.md),
+            _RecruiterSheetEntry(attempt: attempt),
             const SizedBox(height: Space.xl),
             _SectionTitle('Pace'),
             const SizedBox(height: Space.sm),
@@ -627,6 +629,64 @@ class _EligibilityBlock extends StatelessWidget {
               ],
             ),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+/// The way to the recruiter sheet (ROADMAP Phase 4), offered from the report it
+/// is built out of.
+///
+/// It sits at the end of the jobs block rather than beside the buttons at the
+/// foot of the report. The sheet is a copy of what is above it, not a competing
+/// next step, so it reads as a row in the jobs section - which is also where a
+/// candidate looking for "what do I take to the office" will look - and the two
+/// primary actions stay the only loud controls on the screen.
+class _RecruiterSheetEntry extends StatelessWidget {
+  const _RecruiterSheetEntry({required this.attempt});
+
+  final Attempt attempt;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return AppCard(
+      onTap: () => AppRoutes.recruiterSheet(context, attempt),
+      padding: const EdgeInsets.symmetric(
+        horizontal: Space.lg,
+        vertical: Space.md,
+      ),
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.description_outlined, size: 20, color: c.primary),
+          const SizedBox(width: Space.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'Recruiter sheet',
+                  style: context.text.titleSmall?.copyWith(
+                    color: c.textPrimary,
+                  ),
+                ),
+                // One line of explanation, because the name alone does not tell
+                // a candidate what the page is for.
+                Text(
+                  'Your scores and the jobs they open, on one page you can copy '
+                  'and hand over.',
+                  style: context.text.bodySmall?.copyWith(color: c.textMuted),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: Space.md),
+          Text(
+            'Open',
+            style: context.text.labelMedium?.copyWith(color: c.primary),
+          ),
+          Icon(Icons.chevron_right_rounded, size: 18, color: c.primary),
         ],
       ),
     );
