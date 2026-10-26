@@ -1,3 +1,4 @@
+import '../models/career_field.dart';
 import '../models/catalog.dart';
 import '../models/line_score.dart';
 import '../models/mos.dart';
@@ -37,6 +38,36 @@ abstract final class MosRepository {
 
   /// Officer and warrant officer pathways, all of which hinge on the GT score.
   static List<OfficerPathway> get officerPathways => officerPathwaysData;
+
+  /// The career fields the catalogue actually covers, in code order.
+  static List<CareerField> get careerFields {
+    final present = <String>{
+      for (final m in allMos) ?CareerField.of(m)?.prefix,
+    };
+    return CareerField.all
+        .where((f) => present.contains(f.prefix))
+        .toList(growable: false);
+  }
+
+  /// Everything in one career field, e.g. all medical MOS for prefix "68".
+  static List<Mos> byCareerField(String prefix) => allMos
+      .where((m) => CareerField.of(m)?.prefix == prefix)
+      .toList(growable: false);
+
+  /// The commissioning routes grouped by how they are taken.
+  static List<OfficerTrack> get officerTracks {
+    final present = <String>{
+      for (final p in officerPathwaysData) ?OfficerTrack.of(p)?.id,
+    };
+    return OfficerTrack.all
+        .where((t) => present.contains(t.id))
+        .toList(growable: false);
+  }
+
+  static List<OfficerPathway> officerPathwaysFor(OfficerTrack track) =>
+      officerPathwaysData
+          .where((p) => OfficerTrack.of(p)?.id == track.id)
+          .toList(growable: false);
 
   /// MOS that require a security clearance.
   static List<Mos> get clearanceRequired =>

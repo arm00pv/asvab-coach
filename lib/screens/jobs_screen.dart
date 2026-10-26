@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../core/theme/tokens.dart';
+import '../data/models/career_field.dart';
 import '../data/models/line_score.dart';
 import '../data/models/mos.dart';
 import '../data/models/score.dart';
@@ -22,7 +23,9 @@ class JobsScreen extends StatefulWidget {
 
 class _JobsScreenState extends State<JobsScreen> {
   String _query = '';
-  String? _category;
+  String? _fieldPrefix;
+  OfficerTrack? _track;
+  _Type _type = _Type.all;
   _Mode _mode = _Mode.qualified;
 
   @override
@@ -32,8 +35,14 @@ class _JobsScreenState extends State<JobsScreen> {
     final c = context.colors;
 
     final all = MosRepository.search(_query)
-        .where((m) => _category == null || m.category == _category)
+        .where(
+          (m) =>
+              _fieldPrefix == null || CareerField.of(m)?.prefix == _fieldPrefix,
+        )
         .toList();
+    final routes = MosRepository.officerPathways
+        .where((p) => _track == null || OfficerTrack.of(p)?.id == _track!.id)
+        .toList(growable: false);
     final summary = report == null ? null : EligibilityEngine.summarise(report);
 
     final shown = switch (_mode) {
@@ -106,26 +115,78 @@ class _JobsScreenState extends State<JobsScreen> {
                 ),
               ),
               const SizedBox(height: Space.sm),
+              // Enlisted or officer first, because that is the decision a
+              // candidate has actually made before any job code matters.
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: <Widget>[
                     _Chip(
-                      label: 'All fields',
-                      selected: _category == null,
-                      onTap: () => setState(() => _category = null),
+                      label: 'Every type',
+                      selected: _type == _Type.all,
+                      onTap: () => setState(() => _type = _Type.all),
                     ),
-                    for (final cat in MosRepository.categories) ...<Widget>[
-                      const SizedBox(width: Space.xs),
-                      _Chip(
-                        label: cat,
-                        selected: _category == cat,
-                        onTap: () => setState(() => _category = cat),
-                      ),
-                    ],
+                    const SizedBox(width: Space.xs),
+                    _Chip(
+                      label: 'Enlisted (${all.length})',
+                      selected: _type == _Type.enlisted,
+                      onTap: () => setState(() => _type = _Type.enlisted),
+                    ),
+                    const SizedBox(width: Space.xs),
+                    _Chip(
+                      label: 'Officer & warrant (${routes.length})',
+                      selected: _type == _Type.officer,
+                      onTap: () => setState(() => _type = _Type.officer),
+                    ),
                   ],
                 ),
               ),
+              const SizedBox(height: Space.sm),
+              if (_type != _Type.officer)
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: <Widget>[
+                      _Chip(
+                        label: 'All fields',
+                        selected: _fieldPrefix == null,
+                        onTap: () => setState(() => _fieldPrefix = null),
+                      ),
+                      for (final field
+                          in MosRepository.careerFields) ...<Widget>[
+                        const SizedBox(width: Space.xs),
+                        _Chip(
+                          label: field.label,
+                          selected: _fieldPrefix == field.prefix,
+                          onTap: () =>
+                              setState(() => _fieldPrefix = field.prefix),
+                        ),
+                      ],
+                    ],
+                  ),
+                )
+              else
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: <Widget>[
+                      _Chip(
+                        label: 'All routes',
+                        selected: _track == null,
+                        onTap: () => setState(() => _track = null),
+                      ),
+                      for (final track
+                          in MosRepository.officerTracks) ...<Widget>[
+                        const SizedBox(width: Space.xs),
+                        _Chip(
+                          label: track.label,
+                          selected: _track?.id == track.id,
+                          onTap: () => setState(() => _track = track),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
               const SizedBox(height: Space.lg),
               if (shown.isEmpty)
                 SizedBox(
@@ -140,17 +201,20 @@ class _JobsScreenState extends State<JobsScreen> {
                         : 'Try a different search or field.',
                   ),
                 ),
-              for (final m in shown)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: Space.sm),
-                  child: _MosRow(
-                    mos: m,
-                    report: report,
-                    onTap: () => _openDetail(context, m, report),
+              if (_type != _Type.officer)
+                for (final m in shown)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: Space.sm),
+                    child: _MosRow(
+                      mos: m,
+                      report: report,
+                      onTap: () => _openDetail(context, m, report),
+                    ),
                   ),
-                ),
-              const SizedBox(height: Space.xl),
-              _OfficerSection(report: report),
+              if (_type != _Type.enlisted) ...<Widget>[
+                const SizedBox(height: Space.xl),
+                _OfficerSection(report: report, routes: routes),
+              ],
               const SizedBox(height: Space.lg),
               const Callout(
                 tone: PillTone.warning,
@@ -570,8 +634,13 @@ class _ScorePill extends StatelessWidget {
 }
 
 class _OfficerSection extends StatelessWidget {
-  const _OfficerSection({required this.report});
+  const _OfficerSection({required this.report, required this.routes});
+
   final ScoreReport? report;
+
+  /// Already filtered by the track chips, so the section shows what was asked
+  /// for rather than everything again.
+  final List<OfficerPathway> routes;
 
   @override
   Widget build(BuildContext context) {
@@ -586,7 +655,7 @@ class _OfficerSection extends StatelessWidget {
           style: context.text.bodySmall?.copyWith(color: c.textMuted),
         ),
         const SizedBox(height: Space.md),
-        for (final p in MosRepository.officerPathways)
+        for (final p in routes)
           Padding(
             padding: const EdgeInsets.only(bottom: Space.sm),
             child: AppCard(
@@ -783,3 +852,6 @@ class _EnlistmentFacts extends StatelessWidget {
 }
 
 enum _Mode { qualified, near, all }
+
+/// Enlisted, officer, or both - the first decision, before any code.
+enum _Type { all, enlisted, officer }
