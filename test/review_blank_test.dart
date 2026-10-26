@@ -28,9 +28,9 @@ Future<AppState> seededReview() async {
   final state = AppState();
   await state.init();
 
-  final annotated = QuestionBank.bySubtest(
-    Subtest.wk,
-  ).where((q) => q.puzzle == null && q.noteFor(q.answerIndex) != null).toList();
+  final annotated = QuestionBank.bySubtest(Subtest.wk)
+      .where((q) => q.puzzle == null && q.noteFor(q.answerIndex) != null)
+      .toList();
   expect(
     annotated.length,
     greaterThanOrEqualTo(3),
@@ -92,9 +92,8 @@ Future<void> pumpReview(
         theme: AppTheme.build(Brightness.light),
         home: Builder(
           builder: (context) => MediaQuery(
-            data: MediaQuery.of(
-              context,
-            ).copyWith(textScaler: TextScaler.linear(textScale)),
+            data: MediaQuery.of(context)
+                .copyWith(textScaler: TextScaler.linear(textScale)),
             child: ReviewScreen(attempt: state.attempts.last),
           ),
         ),
@@ -106,9 +105,8 @@ Future<void> pumpReview(
 }
 
 /// The card that carries [badge], found through the badge it paints.
-Finder cardWith(WidgetTester tester, Finder badge) => find
-    .ancestor(of: badge, matching: find.byType(AppCard))
-    .first;
+Finder cardWith(WidgetTester tester, Finder badge) =>
+    find.ancestor(of: badge, matching: find.byType(AppCard)).first;
 
 void main() {
   testWidgets('a blank item says it was left blank, not that it was missed', (
@@ -158,7 +156,10 @@ void main() {
     // they did not choose, and the keyed answer, both still there.
     final blankCard = cardWith(tester, find.text('Left blank').first);
     expect(
-      find.descendant(of: blankCard, matching: find.text('Why the others fail')),
+      find.descendant(
+        of: blankCard,
+        matching: find.text('Why the others fail'),
+      ),
       findsOneWidget,
       reason: 'the per-option notes are the point of the card and must stay',
     );
@@ -185,12 +186,7 @@ void main() {
     // and it carries an icon, so the narrowest phone at the largest text is
     // where it has to prove it fits.
     final state = await seededReview();
-    await pumpReview(
-      tester,
-      state,
-      size: const Size(360, 640),
-      textScale: 2,
-    );
+    await pumpReview(tester, state, size: const Size(360, 640), textScale: 2);
     expect(tester.takeException(), isNull);
     expect(find.text('Left blank'), findsNWidgets(2));
   });

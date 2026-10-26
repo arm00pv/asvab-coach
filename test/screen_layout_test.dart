@@ -318,31 +318,29 @@ void main() {
       // counts qualifying jobs is a display figure and a sentence, and the
       // review card is badges and option lines: both are the shapes that
       // overrun a narrow phone.
-      testWidgets(
-        'results at ${size.width.toInt()}x${size.height.toInt()}',
-        (tester) async {
-          final state = await seededState();
-          await pumpScreen(
-            tester,
-            ResultsScreen(attempt: state.attempts.last),
-            state: state,
-            size: size,
-          );
-        },
-      );
+      testWidgets('results at ${size.width.toInt()}x${size.height.toInt()}', (
+        tester,
+      ) async {
+        final state = await seededState();
+        await pumpScreen(
+          tester,
+          ResultsScreen(attempt: state.attempts.last),
+          state: state,
+          size: size,
+        );
+      });
 
-      testWidgets(
-        'review at ${size.width.toInt()}x${size.height.toInt()}',
-        (tester) async {
-          final state = await seededState();
-          await pumpScreen(
-            tester,
-            ReviewScreen(attempt: state.attempts.last),
-            state: state,
-            size: size,
-          );
-        },
-      );
+      testWidgets('review at ${size.width.toInt()}x${size.height.toInt()}', (
+        tester,
+      ) async {
+        final state = await seededState();
+        await pumpScreen(
+          tester,
+          ReviewScreen(attempt: state.attempts.last),
+          state: state,
+          size: size,
+        );
+      });
     }
 
     // Both hard conditions at once: the cheapest handset this app claims to
