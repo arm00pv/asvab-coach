@@ -27,6 +27,12 @@ const List<Question> skillDepthBank = <Question>[
       'It is lighter for the same stiffness',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Graphite flakes in the iron absorb vibration energy, so a cut that would ring a steel plate dies away.',
+      'Thermal expansion is much the same for both metals, so shop warmth affects them alike.',
+      'Bare cast iron rusts readily, so paint or oil is still needed on a machine bed.',
+      'For the same stiffness iron is heavier than steel, not lighter.',
+    ],
     explanation:
         'Cast iron carries its carbon as flakes of graphite, and those flakes '
         'absorb vibration energy, so a cut that would set a steel plate ringing '
@@ -49,6 +55,12 @@ const List<Question> skillDepthBank = <Question>[
       'The scratch is too narrow for water to reach',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Zinc is the more active metal, so at the damage it becomes the anode and corrodes while the steel stays sound.',
+      'Zinc oxide is porous and seals nothing, and the protection comes from corrosion rather than from regrowth.',
+      'The steel under the coating is ordinary steel, and only the activity of the zinc protects it.',
+      'Water reaches a scratch of any width, so the protection has to work in spite of the water.',
+    ],
     explanation:
         'Zinc is the more active metal, so where both are exposed to moisture the '
         'zinc becomes the anode and corrodes while the steel stays cathodic and '
@@ -82,6 +94,12 @@ const List<Question> skillDepthBank = <Question>[
       'The whole sequence is repeated from the far end',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The passage sets three passes, a third then two thirds then the full figure.',
+      'Nothing is lifted once the sequence has begun, because that undoes the seating already made.',
+      'Threads are meant to be lightly oiled, and drying them is never part of the sequence at all.',
+      'Every pass runs from the centre outward, and repeating from the far end would cock the head.',
+    ],
     explanation:
         'The passage sets out three passes in a fixed order: a third, then two '
         'thirds, then the full figure, always from the centre outward. Nothing is '
@@ -110,6 +128,12 @@ const List<Question> skillDepthBank = <Question>[
       'The solder seals itself as the tank expands',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The chain runs from the uncovered core running hot to the seam working and the leak growing.',
+      'The level keeps dropping, and nothing in the passage has it rising again once the engine is hot.',
+      'The gauge is what finally reports the trouble, and no failure of it is described.',
+      'The seam works open rather than sealing, and expansion against cold metal is what breaks it.',
+    ],
     explanation:
         'The passage traces a chain: the level falls, the uncovered core runs hot, '
         'hot metal works against cold metal, the seam fails, and the leak grows. '
@@ -138,6 +162,12 @@ const List<Question> skillDepthBank = <Question>[
       'Left standing outdoors through one winter',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The passage explains it by its consequence, since the water is taken out so the timber stops shrinking.',
+      'Rot treatment is a different process, and nothing in the passage mentions insects.',
+      'The age of the tree is not discussed, and seasoning happens after the timber has been cut.',
+      'Standing outdoors is not described, and seasoning here is a deliberate treatment rather than exposure.',
+    ],
     explanation:
         'The passage explains the word by its consequence: a green board is full of '
         'water, and seasoning is what takes the water out so the timber stops '
@@ -164,6 +194,12 @@ const List<Question> skillDepthBank = <Question>[
       'Warping across the width of a plank',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The passage names the cracks first and then gives them the trade name, hair lines opening to full thickness.',
+      'Moisture is what caused the cracks, and the word names the cracks themselves.',
+      'Saw marks are a different feature, and these lines run along the end grain of the board.',
+      'Warping is another failure, and checks are described as cracks running along the grain.',
+    ],
     explanation:
         'The passage names the cracks first and then gives them the name the trade '
         'uses, which is all a vocabulary-in-context question needs: they are hair '
@@ -185,6 +221,12 @@ const List<Question> skillDepthBank = <Question>[
       'So the motor draws less current when it starts',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Earth gives fault current a low-resistance path, so a fuse blows or a breaker trips.',
+      'Bonding carries no load current, so it cannot change how warm the case runs.',
+      'Paint is an insulator and static is not what the earth conductor addresses.',
+      'Starting current is set by the motor winding, not by the case connection.',
+    ],
     explanation:
         'If a live conductor touches the case, the earth connection gives the '
         'fault current a low-resistance path back to the supply, so enough current '
@@ -205,6 +247,12 @@ const List<Question> skillDepthBank = <Question>[
       '6 volts at 100 ampere-hours',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Series adds the voltages and leaves the capacity alone, since the same current passes both.',
+      'The 12 volt 200 ampere-hour pair is the parallel result, which doubles capacity instead.',
+      'The 24 volt 200 ampere-hour figure adds both quantities, which no connection does.',
+      'The 6 volt figure halves the voltage, as though the batteries opposed each other.',
+    ],
     explanation:
         'In series the voltages add and the current capacity does not change, '
         'because the same current passes through both batteries one after the '
@@ -227,6 +275,12 @@ const List<Question> skillDepthBank = <Question>[
       'Setting the moment of the spark in each cylinder',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The running alternator feeds the ignition, lamps and accessories and puts back what the starter took.',
+      'Storing the energy for the next start is the battery job, and the alternator only makes current.',
+      'Stepping voltage down for the lamps happens elsewhere, while the alternator regulates near fourteen volts.',
+      'The moment of the spark is set by the ignition system rather than by the charging circuit.',
+    ],
     explanation:
         'Once the engine runs, the alternator supplies the ignition, lamps and '
         'accessories and puts back what the starter took, with a regulator holding '
@@ -249,6 +303,12 @@ const List<Question> skillDepthBank = <Question>[
       'It has no fuse, so the current is not limited',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'With only twelve volts to work from, turning a cold engine takes a very large current to make torque.',
+      'Headlamps are wired to the battery as well, so the direct connection explains nothing about the current.',
+      'The starter runs on direct current, and the alternator rectifies its own output for the same reason.',
+      'Having no fuse limits nothing, and the large current follows from the load the motor drives.',
+    ],
     explanation:
         'Electrical power is voltage multiplied by current, and with only twelve '
         'volts available the starter needs a very large current to produce the '
@@ -273,6 +333,12 @@ const List<Question> skillDepthBank = <Question>[
       'Codes count studs rather than measuring the wall',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Sheet goods come four feet wide, and four feet is three bays of sixteen inches so seams land on a stud.',
+      'A two-by-four spans further than sixteen inches in most walls, so the spacing is not a span limit.',
+      'Insulation bats are cut to match the spacing, so the spacing is not set by the bats.',
+      'Spacing is set for sheathing edges and for load, not for counting the studs in a wall.',
+    ],
     explanation:
         'Sheet goods come four feet wide, and four feet is three bays of sixteen '
         'inches, so a sheet breaks on a stud wherever it starts. A two-by-four '
@@ -293,6 +359,12 @@ const List<Question> skillDepthBank = <Question>[
       'Steel draws heat out of the slab in winter',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Concrete resists squeezing far better than pulling, so bars near the lower face take the tension.',
+      'Steel does not change curing time, and the bars are placed for what happens under load.',
+      'The bars add weight and take tension rather than supporting the slab on their own.',
+      'Heat flow has nothing to do with why the bars sit low, where a spanning slab is stretched.',
+    ],
     explanation:
         'Concrete resists being squeezed far better than being pulled, and a slab '
         'spanning between supports is stretched across its lower face, so the bars '
@@ -315,6 +387,12 @@ const List<Question> skillDepthBank = <Question>[
       'It disconnects the drive whenever a wheel slips',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The outer wheel travels a longer path, so the gearing lets each wheel turn at its own speed while driving both.',
+      'A solid axle would hold both wheels at one speed and scrub a tyre through every turn.',
+      'The differential ratio is fixed, and changing ratio as speed rises is the transmission job.',
+      'A slipping wheel spins faster rather than being disconnected, and drive stays on both sides.',
+    ],
     explanation:
         'The outer wheel travels a longer path than the inner one in a turn, and a '
         'solid axle would make one tyre scrub; the differential gearing lets each '
@@ -335,6 +413,12 @@ const List<Question> skillDepthBank = <Question>[
       'The return springs pull the shoes clear of the drum',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Heat builds faster than the drums can shed it, and the lining loses friction once it is hot enough.',
+      'Worn linings are a separate fault, and fade arrives on a long descent with the pedal still firm.',
+      'Drums expand with heat rather than cool on a descent, and fade comes from the lining surface.',
+      'The return springs retract the shoes when the pedal is released, and they do not cause fade.',
+    ],
     explanation:
         'Repeated braking turns motion into heat faster than the drums and linings '
         'can shed it, and once the lining surface gets hot enough its friction '
@@ -354,6 +438,12 @@ const List<Question> skillDepthBank = <Question>[
         'the third to average exactly 84 across the three?',
     choices: <String>['88', '86', '84', '90'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Three tests at 84 need 252 points, and 252 - 164 = 88 for the third test.',
+      'Repeating the second score of 86 leaves the average at 83.3, below the target 84.',
+      '84 is the target average itself, assuming the first two scores already average it.',
+      '90 overshoots: (78 + 86 + 90) / 3 = 84.67, above the 84 the item asks for.',
+    ],
     explanation:
         'Work back from the average to the total the three scores have to reach: '
         '3 x 84 = 252. The first two tests already account for 78 + 86 = 164, so '
@@ -370,6 +460,12 @@ const List<Question> skillDepthBank = <Question>[
         'is the average score of all twenty?',
     choices: <String>['86', '87', '84', '85'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The totals are 8 x 92 = 736 and 12 x 82 = 984, and 1,720 / 20 = 86.',
+      'Averaging 92 and 82 gives 87, weighting the two groups equally despite their sizes.',
+      'Mis-adding the group totals to 1,680 instead of 1,720 divides to 84, forty points short.',
+      'Losing 20 points across the totals gives 1,700 / 20 = 85, a small arithmetic slip.',
+    ],
     explanation:
         'Averaging 92 and 82 gives 87, which is the trap: it weights the two '
         'groups equally when one has twelve soldiers and the other has eight. Find '

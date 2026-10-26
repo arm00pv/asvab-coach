@@ -15,6 +15,12 @@ const List<Question> mechanicalExtraBank = <Question>[
         'raises a 400 lb rock?',
     choices: <String>['67 lb', '80 lb', '100 lb', '400 lb'],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Sixty-seven pounds uses the whole six foot bar as the effort arm, counting the foot beyond the block twice.',
+      'The effort arm is the remaining five feet, so 400 lb divided by an advantage of 5 gives 80 lb.',
+      'One hundred pounds fits an effort arm of four feet, a foot short of the five the block leaves.',
+      'Four hundred pounds leaves the bar no advantage, as if the push went on at the block itself.',
+    ],
     explanation:
         'The fulcrum sits one foot from the rock, so the load arm is 1 ft and the effort arm '
         'is the remaining 5 ft. The mechanical advantage is 5, and 400 lb divided by 5 is 80 lb '
@@ -54,6 +60,12 @@ const List<Question> mechanicalExtraBank = <Question>[
         'load must the fulcrum be placed?',
     choices: <String>['3 ft', '4 ft', '6 ft', '9 ft'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Three feet balances 150 lb times the load arm against 50 lb times the remaining nine feet.',
+      'Four feet leaves an 8 ft effort arm, which raises 150 lb only when the effort is 75 lb.',
+      'Six feet is the midpoint of the bar, where the arms are equal and the lever gives no advantage.',
+      'Nine feet from the load leaves only 3 ft of effort arm, so the lever works against you.',
+    ],
     explanation:
         'Balance the moments: 150 lb times the load arm equals 50 lb times the effort arm, and '
         'the two arms together make 12 ft. Writing the load arm as a gives 150a = 50(12 - a), so '
@@ -71,6 +83,12 @@ const List<Question> mechanicalExtraBank = <Question>[
         'what force along the ramp is needed?',
     choices: <String>['20 lb', '25 lb', '50 lb', '80 lb'],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Twenty pounds divides the 200 lb weight by the 10 ft ramp and ignores the 2.5 ft rise altogether.',
+      'Twenty-five pounds halves the push, which follows from measuring the ramp from its middle rather than its full length.',
+      'The 500 foot-pounds of work spread over 10 ft of ramp takes 50 lb of push along the slope.',
+      'Eighty pounds divides 200 by 2.5, treating the rise as the ratio and inflating the effort.',
+    ],
     explanation:
         'The work is the same either way. Lifting the barrel straight up takes 200 lb through '
         '2.5 ft, which is 500 foot-pounds, and spreading that same work over 10 ft of ramp takes '
@@ -107,6 +125,12 @@ const List<Question> mechanicalExtraBank = <Question>[
         'much rope must be pulled through to raise the load 2 ft?',
     choices: <String>['2 ft', '4 ft', '6 ft', '8 ft'],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Two feet is the distance the load rises, and it takes no account of the hauling the tackle demands.',
+      'Four feet fits a two-section tackle, where each foot of lift pulls two feet of rope.',
+      'Six feet fits a three-section tackle, one section short of the four the drawing shows.',
+      'Raising the block 2 ft shortens each of the four sections by 2 ft, so 8 ft of rope comes through your hands.',
+    ],
     explanation:
         'Four supporting sections share the load, so the effort is one quarter of the weight '
         'and the distance is multiplied by the same four. Raising the block 2 ft means '
@@ -147,6 +171,12 @@ const List<Question> mechanicalExtraBank = <Question>[
         'turned 30 complete turns?',
     choices: <String>['0.3 inch', '3 inches', '10 inches', '30 inches'],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Three tenths of an inch would follow from ten turns at this pitch, not from thirty.',
+      'Each turn advances the screw by one pitch of 0.1 inch, so thirty turns raise the jack 3 inches.',
+      'Ten inches treats the ten threads per inch as a length instead of a rate of climb.',
+      'Thirty inches assumes a full inch of rise per turn, which is a pitch of one rather than one tenth.',
+    ],
     explanation:
         'One turn of the screw advances it by exactly one thread pitch, and with 10 threads in '
         'each inch the pitch is 0.1 inch. Thirty turns therefore lift the jack 30 times 0.1 '
@@ -186,6 +216,12 @@ const List<Question> mechanicalExtraBank = <Question>[
         'gear turn?',
     choices: <String>['15 rpm', '60 rpm', '240 rpm', '480 rpm'],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Fifteen divides 60 by the four to one ratio, where a smaller driven gear should multiply by it.',
+      'Sixty assumes two equal gears, yet the driven gear has a quarter of the teeth and must turn faster.',
+      'The tooth ratio of 40 to 10 is four, so sixty rpm becomes 240 rpm with torque cut by the same four.',
+      'Four hundred eighty would take an eight to one ratio, and forty against ten teeth gives only four.',
+    ],
     explanation:
         'A small gear driving a large one slows the output down, so the reverse of that pair '
         'must speed it up by the tooth ratio of 40 to 10, which is 4. Sixty rpm times 4 is 240 '
@@ -224,6 +260,12 @@ const List<Question> mechanicalExtraBank = <Question>[
       'It turns at twice the speed and in the opposite direction',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Two meshes reverse the direction twice, and dropping the idler is what would leave the output reversed.',
+      'Half speed needs an output gear with twice the teeth, and the drawing shows two gears of the same size.',
+      'Twice speed needs an output gear with half the teeth, and the two end gears match tooth for tooth.',
+      'Each mesh reverses the turn and the second reverses it back, while equal tooth counts leave the speed alone.',
+    ],
     explanation:
         'Every mesh reverses the direction, and a second mesh reverses it back again, so two '
         'meshes leave the output turning the same way as the driving gear. Speed depends only on '
@@ -263,6 +305,12 @@ const List<Question> mechanicalExtraBank = <Question>[
         'the final 30 tooth gear turn?',
     choices: <String>['33 rpm', '150 rpm', '300 rpm', '100 rpm'],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Thirty-three divides 100 by three again, applying a third ratio this train does not contain.',
+      'One hundred fifty halves the final speed, which neither the twelve to thirty-six nor the ten to thirty mesh gives.',
+      'Three hundred rpm stops after the first mesh and forgets the ten tooth gear driving the thirty tooth.',
+      'The first mesh takes 900 rpm down to 300, and the second takes 300 down by three again to 100 rpm.',
+    ],
     explanation:
         'Work through one mesh at a time. The first pair reduces speed by 12 over 36, so the 36 '
         'tooth gear turns at 300 rpm. The shaft carries the 10 tooth gear at that same 300 rpm, '
@@ -285,6 +333,12 @@ const List<Question> mechanicalExtraBank = <Question>[
       '180 pound-feet',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Seven pound-feet divides 20 by the three to one ratio, but a slower driven gear gains torque instead of losing it.',
+      'Three times the teeth turns a third as fast and carries three times the torque, so 20 becomes 60 pound-feet.',
+      'Twenty pound-feet would be the output only if the two gears carried equal tooth counts.',
+      'One hundred eighty would need a nine to one tooth ratio, and fifteen against forty-five is only three to one.',
+    ],
     explanation:
         'A gear pair trades speed for torque, and the torque is multiplied by exactly the ratio '
         'that divides the speed. The driven gear has three times as many teeth, so it turns one '
@@ -305,6 +359,12 @@ const List<Question> mechanicalExtraBank = <Question>[
       'Triangles let the joints be nailed instead of bolted',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'A braced rectangle can use fewer pieces than a trussed triangle, so saving weight is not why trusses are triangular.',
+      'Spreading load into the foundation is the footing job, and the truss shape is about holding itself rigid.',
+      'Once its three sides are fixed, all three angles are fixed with them, so the shape cannot fold over.',
+      'Nailing or bolting is a joining choice, and a triangle holds its shape through geometry rather than fastening.',
+    ],
     explanation:
         'A rectangle hinged at its corners folds over into a parallelogram under a sideways '
         'push, while a triangle has no such freedom: once its three sides are fixed, all three '
@@ -323,6 +383,12 @@ const List<Question> mechanicalExtraBank = <Question>[
         'as it holds the two rafter feet together?',
     choices: <String>['Compression', 'Shear', 'Torsion', 'Tension'],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Compression squeezes a member lengthwise, and the rafters near the ridge feel that rather than the bottom member.',
+      'Shear acts across a section to slide one part past another, and this member is being pulled end to end.',
+      'Torsion twists a member about its own axis, and nothing in this truss twists the bottom member.',
+      'The roof load pushes the rafter feet outward, so the member holding them apart is stretched end to end.',
+    ],
     explanation:
         'The weight of the roof pushes the rafter feet outward, and the bottom member is what '
         'stops them from spreading, so it is being pulled apart end to end and is in tension. '
@@ -356,6 +422,12 @@ const List<Question> mechanicalExtraBank = <Question>[
         'on each end. What kind of stress does the rod carry?',
     choices: <String>['Tension', 'Compression', 'Bending', 'Torsion'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Compression is what the rod would feel if its ends were pushed together instead of pulled apart.',
+      'Bending would put one side in tension and the other in compression, and this rod is pulled straight.',
+      'Torsion would twist the rod about its axis, and a load hung on each end does not twist it.',
+      'A straight pull along the axis stretches the rod, so it is in tension while stopping the ends from spreading.',
+    ],
     explanation:
         'A straight pull along the axis stretches the rod, so it is in tension, and the job of '
         'the rod is to stop two points from moving apart. Push the same rod instead and it '
@@ -373,6 +445,12 @@ const List<Question> mechanicalExtraBank = <Question>[
         'average acceleration?',
     choices: <String>['0.2 ft/s^2', '5 ft/s^2', '24 ft/s^2', '180 ft/s^2'],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Two tenths is six divided by thirty, which turns the division upside down.',
+      'Thirty feet per second climbed over six seconds is five feet per second gained in each second.',
+      'Twenty-four subtracts the time from the speed, where acceleration calls for a division.',
+      'One hundred eighty multiplies the speed by the time instead of dividing one by the other.',
+    ],
     explanation:
         'Acceleration is the change in velocity divided by the time the change took. The '
         'velocity climbs by 30 ft per second in 6 seconds, so 30 divided by 6 gives 5 ft per '
@@ -395,6 +473,12 @@ const List<Question> mechanicalExtraBank = <Question>[
       'Rolling friction is much smaller than sliding friction',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'The dolly presses down with the full weight of the crate, so the load on the floor never changes.',
+      'Rolling wins over sliding with the same materials, so a smoother wheel surface is not the reason.',
+      'Spreading the load over a larger area does not reduce sliding friction, and the contact type is what changes.',
+      'A wheel turns the contact into rolling, and rolling resistance is a small fraction of sliding friction.',
+    ],
     explanation:
         'A wheel replaces sliding contact with rolling contact, and rolling resistance is only '
         'a small fraction of the sliding friction that the whole bottom of a dragged crate '
@@ -419,6 +503,12 @@ const List<Question> mechanicalExtraBank = <Question>[
       'Falls to one quarter of the old force',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Friction follows how hard the surfaces press, so the larger footprint does not raise the force.',
+      'Halving would need the pressing weight halved, and the block presses just as hard on its wide face.',
+      'Dry sliding friction follows the pressed weight and the materials, not the area carrying that weight.',
+      'A quarter would need the block to weigh a quarter as much, and it weighs the same turned any way.',
+    ],
     explanation:
         'Dry sliding friction depends on how hard the two surfaces are pressed together and on '
         'what the materials are, not on how much area carries that pressure. Spreading the same '
@@ -438,6 +528,12 @@ const List<Question> mechanicalExtraBank = <Question>[
         'large piston rise?',
     choices: <String>['0.5 inch', '3 inches', '12 inches', '18 inches'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Six times the area means one sixth of the travel, so 3 inches becomes half an inch with the force up six times.',
+      'Three inches would move the large piston the same distance, which would make work out of nothing.',
+      'Twelve inches quadruples the travel, the reverse of what the six to one area ratio does.',
+      'Eighteen inches multiplies by the area ratio instead of dividing, so the large piston would travel six times as far.',
+    ],
     explanation:
         'A hydraulic press multiplies force but it cannot multiply work. The large piston has '
         'six times the area, so the same pressure gives it six times the force while it moves '
@@ -485,6 +581,12 @@ const List<Question> mechanicalExtraBank = <Question>[
       'Half as great, because the pipe holds less water',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Twice would match a 4 ft head, but the pipe water stands 8 ft deep against 2 ft in the barrel.',
+      'Pressure depends on depth and density alone, so four times the depth gives four times the pressure.',
+      'Depth rather than the liquid sets the pressure, and the pipe holds a column four times as deep.',
+      'Half looks at how little water the pipe holds, and volume plays no part in pressure at depth.',
+    ],
     explanation:
         'Pressure at the bottom of a column of liquid depends only on the depth of the liquid '
         'and on its density, so four times the depth means four times the pressure. The pipe '
@@ -524,6 +626,12 @@ const List<Question> mechanicalExtraBank = <Question>[
       'Mild steel is ductile and cast iron is brittle',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Density does not decide how a part fails, and mild steel is not notably denser than cast iron.',
+      'Hardness describes resistance to scratching, while this bracket difference is about bending before breaking.',
+      'Melting point matters only near working temperature, which an overloaded bracket never approaches.',
+      'Ductile steel stretches and yields with warning, while brittle cast iron fractures with almost no stretch.',
+    ],
     explanation:
         'A ductile metal stretches and yields before it separates, so an overload shows up as '
         'a permanent bend that gives plenty of warning. Cast iron is brittle: it carries load '

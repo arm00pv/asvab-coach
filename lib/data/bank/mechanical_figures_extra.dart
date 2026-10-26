@@ -16,6 +16,12 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
         'does the right support carry?',
     choices: <String>['200 pounds', '300 pounds', '400 pounds', '600 pounds'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The far support takes the load times the near arm over the span, so 600 times 2 over 6 is 200 lb.',
+      'Three hundred is right only for a load at the midpoint, and this one sits 2 ft from the left end.',
+      'Four hundred uses the 4 ft arm instead of the 2 ft arm, and that larger share belongs to the near support.',
+      'Six hundred gives one support the whole load, which leaves the other support carrying nothing at all.',
+    ],
     explanation:
         'The two supports share the load in inverse proportion to distance, so '
         'the far support takes 600 x 2 / 6 = 200 pounds while the near support '
@@ -56,6 +62,12 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
       'It is the same all along',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'The bending moment is zero at the free end, where the beam only has to hold the hanging load.',
+      'The moment grows from nothing at the tip to load times full length at the wall, so the stress peaks there.',
+      'At the midpoint the moment is only half of what the wall carries, so the stress there is lower.',
+      'Even stress would need the load spread along the beam, and this load hangs all at one end.',
+    ],
     explanation:
         'A cantilever carries its whole load at the overhanging end, so the '
         'bending moment grows from zero there to its largest value at the wall, '
@@ -91,6 +103,12 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
         'applied?',
     choices: <String>['0 pounds', '20 pounds', '40 pounds', '100 pounds'],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Zero is the trap for anyone who thinks friction appears only once something starts to slide.',
+      'Twenty halves the push, yet static friction matches the whole push rather than part of it.',
+      'Static friction supplies exactly what the push applies, so the crate stays put under 40 lb of opposition.',
+      'One hundred is the weight, which sets the friction limit rather than the force actually in play.',
+    ],
     explanation:
         'Static friction takes whatever value is needed to oppose the push, up '
         'to its limit, so a crate held in place by a 40 pound push is held by '
@@ -123,6 +141,12 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
         'stone at the end of 2 seconds?',
     choices: <String>['16 feet', '32 feet', '48 feet', '64 feet'],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Sixteen is the distance covered in the first second, and the stone keeps speeding up after that.',
+      'Thirty-two doubles the distance as if the speed stayed steady at 16 ft per second.',
+      'Forty-eight is the distance covered during the second second alone, not the total from the release point.',
+      'Falling distance grows with the square of the time, so twice the time means four times 16 ft.',
+    ],
     explanation:
         'A body falling from rest covers distance in proportion to the square of '
         'the time, so twice the time means four times the distance: 16 x 4 = 64 '
@@ -161,6 +185,12 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
         'piston?',
     choices: <String>['120 pounds', '150 pounds', '600 pounds', '3000 pounds'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The pressure passes through unchanged, so five times the area needs one fifth of the force, 600 over 5.',
+      'One hundred fifty halves the load twice, which is a four to one area ratio this press does not have.',
+      'Six hundred ignores the piston areas, as if one force balanced the other side directly.',
+      'Three thousand multiplies by the five to one area ratio where the smaller piston has to divide.',
+    ],
     explanation:
         'A confined liquid passes pressure on unchanged, so the large piston '
         'gets five times the force because 20 square inches is five times 4, and '
@@ -211,6 +241,12 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
       'The friction of the water inside the hose',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'The weight of the column is exactly what the atmosphere is holding up, so it sets no limit of its own.',
+      'Atmospheric pressure lifts the water up the short leg, and it holds a column about 34 ft tall.',
+      'A hose must resist collapsing under vacuum, but the pressure that lifts the water comes from outside it.',
+      'Friction slows the flow through a siphon without putting a fixed ceiling on the wall height.',
+    ],
     explanation:
         'A siphon is driven by the atmosphere pressing on the surface of the '
         'drum, which pushes water up the short leg while the longer falling leg '
@@ -252,6 +288,12 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
         'effort at the handles is needed to hold the load up?',
     choices: <String>['40 pounds', '60 pounds', '80 pounds', '240 pounds'],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Forty pounds uses the 6 ft arm itself as the advantage, when the arm length must be divided by the load arm.',
+      'Sixty pounds fits a four to one advantage, so it reads the tray as 1.5 ft from the axle.',
+      'The 6 ft effort arm over the 2 ft load arm is 3, so the hands carry 240 divided by 3.',
+      'Two hundred forty ignores the lever entirely, as if the loaded tray sat over the hands.',
+    ],
     explanation:
         'A wheelbarrow is a class 2 lever: the load sits between the axle, which '
         'is the fulcrum, and the hands. The advantage is the effort arm over the '
@@ -288,6 +330,12 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
         'what is the mechanical advantage of this jack?',
     choices: <String>['10', '40', '80', '160'],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Ten multiplies the 40 inch path by the quarter inch pitch, where mechanical advantage divides one by the other.',
+      'Forty quotes the handle path alone and never uses the quarter inch the thread rises in a turn.',
+      'Eighty doubles the handle distance, which happens if the swept path is read as 20 inches.',
+      'The effort travels 40 inches while the load rises a quarter inch, so 40 divided by 0.25 gives 160.',
+    ],
     explanation:
         'Mechanical advantage is the distance moved by the effort divided by the '
         'distance moved by the load, and here that is 40 / 0.25 = 160. A screw '
@@ -331,6 +379,12 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
       '240 rpm counterclockwise',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The crossing swaps top and bottom of the belt, reversing the driven pulley while equal sizes keep the speed.',
+      'A clockwise turn would follow an open belt, and this belt crosses itself between the two pulleys.',
+      'Half speed needs a driven pulley twice the diameter, and the drawing shows two pulleys of equal size.',
+      'Twice the speed needs a driven pulley half the diameter, and these two pulleys match each other.',
+    ],
     explanation:
         'A crossed belt reverses the driven pulley, because the stretch of belt '
         'that leaves the top of the driver arrives at the bottom of the driven '
@@ -371,6 +425,12 @@ const List<Question> mechanicalFigureExtraBank = <Question>[
       'The steel side rises because steel is stiffer than aluminum',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'A level beam is the trap of reading size as weight, since equal volumes of different metals differ in mass.',
+      'Steel is about three times as dense, so the same volume weighs more and its side of the beam falls.',
+      'Aluminium is lighter for its size, so the lighter block is the one that rises instead of falling.',
+      'Stiffness does not decide which side of a balance falls, and it is weight that turns the beam.',
+    ],
     explanation:
         'Two blocks of the same size have the same volume, so the balance is '
         'really comparing the weight of equal amounts of each metal, and steel '

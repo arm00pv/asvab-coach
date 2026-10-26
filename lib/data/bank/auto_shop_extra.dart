@@ -19,6 +19,12 @@ const List<Question> autoShopExtraBank = <Question>[
       'A nail set',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'A drift punch has a straight shank for driving out pins and rivets, so it leaves no dimple to seat a drill.',
+      'A center punch leaves a small conical crater that gives the drill point a seat so it starts on the mark.',
+      'A cape chisel cuts a narrow groove, which steers the bit along the groove instead of holding it on the mark.',
+      'A nail set has a cupped tip for sinking nail heads below a wood surface, and it is no guide for a drill.',
+    ],
     explanation:
         'A center punch is struck once with a hammer to leave a small conical crater, and '
         'that crater gives the drill point a seat so the bit starts exactly on the mark instead '
@@ -36,6 +42,12 @@ const List<Question> autoShopExtraBank = <Question>[
         'broken piece will not turn. Which tool is made for backing the stump out?',
     choices: <String>['A screw extractor', 'A tap', 'A die', 'A reamer'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'A screw extractor has reverse flutes that bite a drilled stump and walk it out as it is turned counterclockwise.',
+      'A tap cuts fresh internal threads, so it would cut the hole the bolt came from instead of removing the stump.',
+      'A die cuts external threads on a rod, and a stump sunk flush in a housing gives it nothing to start on.',
+      'A reamer only trues up a hole that is already round, and the broken piece would still sit in the way.',
+    ],
     explanation:
         'A screw extractor is a hardened taper with reverse flutes. Drill a hole into the '
         'broken stump, drive the extractor into it, and turn it counterclockwise so the flutes '
@@ -58,6 +70,12 @@ const List<Question> autoShopExtraBank = <Question>[
       'A pair of slip-joint pliers',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'A larger open-end wrench loads the same two corners, so it rounds the nut faster rather than saving it.',
+      'An adjustable wrench still presses on two flats and adds a loose sliding jaw that slips on a damaged nut.',
+      'A six-point box end surrounds the nut and presses on all six flats at once, spreading the turning force.',
+      'Slip-joint pliers grip with teeth, which chew the corners further and make the nut harder to save.',
+    ],
     explanation:
         'A box-end wrench or a six-point socket surrounds the nut and presses on all six '
         'flats at once, so the turning force is spread instead of being concentrated on two '
@@ -80,6 +98,12 @@ const List<Question> autoShopExtraBank = <Question>[
       'One with 24 teeth per inch',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'A fine blade keeps several teeth in the thin wall so each one takes a shallow bite and the cut stays clean.',
+      'A fourteen tooth blade straddles the thin wall, hooks the far edge and tears the tubing instead of cutting.',
+      'An eighteen tooth blade is a general purpose pitch that still hooks and snags on thin wall conduit.',
+      'A twenty-four tooth blade suits heavier stock and still crowds the wall more than thin tubing allows.',
+    ],
     explanation:
         'A fine blade keeps several teeth in contact with thin wall at all times, so each '
         'tooth takes a shallow bite and the saw cuts steadily. A coarse blade straddles the '
@@ -100,6 +124,12 @@ const List<Question> autoShopExtraBank = <Question>[
       'Air is squeezed so hard that the fuel ignites on its own',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'A magneto or coil fires a spark plug, and a diesel has no plug for one to fire.',
+      'A glow plug only warms the chamber for a cold start, and it does not light the charge on every stroke.',
+      'No pilot charge or low voltage coil is used, because the diesel has nothing to ignite a charge with.',
+      'Squeezing air alone raises it to several hundred degrees, so fuel sprayed in lights off with no spark.',
+    ],
     explanation:
         'A diesel squeezes air alone to a compression ratio high enough that the air itself '
         'reaches several hundred degrees, and fuel sprayed into that hot air lights off with no '
@@ -120,6 +150,12 @@ const List<Question> autoShopExtraBank = <Question>[
       'Holding pressure keeps the overflow bottle from draining back',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Hoses are held open by their own construction and by coolant flow, so pressure is not what stops a collapse.',
+      'Pressure raises the boiling point, which lets the engine run hotter than steam would allow without trouble.',
+      'Coolant is pushed through the core by the water pump, and pressure alone would not move it.',
+      'The recovery bottle is filled and drawn by the cap valve as coolant heats and cools, not held by pressure.',
+    ],
     explanation:
         'Holding the cooling system under pressure raises the boiling point of the coolant, so '
         'a cap rated at 15 psi lets the engine run well above the ordinary boiling point without '
@@ -143,6 +179,12 @@ const List<Question> autoShopExtraBank = <Question>[
       'The fan clutch is slipping and the fan turns too slowly',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'A slipping pump belt would starve the engine at low speed too, so the engine would boil in traffic rather than at speed.',
+      'A late thermostat opens slowly everywhere, so the engine would overheat in city traffic rather than on the highway.',
+      'Sustained highway load makes far more heat, and a clogged core cannot pass it to the airflow that is plentiful at speed.',
+      'A slow fan hardly matters at highway speed, where road speed alone pushes plenty of air through the core.',
+    ],
     explanation:
         'Cruising at highway speed asks the engine for a steady, high output, so it makes far '
         'more heat than it does creeping through traffic. Airflow through the grille is abundant '
@@ -164,6 +206,12 @@ const List<Question> autoShopExtraBank = <Question>[
       'It changes the final drive ratio as road speed increases',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'It gears the driven wheels to turn at different rates in a turn while both still receive drive.',
+      'Multiplying torque is left to the gearbox and final drive, and the differential passes torque on largely unchanged.',
+      'Locking the axles together is a separate locking differential, and an ordinary one deliberately allows differing speeds.',
+      'The ratio inside a differential is fixed, so road speed cannot change it.',
+    ],
     explanation:
         'In a turn the outside wheel travels a longer path than the inside wheel, so the two '
         'cannot turn at the same rate while sharing one axle. The differential gears in the '
@@ -188,6 +236,12 @@ const List<Question> autoShopExtraBank = <Question>[
       'A worn outer constant velocity joint on that half shaft',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'A wheel bearing growls with road speed and changes with load, and it does not stop the moment the wheels straighten.',
+      'A sticking caliper drags and runs hot, pulling to one side instead of clicking only in a sharp turn.',
+      'An out-of-balance tire shakes at a particular road speed rather than clicking at a particular steering angle.',
+      'The outer constant velocity joint works through a big angle only in a turn, so its wear clicks there and stops when straight.',
+    ],
     explanation:
         'Each half shaft of a front-wheel-drive car carries a constant velocity joint at both '
         'ends, and the outer joint near the wheel is the one that works through a large angle, '
@@ -211,6 +265,12 @@ const List<Question> autoShopExtraBank = <Question>[
       'A brake light switch that is out of adjustment',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Air in the lines leaves the pedal spongy all the way down and it never does firm up.',
+      'Pressure escaping past the master cylinder seals bleeds back into the reservoir, so a firm pedal creeps down.',
+      'Pads worn past the indicator change how far the pedal travels, not whether it holds under steady pressure.',
+      'The brake light switch only works the lamps, and it has no connection to hydraulic pressure in the circuit.',
+    ],
     explanation:
         'A pedal that firms up and then sinks under a steady push means pressure is escaping '
         'somewhere inside the hydraulic circuit, and the usual path is past the piston seals in '
@@ -233,6 +293,12 @@ const List<Question> autoShopExtraBank = <Question>[
       'A dowel pin pressed into a blind hole',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'A blind rivet is set entirely from the near side, because the body mushrooms against a face nobody can reach.',
+      'A machine bolt needs someone or something behind the work to hold the nut, and only one side can be reached.',
+      'A wood screw needs grain to bite into, and a thin metal sheet gives it nothing to hold.',
+      'A dowel pin in a blind hole grips nothing and holds the two sheets together not at all.',
+    ],
     explanation:
         'A blind rivet carries a mandrel through a hollow body. The riveter pulls the '
         'mandrel, the body mushrooms against the far side of the joint, and the mandrel snaps '
@@ -255,6 +321,12 @@ const List<Question> autoShopExtraBank = <Question>[
       'The zinc coating adds a layer that stiffens the post',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Zinc is softer than steel rather than harder, so the coating would be no protection on hardness alone.',
+      'A coating that merely sealed out air would fail the first time a scratch reached the steel underneath.',
+      'Zinc is more reactive than steel, so it gives up its electrons first and corrodes in place of the steel.',
+      'A thin coating adds almost no stiffness, and a stiff post would still rust once the zinc was spent.',
+    ],
     explanation:
         'Zinc is more reactive than steel, so where both are exposed the zinc gives up its '
         'electrons first and corrodes instead of the steel below, which is why the protection is '
@@ -277,6 +349,12 @@ const List<Question> autoShopExtraBank = <Question>[
       'The stated size is taken while the board is still green and swollen',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Kiln drying shrinks wood slightly but never by half an inch, and boards are surfaced before they ship.',
+      'Surfacing all four sides of the rough sawn piece removes material, so the name records the rough size.',
+      'Nothing rounds the dimensions down; the mill simply planes the piece after sawing it at the named size.',
+      'The size is settled after drying and planing, and a green swollen board would measure larger than its name.',
+    ],
     explanation:
         'Sawn lumber leaves the mill at its full rough size and is then surfaced on all four '
         'sides so it comes out straight and of even thickness, and that planing is what turns a '
@@ -298,6 +376,12 @@ const List<Question> autoShopExtraBank = <Question>[
       'It carries the weight above the opening out to the studs at each side',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Holding the window frame square is done with shims, and the header carries load rather than holding square.',
+      'Blocking air leaks around an opening is a job for flashing and sealant, not for the header above it.',
+      'Tying the sheathing to the wall on either side is done with nails through the sheathing into the studs.',
+      'Cutting the opening takes away the studs that carried load, so the header hands that load to the jack studs.',
+    ],
     explanation:
         'Cutting an opening removes the studs that once carried their share of the load down '
         'that part of the wall, so a header spans the gap and hands that load to the jack studs '
@@ -318,6 +402,12 @@ const List<Question> autoShopExtraBank = <Question>[
       'It allows the wall to settle without cracking',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Soil carries only so much weight per square foot, so the footing spreads the building over enough ground.',
+      'A ledge for masons is not why footings are poured wide, and the concrete below grade is never a work platform.',
+      'Keeping groundwater out of the wall is damp proofing and drainage work rather than a wider footing.',
+      'A wider footing spreads the load rather than letting the wall settle, and settlement is what a footing prevents.',
+    ],
     explanation:
         'Soil can carry only so much weight for every square foot of surface, and the '
         'foundation wall concentrates the whole building onto a narrow strip. Widening the '
@@ -338,6 +428,12 @@ const List<Question> autoShopExtraBank = <Question>[
       'Straight along its whole length',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Level describes something horizontal, so it is the wrong word for a wall standing upright.',
+      'Square describes the angle where two walls meet, and it says nothing about how vertical one wall stands.',
+      'Plumb compares a surface with gravity, so a plumb wall is one that stands exactly vertical against a level.',
+      'Straight describes the face of the material with no bow or kink, which is a different check from plumb.',
+    ],
     explanation:
         'Plumb compares a surface with the pull of gravity, so a plumb wall stands exactly '
         'vertical, which is what a spirit level reads when it is held against the stud. Level '
@@ -358,6 +454,12 @@ const List<Question> autoShopExtraBank = <Question>[
       'Storing electrical energy for the next start',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Cranking the engine until it starts is the starter motor job, and it stops working as soon as the engine runs.',
+      'The alternator makes current that runs the loads and puts back what the battery spent on the start.',
+      'Stepping voltage up for the plugs is done by the ignition coil, which the alternator does not feed directly.',
+      'Storing energy for the next start is the battery job, and the alternator makes energy instead of storing it.',
+    ],
     explanation:
         'Once the engine is turning, the belt spins the alternator rotor and the alternator '
         'makes current, which runs the lights, ignition and accessories while putting back what '
@@ -380,6 +482,12 @@ const List<Question> autoShopExtraBank = <Question>[
       'The battery is discharged or a battery cable end is loose',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'A failed starter still leaves full battery voltage at the lamps, so the headlights would stay bright while it clicked.',
+      'A dead coil gives a healthy crank that never fires, and this engine barely turns at all.',
+      'Overcharging does not stop the engine turning over, and it would show as bright lamps rather than dim ones.',
+      'Dimming lamps show that the starting current cannot be supplied, which points to a flat battery or a bad cable end.',
+    ],
     explanation:
         'The lights going dim proves the starting circuit is being asked for a large current '
         'and the supply cannot deliver it, which points at the state of the battery or at '
@@ -403,6 +511,12 @@ const List<Question> autoShopExtraBank = <Question>[
       'Rinse once with water and cut while the drum is still damp',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Purging the vapor or filling the drum with water leaves the torch nothing explosive to ignite.',
+      'Standing the drum open for an hour still leaves an explosive mixture inside, because the vapor is heavy in the drum.',
+      'A dangerous concentration of fuel vapor cannot be smelled, so the nose is no test of a safe drum.',
+      'A single rinse leaves residues that can still flash, so the drum must be purged or filled instead.',
+    ],
     explanation:
         'An empty drum holds a fuel and air mixture sitting squarely in the explosive range, '
         'and a cutting torch is more than enough to set it off. Filling the drum with water, or '
@@ -426,6 +540,12 @@ const List<Question> autoShopExtraBank = <Question>[
       'The torch valves are sized to pass only a low volume of gas',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'The limit comes from the gas and not from a thin diaphragm, and regulators are built to hold far more than fifteen.',
+      'Acetylene is lighter than air rather than heavier, so settling in a hose is not the concern here.',
+      'Above roughly fifteen psi acetylene can break down into carbon and hydrogen in a runaway reaction needing no oxygen.',
+      'Torch valves pass far more gas than fifteen psi allows, so the limit is on the gas rather than the valve.',
+    ],
     explanation:
         'Acetylene is chemically unstable on its own. Above roughly 15 psi it can break down '
         'into carbon and hydrogen in a runaway reaction that needs no oxygen at all, so it is '

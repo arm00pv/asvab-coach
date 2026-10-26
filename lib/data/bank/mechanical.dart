@@ -16,6 +16,12 @@ const List<Question> mechanicalBank = <Question>[
       'None, it is not a lever',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Class 1 puts the fulcrum between load and effort, as a crowbar and a seesaw do.',
+      'The wheel is the fulcrum, the load rides between wheel and hands, and the effort goes at the handles.',
+      'Class 3 puts the effort in the middle, as tongs and tweezers do, instead of the load.',
+      'It pivots on the wheel and is lifted at the handles, so it works as a lever like any other.',
+    ],
     explanation:
         'A wheelbarrow has the wheel, which is the fulcrum, at the front, the '
         'load in the tray between the wheel and your hands, and the effort at the '
@@ -33,6 +39,12 @@ const List<Question> mechanicalBank = <Question>[
         '20 lb child sit on the other side to balance it?',
     choices: <String>['6 ft', '8 ft', '9 ft', '12 ft'],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Six feet leaves only 120 pound-feet on the light side, which is what dividing the two weights gives.',
+      'Eight feet makes just 160 pound-feet, half of the 180 needed, which comes from halving the moment.',
+      'Twenty pounds at nine feet makes 180 pound-feet, matching the sixty pounds three feet out on the other side.',
+      'Twelve feet overbalances at 240 pound-feet, which comes from multiplying the arm by the weight ratio twice.',
+    ],
     explanation:
         'Balance requires equal moments, so 60 lb times 3 ft gives 180 pound-feet on one '
         'side and the 20 lb child must sit where 20 times the distance equals 180, which is '
@@ -71,6 +83,12 @@ const List<Question> mechanicalBank = <Question>[
       'A pair of tongs',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'A crowbar is class 1 with the fulcrum in the middle, so its long effort arm gives more than one.',
+      'A wheelbarrow is class 2 with the load in the middle, so its advantage is always above one.',
+      'A nutcracker is class 2 too, with the load between fulcrum and hand, so it multiplies force.',
+      'The effort acts between fulcrum and load, so the effort arm is the short one and the advantage stays below one.',
+    ],
     explanation:
         'In a class 3 lever the effort is applied between the fulcrum and the load, so '
         'the effort arm is the short one and the advantage is always less than one. Tongs, '
@@ -88,6 +106,12 @@ const List<Question> mechanicalBank = <Question>[
         'from the fulcrum. What is the mechanical advantage?',
     choices: <String>['2', '2.5', '3', '4'],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Two is the bare ratio of feet to inches, which compares 2 ft with 8 in without converting the units.',
+      'Two and a half would need an effort arm of twenty inches against the eight inch load arm.',
+      'The effort arm is 24 inches and the load arm 8 inches, so 24 divided by 8 gives an advantage of 3.',
+      'Four comes from reading the load arm as six inches, a shorter value than the diagram marks.',
+    ],
     explanation:
         'The effort arm is 2 feet, or 24 inches, and the load arm is 8 inches, so the '
         'advantage is 24 divided by 8, which is 3. Each pound of push lifts 3 pounds, though the '
@@ -120,6 +144,12 @@ const List<Question> mechanicalBank = <Question>[
         'mechanical advantage of this wheel and axle?',
     choices: <String>['4', '8', '12', '16'],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Four compares the 8 inch wheel radius with the 2 inch shaft read as a radius, which halves the true ratio.',
+      'A 16 inch wheel with an 8 inch radius and a 2 inch shaft with a 1 inch radius give eight to one.',
+      'Twelve guesses the hub at an inch and a third across instead of the 2 inches the diagram marks.',
+      'Sixteen divides the 16 inch diameter by the 1 inch axle radius, mixing a diameter with a radius.',
+    ],
     explanation:
         'For a wheel and axle the advantage is the wheel radius divided by the axle '
         'radius. A 16 inch wheel has an 8 inch radius and a 2 inch shaft has a 1 inch radius, so '
@@ -156,6 +186,12 @@ const List<Question> mechanicalBank = <Question>[
       'It reduces the effort to one quarter of the load weight',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Only one rope section holds the load, so the pull stays the full weight and the gain is direction alone.',
+      'Doubling the liftable load needs two supporting sections on a movable block, and a fixed pulley has one.',
+      'Halving the effort takes two rope sections sharing the load, which a fixed pulley never provides.',
+      'One quarter would need four sections pulling upward on a movable block, and nothing here is movable.',
+    ],
     explanation:
         'One fixed pulley is only a redirect. A single rope section still '
         'holds the load, so the mechanical advantage is 1 and you pull with the full '
@@ -172,6 +208,12 @@ const List<Question> mechanicalBank = <Question>[
         'movable block. What effort is needed to hold the load?',
     choices: <String>['240 lb', '120 lb', '80 lb', '40 lb'],
     answerIndex: 3,
+    choiceNotes: <String>[
+      '240 lb is the pull when a single rope section holds the load, which is a plain fixed pulley.',
+      '120 lb matches only two supporting sections, so it ignores four of the six shown.',
+      '80 lb fits three supporting sections, half the number the tackle actually has.',
+      'Six sections split 240 lb into six equal shares, and you haul six feet of rope to raise the load one foot.',
+    ],
     explanation:
         'Count only the rope sections that pull upward on the movable block, then divide '
         'the load by that number. Six sections split 240 lb into six 40 lb shares. The trade is '
@@ -218,6 +260,12 @@ const List<Question> mechanicalBank = <Question>[
       'Clockwise at twice the speed',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'At the contact point the driving tooth pushes the driven tooth backward against its own motion, so the driven gear reverses.',
+      'A flat belt between pulleys keeps them turning the same way, but meshed teeth cannot pass direction on unchanged.',
+      'Half speed needs a driven gear with twice the teeth, and the drawing shows two gears of equal size.',
+      'Twice speed needs a driven gear with half the teeth, and the two drawn gears match tooth for tooth.',
+    ],
     explanation:
         'Meshed gears turn in opposite directions, because at the contact point the '
         'driving tooth pushes the driven tooth backward relative to its own motion. Two pulleys '
@@ -250,6 +298,12 @@ const List<Question> mechanicalBank = <Question>[
         'At what speed does the 36 tooth sprocket turn?',
     choices: <String>['300 rpm', '400 rpm', '1,200 rpm', '3,600 rpm'],
     answerIndex: 1,
+    choiceNotes: <String>[
+      '300 rpm would need a four to one ratio, so the driven sprocket would have to carry 48 teeth rather than 36.',
+      'Twelve teeth over thirty-six is one third, so 1,200 rpm becomes 400 rpm with torque tripled.',
+      '1,200 rpm assumes equal sprockets, and a larger driven sprocket must turn slower than its driver.',
+      '3,600 rpm multiplies by the three to one ratio where the larger sprocket divides by it.',
+    ],
     explanation:
         'The speed ratio is the driving tooth count over the driven tooth count, so 12 '
         'over 36 is one third, and 1,200 rpm becomes 400 rpm. Torque is multiplied by the same '
@@ -288,6 +342,12 @@ const List<Question> mechanicalBank = <Question>[
       'An inclined plane',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'A wheel and axle turns about its centre to move a load on a rim, while a screw travels along its own axis.',
+      'A lever tips about a fulcrum, whereas a thread turns rotation into motion along a ramp.',
+      'A movable pulley shares a load between rope sections, and a screw has no rope and no sheave.',
+      'Unwrap one thread and you have a ramp, because every turn carries the load up the slope of the pitch.',
+    ],
     explanation:
         'Unwrap one turn of a thread and you have a ramp. Each turn of the screw carries '
         'the load up the slope of the pitch, and a fine thread is a gentler slope with a larger '
@@ -304,6 +364,12 @@ const List<Question> mechanicalBank = <Question>[
         'does it create?',
     choices: <String>['30 psi', '100 psi', '300 psi', '900 psi'],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Thirty psi comes from dividing 300 lb by ten, a misread of the 3 square inch piston.',
+      'Force divided by area gives 300 over 3, which is 100 pounds per square inch.',
+      'Three hundred psi is what a one square inch piston would give for this same force.',
+      'Nine hundred psi multiplies force by area instead of dividing, which inverts the pressure rule.',
+    ],
     explanation:
         'Pressure is force divided by area, so 300 lb spread over 3 square inches is 100 '
         'pounds per square inch. The same force on a smaller piston gives a higher pressure and '
@@ -338,6 +404,12 @@ const List<Question> mechanicalBank = <Question>[
         '20 square inches, and 50 lb pushes on the input. What force appears at the output?',
     choices: <String>['5 lb', '50 lb', '100 lb', '500 lb'],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Five pounds divides 50 by the ten to one area ratio the wrong way, so the output shrinks instead of growing.',
+      'Fifty assumes equal piston areas, yet the output has ten times the area and so ten times the force.',
+      'One hundred doubles the force, using a two to one ratio rather than the ten to one the areas give.',
+      'Ten times the area under the same pressure turns 50 lb into 500 lb, though the output travels a tenth as far.',
+    ],
     explanation:
         'The output piston has ten times the area, so the same pressure acting on it '
         'produces ten times the force and 50 lb becomes 500 lb. The price is distance, since the '
@@ -384,6 +456,12 @@ const List<Question> mechanicalBank = <Question>[
       'The fluid gains pressure as it cools inside the line',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'A liquid is nearly incompressible, so it does not shrink at the far end but pushes on the piston there.',
+      'A pump pushes fluid under pressure, and a vacuum behind the far piston would pull it back instead.',
+      'A cooling fluid contracts and loses pressure, while the force here arrives with the piston being pushed.',
+      'A confined liquid carries the applied pressure equally in every direction, so it acts on the far piston too.',
+    ],
     explanation:
         'A confined liquid transmits pressure equally in every direction, so the same '
         'pressure acts on every square inch of the far piston, and a larger area there means a '
@@ -404,6 +482,12 @@ const List<Question> mechanicalBank = <Question>[
       'Mountain water is colder, so it reaches a boil sooner',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Molecules move faster only as the water gets hotter, and thin air changes the pressure rather than the speed.',
+      'Dissolved gases leave water as it warms, and how much is dissolved does not set the boiling point.',
+      'Boiling begins when vapor pressure matches the pressure on the surface, and thin mountain air presses down less.',
+      'Colder water takes longer to reach a boil, and the stem asks about the temperature at which it boils.',
+    ],
     explanation:
         'Boiling starts when the vapor pressure inside the water matches the pressure '
         'pushing down on its surface, and with less air pressing down at altitude that balance '
@@ -424,6 +508,12 @@ const List<Question> mechanicalBank = <Question>[
       'Seawater pushes up harder than the ship pushes down',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Steel is several times denser than water, so no plate of it weighs less than the water it pushes aside.',
+      'The air inside adds buoyant volume rather than weight, and air pressing down would sink the hull lower.',
+      'Buoyancy pushes up exactly as hard as the ship presses down, so an imbalance would move it instead of floating.',
+      'The hull is shaped to displace water weighing as much as the ship, and that upward push balances the weight.',
+    ],
     explanation:
         'A hull is shaped so the water it pushes aside weighs exactly as much as the ship, '
         'and that upward push balances the weight, so the ship floats. A solid bar of steel '
@@ -445,6 +535,12 @@ const List<Question> mechanicalBank = <Question>[
       'Torsion on top and shear on the bottom',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Bending downward shortens the top surface instead of stretching it, so tension belongs to the underside.',
+      'A sagging beam curves like a frown, so the top shortens in compression and the bottom stretches in tension.',
+      'Shear and torsion are cutting and twisting actions, and a sagging beam shows bending rather than either.',
+      'Torsion comes from turning the beam about its axis, and nothing in this sagging beam twists it.',
+    ],
     explanation:
         'As the beam bends downward it curves like a frown, so the top surface gets '
         'shorter and is in compression while the bottom surface stretches and is in tension. A '
@@ -489,6 +585,12 @@ const List<Question> mechanicalBank = <Question>[
       'Its material sits far from the centre, where bending stress is greatest',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Rolling does not harden tube steel as a rule, and a tube wins on shape at the same weight.',
+      'Trapped air carries no load, and the stiffness comes from where the metal sits rather than from what fills it.',
+      'Surface area does not resist bending, so having less of it explains nothing about stiffness.',
+      'Bending stress is greatest far from the centre line, so metal moved outward does the most for stiffness.',
+    ],
     explanation:
         'Bending puts the most stress on material farthest from the centre line, so '
         'moving metal outward does far more for stiffness than piling metal near the middle. '
@@ -508,6 +610,12 @@ const List<Question> mechanicalBank = <Question>[
       'It removes metal from the surfaces until they are smooth',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Roughening the surfaces would raise friction and wear, the exact opposite of what oil does.',
+      'Carrying electricity away is not how a lubricant works, and the friction drop follows from the film alone.',
+      'Oil does not grind metal away, and surfaces worn smooth that way would soon lose their fit.',
+      'A thin film keeps the surfaces apart so the metal rides on the oil instead of on the other part.',
+    ],
     explanation:
         'Oil forms a thin film between the parts so the metal rides on the film instead of '
         'on the other part, which cuts both friction and wear. That film is why an engine seizes '
@@ -522,6 +630,12 @@ const List<Question> mechanicalBank = <Question>[
     stem: 'A passenger feels thrown forward when a car brakes hard. Which property causes this?',
     choices: <String>['Gravity', 'Friction', 'Inertia', 'Air pressure'],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Gravity pulls the passenger downward, and nothing about that throws them forward as the car slows.',
+      'Friction acts along surfaces in contact, and nobody has touched the passenger when the lurch begins.',
+      'The passenger keeps moving at the old speed while the car slows, and that tendency is inertia.',
+      'Air pressure pushes evenly in every direction, so it cannot carry anyone forward in a stop.',
+    ],
     explanation:
         'Inertia is the tendency of an object to keep doing what it is already doing, so '
         'the passenger keeps moving forward at the old speed while the car slows down. The seat '
@@ -542,6 +656,12 @@ const List<Question> mechanicalBank = <Question>[
       'Wind cannot get underneath a crate that sits low to the floor',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Weight follows from mass, and widening the base of the same material only adds mass without steadying it.',
+      'Friction resists sliding rather than tipping, and a crate tips over its edge while the base stays put.',
+      'A crate tips once its centre of gravity passes the edge of the base, and a low centre must be raised a long way.',
+      'Wind under a low crate is a separate worry, and the question is about tipping from a push.',
+    ],
     explanation:
         'A crate tips only once its centre of gravity passes outside the edge of its base. '
         'A low centre over a wide base has to be lifted a long way before that happens, so it '

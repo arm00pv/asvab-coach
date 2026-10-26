@@ -14,6 +14,12 @@ const List<Question> electronicsExtraBank = <Question>[
         'much power does it use?',
     choices: <String>['30 watts', '192 watts', '240 watts', '1,920 watts'],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'The 30 watt figure divides voltage by current, which produces no meaningful quantity.',
+      'The 192 watt figure is the correct product with the decimal point moved one place.',
+      'The 240 watt figure repeats the supply voltage instead of multiplying it by the current.',
+      'Power is voltage times current, so 240 volts times 8 amperes is 1,920 watts.',
+    ],
     explanation:
         'Power is voltage times current, so 240 volts times 8 amperes is 1,920 watts. The 30 '
         'watt option comes from dividing the voltage by the current instead of multiplying, '
@@ -35,6 +41,12 @@ const List<Question> electronicsExtraBank = <Question>[
       '125 amperes',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'The 0.08 figure divides volts by watts, which gives the reciprocal of the current.',
+      'The 1.25 figure puts the decimal in the wrong place, a tenth of the true current.',
+      'Current is power over voltage, so 1,500 watts divided by 120 volts is 12.5 amperes.',
+      'The 125 figure shifts the decimal the other way, ten times too large for a 1,500-watt load.',
+    ],
     explanation:
         'Rearranging the power formula gives current as power divided by voltage, so 1,500 '
         'watts divided by 120 volts is 12.5 amperes. Dividing the voltage by the power instead '
@@ -52,6 +64,12 @@ const List<Question> electronicsExtraBank = <Question>[
         'its filament while it is lit?',
     choices: <String>['2 ohms', '120 ohms', '240 ohms', '7,200 ohms'],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'The 2 ohm figure divides the numbers the wrong way, giving 120 over 60 instead of the reverse.',
+      'The 120 ohm figure copies the supply voltage as though it were the resistance.',
+      'Current is 0.5 ampere, and 120 volts over 0.5 ampere is 240 ohms.',
+      'The 7,200 ohm figure multiplies power by voltage, which is not a resistance formula.',
+    ],
     explanation:
         'The current is power divided by voltage, or 60 divided by 120, which gives 0.5 '
         'ampere, and resistance is voltage divided by current, or 120 divided by 0.5, which is '
@@ -69,6 +87,12 @@ const List<Question> electronicsExtraBank = <Question>[
         'as heat?',
     choices: <String>['60 watts', '240 watts', '900 watts', '3,600 watts'],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'The 60 watt figure multiplies current by resistance, which gives the voltage across it, not the power.',
+      'Current squared times resistance is 16 times 15, or 240 watts.',
+      'The 900 watt figure squares the resistance instead of the current.',
+      'The 3,600 watt figure squares both quantities, so the answer inflates by a factor of fifteen.',
+    ],
     explanation:
         'Power in a resistor is current squared times resistance: 4 squared is 16, and 16 '
         'times 15 ohms is 240 watts. The 60 watt option multiplies current by resistance, which '
@@ -85,6 +109,12 @@ const List<Question> electronicsExtraBank = <Question>[
         'equivalent resistance of the pair?',
     choices: <String>['2 ohms', '0.5 ohm', '4.5 ohms', '9 ohms'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'One over R is 1/6 plus 1/3, which is 1/2, so R is 2 ohms.',
+      'The 0.5 ohm figure is the reciprocal left unconverted before the final flip.',
+      'The 4.5 ohm figure is the plain average of 6 and 3, which the parallel formula never produces.',
+      'The 9 ohm figure adds the values as though the resistors were in series.',
+    ],
     explanation:
         'For two resistors in parallel, 1/R is 1/6 plus 1/3, which is 1/6 plus 2/6, or 1/2, '
         'so R is 2 ohms; product over sum gives the same result, 18 divided by 9. Adding the '
@@ -104,6 +134,12 @@ const List<Question> electronicsExtraBank = <Question>[
       'Glow dimly as the voltage drops',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'All going dark is what happens in a series string, where one break stops the single path.',
+      'Brightness would rise only if more current per lamp flowed, and the supply voltage is unchanged.',
+      'Each branch is wired straight across the supply, so the remaining five keep the full voltage.',
+      'The voltage on each remaining lamp stays at the supply value, so no dimming occurs.',
+    ],
     explanation:
         'Every lamp in a parallel circuit has its own branch wired straight across the '
         'supply, so a dead lamp breaks only its own branch and the rest keep the full supply '
@@ -121,6 +157,12 @@ const List<Question> electronicsExtraBank = <Question>[
         'current flows through the circuit?',
     choices: <String>['2 amperes', '0.5 ampere', '4 amperes', '10 amperes'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The series total is 10 ohms, and 20 volts over 10 ohms is 2 amperes.',
+      'The 0.5 figure divides the resistance by the voltage, reversing the formula.',
+      'The 4 ampere figure uses only the 2 and 3 ohm resistors and leaves out the 5 ohm one.',
+      'The 10 figure repeats the total resistance as though it were the current.',
+    ],
     explanation:
         'In series the resistances add, so the total is 10 ohms, and 20 volts divided by 10 '
         'ohms gives 2 amperes, which is the same everywhere in the loop. Dividing 10 by 20 '
@@ -140,6 +182,12 @@ const List<Question> electronicsExtraBank = <Question>[
       'Zero until a switch is closed',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Every branch connects straight across the source terminals, so each sees the full supply voltage.',
+      'Equal division is the series behaviour; in parallel it is the current that divides.',
+      'The voltage is the same on every branch; current is larger where resistance is lower.',
+      'Closing a switch completes a branch, and the others already carry their full voltage.',
+    ],
     explanation:
         'Each branch of a parallel circuit is connected directly across the source terminals, '
         'so every branch sees the full supply voltage no matter what resistance it has. It is '
@@ -157,6 +205,12 @@ const List<Question> electronicsExtraBank = <Question>[
         'with a 6-ohm resistor. What is the total resistance of the combination?',
     choices: <String>['6 ohms', '12 ohms', '24 ohms', '30 ohms'],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'The 6 ohm figure is only the parallel pair, stopping before the series resistor is added.',
+      'The pair is 6 ohms, and the 6-ohm resistor in series brings the total to 12 ohms.',
+      'The 24 ohm figure adds the two 12-ohm resistors as if the parallel branch were in series.',
+      'The 30 ohm figure treats all three resistors as one series string and ignores the parallel part.',
+    ],
     explanation:
         'Two equal resistors in parallel are half the value of one, so the pair is 6 ohms, '
         'and the 6-ohm resistor in series with it brings the total to 12 ohms. The 6 ohm option '
@@ -174,6 +228,12 @@ const List<Question> electronicsExtraBank = <Question>[
         'separate circuit?',
     choices: <String>['A capacitor', 'A relay', 'A transformer', 'A rheostat'],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'A capacitor stores charge and switches nothing.',
+      'A small current energizes the coil and pulls contacts closed in a separate circuit.',
+      'A transformer changes voltage through two coils and opens no contacts.',
+      'A rheostat is an adjustable resistor used to vary current, not a switching device.',
+    ],
     explanation:
         'In a relay the small current energizes an electromagnet that pulls a set of contacts '
         'closed, so a low-power control circuit can start a motor or a heater without handling '
@@ -194,6 +254,12 @@ const List<Question> electronicsExtraBank = <Question>[
       'A zigzag with an arrow through it',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Two equal lines with a gap is the capacitor, whose two plates are identical.',
+      'A circle with a cross is the lamp symbol.',
+      'Each long and short pair marks one cell, and the long line is the positive terminal.',
+      'A zigzag crossed by an arrow is a variable resistor, not a source of voltage.',
+    ],
     explanation:
         'Each long and short pair stands for one cell, and the long line marks the positive '
         'terminal, so a battery of several cells is drawn as repeated pairs. Two equal lines with '
@@ -213,6 +279,12 @@ const List<Question> electronicsExtraBank = <Question>[
       'Blocks any further steady current',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'A capacitor never reverses current; it simply stops accepting charge once charged.',
+      'The magnetic field belongs to an inductor, while a capacitor stores energy in an electric field.',
+      'An uncharged capacitor passes current only while it charges, and then it stops.',
+      'Once plate voltage matches the supply, no more charge flows and steady current is blocked.',
+    ],
     explanation:
         'Charge builds on the two plates until the voltage across the capacitor matches the '
         'supply, and after that no more current flows through the circuit at all. A capacitor '
@@ -233,6 +305,12 @@ const List<Question> electronicsExtraBank = <Question>[
       'Its cathode is the more positive terminal',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Too much current destroys the junction instead of making it brighter.',
+      'Light appears only in forward bias, with the anode positive against the cathode.',
+      'On alternating current the LED lights only during the forward half of each cycle.',
+      'A cathode that is positive reverse-biases the junction and blocks current.',
+    ],
     explanation:
         'A diode conducts only in the forward direction, so an LED lights when its anode is '
         'positive with respect to its cathode. With the connections reversed the junction is '
@@ -250,6 +328,12 @@ const List<Question> electronicsExtraBank = <Question>[
         'every half turn so that the motor keeps spinning is the',
     choices: <String>['Brushes', 'Armature', 'Commutator', 'Field winding'],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Brushes only carry current to the spinning part and reverse nothing.',
+      'The armature is the rotating coil itself, not the part that swaps its connections.',
+      'The commutator is a split ring that swaps the coil connections twice per revolution.',
+      'The field winding produces the magnetic field that the coil reacts against.',
+    ],
     explanation:
         'The commutator is a split ring that swaps the coil connections twice per revolution, '
         'so the magnetic push on the coil always acts in the same rotational direction. The '
@@ -270,6 +354,12 @@ const List<Question> electronicsExtraBank = <Question>[
       'Each can be switched on by itself at full voltage',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Parallel wiring needs more copper, not less, because every branch gets its own run.',
+      'Adding a branch draws more total current, and it never brightens the others.',
+      'Every branch has its own protection, so one fuse does not control the whole house.',
+      'Each appliance sits across the supply, so it gets full voltage and its own switch.',
+    ],
     explanation:
         'A parallel connection puts each appliance straight across the supply, so every one '
         'receives the full line voltage and its own switch can break just its own branch. In a '
@@ -290,6 +380,12 @@ const List<Question> electronicsExtraBank = <Question>[
       'Switch off the breaker and test for voltage',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'A wall switch usually opens only one fixture, so other parts of the box stay live.',
+      'Standing on wood reduces exposure but does not remove the supply.',
+      'Insulated pliers are a second line of defense, not a substitute for de-energizing.',
+      'Opening the breaker removes the supply, and a tester confirms the circuit is dead.',
+    ],
     explanation:
         'A wall switch usually opens only the hot conductor at that one fixture, so other '
         'parts of the box can stay live, and breakers are not always labeled correctly. Opening '

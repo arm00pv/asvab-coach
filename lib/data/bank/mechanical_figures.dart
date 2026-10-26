@@ -15,6 +15,12 @@ const List<Question> mechanicalFigureBank = <Question>[
         'effort must be applied 9 feet from the fulcrum to balance it?',
     choices: <String>['20 pounds', '15 pounds', '60 pounds', '180 pounds'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Balancing 60 lb times 3 ft against the 9 ft arm divides 180 pound-feet by 9, which is 20 lb.',
+      'Fifteen pounds would balance only a 4.5 ft effort arm, half the 9 ft the drawing marks.',
+      'Sixty pounds assumes equal arms, while the drawing puts the effort three times as far out.',
+      'One hundred eighty multiplies the load by its arm and stops, leaving a moment rather than a force.',
+    ],
     explanation:
         'A lever balances when load times its arm equals effort times '
         'its arm. Here 60 x 3 = effort x 9, so effort = 180 / 9 = 20 pounds. '
@@ -46,6 +52,12 @@ const List<Question> mechanicalFigureBank = <Question>[
         'rises 3 feet. How much effort does the ramp save?',
     choices: <String>['60 pounds', '80 pounds', '720 pounds', '20 pounds'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The load times the 3 ft rise, divided by the 12 ft slope, gives 240 times 3 over 12, which is 60 lb.',
+      'Eighty pounds divides the 240 lb load by the 3 ft rise, when the slope length is the number to divide by.',
+      'Seven hundred twenty multiplies the load by the 3 ft rise and stops, leaving the 12 ft slope unused.',
+      'Twenty pounds divides 240 by 12 and ignores the rise altogether, the usual inclined plane slip.',
+    ],
     explanation:
         'An inclined plane trades distance for force: effort equals the '
         'load multiplied by the height and divided by the length, so 240 x 3 / 12 '
@@ -81,6 +93,12 @@ const List<Question> mechanicalFigureBank = <Question>[
       '90 rpm clockwise',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Only A and B set the ratio, and 90 times 30 over 45 is 60 rpm with two meshes restoring the clockwise turn.',
+      'Sixty rpm is right, but forgetting the idler reverses the count, and two meshes put B the same way as A.',
+      'One hundred thirty-five inverts the ratio, multiplying 90 by 45 over 30 instead of dividing.',
+      'Ninety rpm assumes the teeth all match, and the drawing shows A with 30 against B with 45.',
+    ],
     explanation:
         'The idler changes direction but not speed, so only A and B '
         'matter for ratio: 90 x 30 / 45 = 60 rpm. Two meshes reverse the '
@@ -112,6 +130,12 @@ const List<Question> mechanicalFigureBank = <Question>[
         'support carry?',
     choices: <String>['400 pounds', '800 pounds', '200 pounds', '1600 pounds'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'A centred load on a symmetric beam splits evenly, so each of the two supports takes 800 divided by 2.',
+      'Eight hundred gives each support the whole load, which doubles what the beam actually carries.',
+      'Two hundred splits 800 four ways, forgetting that the drawing shows only two supports.',
+      'Sixteen hundred doubles the load, which happens when the reaction is counted twice at each support.',
+    ],
     explanation:
         'A centred load on a symmetric beam splits evenly between the '
         'supports, so each carries 800 / 2 = 400 pounds. Giving each support the '
@@ -144,6 +168,12 @@ const List<Question> mechanicalFigureBank = <Question>[
         'the rim of the wheel?',
     choices: <String>['30 pounds', '60 pounds', '15 pounds', '180 pounds'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The radii give a six to one advantage, so 180 lb divided by 6 needs only 30 lb at the rim.',
+      'Sixty pounds uses a three to one ratio, which comes from reading the axle radius as 6 inches instead of 3.',
+      'Fifteen pounds uses a twelve to one ratio, which would need an 18 inch wheel on a 1.5 inch axle.',
+      'One hundred eighty pounds is the load itself, as if the wheel gave no advantage at all.',
+    ],
     explanation:
         'A wheel and axle multiplies force by the ratio of the radii: '
         '18 / 3 = 6, so the effort is 180 / 6 = 30 pounds. Dividing by the '
@@ -176,6 +206,12 @@ const List<Question> mechanicalFigureBank = <Question>[
         'the load steady?',
     choices: <String>['300 pounds', '150 pounds', '600 pounds', '100 pounds'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'A fixed pulley changes only the pull direction, and the single rope still carries the whole 300 lb.',
+      'One hundred fifty applies the movable-pulley rule, where two sections share a load on a moving block.',
+      'Six hundred counts the tension in both rope ends together, when the load hangs on one of them.',
+      'One hundred divides the load three ways, and a single rope has no three sections to share it.',
+    ],
     explanation:
         'A fixed pulley changes the direction of a force but not its '
         'size, so the soldier must pull with 300 pounds. Halving it to 150 is the '

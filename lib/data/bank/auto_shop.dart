@@ -12,6 +12,12 @@ const List<Question> autoShopBank = <Question>[
         'burning fuel?',
     choices: <String>['Intake', 'Compression', 'Power', 'Exhaust'],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'The intake stroke is the piston pulling mixture in on its way down, driven by the crank rather than by burning fuel.',
+      'Compression is the upward stroke that squeezes the charge, so it takes work from the crank instead of giving work back.',
+      'Only the power stroke is pushed down by burning gas while both valves stay shut.',
+      'Exhaust is the rising stroke that sweeps burned gas out through the open exhaust valve.',
+    ],
     explanation:
         'Only the power stroke pushes the piston down on its own, because burning '
         'fuel leaves hot gas pressing on the piston while both valves stay shut. The intake '
@@ -33,6 +39,12 @@ const List<Question> autoShopBank = <Question>[
       'At half the crankshaft speed',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'At four times crank speed each valve would be worked eight times per cycle, while the piston needs it opened once.',
+      'Twice crank speed counts the four strokes as one turn, but a full cycle takes two crank turns, so the cam is slower.',
+      'Crank speed would work every valve twice per cycle, opening it again on the turn where it should stay shut.',
+      'One cam turn for every two crank turns opens each valve once in the cycle, which is half crankshaft speed.',
+    ],
     explanation:
         'Each cylinder needs intake, compression, power and exhaust strokes, and those '
         'four strokes take two full turns of the crankshaft. Each valve must open only once in '
@@ -53,6 +65,12 @@ const List<Question> autoShopBank = <Question>[
       'It measures coolant temperature for the gauge on the dash',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'The water pump is belt driven from the moment the engine starts, so no valve switches it on when the engine warms up.',
+      'The wax pellet valve stays shut while cold and opens hot, holding coolant back until the engine reaches operating temperature.',
+      'Pressure raises the boiling point of coolant; nothing in the cooling system is built to lower it.',
+      'The dash gauge is driven by its own coolant temperature sending unit, not by the thermostat valve.',
+    ],
     explanation:
         'The thermostat is a valve worked by a wax pellet: it stays shut while the '
         'engine is cold so the coolant warms quickly, then opens and routes flow through the '
@@ -73,6 +91,12 @@ const List<Question> autoShopBank = <Question>[
       'It cools the oil before the oil drains back to the pan',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The pump draws oil from the pan and forces it through drilled passages so pressure holds the bearing surfaces apart.',
+      'Cleaning the oil is the filter job, and a filter left to do the pumping would move nothing at all.',
+      'Mixing oil into the fuel is two-stroke practice, and a four-stroke car engine keeps its oil in its own sump.',
+      'Oil sheds its heat while sitting in the pan and cooler, so cooling is not what a pump does.',
+    ],
     explanation:
         'The pump draws oil from the pan and forces it through drilled passages to the '
         'bearings, and that pressure is what keeps the bearing surfaces apart. The filter only '
@@ -94,6 +118,12 @@ const List<Question> autoShopBank = <Question>[
       'The spark plugs will wear out much faster',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'A little too much advance still lights the charge easily, so the engine starts; only gross errors stop it firing.',
+      'Early spark finishes the burn sooner, so more heat leaves down the pipe and the exhaust runs hotter, not cooler.',
+      'Firing while the piston is still rising makes peak pressure arrive early and hammer the piston, which is the knock.',
+      'Plug wear follows gap, heat range and fuel rather than ignition timing, so timing does not shorten plug life.',
+    ],
     explanation:
         'Firing early lets the burning charge build full pressure while the piston is '
         'still coming up, so the pressure spike hammers the piston and bearings and makes the '
@@ -114,6 +144,12 @@ const List<Question> autoShopBank = <Question>[
       'It lets the engine be joined to the transmission without shock',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Choosing the ratio is the gearbox job, and the clutch only interrupts the drive while a gear is picked.',
+      'Torque multiplication comes from the gear ratios and the final drive, while the clutch passes torque on unchanged.',
+      'Locking the driven wheels under braking is done by the brakes, and the clutch acts on the engine instead.',
+      'The friction disc can slip while it is released, so engine and transmission join without shock.',
+    ],
     explanation:
         'The clutch is a friction disc squeezed against the flywheel. Pressing the '
         'pedal releases the disc so the engine can spin freely while you pick a gear, and '
@@ -134,6 +170,12 @@ const List<Question> autoShopBank = <Question>[
       'It measures how far the bolt stretches as it tightens',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'A torque wrench turns no faster than any other bar of the same length, because it signals force rather than speed.',
+      'It clicks at a set twisting force, so every head bolt reaches the same spec and the gasket seals evenly.',
+      'Rounded heads need a special socket or an extractor, and a torque wrench carries an ordinary hex end.',
+      'Bolt stretch is read with a stretch gauge after tightening, not by the wrench that turned the bolt.',
+    ],
     explanation:
         'A torque wrench clicks or signals at a set twisting force, so every head bolt '
         'is pulled to the same spec and the gasket seals evenly without stripping threads. '
@@ -153,6 +195,12 @@ const List<Question> autoShopBank = <Question>[
       'A depth gauge',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Blades of known thickness slid into the gap until one just fits report the gap directly.',
+      'A micrometer is built to close on the outside of a part, and its anvils crowd the electrodes rather than spanning them.',
+      'A steel rule is graduated in fractions of an inch, which is far too coarse for a gap of a few thousandths.',
+      'A depth gauge drops a rod into a hole to read its depth, and a plug gap is neither a hole nor a depth.',
+    ],
     explanation:
         'A feeler gauge is a fan of steel blades of known thickness. You slide blades '
         'into the gap until one just fits, and that blade thickness is the gap. A micrometer '
@@ -173,6 +221,12 @@ const List<Question> autoShopBank = <Question>[
       'It measures the twisting force on small fasteners',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'A caliper carries no temperature sensor, and sensing heat is a thermometer job.',
+      'Cutting threads takes a tap or a die, while a caliper only touches the work with smooth jaws.',
+      'Outside jaws, inside jaws and a depth rod on one beam let a single tool read all three dimensions.',
+      'Twisting force is measured with a torque wrench, and a caliper has no way to sense force at all.',
+    ],
     explanation:
         'A dial caliper closes its jaws on the outside of a shaft, opens them inside a '
         'bore, and drops a depth rod into a hole, reading to a thousandth of an inch on the '
@@ -192,6 +246,12 @@ const List<Question> autoShopBank = <Question>[
       'A tap and a die',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'A reamer only smooths a hole already drilled and a broach pushes a shaped cutter, so neither one forms threads.',
+      'A punch marks the work and a chisel shears metal, and neither leaves a spiral thread behind.',
+      'A file and hacksaw remove metal without cutting threads anywhere on the work.',
+      'The tap cuts internal threads in a drilled hole while the die cuts external threads on a rod.',
+    ],
     explanation:
         'A tap cuts internal threads, so it is turned into a drilled hole to leave '
         'threads that a bolt can screw into. A die cuts external threads on a rod. A reamer '
@@ -211,6 +271,12 @@ const List<Question> autoShopBank = <Question>[
       'A torque wrench',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Open-end jaws are smooth and flat for nut flats, so on round pipe they slip instead of biting.',
+      'Serrated jaws bite into round pipe and grip tighter the harder the handle is pushed.',
+      'A box-end ring needs a hex or square shape to surround, and it cannot close on round pipe.',
+      'A torque wrench only signals how hard it is turned, and its smooth head cannot grip a pipe.',
+    ],
     explanation:
         'A pipe wrench has hardened serrated jaws that bite into round pipe and grip '
         'tighter the harder you push on the handle. Open-end, box-end and torque wrenches are '
@@ -230,6 +296,12 @@ const List<Question> autoShopBank = <Question>[
       'A Torx screwdriver',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'A tapered cross tip seats in the cross recess and cams out before the screw can be over-tightened.',
+      'A slotted driver is one flat blade, and it spins inside a cross recess instead of turning the screw.',
+      'An offset driver is a flat blade on a crank for tight spaces, chosen for reach rather than recess shape.',
+      'A Torx tip is a six-pointed star, and it needs a star-shaped recess instead of a tapering cross.',
+    ],
     explanation:
         'A Phillips tip is a tapered cross that fits the cross-shaped recess and cams '
         'out before it can over-tighten a fastener, which is why it shows up on assembly lines. '
@@ -249,6 +321,12 @@ const List<Question> autoShopBank = <Question>[
       'Crossed grain directions make the panel strong and stable',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Glue between the plies adds mass, so a panel of the same size weighs more than a solid board, not less.',
+      'Paint grip depends on the face of the panel, so building the panel from layers adds nothing there.',
+      'Plywood still swells and shrinks with the seasons, so layers that could never move would need no drying at all.',
+      'Each ply lies at ninety degrees to the one below, so one layer resists splitting where the next resists it across.',
+    ],
     explanation:
         'Each ply is laid at about ninety degrees to the one below, so one layer resists '
         'splitting lengthwise while the next resists it across the width, and that crossing '
@@ -269,6 +347,12 @@ const List<Question> autoShopBank = <Question>[
       'Steel mesh rusts and locks the mixture together',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Drying alone leaves a crumbly weak mix, which is why fresh concrete is kept damp rather than baked dry.',
+      'Settling gravel hardens nothing, because the aggregate is held in place by cement paste and not by gravity.',
+      'Cement and water react and grow interlocking crystals that lock the sand and gravel into one solid mass.',
+      'Rusting mesh weakens a slab instead of binding it, and the steel will not help until it rusts through.',
+    ],
     explanation:
         'Cement powder and water react chemically and grow crystal needles that lock the '
         'sand and gravel into one solid mass, which is why fresh concrete is kept damp instead '
@@ -288,6 +372,12 @@ const List<Question> autoShopBank = <Question>[
       'The bolt is made of grade 16 steel',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Length is listed as a separate figure in the callout, so a sixteen inch bolt would carry that number elsewhere.',
+      'In the inch series the second number counts threads in each inch of length, giving sixteen threads per inch.',
+      'Wrench size is measured across the flats of the head, and metric sizing is not part of an inch callout.',
+      'Grade is marked by radial lines on the head, and this callout carries no grade marking at all.',
+    ],
     explanation:
         'In the inch series the second number of the callout is the thread count, so '
         'this bolt is three eighths of an inch across with sixteen threads in every inch of '
@@ -307,6 +397,12 @@ const List<Question> autoShopBank = <Question>[
       'An abrasive that must be used with water only',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Grit numbers count abrasive grain size, so a high number cuts slowly and leaves a smooth surface.',
+      'That reverses the scale, because coarse paper carries the low number such as forty and removes stock fast.',
+      'How long a sheet lasts depends on the abrasive and the backing, and no number on the sheet reports that.',
+      'Wet or dry use follows the backing and the adhesive, so it is not something the grit number tells.',
+    ],
     explanation:
         'Grit is the size of the abrasive grains. A high number such as 220 cuts slowly '
         'and leaves a smooth surface, while a low number such as 40 removes stock fast and '
@@ -326,6 +422,12 @@ const List<Question> autoShopBank = <Question>[
       'A continuous wire that melts and becomes the filler',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'A hand-fed coated rod is stick welding, where the electrode is consumed and replaced instead of fed from a spool.',
+      'A tungsten electrode that never melts belongs to TIG, which needs filler added separately by hand.',
+      'Blown flux powder belongs to submerged arc welding, and MIG relies on a shielding gas instead.',
+      'MIG feeds a continuous wire that melts into the arc and becomes the filler metal itself.',
+    ],
     explanation:
         'A MIG gun pulls wire from a spool and feeds it steadily into the arc, where the '
         'wire itself melts into the joint as filler while shielding gas keeps air away from the '
@@ -347,6 +449,12 @@ const List<Question> autoShopBank = <Question>[
       'Resistance welding',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Soldering melts its filler below about eight hundred degrees, well short of the twelve hundred described here.',
+      'A filler that melts above eight hundred degrees while the steel stays solid is the definition of brazing.',
+      'Fusion welding melts the base metal itself, and in this joint only the filler ever melted.',
+      'Resistance welding passes current and pressure through the parts so the base metal fuses rather than a filler.',
+    ],
     explanation:
         'Brazing melts a filler above roughly 800 degrees F but below the melting point '
         'of the parts, so the filler wets the hot surfaces and hardens between them while the '
@@ -367,6 +475,12 @@ const List<Question> autoShopBank = <Question>[
       'Oil stops the gauge needle from reading correctly',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Oxygen makes anything else burn fiercely, so a trace of oil can ignite the moment the cylinder valve opens.',
+      'Oily threads are a fire hazard, so the warning rests on ignition risk and not on how well threads tighten.',
+      'Oil does not freeze at regulator pressures, and the danger being guarded against is fire rather than cold.',
+      'A sticky gauge is a minor nuisance, and the hazard behind the rule is a fire rather than a wrong reading.',
+    ],
     explanation:
         'Oxygen itself does not burn, but it makes almost anything else burn '
         'fiercely, so a trace of oil on a fitting can ignite the moment the '
@@ -387,6 +501,12 @@ const List<Question> autoShopBank = <Question>[
       'Chipping polishes the weld so paint sticks better to it',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Slag is lighter than steel, so it floats on the puddle instead of pulling the weld out of shape.',
+      'Slag is not radioactive, and the chips that fly off it are why chipping goggles are worn rather than burial.',
+      'Slag left in place is buried by the next pass and forms a weak, crack-prone inclusion.',
+      'Chipping breaks slag away instead of polishing anything, and paint adhesion is not the reason for it.',
+    ],
     explanation:
         'The glassy slag left on a stick weld has to be chipped and brushed '
         'away, because anything left in place is buried by the next pass and forms a '

@@ -23,6 +23,78 @@ class AuditFinding {
       '${severity.toUpperCase()} [$code]${questionId == null ? '' : ' $questionId'}: $message';
 }
 
+/// How one item explains the options it did not key.
+enum ExplanationSource {
+  /// One hand-written line per option in [Question.choiceNotes].
+  authored,
+
+  /// Assembling Objects: the options are figures, so the reason each wrong
+  /// figure fails is derived from the puzzle geometry at render time.
+  computed,
+
+  /// The item still has a wrong option it cannot explain.
+  missing,
+}
+
+/// Per-choice explanation coverage over a bank.
+///
+/// Two sources count, and both are measured rather than assumed: a prose item
+/// is covered when it carries a note for every wrong option, and an Assembling
+/// Objects item is covered when every wrong figure actually yields a computed
+/// reason. An item that explains only some of its wrong options is not covered.
+class ExplanationCoverage {
+  const ExplanationCoverage({
+    required this.items,
+    required this.authored,
+    required this.computed,
+    required this.missing,
+  });
+
+  factory ExplanationCoverage.of(List<Question> questions) {
+    var authored = 0;
+    var computed = 0;
+    var missing = 0;
+    for (final q in questions) {
+      switch (BankAudit.explanationSource(q)) {
+        case ExplanationSource.authored:
+          authored++;
+        case ExplanationSource.computed:
+          computed++;
+        case ExplanationSource.missing:
+          missing++;
+      }
+    }
+    return ExplanationCoverage(
+      items: questions.length,
+      authored: authored,
+      computed: computed,
+      missing: missing,
+    );
+  }
+
+  final int items;
+
+  /// Items carrying a hand-written note for every wrong option.
+  final int authored;
+
+  /// Assembling Objects items whose reasons are derived from their geometry.
+  final int computed;
+
+  /// Items that cannot explain all of their wrong options yet.
+  final int missing;
+
+  /// Items that explain every one of their wrong options.
+  int get covered => authored + computed;
+
+  int get percent => items == 0 ? 100 : (100 * covered / items).round();
+
+  /// One line, for the audit tool.
+  String get line =>
+      'Per-choice explanations: $covered of $items items '
+      '($percent%) - $authored authored, $computed computed from geometry, '
+      '$missing not yet explained';
+}
+
 /// Item-quality rules for the question bank.
 ///
 /// The point of this file is that a plausible-looking item can still be a bad
@@ -574,6 +646,48 @@ abstract final class BankAudit {
 
     return findings;
   }
+
+  /// Whether [q] explains every wrong option, and where those explanations
+  /// come from.
+  ///
+  /// An Assembling Objects item counts as covered by computation only when the
+  /// geometry really does produce a reason for every wrong figure; the count in
+  /// the audit report is therefore read off the puzzles, never hard-coded.
+  static ExplanationSource explanationSource(Question q) {
+    final puzzle = q.puzzle;
+    if (puzzle != null) {
+      if (_everyWrongFigureExplained(puzzle)) return ExplanationSource.computed;
+      if (q.choiceNotes.isNotEmpty) return ExplanationSource.authored;
+      return ExplanationSource.missing;
+    }
+    if (q.choiceNotes.length == q.choices.length &&
+        q.choices.isNotEmpty &&
+        q.choiceNotes.every((note) => note.trim().isNotEmpty)) {
+      return ExplanationSource.authored;
+    }
+    return ExplanationSource.missing;
+  }
+
+  /// True when the keyed figure explains itself through the "Why" box and every
+  /// other figure yields a computed reason.
+  static bool _everyWrongFigureExplained(AoPuzzle puzzle) {
+    final keyed = puzzle.correctIndex;
+    if (keyed == null) return false;
+    final reasons = puzzle.optionReasons;
+    for (var i = 0; i < reasons.length; i++) {
+      final reason = reasons[i];
+      if (i == keyed) {
+        if (reason != null) return false;
+        continue;
+      }
+      if (reason == null || reason.trim().isEmpty) return false;
+    }
+    return true;
+  }
+
+  /// Per-choice explanation coverage, the number the audit report prints.
+  static ExplanationCoverage explanationCoverage(List<Question> questions) =>
+      ExplanationCoverage.of(questions);
 
   static List<AuditFinding> get errors =>
       run(const <Question>[]).where((f) => f.isError).toList();

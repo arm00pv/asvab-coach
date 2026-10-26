@@ -50,3 +50,4 @@ app.*.map.json
 test/visual/goldens/
 
 .research-cache/
+docs/research/_raw/

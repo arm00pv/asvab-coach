@@ -32,6 +32,12 @@ final List<Question> expansionItems = <Question>[
         'sale price in dollars?',
     choices: <String>['\$17', '\$65', '\$68', '\$70'],
     answerIndex: 2,
+    choiceNotes: <String>[
+      '17 dollars is the discount itself, answering a question the stem never asked.',
+      'Taking a flat 20 dollars off gives 65, treating the percent as a currency amount.',
+      '0.20 x 85 = 17, and 85 - 17 = 68 dollars as the sale price after the markdown.',
+      'Rounding the sale price up to a multiple of ten gives 70, two dollars over the exact 68.',
+    ],
     explanation:
         'Twenty percent of 85 is 0.20 x 85 = 17, and 85 - 17 = 68 dollars. '
         'Multiplying by 0.80 in a single step gives the same figure. The 17 '
@@ -49,6 +55,12 @@ final List<Question> expansionItems = <Question>[
         'duties. How many soldiers are assigned to field duties?',
     choices: <String>['180', '240', '300', '360'],
     answerIndex: 2,
+    choiceNotes: <String>[
+      '180 is the other three eighths of 480, the soldiers who are not on field duties.',
+      '240 halves the battalion, but five eighths is more than half of it.',
+      'One eighth of 480 is 60, and five eighths is 5 x 60 = 300 soldiers on field duties.',
+      'Taking two thirds of 480 gives 360, a larger share than the five eighths stated.',
+    ],
     explanation:
         'Five eighths of 480 is found in two steps: one eighth is 480 / 8 = 60 '
         'soldiers, and five eighths is 5 x 60 = 300. The 180 option is the '
@@ -65,6 +77,12 @@ final List<Question> expansionItems = <Question>[
         'fifth test score be for all five tests to average 84 points?',
     choices: <String>['80', '84', '86', '92'],
     answerIndex: 3,
+    choiceNotes: <String>[
+      '80 is four points below the target, the mirror image of the lift the fifth paper needs.',
+      '84 is the target average itself, not the score the fifth paper has to reach.',
+      'Adding just two points to 84 gives 86, but the two point lift applies to four earlier papers.',
+      'Five papers need 5 x 84 = 420 points and the first four hold 328, so the fifth is 92.',
+    ],
     explanation:
         'Work back from the average to the total it requires: five tests at 84 '
         'points means 5 x 84 = 420, and the first four account for 4 x 82 = '
@@ -83,6 +101,12 @@ final List<Question> expansionItems = <Question>[
         'What is its average speed for the whole trip in miles per hour?',
     choices: <String>['50', '55', '56', '60'],
     answerIndex: 2,
+    choiceNotes: <String>[
+      '50 is the second leg speed alone, the slower half of the trip.',
+      'Averaging 60 and 50 gives 55, which weights the unequal legs as though they matched.',
+      '280 miles over 5 hours is 56 miles per hour for the whole trip.',
+      '60 is the first leg speed, kept as if the second leg never happened.',
+    ],
     explanation:
         'Average speed is total distance divided by total time: 280 miles in 5 '
         'hours is 56 miles per hour. Averaging the two speeds, 60 and 50, gives '
@@ -101,6 +125,12 @@ final List<Question> expansionItems = <Question>[
         'the final price in dollars?',
     choices: <String>['\$45', '\$47.25', '\$51.75', '\$63'],
     answerIndex: 1,
+    choiceNotes: <String>[
+      '45 is the wholesale cost, unchanged, so neither the mark-up nor the discount is applied.',
+      '45 x 1.40 = 63 and 63 x 0.75 = 47.25, so the two changes compound in the order given.',
+      'Treating the pair of changes as a flat 15 percent mark-up gives 51.75 dollars.',
+      '63 is the marked price before the discount, which the question never asks for.',
+    ],
     explanation:
         'Apply the two changes in the order they happen: 45 x 1.40 = 63 dollars '
         'marked, and 63 x 0.75 = 47.25 dollars after the discount. The '
@@ -119,6 +149,12 @@ final List<Question> expansionItems = <Question>[
     stem: 'What is the value of 2 + 3 x 4 - 6/2?',
     choices: <String>['5', '8', '11', '17'],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Stopping at 2 + 3 gives 5, before the multiplication and division are carried out.',
+      'Reading 6/2 as a plain 6 gives 2 + 12 - 6 = 8, so the division was dropped.',
+      '3 x 4 = 12 and 6/2 = 3, so 2 + 12 - 3 = 11 by order of operations.',
+      'Adding first, as (2 + 3) x 4 - 3, gives 17, reversing the order of operations.',
+    ],
     explanation:
         'Multiplication and division are done before addition and subtraction, '
         'so 3 x 4 = 12 and 6/2 = 3, leaving 2 + 12 - 3 = 11. Giving the addition '
@@ -133,6 +169,12 @@ final List<Question> expansionItems = <Question>[
     stem: 'Simplify: (2x^3)(4x^5)',
     choices: <String>['6x^8', '8x^8', '6x^15', '8x^15'],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Adding the coefficients 2 + 4 gives 6x^8, using a sum where the coefficients multiply.',
+      'The coefficients multiply to 8 and the exponents add to 8, which gives 8x^8.',
+      'Multiplying the exponents to 15 and adding the coefficients to 6 is wrong in two places.',
+      'Multiplying 3 by 5 gives x^15, the rule for (x^3)^5 rather than for a product.',
+    ],
     explanation:
         'Multiply the coefficients and add the exponents of the common base: '
         '2 x 4 = 8 and x^3 times x^5 = x^8, so the product is 8x^8. The 8x^15 '
@@ -148,6 +190,12 @@ final List<Question> expansionItems = <Question>[
     stem: 'A circle has a diameter of 10. What is its area?',
     choices: <String>['10pi', '25pi', '50pi', '100pi'],
     answerIndex: 1,
+    choiceNotes: <String>[
+      '10pi is pi times the diameter, which is the circumference, not the area.',
+      'The diameter of 10 gives a radius of 5, and pi x 5^2 = 25pi.',
+      '50pi multiplies the radius by the diameter, combining two lengths where an area is wanted.',
+      'Squaring the diameter 10 gives 100pi, four times the true area.',
+    ],
     explanation:
         'Area is pi times the square of the radius, and a diameter of 10 means a '
         'radius of 5, so the area is pi x 5^2 = 25pi. Squaring the diameter '
@@ -162,6 +210,12 @@ final List<Question> expansionItems = <Question>[
     stem: 'Solve for x: x^2 - 5x - 14 = 0',
     choices: <String>['7 and -2', '-7 and 2', '7 and 2', '-7 and -2'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      '(x - 7)(x + 2) multiplies to -14 and adds to -5, so the roots are 7 and -2.',
+      'The numbers -7 and 2 are the factors, so taking them as roots flips both signs.',
+      'Two positive roots multiply to +14, which needs a plus sign on the constant term.',
+      'Two negative roots add to -9, so that pair would carry a middle term of 9x.',
+    ],
     explanation:
         'Find two numbers that multiply to -14 and add to -5: they are -7 and '
         '2, so the quadratic factors as (x - 7)(x + 2) = 0 and the roots are 7 '
@@ -178,6 +232,12 @@ final List<Question> expansionItems = <Question>[
         'without replacement. What is the probability that both are red?',
     choices: <String>['5/14', '25/64', '5/8', '4/7'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The draws are 5/8 and then 4/7, and 5/8 x 4/7 = 20/56, which reduces to 5/14.',
+      'Using 5/8 twice assumes the first marble goes back into the bag.',
+      '5/8 is the first draw only, so a second red marble is never required.',
+      '4/7 is the second draw alone, already conditional on the first marble being red.',
+    ],
     explanation:
         'The first draw is red with probability 5/8. One red marble is now out '
         'of the bag, so the second draw is red with probability 4/7. Multiply '
@@ -195,6 +255,12 @@ final List<Question> expansionItems = <Question>[
     stem: 'FRUGAL',
     choices: <String>['humble', 'stingy', 'hungry', 'thrifty'],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Humble describes modesty, and frugality is about how resources are spent.',
+      'Stingy is the near miss that carries a judgement, naming meanness where frugal names economy.',
+      'Hungry is a different word entirely, and careful spending does not mean going without food.',
+      'Frugal means careful with money and resources, and this option is the nearest synonym.',
+    ],
     explanation:
         'Frugal means careful with money and resources, so thrifty is the '
         'nearest synonym. Stingy is the near miss that carries a judgement: it '
@@ -211,6 +277,12 @@ final List<Question> expansionItems = <Question>[
         'stores.',
     choices: <String>['inspect', 'repair', 'return', 'discard'],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Inspecting a bent panel would not need a replacement drawn from stores.',
+      'Repair is the opposite, and the sentence has the sergeant throwing the panel away.',
+      'Returning it is what is being replaced, since the new panel is drawn from those same stores.',
+      'Scrap as a verb means to throw something away as beyond use, which is what this option says.',
+    ],
     explanation:
         'Here scrap works as a verb and means to throw something away as beyond '
         'use, so discard fits. Repair is the opposite of what the sentence '
@@ -227,6 +299,12 @@ final List<Question> expansionItems = <Question>[
         'rewritten before it left the unit.',
     choices: <String>['confidential', 'lengthy', 'sensational', 'accurate'],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Confidential concerns who may read a report, and this commander objected to its tone.',
+      'Lengthy is the tempting confusion, but the objection here is to tone rather than to page count.',
+      'Lurid means shockingly vivid, so a report ordered to be toned down is sensational.',
+      'Accurate describes a quality a commander would want to keep rather than rewrite away.',
+    ],
     explanation:
         'Lurid means shockingly vivid, so a report ordered to be toned down is '
         'sensational. Lengthy is the tempting confusion because a vivid account '
@@ -242,6 +320,12 @@ final List<Question> expansionItems = <Question>[
     stem: 'AUTONOMY',
     choices: <String>['independence', 'efficiency', 'obedience', 'accuracy'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Autos means self and nomos means law, so self rule is exactly this option.',
+      'Efficiency is about doing work well, and these two roots say nothing about output per hour.',
+      'Obedience is the opposite, since ruling yourself is not following another rule.',
+      'Accuracy is about correctness, and autonomy is about who decides.',
+    ],
     explanation:
         'Autos means self and nomos means law, so autonomy is literally self '
         'rule, which is independence. Automation shares the first root but '
@@ -256,6 +340,12 @@ final List<Question> expansionItems = <Question>[
     stem: 'ADEQUATE',
     choices: <String>['sufficient', 'equal', 'excellent', 'careful'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Adequate means enough for the purpose at hand, which is what sufficient says.',
+      'Equal is the trap in the Latin root, since adequate work meets a standard instead of matching another.',
+      'Excellent overshoots, because adequate work is acceptable rather than outstanding.',
+      'Careful describes the manner of the work, and adequacy is about meeting the requirement.',
+    ],
     explanation:
         'Adequate means enough for the purpose at hand, so sufficient is the '
         'match. Equal is the trap built into the word, since the Latin root '
@@ -289,6 +379,12 @@ final List<Question> expansionItems = <Question>[
       'They were let down again',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Nothing is said about replacement, and the same tyres are inflated and deflated repeatedly.',
+      'Leaving them hard contradicts the sequence, since deflating on the far side is the final step.',
+      'Water damage never appears, and the tyres are let down for grip rather than inspected.',
+      'The passage says they were deflated again on the far side, which is letting them down.',
+    ],
     explanation:
         'The passage states the sequence plainly: run soft on land, inflated to '
         'cross water, then deflated again on the far side. Replacing them, '
@@ -318,6 +414,12 @@ final List<Question> expansionItems = <Question>[
       'what the canal mules actually do',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Locks in pairs are never discussed, and the only pairing mentioned is one mule on each bank.',
+      'Nothing is said about training pilots, and the passage has the mules doing the steering.',
+      'Who supplies the cables is not stated, so that fact belongs to the world rather than the passage.',
+      'Every detail serves the point that the mules centre, steer and brake rather than merely tow.',
+    ],
     explanation:
         'Every detail in the passage serves the point that the mules neither tow '
         'nor merely pull: they centre, steer and brake the hull. Nothing is said '
@@ -348,6 +450,12 @@ final List<Question> expansionItems = <Question>[
       'no single material does all four jobs well',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Cost is never mentioned, so price cannot explain why the pouch is a composite.',
+      'Sealing is described as one job among four, and the passage never ranks the jobs by difficulty.',
+      'The aluminium is given a technical reason, and no regulation is cited anywhere.',
+      'The passage says outright that no single plastic can do all four jobs at once.',
+    ],
     explanation:
         'The passage lists a job for each layer and then says outright that no '
         'single plastic can do all four at once, which is the only reason the '
@@ -377,6 +485,12 @@ final List<Question> expansionItems = <Question>[
       'takes the weather log ashore',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'No repair party appears, and the clockwork was wound by the keeper at sunset.',
+      'Oil may travel on the same boat, but the word names the change of keeper rather than the cargo.',
+      'A relief is a replacement, so the boat brings the keeper who takes over the watch.',
+      'The log may go ashore on that boat, and the passage never says that it did.',
+    ],
     explanation:
         'A relief is a replacement, so the relief boat brings the keeper who '
         'takes over the watch, and its lateness by a week is what forces the '
@@ -405,6 +519,12 @@ final List<Question> expansionItems = <Question>[
       'to describe how the helmet was painted',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Each part is given a job and the two were not designed together, which explains the arrangement.',
+      'No argument about which material is better is made, and the liner is cloth inside steel.',
+      'Modern designs are never mentioned, and the passage stays with the older helmet.',
+      'The rough textured finish is mentioned as camouflage, not as a description of paintwork.',
+    ],
     explanation:
         'The passage gives a job to each part and then says the two were not '
         'designed together, which explains the arrangement rather than praising '
@@ -424,6 +544,12 @@ final List<Question> expansionItems = <Question>[
         'supply. What total current does the supply deliver?',
     choices: <String>['0.67 ampere', '2 amperes', '6 amperes', '18 amperes'],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'The 0.67 figure treats the three 12-ohm resistors as a series string of 36 ohms.',
+      'The 2 ampere figure is the current in a single branch, not the total the supply delivers.',
+      'Each branch carries 24 volts over 12 ohms, or 2 amperes, and the three add to 6 amperes.',
+      'The 18 ampere figure counts the 6-ampere total once per resistor, tripling the answer.',
+    ],
     explanation:
         'In parallel every resistor sees the full 24 volts, so each branch '
         'carries 24 / 12 = 2 amperes and the three add to 6 amperes. The same '
@@ -442,6 +568,12 @@ final List<Question> expansionItems = <Question>[
         'supply. How much current flows through each resistor?',
     choices: <String>['0.25 ampere', '0.5 ampere', '1 ampere', '2 amperes'],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'The 0.25 figure halves the branch current again, as though the supply voltage were shared out.',
+      'Each parallel branch sees the whole 10 volts, so each carries 10 over 20, or 0.5 ampere.',
+      'The 1 ampere figure is the total the supply delivers, the sum of both branch currents.',
+      'The 2 ampere figure divides 10 volts by the 5-ohm equivalent instead of the 20-ohm branch.',
+    ],
     explanation:
         'Each parallel branch sees the whole supply voltage, so each resistor '
         'carries 10 / 20 = 0.5 ampere no matter what the other one is doing. '
@@ -460,6 +592,12 @@ final List<Question> expansionItems = <Question>[
         'direct current while passing a changing signal?',
     choices: <String>['A resistor', 'A capacitor', 'A diode', 'An inductor'],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'A resistor conducts steady current and changing current alike, storing nothing.',
+      'Two plates separated by an insulator store charge in an electric field and pass only change.',
+      'A diode conducts in one direction only, which is not the same as blocking steady current.',
+      'An inductor also blocks steady current, but it stores energy in a magnetic field.',
+    ],
     explanation:
         'A capacitor holds charge on two plates separated by an insulator, so a '
         'steady direct voltage charges it once and then stops, while a changing '
@@ -485,6 +623,12 @@ final List<Question> expansionItems = <Question>[
       'It keeps the capacitor electrolyte from leaking out',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'A large electrolytic capacitor stays charged for minutes, and a hand across it can injure someone.',
+      'The resistor is a bleeder, not a test instrument, and it proves nothing about the part.',
+      'Limiting inrush on the next start is a different job from draining stored charge now.',
+      'Bleeding charge has nothing to do with keeping electrolyte inside the can.',
+    ],
     explanation:
         'A large electrolytic capacitor stays charged after the supply is dead, '
         'sometimes for many minutes, and a hand across its terminals is enough '
@@ -504,6 +648,12 @@ final List<Question> expansionItems = <Question>[
         'secondary voltage?',
     choices: <String>['30 volts', '60 volts', '240 volts', '480 volts'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Fifty turns against 200 is a quarter, so 120 volts becomes 30 volts.',
+      'The 60 volt figure treats the turns ratio as one half instead of one quarter.',
+      'The 240 volt figure doubles the primary voltage, which ignores the step-down ratio entirely.',
+      'The 480 volt figure multiplies by four, which is the turns ratio upside down.',
+    ],
     explanation:
         'Voltage follows the turns ratio directly: 50 turns against 200 turns is '
         'one quarter, so 120 volts becomes 30 volts. The 480 volt option '
@@ -527,6 +677,12 @@ final List<Question> expansionItems = <Question>[
       'Compressed air is hot enough to ignite the fuel',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'A glow plug warms the chamber for a cold start only, and it does not fire on every stroke.',
+      'An injector meters and sprays the fuel, and it adds no igniter of any kind to it.',
+      'Nothing in the cylinder makes a spark, and the crown is shaped to swirl the charge rather than strike one.',
+      'Squeezing air alone heats it past the ignition point of the fuel, so the spray lights with no spark at all.',
+    ],
     explanation:
         'A diesel draws in air alone and squeezes it far tighter than a petrol '
         'engine does, and that compression heats the air well above the ignition '
@@ -548,6 +704,12 @@ final List<Question> expansionItems = <Question>[
       'It pushes hydraulic fluid towards the wheel cylinders',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Pulling the shoes back is what the return springs do once the pedal is released.',
+      'Air in the lines leaves the pedal spongy rather than applying the brakes harder.',
+      'Locking the driveshaft is a parking brake or transmission pawl, not the master cylinder.',
+      'The pedal piston forces fluid through the lines to the wheel cylinders, where pressure applies the brakes.',
+    ],
     explanation:
         'The pedal drives a piston in the master cylinder, which forces fluid '
         'through the lines to the wheel cylinders, and there the pressure pushes '
@@ -571,6 +733,12 @@ final List<Question> expansionItems = <Question>[
       'A self-tapping screw',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'A carriage bolt has a smooth shank with a square neck and needs a nut, so it cuts no thread.',
+      'A lag screw is a heavy wood fastener driven into a pilot hole in timber rather than into sheet metal.',
+      'A machine screw needs a pre-cut thread or a nut, so it cannot cut its own way in.',
+      'A hardened point and coarse thread cut a matching thread in thin metal or plastic as it turns.',
+    ],
     explanation:
         'A self-tapping screw has a hardened point and a coarse thread that cuts '
         'a matching thread in thin metal or plastic as it turns, so no nut or '
@@ -594,6 +762,12 @@ final List<Question> expansionItems = <Question>[
       'Oxy-acetylene welding',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Resistance welding passes current through the parts and fuses the parent metal itself.',
+      'Arc welding melts the pipe ends along with the filler, which is exactly what this joint avoids.',
+      'The filler melts below the melting point of the pipes and flows into the gap, leaving them solid.',
+      'Oxy-acetylene welding fuses the parent metal, while this joint needs a filler that melts first.',
+    ],
     explanation:
         'Brazing heats the joint until the filler flows into the gap by capillary '
         'action, and the filler melts at a lower temperature than the metals '
@@ -616,6 +790,12 @@ final List<Question> expansionItems = <Question>[
       'It lets the wall move when the ground freezes',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Soil accepts only so much weight per square foot, so widening the bearing area cuts the pressure.',
+      'Keeping groundwater out of the wall above is waterproofing and drainage work rather than a wider footing.',
+      'A level surface is a convenience for the masons, and the footing is poured before they arrive.',
+      'A footing is meant to hold the wall still, and letting frost move it is the fault it prevents.',
+    ],
     explanation:
         'A wall carries its load down to the soil, and soil can only accept so '
         'much weight per square foot, so the footing widens the bearing area '
@@ -637,6 +817,12 @@ final List<Question> expansionItems = <Question>[
         'applied to the handles to hold the load clear of the ground?',
     choices: <String>['80 pounds', '120 pounds', '240 pounds', '480 pounds'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The load sits between the axle and the hands, so 240 lb times 2 ft over the 6 ft arm gives 80 lb.',
+      'One hundred twenty divides the load by its own 2 ft arm instead of by the 6 ft handle arm.',
+      'Two hundred forty applies no lever at all, as if the loaded tray rested over the hands.',
+      'Four hundred eighty multiplies 240 lb by the 2 ft arm and leaves the handle arm out of the sum.',
+    ],
     explanation:
         'The axle is the pivot and the load sits between the pivot and the '
         'effort, so effort times its arm equals load times its arm: effort x 6 = '
@@ -671,6 +857,12 @@ final List<Question> expansionItems = <Question>[
         'its rope is pulled straight up. What effort holds the load steady?',
     choices: <String>['50 pounds', '100 pounds', '200 pounds', '400 pounds'],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Fifty divides by four, as though two movable pulleys shared the load between four sections.',
+      'Two rope sections both point upward on this block, so the load is shared and the effort is half of it.',
+      'Two hundred ignores the second section, which is what a single fixed pulley would demand.',
+      'Four hundred doubles the load, which comes from adding the tension in both rope ends into one pull.',
+    ],
     explanation:
         'A movable pulley hangs on two rope sections that both point upward, so '
         'the load is shared between them and the effort is half of it, or 100 '
@@ -710,6 +902,12 @@ final List<Question> expansionItems = <Question>[
       'its engine is still pushing it forward',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Hot brakes follow repeated stops and do not explain a longer stop from the same speed.',
+      'Momentum grows with mass, so the heavier truck needs more braking work spread over a longer distance.',
+      'A larger contact patch does not raise the grip available, so it cannot explain the extra distance.',
+      'The engine is off the drive while braking, and coasting does not stretch the stop this way.',
+    ],
     explanation:
         'Stopping distance is set by the work the brakes must do to take the '
         'motion away, and momentum grows with mass, so the heavier truck at the '
@@ -727,6 +925,12 @@ final List<Question> expansionItems = <Question>[
         'the larger gear make for every three turns of the smaller one?',
     choices: <String>['1', '3', '9', '12'],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The large gear runs at a third of the small gear speed, so three turns of the 12 tooth gear make one.',
+      'Three copies the small gear tooth count across, as though the pair turned together.',
+      'Nine multiplies three turns by the three to one ratio where the larger gear divides by it.',
+      'Twelve copies the small gear tooth count as if it were a number of turns.',
+    ],
     explanation:
         'Meshed gears turn at speeds in inverse proportion to their tooth '
         'counts, so the large gear runs at a third of the small gear speed: '
@@ -760,6 +964,12 @@ final List<Question> expansionItems = <Question>[
         'end carry?',
     choices: <String>['200 pounds', '250 pounds', '300 pounds', '500 pounds'],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Two hundred is the far end share, which comes from using the 6 ft distance instead of the nearer 4 ft.',
+      'Two hundred fifty is right only when the crate sits exactly in the middle of the skid.',
+      'Taking moments about the right end, 500 lb times the 6 ft distance over 10 ft gives 300 lb at the near end.',
+      'Five hundred puts the whole load on one end, which leaves the other support carrying nothing.',
+    ],
     explanation:
         'The two ends share the load in inverse proportion to the distance, so '
         'the end nearer the crate takes the larger share: 500 x 6 / 10 = 300 '
