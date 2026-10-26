@@ -17,9 +17,14 @@ import '../widgets/primitives.dart';
 /// The score report. Everything the candidate needs to understand where they
 /// stand, why, and what to do about it, in that order.
 class ResultsScreen extends StatelessWidget {
-  const ResultsScreen({super.key, required this.attempt});
+  const ResultsScreen({super.key, required this.attempt, this.now});
 
   final Attempt attempt;
+
+  /// The day the eligibility block is read against. Null means today: which
+  /// jobs the Army has retired is a fact about a date, and this screen only
+  /// knows the attempt, which carries no clock of its own.
+  final DateTime? now;
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +128,7 @@ class ResultsScreen extends StatelessWidget {
             const SizedBox(height: Space.xl),
             _SectionTitle('Jobs this score opens'),
             const SizedBox(height: Space.sm),
-            _EligibilityBlock(report: report),
+            _EligibilityBlock(report: report, now: now ?? DateTime.now()),
             const SizedBox(height: Space.md),
             _RecruiterSheetEntry(attempt: attempt),
             const SizedBox(height: Space.xl),
@@ -559,13 +564,14 @@ class _WeakSkills extends StatelessWidget {
 }
 
 class _EligibilityBlock extends StatelessWidget {
-  const _EligibilityBlock({required this.report});
+  const _EligibilityBlock({required this.report, required this.now});
   final ScoreReport report;
+  final DateTime now;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    final summary = EligibilityEngine.summarise(report);
+    final summary = EligibilityEngine.summarise(report, now: now);
     return AppCard(
       padding: const EdgeInsets.all(Space.lg),
       child: Column(
@@ -598,11 +604,23 @@ class _EligibilityBlock extends StatelessWidget {
                 ),
               ),
               Text(
-                'catalogued jobs currently clear their published aptitude gate.',
+                'jobs open to enlistment today clear their published aptitude '
+                'gate.',
                 style: context.text.bodySmall,
               ),
             ],
           ),
+          // The denominator is the catalogue a candidate can actually be
+          // enlisted into, so the entries it leaves out are named. A count that
+          // shrank without a word would be the same defect wearing a smaller
+          // number.
+          if (summary.retiredNote != null) ...<Widget>[
+            const SizedBox(height: Space.xs),
+            Text(
+              summary.retiredNote!,
+              style: context.text.bodySmall?.copyWith(color: c.textMuted),
+            ),
+          ],
           const SizedBox(height: Space.md),
           MeterBar(
             value: summary.total == 0

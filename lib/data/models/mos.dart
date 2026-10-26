@@ -200,21 +200,29 @@ class Mos {
   /// True when the pamphlet marks this MOS for rescission, whatever the date.
   bool get rescindMarked => rescindOn != null;
 
-  /// True when the rescission month has passed: the MOS is retired and no line
-  /// score opens it.
+  /// True when [now] sits in the rescission month or a later one: the MOS is
+  /// retired and no line score opens it.
+  ///
+  /// The rescission month itself is the first month the entry is closed, not
+  /// the last month it stands. A section the pamphlet prints as
+  /// "(Rescind) 202610" is rescinded *as of* 202610, so on the first day of that
+  /// month there is no enlistment target left to qualify for - and a count that
+  /// kept it open until November would overstate what a candidate can take for
+  /// a whole month. Every reader that asks "is this job open today" - the row,
+  /// the sheet, the eligibility summary - gets its answer from this one
+  /// comparison rather than deciding for itself.
   ///
   /// The comparison is by calendar month, not by day, because the authority
   /// dates a rescission in YYYYMM and a day taken from that would be a guess.
   bool retiredAt(DateTime now) {
     final on = rescindOn;
     if (on == null) return false;
-    return now.year > on.year || (now.year == on.year && now.month > on.month);
+    return now.year > on.year || (now.year == on.year && now.month >= on.month);
   }
 
-  /// True when a rescission is recorded for the month [now] sits in or a later
-  /// one: the MOS stands today but is on the way out. Never confused with
-  /// [retiredAt] in the copy, because one is a job you can still take and the
-  /// other is not.
+  /// True when the rescission month is still ahead: the MOS stands today but is
+  /// on the way out. Never confused with [retiredAt] in the copy, because one is
+  /// a job you can still take and the other is not.
   bool retiringAt(DateTime now) => rescindOn != null && !retiredAt(now);
 
   /// "October 2025" - the month a rescission takes effect, written out, because

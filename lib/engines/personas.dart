@@ -193,7 +193,14 @@ class PersonaResult {
 /// Runs a persona through a full mock, using the real builder, the real scoring
 /// engine and the real coaching engine. Nothing is stubbed.
 abstract final class PersonaRunner {
-  static PersonaResult run(Persona persona, {int seed = 20260101}) {
+  /// [now] is the day the eligibility summary is read against - the run itself
+  /// is deterministic, but which jobs exist is not, so the clock is passed in
+  /// here rather than read inside [EligibilityEngine.summarise].
+  static PersonaResult run(
+    Persona persona, {
+    int seed = 20260101,
+    DateTime? now,
+  }) {
     final exam = _buildExam(seed);
     final responses = respond(exam, persona, seed: seed);
     final report = ScoringEngine.score(
@@ -201,7 +208,10 @@ abstract final class PersonaRunner {
       responses: responses,
       elapsedSeconds: responses.fold(0, (a, r) => a + r.secondsSpent),
     );
-    final summary = EligibilityEngine.summarise(report);
+    final summary = EligibilityEngine.summarise(
+      report,
+      now: now ?? DateTime.now(),
+    );
     final priorities = AdaptiveEngine.priorities(report);
     return PersonaResult(
       persona: persona,

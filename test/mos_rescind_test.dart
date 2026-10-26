@@ -156,7 +156,9 @@ Future<AppState> scoredState() async {
 
 /// The jobs screen at 360 dp wide and 2x text - the narrowest phone the app
 /// supports carrying the largest system font Android offers - with the clock
-/// pinned so no rescission month is "today" by accident.
+/// pinned to September 2026: 12M's rescission is behind that date and 15E's is
+/// ahead of it, so one row reads "Retired", another "Retiring", and neither is
+/// an accident of what day the suite happens to run on.
 Future<void> launchJobs(
   WidgetTester tester,
   AppState state, {
@@ -176,7 +178,7 @@ Future<void> launchJobs(
           builder: (context) => MediaQuery(
             data: MediaQuery.of(context)
                 .copyWith(textScaler: TextScaler.linear(textScale)),
-            child: JobsScreen(now: now ?? DateTime(2026, 10, 26)),
+            child: JobsScreen(now: now ?? DateTime(2026, 9, 26)),
           ),
         ),
       ),
@@ -399,31 +401,59 @@ void main() {
       expect(mos.rescindDetail(now), contains('not available for enlistment'));
     });
 
-    test('a rescission month that has not passed reads as retiring', () {
+    test('a rescission month still ahead reads as retiring', () {
       final mos = MosRepository.byCode('15E')!;
-      expect(mos.retiredAt(now), isFalse);
-      expect(mos.retiringAt(now), isTrue);
+      final before = DateTime(2026, 9, 26);
+      expect(mos.retiredAt(before), isFalse);
+      expect(mos.retiringAt(before), isTrue);
       expect(
-        mos.rescindHeadline(now),
+        mos.rescindHeadline(before),
         'Retiring October 2026 - confirm with a recruiter before planning '
         'around it',
       );
-      expect(mos.rescindDetail(now), contains('202610'));
-      expect(mos.rescindDetail(now), contains('confirm'));
+      expect(mos.rescindDetail(before), contains('202610'));
+      expect(mos.rescindDetail(before), contains('confirm'));
     });
 
-    test('the same MOS becomes retired once its month has passed', () {
+    test('the rescission month itself is the first closed month', () {
+      final mos = MosRepository.byCode('15W')!;
+      // A section printed "(Rescind 202610)" is withdrawn as of 202610, so the
+      // last day of September is the last day it stands and the first of
+      // October is already too late. Everything that counts jobs reads this one
+      // comparison, so the boundary cannot drift between screen and engine.
+      expect(mos.retiredAt(DateTime(2026, 9, 30)), isFalse);
+      expect(mos.retiringAt(DateTime(2026, 9, 30)), isTrue);
+      expect(mos.retiredAt(DateTime(2026, 10)), isTrue);
+      expect(mos.retiringAt(DateTime(2026, 10)), isFalse);
+      expect(
+        mos.retiredAt(DateTime(2025, 10)),
+        isFalse,
+        reason: '15W is 202610',
+      );
+      final retired12M = MosRepository.byCode('12M')!;
+      expect(retired12M.retiredAt(DateTime(2025, 9, 30)), isFalse);
+      expect(retired12M.retiredAt(DateTime(2025, 10)), isTrue);
+    });
+
+    test('the same MOS reads retired from its rescission month onwards', () {
       final mos = MosRepository.byCode('15W')!;
       expect(
         mos.rescindHeadline(DateTime(2026, 9, 30)),
         'Retiring October 2026 - confirm with a recruiter before planning '
         'around it',
       );
-      expect(
-        mos.rescindHeadline(DateTime(2026, 11, 1)),
-        'Retired October 2026 - not available for enlistment',
-      );
-      expect(mos.retiredAt(DateTime(2026, 11, 1)), isTrue);
+      for (final day in <DateTime>[
+        DateTime(2026, 10),
+        DateTime(2026, 11, 1),
+        DateTime(2027, 3, 15),
+      ]) {
+        expect(
+          mos.rescindHeadline(day),
+          'Retired October 2026 - not available for enlistment',
+          reason: '$day',
+        );
+        expect(mos.retiredAt(day), isTrue, reason: '$day');
+      }
     });
 
     test('an unmarked MOS says nothing about rescission', () {
@@ -438,15 +468,38 @@ void main() {
     });
 
     test('the repository can name both lists for a given day', () {
+      // September 2026: one retirement behind the clock, two ahead of it.
+      final before = DateTime(2026, 9, 26);
       expect(
-        MosRepository.retiredAsOf(now).map((m) => m.code).toList(),
+        MosRepository.retiredAsOf(before).map((m) => m.code).toList(),
         <String>['12M'],
       );
       expect(
-        MosRepository.retiringAsOf(now).map((m) => m.code).toList(),
+        MosRepository.retiringAsOf(before).map((m) => m.code).toList(),
         <String>['15E', '15W'],
       );
-      expect(MosRepository.retiredAsOf(DateTime(2026, 11, 1)).length, 3);
+      // The same day split into what can be enlisted into and what cannot.
+      expect(MosRepository.enlistableAsOf(before).length, 155);
+      expect(MosRepository.enlistableCountAsOf(before), 155);
+      // October 2026 onward: all three are retired and nothing is retiring.
+      expect(
+        MosRepository.retiredAsOf(now).map((m) => m.code).toList(),
+        <String>['12M', '15E', '15W'],
+      );
+      expect(MosRepository.retiringAsOf(now), isEmpty);
+      expect(MosRepository.enlistableCountAsOf(now), 153);
+      expect(MosRepository.enlistableCountAsOf(DateTime(2027, 5, 1)), 153);
+      // The roster itself never shrinks: the entries are kept and marked.
+      expect(MosRepository.all.length, 156);
+      expect(MosRepository.enlistedCount, 156);
+      expect(
+        MosRepository.enlistableAsOf(now).length +
+            MosRepository.retiredAsOf(now).length,
+        MosRepository.all.length,
+        reason:
+            'the two lists must partition the roster, not overlap or lose '
+            'an entry',
+      );
     });
   });
 

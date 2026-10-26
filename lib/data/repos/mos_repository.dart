@@ -18,8 +18,27 @@ abstract final class MosRepository {
   /// The sentence that travels with every gate.
   static String get rosterCaveat => mosRosterCaveat;
 
-  /// Enlisted entries, which is everything in [all].
+  /// Enlisted entries, which is everything in [all] - retired ones included.
+  ///
+  /// This is the size of the roster the app transcribes, not the number of jobs
+  /// open today: 12M, 15E and 15W are in it and cannot be enlisted into. Use
+  /// [enlistableCountAsOf] whenever the number is a denominator a candidate
+  /// reads as "jobs I could take".
   static int get enlistedCount => allMos.length;
+
+  /// The catalogue that can actually be enlisted into on [now]: every entry
+  /// except the ones the pamphlet has already retired.
+  ///
+  /// The distinction [all] cannot make on its own. A retired MOS stays in the
+  /// roster so its code can be recognised, its gate read and its history
+  /// explained, but no line score opens it - so it belongs in a list that is
+  /// marked, not in a count that reads as jobs on offer.
+  static List<Mos> enlistableAsOf(DateTime now) =>
+      allMos.where((m) => !m.retiredAt(now)).toList(growable: false);
+
+  /// The size of [enlistableAsOf] without building the list.
+  static int enlistableCountAsOf(DateTime now) =>
+      allMos.where((m) => !m.retiredAt(now)).length;
 
   /// Entries the pamphlet restricts to a component the Army National Guard is
   /// not: telling a Guard candidate they qualify for one of these is the same
@@ -38,12 +57,16 @@ abstract final class MosRepository {
   static List<Mos> get rescindMarked =>
       allMos.where((m) => m.rescindMarked).toList(growable: false);
 
-  /// Entries whose rescission month has passed: no line score opens them.
+  /// Entries whose rescission month has arrived: no line score opens them.
+  ///
+  /// The counterpart of [enlistableAsOf] - together they are [all], which is
+  /// what lets a count say how many entries it leaves out instead of quietly
+  /// shrinking its own denominator.
   static List<Mos> retiredAsOf(DateTime now) =>
       allMos.where((m) => m.retiredAt(now)).toList(growable: false);
 
-  /// Entries marked for rescission in the current month or a later one: they
-  /// stand today, but they are on the way out.
+  /// Entries marked for rescission in a month still ahead: they stand today,
+  /// but they are on the way out.
   static List<Mos> retiringAsOf(DateTime now) =>
       allMos.where((m) => m.retiringAt(now)).toList(growable: false);
 

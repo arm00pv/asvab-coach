@@ -159,8 +159,12 @@ void main() {
   ) async {
     final state = await seededState();
     final report = state.lastReport!;
-    final met = EligibilityEngine.summarise(report).qualified
-        .firstWhere((m) => m.guardFielded && m.hasGate);
+    // The same clock the screen under test reads, so the job the engine names
+    // as met is one the screen still offers.
+    final met = EligibilityEngine.summarise(
+      report,
+      now: DateTime.now(),
+    ).qualified.firstWhere((m) => m.guardFielded && m.hasGate);
 
     await launch(tester, state);
     await openSheet(tester, met);

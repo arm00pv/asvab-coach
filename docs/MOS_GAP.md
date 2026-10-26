@@ -198,19 +198,35 @@ Two things were deliberately **not** done:
   material and in the roster of soldiers who hold it, and a list that quietly
   forgot 12M would leave them unable to find out what happened to it. The gate,
   the description and the civilian crosswalk all stay;
-- **the two cases were not collapsed into one.** A rescission month in the past
-  is "Retired October 2025 - not available for enlistment". A rescission month
-  that has not passed is "Retiring October 2026 - confirm with a recruiter before
-  planning around it", because that job still stands today.
+- **the two cases were not collapsed into one.** A rescission month that has
+  arrived is "Retired October 2025 - not available for enlistment". A rescission
+  month still ahead is "Retiring October 2026 - confirm with a recruiter before
+  planning around it", because until that month the job does stand.
+
+The rescission month itself is the first closed month, not the last open one:
+a section printed "(Rescind) 202610" is withdrawn as of 202610, so 15E and 15W
+are counted in September 2026 and not in October. `Mos.retiredAt` owns that
+comparison and nothing else re-derives it.
 
 What the app does now: `Mos.rescindOn` carries the month, the row shows that
 sentence instead of a verdict (a retired MOS never reads "Qualified" or "8 pts
 short"), the detail sheet opens on a callout naming the pamphlet's own date and
 withholds the "You qualify" and "what it would take" cards, and the onboarding
-picker marks the entry too. `test/mos_rescind_test.dart` reads
-`docs/research/_raw/ch10c.txt` back, extracts every marked heading, prints the
-list it found, and fails if the data carries a rescission the pamphlet does not
-show or misses one it does.
+picker marks the entry too.
+
+The counts follow the same rule, in one place. `MosRepository` splits the roster
+into `enlistableAsOf(now)` and `retiredAsOf(now)` - two lists that partition
+`all` - and `EligibilityEngine.summarise(report, now: ...)` reads only the
+first. A retired MOS therefore reaches no bucket: not qualified, not near miss,
+not further out. The summary carries the retired entries separately
+(`retired`, `retiredCount`, `retiredNote`) so the headline can say "N of 153
+jobs open to enlistment today" and name what the denominator leaves out instead
+of shrinking it silently. The clock is a parameter, never `DateTime.now()` inside
+the engine, so `test/eligibility_count_test.dart` pins October 2025, October 2026
+and 2027 and holds all three screens to the same answer. `test/mos_rescind_test.dart`
+reads `docs/research/_raw/ch10c.txt` back, extracts every marked heading, prints
+the list it found, and fails if the data carries a rescission the pamphlet does
+not show or misses one it does.
 
 ## 4. The 59 added
 

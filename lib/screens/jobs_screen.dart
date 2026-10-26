@@ -54,7 +54,9 @@ class _JobsScreenState extends State<JobsScreen> {
     final routes = MosRepository.officerPathways
         .where((p) => _track == null || OfficerTrack.of(p)?.id == _track!.id)
         .toList(growable: false);
-    final summary = report == null ? null : EligibilityEngine.summarise(report);
+    final summary = report == null
+        ? null
+        : EligibilityEngine.summarise(report, now: now);
 
     final shown = switch (_mode) {
       _Mode.qualified =>
@@ -254,11 +256,13 @@ class _JobsScreenState extends State<JobsScreen> {
                     '${MosRepository.notGuardFielded.length} of these jobs are '
                     'restricted by the pamphlet to another component and are '
                     'marked as not Guard jobs. '
-                    '${MosRepository.rescindMarked.length} entries the same '
-                    'pamphlet marks rescinded are kept and shown as retired or '
-                    'retiring, so you recognise the code rather than because '
-                    'they are jobs worth aiming at. Treat this screen as a '
-                    'planning tool, not an authority.',
+                    '${MosRepository.retiredAsOf(now).length} entries the same '
+                    'pamphlet has retired are kept and marked here - in this '
+                    'list, not in any count of the jobs open today - so you '
+                    'recognise the code rather than because they are jobs worth '
+                    'aiming at. ${MosRepository.retiringAsOf(now).length} more '
+                    'stand today and carry a rescission date already printed. '
+                    'Treat this screen as a planning tool, not an authority.',
               ),
               const SizedBox(height: Space.xxl),
             ],
@@ -339,9 +343,21 @@ class _SummaryStrip extends StatelessWidget {
                 Eyebrow('Eligibility'),
                 const SizedBox(height: Space.xs),
                 Text(
-                  '${summary.qualified.length} of ${summary.total} jobs open',
+                  '${summary.qualified.length} of ${summary.total} jobs open to '
+                  'enlistment today',
                   style: context.text.titleLarge,
                 ),
+                // The denominator is the catalogue that can be enlisted into
+                // today, so the entries it leaves out are named under it. The
+                // retired rows are still in the list below, marked: this number
+                // is about counting, not about hiding anything.
+                if (summary.retiredNote != null) ...<Widget>[
+                  const SizedBox(height: Space.xs),
+                  Text(
+                    summary.retiredNote!,
+                    style: context.text.bodySmall?.copyWith(color: c.textMuted),
+                  ),
+                ],
                 const SizedBox(height: Space.sm),
                 MeterBar(
                   value: summary.total == 0

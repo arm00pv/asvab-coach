@@ -15,9 +15,16 @@ import '../widgets/primitives.dart';
 import 'settings_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key, required this.onNavigate});
+  const DashboardScreen({super.key, required this.onNavigate, this.now});
 
   final ValueChanged<int> onNavigate;
+
+  /// The day the eligibility count is read against. Null means today.
+  ///
+  /// Passed in for the same reason the jobs screen takes one: which jobs the
+  /// Army has retired is a fact about a date, and a test cannot wait for
+  /// October.
+  final DateTime? now;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +32,7 @@ class DashboardScreen extends StatelessWidget {
     final report = app.lastReport;
     final goal = app.goal;
     final c = context.colors;
+    final today = now ?? DateTime.now();
 
     return Scaffold(
       body: SafeArea(
@@ -117,7 +125,7 @@ class DashboardScreen extends StatelessWidget {
                 const SizedBox(height: Space.md),
                 _SubtestSnapshot(report: report, app: app),
                 const SizedBox(height: Space.xl),
-                _EligibilityTeaser(report: report),
+                _EligibilityTeaser(report: report, now: today),
                 const SizedBox(height: Space.xl),
               ],
               _SectionHeader(
@@ -983,13 +991,14 @@ class _SubtestSnapshot extends StatelessWidget {
 }
 
 class _EligibilityTeaser extends StatelessWidget {
-  const _EligibilityTeaser({required this.report});
+  const _EligibilityTeaser({required this.report, required this.now});
   final ScoreReport report;
+  final DateTime now;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    final summary = EligibilityEngine.summarise(report);
+    final summary = EligibilityEngine.summarise(report, now: now);
     final closed = summary.nearMiss.take(3).toList();
     return AppCard(
       onTap: null,
@@ -1027,6 +1036,16 @@ class _EligibilityTeaser extends StatelessWidget {
               ),
             ],
           ),
+          // The denominator is the catalogue that can be enlisted into today,
+          // not the roster, so the entries it leaves out are named rather than
+          // silently subtracted.
+          if (summary.retiredNote != null) ...<Widget>[
+            const SizedBox(height: Space.xs),
+            Text(
+              summary.retiredNote!,
+              style: context.text.labelSmall?.copyWith(color: c.textMuted),
+            ),
+          ],
           if (closed.isNotEmpty) ...<Widget>[
             const SizedBox(height: Space.md),
             Text(

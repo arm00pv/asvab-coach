@@ -50,18 +50,40 @@ abstract final class EligibilityEngine {
     );
   }
 
-  /// Every MOS the report currently clears, plus the near misses.
+  /// Every MOS the report currently clears on [now], plus the near misses.
+  ///
+  /// The roster is read as two lists, not one, because "the catalogue" and "the
+  /// jobs open today" are not the same set: [MosRepository.enlistableAsOf] is
+  /// every entry that can be enlisted into on [now], and
+  /// [MosRepository.retiredAsOf] is every entry the pamphlet has already
+  /// retired. A retired MOS reaches no bucket - not qualified, not near miss,
+  /// not further out - because no line score opens it. Counting one is the
+  /// defect this signature exists to prevent: 12M read as a job the candidate
+  /// qualified for months after the Army withdrew it.
+  ///
+  /// The retired entries are not dropped on the floor either: [EligibilitySummary
+  /// .retired] carries them so a screen can say how many entries its count
+  /// leaves out. A denominator that shrinks without a word is its own kind of
+  /// dishonesty.
+  ///
+  /// [now] is a parameter rather than a call to [DateTime.now] inside the loop,
+  /// because a rescission month is a boundary, and a boundary can only be tested
+  /// by pinning the clock instead of waiting for October.
   ///
   /// A MOS whose gate the app has not verified goes into its own bucket and is
   /// counted as neither qualified nor unqualified. An empty gate would otherwise
   /// read as "no requirement" and hand the candidate a job the app knows nothing
   /// about.
-  static EligibilitySummary summarise(ScoreReport report) {
+  static EligibilitySummary summarise(
+    ScoreReport report, {
+    required DateTime now,
+  }) {
     final qualified = <Mos>[];
     final near = <Mos>[];
     final far = <Mos>[];
     final unverified = <Mos>[];
-    for (final mos in MosRepository.all) {
+    final retired = MosRepository.retiredAsOf(now);
+    for (final mos in MosRepository.enlistableAsOf(now)) {
       if (!mos.gateIsKnown) {
         unverified.add(mos);
         continue;
@@ -88,7 +110,9 @@ abstract final class EligibilityEngine {
       nearMiss: near,
       outOfReach: far,
       unverified: unverified,
+      retired: retired,
       report: report,
+      asOf: now,
     );
   }
 
@@ -161,13 +185,20 @@ abstract final class EligibilityEngine {
   }
 }
 
+/// What one score report opens, against the catalogue that exists on one day.
+///
+/// The buckets only ever hold jobs that can be enlisted into on [asOf]. Retired
+/// entries are kept in [retired] and counted in none of them, which is what
+/// makes [total] an honest denominator and [retiredNote] an honest sentence.
 class EligibilitySummary {
   const EligibilitySummary({
     required this.qualified,
     required this.nearMiss,
     required this.outOfReach,
     required this.report,
+    required this.asOf,
     this.unverified = const <Mos>[],
+    this.retired = const <Mos>[],
   });
 
   final List<Mos> qualified;
@@ -177,18 +208,54 @@ class EligibilitySummary {
   /// Jobs whose gate the app has not verified, so it can say nothing about them.
   final List<Mos> unverified;
 
+  /// Entries the pamphlet had already retired on [asOf].
+  ///
+  /// They are still in the catalogue and still shown, marked, in the job list -
+  /// a candidate meets the code in older material and in the roster of soldiers
+  /// who hold it. They are simply not jobs, so they are counted nowhere above.
+  final List<Mos> retired;
+
   final ScoreReport report;
 
+  /// The day this summary was computed against. Every count below is a fact
+  /// about this date, which is why nothing here calls [DateTime.now].
+  final DateTime asOf;
+
+  /// The jobs open on [asOf]: qualified, near, far and unverified together.
+  ///
+  /// This - not the size of the roster - is the denominator a count is out of.
   int get total =>
       qualified.length +
       nearMiss.length +
       outOfReach.length +
       unverified.length;
 
+  /// The whole roster, retired entries included. The two numbers differ by
+  /// exactly [retiredCount], and a screen that prints this one as "jobs" is
+  /// describing a catalogue rather than an offer.
+  int get catalogueSize => total + retired.length;
+
+  /// How many entries the counts leave out because the Army has retired them.
+  int get retiredCount => retired.length;
+
   List<Mos> get all => <Mos>[...qualified, ...nearMiss, ...outOfReach];
 
   bool isQualified(Mos m) => qualified.contains(m);
   bool isNearMiss(Mos m) => nearMiss.contains(m);
+  bool isRetired(Mos m) => retired.contains(m);
+
+  /// The sentence that goes with the count when some of the catalogue cannot be
+  /// enlisted into, or null when the roster and the offer are the same set.
+  ///
+  /// Named rather than numbered alone, because "$n excluded" reads as an
+  /// accounting quirk while "12M is retired" reads as a fact about a job the
+  /// candidate may have been planning around.
+  String? get retiredNote {
+    if (retired.isEmpty) return null;
+    final codes = retired.map((m) => m.code).join(', ');
+    final them = retired.length == 1 ? 'entry' : 'entries';
+    return '${retired.length} retired $them not counted: $codes.';
+  }
 
   int get percentQualified =>
       total == 0 ? 0 : ((qualified.length / total) * 100).round();
