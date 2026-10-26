@@ -85,3 +85,33 @@ are plain rather than designed; chart captions at 7-8 sp.
 Accounts, sync, any server of ours, and any claim to be the real exam. Nothing
 about the candidate leaves the device. Only two Android permissions, each
 documented with its reason.
+## Status
+
+**Phase 1 - complete** (commits 586e2d7, 76ba483). 97 -> 156 enlisted MOS
+after the diff against DA Pam 611-21 ch.10 sec.C, zero of the original 97
+found invented or retired, three entries marked "no aptitude requirement
+published" rather than guessed, no entry left unverified, the normalised
+dataset committed next to the diff so the count is reproducible, tests
+asserting codes and gates, and the verified-as-of date surfaced in the
+glossary. Limitation recorded in docs/MOS_GAP.md: the diff covers
+enlisted MOS, not warrant-officer MOS or Guard-only entries the pamphlet
+does not list.
+
+**Phase 2 - complete** (commits c34b6d9, ae2b40f, 56f6b02). 447 of 447
+items explain every wrong option: 390 written, 57 computed from the
+Assembling Objects geometry. The strict audit fails an item whose notes do
+not line up with its options. The review card was also grading a bank
+coordinate as a display slot, which marked right answers wrong under any
+reshuffled attempt; fixed, with a test that records the answer through the
+real session path.
+
+**Phase 3 - in progress.** The engine is tested in isolation (22 tests);
+wiring it into the job sheet is in flight.
+
+**Phase 4 - in progress.** The formatter is in flight; it was held until
+the roster settled so it renders real data.
+
+**Phase 5 - partly done.** Browser copy, the dead Submit control and the
+Settings stutter are fixed with guards. The results overflow at enlarged
+text, the blank-versus-wrong review badge and the jobs table collision at
+411 dp are open.
