@@ -95,7 +95,7 @@ void main() {
 
   test('item text is plain ASCII with no dollar signs', () {
     for (final q in combined) {
-      final text = q.stem + ' ' + q.choices.join(' ') + ' ' + q.explanation;
+      final text = '${q.stem} ${q.choices.join(' ')} ${q.explanation}';
       for (final rune in text.runes) {
         expect(rune, lessThan(128), reason: q.id);
       }

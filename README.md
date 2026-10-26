@@ -45,8 +45,15 @@ worked explanation that is reused inside the lesson flow.
 week-by-week schedule: how many skill cycles fit, how many full mocks fit, and a
 straight answer on whether the budget is enough.
 
+**Survives an interruption.** A three-hour mock on a phone can be interrupted by
+a call, a dead battery or the operating system reclaiming memory. The attempt in
+progress is written to disk after every answer, and the next launch offers it
+back at the exact question it stopped on, with the same options in the same order
+and the clock where it left off. The clock itself counts real seconds, not
+ticker ticks, so a backgrounded app never quietly gains time.
+
 **Shows you the trend.** Attempt history, per-subtest sparklines, a skill mastery
-grid and streaks, all persisted locally in the browser.
+grid and streaks, all persisted locally on the device.
 
 ---
 
@@ -121,6 +128,13 @@ hand-written painters, which keeps the bundle small and the visuals coherent.
   two pieces overlap, and the result is one joined body. `bank_integrity_test`
   asserts every puzzle has exactly one legal option, so an authoring typo cannot
   ship a question with two right answers.
+- **An interrupted attempt resumes with its questions pinned by id, not by seed.**
+  The snapshot stores the question ids and the option permutation per item, so
+  resuming replays exactly what was on screen even if the bank has been edited
+  since; a snapshot the bank can no longer serve is refused outright rather than
+  silently replaced with different questions.
+- **The section clock does not run during the section introduction**, and it is
+  derived from elapsed wall time, so it reads the same after the app has been away.
 - **Every number in the score report is traceable** to a documented formula, and
   the app says plainly that it is not an official score.
 
@@ -145,6 +159,8 @@ flutter test
 | `exam_screen_layout_test` | The runner specifically: a reading passage, a diagram, an assembly puzzle, a phone, and an answer being recorded. |
 | `storage_recovery_test` | A corrupt or partially evicted store never bricks the boot and never costs more than the records that were actually unreadable: one bad attempt leaves the goal, the theme and the streak intact, a bad key does not discard the others, and the dashboard says what could not be read instead of quietly presenting an empty history. |
 | `settings_and_review_test` | Dark mode persists, the history export reaches the clipboard, erase-all really clears the store, and a due review session advances the spaced-repetition schedule. |
+| `exam_resume_test` | An interrupted attempt comes back exactly as it was left: the snapshot survives JSON, rebuilt questions keep their option order, a snapshot naming a retired item or a scrambled permutation is refused, the clock charges the real interval after the ticker is suspended, the section introduction costs no time, the dashboard offers the attempt back, and submitting clears it. |
+| `screen_layout_test` (large text and small screens) | Every screen also paints at 1.3x and 2.0x system font size and on a 360x640 phone, portrait and landscape. Enlarged text and a sideways phone are the two states a desk-bound test never visits. |
 
 The persona harness is also available in-app under **Settings > QA lab**, so the
 whole pipeline can be spot-checked without sitting a two-hour mock. See
@@ -204,9 +220,11 @@ Set Pages to **Source: GitHub Actions** and the app is served from
 - Scores are an estimate. ETS item-response equating cannot be reproduced from a
   practice test; the model treats difficulty-weighted accuracy as a percentile of
   ability and says so.
-- Saved history is per-browser. If part of it cannot be read - a browser evicting
-  storage, an interrupted write - the app says so on the dashboard and keeps
-  whatever was readable rather than silently starting over.
+- Saved history is per-device and per-browser. If part of it cannot be read - a
+  browser evicting storage, an interrupted write - the app says so on the
+  dashboard and keeps whatever was readable rather than silently starting over.
+- An interrupted attempt is only kept until you finish it or discard it: there is
+  one slot, so starting a new exam replaces the interrupted one.
 - The bank is 372 items. A mock draws the official item count per subtest, so
   heavy repeat use will start to repeat questions across attempts.
 - Assembling Objects uses polyomino puzzles. They enforce the real subtest's

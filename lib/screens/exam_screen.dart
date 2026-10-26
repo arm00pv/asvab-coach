@@ -3,9 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../core/routes.dart';
+import '../core/screen_awake.dart';
 import '../core/theme/tokens.dart';
 import '../data/models/catalog.dart';
 import '../data/models/exam.dart';
+import '../data/models/exam_snapshot.dart';
 import '../data/models/score.dart';
 import '../state/app_state.dart';
 import '../state/exam_session.dart';
@@ -23,38 +25,106 @@ import '../widgets/puzzle_view.dart';
 ///  * no accidental loss: answers are recorded the moment they are tapped;
 ///  * keyboard operable, because a real ASVAB is mouse-or-keyboard.
 class ExamScreen extends StatefulWidget {
-  const ExamScreen({super.key, required this.exam});
+  const ExamScreen({super.key, required this.exam, this.snapshot});
 
   final Exam exam;
+
+  /// When set, the runner picks this attempt up exactly where it stopped.
+  final ExamSnapshot? snapshot;
 
   @override
   State<ExamScreen> createState() => _ExamScreenState();
 }
 
-class _ExamScreenState extends State<ExamScreen> {
+class _ExamScreenState extends State<ExamScreen> with WidgetsBindingObserver {
   late final ExamSession session;
   final FocusNode _focus = FocusNode();
   bool _sectionIntro = true;
   int? _introIndex;
 
+  /// What the last saved snapshot described, so the attempt is written after a
+  /// real change rather than on every one-second notification.
+  String _savedSignature = '';
+
   @override
   void initState() {
     super.initState();
-    session = ExamSession(
-      exam: widget.exam,
-      seed: DateTime.now().millisecondsSinceEpoch,
-      onSectionComplete: _handleSectionComplete,
-    )..addListener(_onSession);
-    session.start();
+    final resumed = widget.snapshot;
+    session = resumed == null
+        ? ExamSession(
+            exam: widget.exam,
+            seed: DateTime.now().millisecondsSinceEpoch,
+            onSectionComplete: _handleSectionComplete,
+          )
+        : ExamSession.resume(
+            exam: widget.exam,
+            seed: DateTime.now().millisecondsSinceEpoch,
+            snapshot: resumed,
+            onSectionComplete: _handleSectionComplete,
+          );
+    session.addListener(_onSession);
     _introIndex = 0;
+    // Resuming drops straight back onto the question that was on screen; the
+    // section introduction has already been read.
+    _sectionIntro = resumed == null;
+    WidgetsBinding.instance.addObserver(this);
+    // The screen must not sleep in the middle of a timed section.
+    ScreenAwake.keepOn(true);
+    if (_sectionIntro) {
+      // Reading the introduction is not part of the section's time.
+      session.pause();
+    } else {
+      session.start();
+    }
+    // After the first frame: the first save can notify listeners, and doing
+    // that from initState would rebuild a watching screen mid-build.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _persist());
   }
 
   void _onSession() {
-    if (mounted) setState(() {});
+    if (!mounted) return;
+    setState(() {});
+    _persist();
+  }
+
+  /// Writes the attempt in progress.
+  ///
+  /// A phone can kill a backgrounded app at any moment, and a full mock lasts
+  /// three hours. Saving on every change is what turns "the app closed and I
+  /// lost everything" into "reopen and carry on".
+  void _persist() {
+    if (!mounted || session.finished) return;
+    final signature =
+        '${session.sectionIndex}:${session.questionIndex}:'
+        '${session.totalAnswered}:${session.elapsedSeconds ~/ 30}:'
+        '$_sectionIntro';
+    if (signature == _savedSignature) return;
+    _savedSignature = signature;
+    final app = context.read<AppState>();
+    app.setPending(session.toSnapshot());
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (!mounted) return;
+    switch (state) {
+      case AppLifecycleState.resumed:
+        // The clock kept running while the app was away: charging the real
+        // interval is what stops a backgrounded app from gifting time.
+        session.catchUp();
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.hidden:
+      case AppLifecycleState.paused:
+      case AppLifecycleState.detached:
+        // Last chance to save before the platform may kill us.
+        _persist();
+    }
   }
 
   @override
   void dispose() {
+    ScreenAwake.keepOn(false);
+    WidgetsBinding.instance.removeObserver(this);
     session.removeListener(_onSession);
     session.dispose();
     _focus.dispose();
@@ -73,6 +143,8 @@ class _ExamScreenState extends State<ExamScreen> {
         // section intro rather than a report.
         _introIndex = (index + 1).clamp(0, session.exam.sections.length - 1);
       });
+      // The next section's clock starts when the candidate starts it.
+      session.pause();
     }
   }
 
@@ -105,6 +177,9 @@ class _ExamScreenState extends State<ExamScreen> {
           ),
           FilledButton(
             onPressed: () {
+              // Leaving on purpose is not an interruption: there is nothing to
+              // resume, so the half-attempt must not be offered back.
+              context.read<AppState>().clearPending();
               Navigator.of(context).pop();
               Navigator.of(context).pop();
             },
@@ -206,6 +281,7 @@ class _ExamScreenState extends State<ExamScreen> {
                     index: _introIndex ?? 0,
                     onBegin: () {
                       setState(() => _sectionIntro = false);
+                      session.resume();
                       _focus.requestFocus();
                     },
                     onQuit: _confirmQuit,
@@ -239,84 +315,84 @@ class _SectionIntro extends StatelessWidget {
     final section = exam.sections[index];
     final total = exam.sections.length;
     final timed = section.seconds < 32000;
+    // Centred when it fits, scrollable when it does not: with the system font
+    // size enlarged this card is taller than a phone held sideways.
     return PageBody(
       maxWidth: 520,
-      scrollable: false,
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                SubtestGlyph(abbr: section.subtest.abbr, size: 44),
-                const SizedBox(width: Space.md),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Eyebrow('Section ${index + 1} of $total'),
-                      const SizedBox(height: 2),
-                      Text(
-                        section.displayLabel,
-                        style: context.text.headlineMedium,
-                      ),
-                    ],
-                  ),
+      centerVertically: true,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              SubtestGlyph(abbr: section.subtest.abbr, size: 44),
+              const SizedBox(width: Space.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Eyebrow('Section ${index + 1} of $total'),
+                    const SizedBox(height: 2),
+                    Text(
+                      section.displayLabel,
+                      style: context.text.headlineMedium,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            const SizedBox(height: Space.lg),
-            Text(section.subtest.blurb, style: context.text.bodyMedium),
-            const SizedBox(height: Space.xl),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: _IntroStat(
-                    icon: Icons.format_list_numbered_rounded,
-                    value: '${section.questions.length}',
-                    label: 'questions',
-                  ),
-                ),
-                const SizedBox(width: Space.md),
-                Expanded(
-                  child: _IntroStat(
-                    icon: Icons.timer_outlined,
-                    value: timed ? '${section.minutes}' : 'None',
-                    label: timed ? 'minutes' : 'time limit',
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: Space.lg),
-            if (timed)
-              Callout(
-                tone: PillTone.warning,
-                icon: Icons.speed_rounded,
-                title: 'Pace',
-                text:
-                    'That is about ${(section.minutes * 60 / section.questions.length).round()} '
-                    'seconds per question. On the real CAT-ASVAB a blank item is '
-                    'scored as a random guess, so never leave one empty.',
               ),
-            const SizedBox(height: Space.xl),
-            // A Wrap, not a Row: on a phone the two labels together are wider
-            // than the column, and a Row answers that by painting an overflow
-            // stripe over the primary action.
-            Wrap(
-              spacing: Space.md,
-              runSpacing: Space.sm,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: <Widget>[
-                FilledButton(
-                  onPressed: onBegin,
-                  child: const Text('Begin section'),
+            ],
+          ),
+          const SizedBox(height: Space.lg),
+          Text(section.subtest.blurb, style: context.text.bodyMedium),
+          const SizedBox(height: Space.xl),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: _IntroStat(
+                  icon: Icons.format_list_numbered_rounded,
+                  value: '${section.questions.length}',
+                  label: 'questions',
                 ),
-                TextButton(onPressed: onQuit, child: const Text('Leave exam')),
-              ],
+              ),
+              const SizedBox(width: Space.md),
+              Expanded(
+                child: _IntroStat(
+                  icon: Icons.timer_outlined,
+                  value: timed ? '${section.minutes}' : 'None',
+                  label: timed ? 'minutes' : 'time limit',
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: Space.lg),
+          if (timed)
+            Callout(
+              tone: PillTone.warning,
+              icon: Icons.speed_rounded,
+              title: 'Pace',
+              text:
+                  'That is about ${(section.minutes * 60 / section.questions.length).round()} '
+                  'seconds per question. On the real CAT-ASVAB a blank item is '
+                  'scored as a random guess, so never leave one empty.',
             ),
-          ],
-        ),
+          const SizedBox(height: Space.xl),
+          // A Wrap, not a Row: on a phone the two labels together are wider
+          // than the column, and a Row answers that by painting an overflow
+          // stripe over the primary action.
+          Wrap(
+            spacing: Space.md,
+            runSpacing: Space.sm,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: <Widget>[
+              FilledButton(
+                onPressed: onBegin,
+                child: const Text('Begin section'),
+              ),
+              TextButton(onPressed: onQuit, child: const Text('Leave exam')),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -342,21 +418,27 @@ class _IntroStat extends StatelessWidget {
         children: <Widget>[
           Icon(icon, size: 18, color: c.primary),
           const SizedBox(width: Space.md),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                value,
-                style: context.text.titleLarge?.copyWith(color: c.textPrimary),
-              ),
-              Text(
-                label,
-                style: context.text.bodySmall?.copyWith(
-                  color: c.textMuted,
-                  fontSize: 11,
+          // Expanded, so an enlarged value wraps inside the card instead of
+          // pushing the row past its edge.
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  value,
+                  style: context.text.titleLarge?.copyWith(
+                    color: c.textPrimary,
+                  ),
                 ),
-              ),
-            ],
+                Text(
+                  label,
+                  style: context.text.bodySmall?.copyWith(
+                    color: c.textMuted,
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

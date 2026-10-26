@@ -4,11 +4,14 @@ import 'package:flutter/foundation.dart';
 
 import '../data/bank/question_bank.dart';
 import '../data/models/catalog.dart';
+import '../data/models/exam.dart';
+import '../data/models/exam_snapshot.dart';
 import '../data/models/mos.dart';
 import '../data/models/question.dart';
 import '../data/models/review_item.dart';
 import '../data/models/score.dart';
 import '../data/repos/storage.dart';
+import '../engines/exam_restore.dart';
 
 /// Application-wide state: who the learner is, what they have done, and how the
 /// app looks. Screens read from here; only this class writes to storage.
@@ -20,6 +23,8 @@ class AppState extends ChangeNotifier {
   Map<String, Map<String, List<int>>> _orders =
       <String, Map<String, List<int>>>{};
   List<ReviewItem> _reviews = <ReviewItem>[];
+  ExamSnapshot? _pending;
+  Exam? _pendingExam;
   bool _darkMode = false;
   bool _soundOn = true;
   bool _onboarded = false;
@@ -162,6 +167,8 @@ class AppState extends ChangeNotifier {
       _reviews = List<ReviewItem>.of(persisted.reviews);
       _unreadableKeys = persisted.unreadableKeys;
       _skippedRecords = persisted.skippedRecords;
+      // After the counters are in place: refusing a snapshot adds to them.
+      _adoptPending(persisted.pending);
     } catch (error) {
       // The repository recovers key by key, so reaching here means something
       // it did not anticipate. Boot with what we have: a cleared history the
@@ -172,6 +179,58 @@ class AppState extends ChangeNotifier {
       _loading = false;
       notifyListeners();
     }
+  }
+
+  // ---- Attempt in progress ----------------------------------------------
+
+  /// The interrupted attempt, if one can still be resumed.
+  ExamSnapshot? get pendingAttempt => _pendingExam == null ? null : _pending;
+
+  /// The interrupted attempt rebuilt and ready to run, or null.
+  Exam? get pendingExam => _pendingExam;
+
+  bool get hasPendingAttempt => _pendingExam != null;
+
+  /// Keeps a snapshot only when it can still be turned back into a runnable
+  /// exam. A snapshot that cannot - because the question bank moved under it -
+  /// is dropped rather than shown as a resume that would fail on tap, and it is
+  /// reported like any other unreadable record.
+  void _adoptPending(ExamSnapshot? snapshot) {
+    _pending = null;
+    _pendingExam = null;
+    if (snapshot == null) return;
+    final exam = ExamRestore.examOf(snapshot);
+    if (exam == null) {
+      _skippedRecords += 1;
+      return;
+    }
+    _pending = snapshot;
+    _pendingExam = exam;
+  }
+
+  /// Remembers the attempt in progress, or clears it when [snapshot] is null.
+  Future<void> setPending(ExamSnapshot? snapshot) async {
+    if (snapshot == null) return clearPending();
+    final exam = ExamRestore.examOf(snapshot);
+    if (exam == null) return;
+    final wasEmpty = _pending == null;
+    _pending = snapshot;
+    _pendingExam = exam;
+    // Only a first save changes what any screen shows; the periodic refreshes
+    // of the same attempt must not rebuild the dashboard once a minute.
+    if (wasEmpty) notifyListeners();
+    await Storage.savePending(snapshot);
+  }
+
+  Future<void> clearPending() async {
+    if (_pending == null) {
+      await Storage.savePending(null);
+      return;
+    }
+    _pending = null;
+    _pendingExam = null;
+    notifyListeners();
+    await Storage.savePending(null);
   }
 
   Future<void> setGoal(GoalProfile goal) async {
@@ -191,9 +250,13 @@ class AppState extends ChangeNotifier {
       attempt.id: orderByQuestion,
     };
     _applyToReviewQueue(attempt);
+    // A finished attempt is no longer in progress.
+    _pending = null;
+    _pendingExam = null;
     notifyListeners();
     await Storage.saveAttempts(_attempts, _orders);
     await Storage.saveReviews(_reviews);
+    await Storage.savePending(null);
   }
 
   /// Feeds a finished attempt into the spaced-repetition queue.
@@ -269,6 +332,8 @@ class AppState extends ChangeNotifier {
     _goal = null;
     _attempts = <Attempt>[];
     _orders = <String, Map<String, List<int>>>{};
+    _pending = null;
+    _pendingExam = null;
     _onboarded = false;
     notifyListeners();
     await Storage.clearAll();

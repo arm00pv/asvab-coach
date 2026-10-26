@@ -27,6 +27,7 @@ import 'package:asvab_guard_coach/data/bank/mechanical_figures.dart';
 import 'package:asvab_guard_coach/data/bank/mechanical_figures_extra.dart';
 import 'package:asvab_guard_coach/data/bank/shop_tool_sketches.dart';
 import 'package:asvab_guard_coach/data/models/exam.dart';
+import 'package:asvab_guard_coach/engines/exam_builder.dart';
 import 'package:asvab_guard_coach/screens/exam_screen.dart';
 import 'package:asvab_guard_coach/state/app_state.dart';
 import 'package:asvab_guard_coach/widgets/sketch_view.dart';
@@ -46,15 +47,7 @@ Future<void> _loadFonts() async {
     final cacheRoot = exe.substring(0, marker);
     final sep = Platform.pathSeparator;
     final base =
-        cacheRoot +
-        'bin' +
-        sep +
-        'cache' +
-        sep +
-        'artifacts' +
-        sep +
-        'material_fonts' +
-        sep;
+        '${cacheRoot}bin${sep}cache${sep}artifacts${sep}material_fonts$sep';
     final names = <String>[
       'Roboto-Regular.ttf',
       'Roboto-Medium.ttf',
@@ -73,10 +66,10 @@ Future<void> _loadFonts() async {
       loaded.add(name);
     }
     // ignore: avoid_print
-    print('fonts loaded: ' + loaded.join(', '));
+    print('fonts loaded: ${loaded.join(', ')}');
   } catch (error) {
     // ignore: avoid_print
-    print('font load skipped: ' + error.toString());
+    print('font load skipped: $error');
   }
 }
 
@@ -143,7 +136,7 @@ Future<void> _shoot(
   await tester.pumpAndSettle(const Duration(milliseconds: 400));
   await expectLater(
     find.byType(MaterialApp),
-    matchesGoldenFile('goldens/' + name + '.png'),
+    matchesGoldenFile('goldens/$name.png'),
   );
 }
 
@@ -158,6 +151,41 @@ void main() {
       DashboardScreen(onNavigate: (_) {}),
       state: state,
       size: const Size(1280, 1500),
+    );
+  });
+
+  // The same screen at the size it will actually be seen: a phone. The wide
+  // shot above is for reviewing layout ideas; these are for judging it.
+  testWidgets('dashboard_phone', (tester) async {
+    final state = await _seededState('jenna');
+    await _shoot(
+      tester,
+      'dashboard_phone',
+      DashboardScreen(onNavigate: (_) {}),
+      state: state,
+      size: const Size(390, 1500),
+    );
+  });
+
+  testWidgets('results_phone', (tester) async {
+    final state = await _seededState('dana');
+    await _shoot(
+      tester,
+      'results_phone',
+      ResultsScreen(attempt: state.attempts.last),
+      state: state,
+      size: const Size(390, 2400),
+    );
+  });
+
+  testWidgets('runner_phone', (tester) async {
+    final state = await _seededState('jenna');
+    await _shoot(
+      tester,
+      'runner_phone',
+      ExamScreen(exam: ExamBuilder.section(Subtest.ar, seed: 8)),
+      state: state,
+      size: const Size(390, 844),
     );
   });
 

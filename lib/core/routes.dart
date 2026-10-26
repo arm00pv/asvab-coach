@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../data/models/exam.dart';
+import '../data/models/exam_snapshot.dart';
 import '../data/models/score.dart';
 import '../screens/exam_screen.dart';
 import '../screens/lesson_screen.dart';
@@ -32,6 +33,13 @@ abstract final class AppRoutes {
 
   static Future<void> exam(BuildContext context, Exam exam) =>
       _push<void>(context, ExamScreen(exam: exam));
+
+  /// Carries on an attempt that was interrupted, at the question it stopped on.
+  static Future<void> resumeExam(
+    BuildContext context,
+    Exam exam,
+    ExamSnapshot snapshot,
+  ) => _push<void>(context, ExamScreen(exam: exam, snapshot: snapshot));
 
   static Future<void> results(BuildContext context, Attempt attempt) =>
       _push<void>(context, ResultsScreen(attempt: attempt));

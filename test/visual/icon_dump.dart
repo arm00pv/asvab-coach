@@ -18,16 +18,8 @@ Future<void> _loadFonts() async {
   final marker = exe.indexOf('bin');
   if (marker < 0) return;
   final base =
-      exe.substring(0, marker) +
-      'bin' +
-      Platform.pathSeparator +
-      'cache' +
-      Platform.pathSeparator +
-      'artifacts' +
-      Platform.pathSeparator +
-      'material_fonts' +
-      Platform.pathSeparator;
-  final file = File(base + 'MaterialIcons-Regular.otf');
+      '${exe.substring(0, marker)}bin${Platform.pathSeparator}cache${Platform.pathSeparator}artifacts${Platform.pathSeparator}material_fonts${Platform.pathSeparator}';
+  final file = File('${base}MaterialIcons-Regular.otf');
   if (!file.existsSync()) return;
   final loader = FontLoader('MaterialIcons')
     ..addFont(
@@ -108,24 +100,20 @@ void main() {
   };
 
   for (final entry in legacy.entries) {
-    testWidgets('legacy ' + entry.key, (tester) async {
+    testWidgets('legacy ${entry.key}', (tester) async {
       await shoot(
         tester,
-        '../../android/app/src/main/res/mipmap-' +
-            entry.key +
-            '/ic_launcher.png',
+        '../../android/app/src/main/res/mipmap-${entry.key}/ic_launcher.png',
         entry.value,
       );
     });
   }
 
   for (final entry in foreground.entries) {
-    testWidgets('foreground ' + entry.key, (tester) async {
+    testWidgets('foreground ${entry.key}', (tester) async {
       await shoot(
         tester,
-        '../../android/app/src/main/res/mipmap-' +
-            entry.key +
-            '/ic_launcher_foreground.png',
+        '../../android/app/src/main/res/mipmap-${entry.key}/ic_launcher_foreground.png',
         entry.value,
         adaptive: true,
       );

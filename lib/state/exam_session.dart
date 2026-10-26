@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 
 import '../data/models/exam.dart';
+import '../data/models/exam_snapshot.dart';
 import '../data/models/question.dart';
 import '../data/models/score.dart';
 import '../engines/scoring_engine.dart';
@@ -13,36 +14,82 @@ import '../engines/scoring_engine.dart';
 ///
 /// Kept deliberately free of widgets so it can be unit-tested by driving it
 /// directly, which is exactly what the persona tests do.
+///
+/// The clock counts real seconds, not ticks. A phone throttles its timers when
+/// the app is in the background and may stop them altogether, so a tick counter
+/// would quietly hand the candidate extra minutes; [catchUp] charges the
+/// interval that actually passed instead.
 class ExamSession extends ChangeNotifier {
   ExamSession({
     required this.exam,
     required this.seed,
     this.onSectionComplete,
-  }) {
+    DateTime Function()? now,
+  }) : _now = now ?? DateTime.now {
+    _startedAt = _now();
     _startSection(0);
+  }
+
+  /// Rebuilds a session from a persisted [snapshot].
+  ///
+  /// [exam] must be the exam `ExamRestore.examOf(snapshot)` returned, so the
+  /// sections and option orders are exactly the ones the candidate was looking
+  /// at when the app went away.
+  ExamSession.resume({
+    required this.exam,
+    required this.seed,
+    required ExamSnapshot snapshot,
+    this.onSectionComplete,
+    DateTime Function()? now,
+  }) : _now = now ?? DateTime.now {
+    _startedAt = snapshot.startedAt;
+    _elapsed = math.max(0, snapshot.elapsedSeconds);
+    for (final response in snapshot.responses) {
+      _responses[response.questionId] = response;
+    }
+    if (exam.sections.isEmpty) return;
+    _sectionIndex = snapshot.sectionIndex.clamp(0, exam.sections.length - 1);
+    final section = exam.sections[_sectionIndex];
+    final burned = (section.seconds - snapshot.remainingSeconds).clamp(
+      0,
+      section.seconds,
+    );
+    _sectionStartElapsed = _elapsed - burned;
+    _questionIndex = snapshot.questionIndex.clamp(
+      0,
+      math.max(0, section.questions.length - 1),
+    );
+    _questionEnteredElapsed = _elapsed;
   }
 
   final Exam exam;
   final int seed;
   final void Function(int sectionIndex)? onSectionComplete;
 
+  /// Injectable so the clock can be driven deterministically in tests.
+  final DateTime Function() _now;
+
+  late final DateTime _startedAt;
+
   int _sectionIndex = 0;
   int _questionIndex = 0;
   Timer? _ticker;
 
-  /// Remaining seconds for the live section.
-  int _remaining = 0;
-
-  /// Whole-attempt elapsed seconds, used for pace analysis.
+  /// Whole-attempt seconds actually spent.
   int _elapsed = 0;
+
+  /// Value of [_elapsed] when the live section's clock started running.
+  int _sectionStartElapsed = 0;
+
+  /// Value of [_elapsed] when the current question came on screen.
+  int _questionEnteredElapsed = 0;
+
+  /// Wall clock at the previous tick, so a stalled or suspended ticker can be
+  /// charged what it really took.
+  DateTime? _lastTick;
 
   /// Bank-coordinate answers, keyed by question id.
   final Map<String, QuestionResponse> _responses = <String, QuestionResponse>{};
-
-  /// Milliseconds spent on the current question, so per-question timing is
-  /// accurate without a second timer.
-  int _questionEnteredAt = 0;
-  int _clock = 0;
 
   bool _paused = false;
   bool _finished = false;
@@ -53,7 +100,7 @@ class ExamSession extends ChangeNotifier {
   int get sectionIndex => _sectionIndex;
   bool get isLastSection => _sectionIndex == exam.sections.length - 1;
   int get questionIndex => _questionIndex;
-  int get remainingSeconds => _remaining;
+  DateTime get startedAt => _startedAt;
   int get elapsedSeconds => _elapsed;
   bool get finished => _finished;
   bool get paused => _paused;
@@ -63,6 +110,14 @@ class ExamSession extends ChangeNotifier {
   int get sectionQuestionCount => section.questions.length;
 
   bool get isTimed => section.seconds < 32000;
+
+  /// Seconds left in the live section, derived from the wall clock so that a
+  /// missing tick can never add time.
+  int get remainingSeconds {
+    if (!isTimed) return section.seconds;
+    final left = section.seconds - (_elapsed - _sectionStartElapsed);
+    return left < 0 ? 0 : left;
+  }
 
   int? selectedFor(String questionId) => _responses[questionId]?.selectedIndex;
 
@@ -86,50 +141,86 @@ class ExamSession extends ChangeNotifier {
 
   String get timeLabel {
     if (!isTimed) return 'Untimed';
-    final m = _remaining ~/ 60;
-    final s = _remaining % 60;
+    final m = remainingSeconds ~/ 60;
+    final s = remainingSeconds % 60;
     final padded = s.toString().padLeft(2, '0');
     return '$m:$padded';
   }
 
-  bool get timeCritical => isTimed && _remaining <= 60;
+  bool get timeCritical => isTimed && remainingSeconds <= 60;
 
   // ---- Lifecycle ---------------------------------------------------------
 
   void start() {
+    if (_finished) return;
+    _paused = false;
+    _lastTick = _now();
     _ticker?.cancel();
     _ticker = Timer.periodic(const Duration(seconds: 1), (_) => _tick());
   }
 
-  void _tick() {
-    if (_finished || _paused) return;
-    _clock++;
-    _elapsed++;
-    if (isTimed) {
-      _remaining = math.max(0, _remaining - 1);
-      if (_remaining == 0) {
-        completeSection(force: true);
-        return;
-      }
-    }
-    notifyListeners();
-  }
-
+  /// Stops the clock without losing anything. Used while a section's
+  /// introduction is on screen: the real test does not charge reading time.
   void pause() {
+    if (_finished) return;
     _paused = true;
-    notifyListeners();
+    _ticker?.cancel();
+    _ticker = null;
+    _lastTick = null;
   }
 
   void resume() {
-    _paused = false;
-    notifyListeners();
+    if (_finished) return;
+    start();
+  }
+
+  void _tick() {
+    if (_finished || _paused) return;
+    final charged = _pendingSeconds();
+    if (!_advance(charged ?? 1)) notifyListeners();
+  }
+
+  /// Re-syncs the clock with the wall clock.
+  ///
+  /// Called when the app comes back to the foreground. If the section's time
+  /// ran out while it was away, the section is completed here, exactly as the
+  /// ticker would have done.
+  void catchUp() {
+    if (_finished || _paused) return;
+    final charged = _pendingSeconds();
+    if (charged == null) return;
+    if (!_advance(charged)) notifyListeners();
+  }
+
+  /// Seconds really elapsed since the previous tick, or null when less than a
+  /// tick's worth has passed (which is what a test's fake clock looks like).
+  int? _pendingSeconds() {
+    final now = _now();
+    final previous = _lastTick;
+    _lastTick = now;
+    if (previous == null) return null;
+    final milliseconds = now.difference(previous).inMilliseconds;
+    if (milliseconds < 900) return null;
+    // A late tick is charged what it actually took, up to a ceiling, so a long
+    // sleep cannot silently skip a whole section's worth of questions.
+    return (milliseconds / 1000).round().clamp(1, 12 * 3600);
+  }
+
+  /// Adds [seconds] to the clock. Returns true when the section ran out.
+  bool _advance(int seconds) {
+    if (seconds <= 0 || _finished) return false;
+    _elapsed += seconds;
+    if (!isTimed) return false;
+    if (_elapsed - _sectionStartElapsed < section.seconds) return false;
+    completeSection(force: true);
+    return true;
   }
 
   void _startSection(int index) {
     _sectionIndex = index;
     _questionIndex = 0;
-    _remaining = exam.sections[index].seconds;
-    _questionEnteredAt = _clock;
+    _sectionStartElapsed = _elapsed;
+    _questionEnteredElapsed = _elapsed;
   }
 
   /// Records an answer. [displayIndex] is what the candidate tapped; it is
@@ -137,22 +228,13 @@ class ExamSession extends ChangeNotifier {
   /// persisted report never disagree about what was chosen.
   void answer(int? displayIndex) {
     final q = current;
-    _questionEnteredAt = _clock;
-    if (displayIndex == null) {
-      _responses[q.id] = QuestionResponse(
-        questionId: q.id,
-        selectedIndex: null,
-        secondsSpent: _responses[q.id]?.secondsSpent ?? 0,
-        flagged: isFlagged(q.id),
-      );
-    } else {
-      _responses[q.id] = QuestionResponse(
-        questionId: q.id,
-        selectedIndex: q.toBankIndex(displayIndex),
-        secondsSpent: _responses[q.id]?.secondsSpent ?? 0,
-        flagged: isFlagged(q.id),
-      );
-    }
+    _questionEnteredElapsed = _elapsed;
+    _responses[q.id] = QuestionResponse(
+      questionId: q.id,
+      selectedIndex: displayIndex == null ? null : q.toBankIndex(displayIndex),
+      secondsSpent: _responses[q.id]?.secondsSpent ?? 0,
+      flagged: isFlagged(q.id),
+    );
     notifyListeners();
   }
 
@@ -171,7 +253,7 @@ class ExamSession extends ChangeNotifier {
   /// Stamps the time spent, then moves. Called by next/previous/jump.
   void _commitTiming() {
     final q = current;
-    final spent = _clock - _questionEnteredAt;
+    final spent = _elapsed - _questionEnteredElapsed;
     if (spent <= 0) return;
     final existing = _responses[q.id];
     _responses[q.id] = QuestionResponse(
@@ -180,7 +262,7 @@ class ExamSession extends ChangeNotifier {
       secondsSpent: (existing?.secondsSpent ?? 0) + spent,
       flagged: existing?.flagged ?? false,
     );
-    _questionEnteredAt = _clock;
+    _questionEnteredElapsed = _elapsed;
   }
 
   void next() {
@@ -229,6 +311,7 @@ class ExamSession extends ChangeNotifier {
   ScoreReport finish() {
     _finished = true;
     _ticker?.cancel();
+    _ticker = null;
     final questions = exam.allQuestions
         .map((s) => s.base)
         .toList(growable: false);
@@ -247,12 +330,35 @@ class ExamSession extends ChangeNotifier {
 
   List<QuestionResponse> get responses => _responses.values.toList();
 
+  /// Everything needed to carry this attempt across a process restart.
+  ExamSnapshot toSnapshot() => ExamSnapshot(
+    examId: exam.id,
+    title: exam.title,
+    kind: exam.kind,
+    sections: <SnapshotSection>[
+      for (final s in exam.sections)
+        SnapshotSection(
+          subtest: s.subtest,
+          minutes: s.minutes,
+          label: s.label,
+          questionIds: <String>[for (final q in s.questions) q.id],
+          orders: <List<int>>[for (final q in s.questions) q.order],
+        ),
+    ],
+    sectionIndex: _sectionIndex,
+    questionIndex: _questionIndex,
+    remainingSeconds: remainingSeconds,
+    elapsedSeconds: _elapsed,
+    startedAt: _startedAt,
+    responses: responses,
+  );
+
   /// Builds a finished [Attempt] from the current session.
   Attempt toAttempt(ScoreReport report) => Attempt(
-    id: 'attempt-${DateTime.now().microsecondsSinceEpoch}',
+    id: 'attempt-${_now().microsecondsSinceEpoch}',
     kind: exam.kind,
-    startedAt: DateTime.now().subtract(Duration(seconds: _elapsed)),
-    finishedAt: DateTime.now(),
+    startedAt: _startedAt,
+    finishedAt: _now(),
     report: report,
     responses: responses,
     questionIds: exam.allQuestions.map((q) => q.id).toList(growable: false),

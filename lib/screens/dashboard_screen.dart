@@ -63,6 +63,10 @@ class DashboardScreen extends StatelessWidget {
                     ),
                 ],
               ),
+              if (app.hasPendingAttempt) ...<Widget>[
+                const SizedBox(height: Space.lg),
+                _ResumeNotice(app: app),
+              ],
               if (app.storageRecovered) ...<Widget>[
                 const SizedBox(height: Space.lg),
                 _StorageNotice(
@@ -189,13 +193,19 @@ class _SectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Text(
-          title,
-          style: context.text.titleMedium?.copyWith(
-            color: context.colors.textPrimary,
+        // Flexible, not Spacer: with the system font size turned up the title
+        // and its action together are wider than the phone.
+        Flexible(
+          child: Text(
+            title,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: context.text.titleMedium?.copyWith(
+              color: context.colors.textPrimary,
+            ),
           ),
         ),
-        const Spacer(),
+        const SizedBox(width: Space.sm),
         if (trailing != null)
           TextButton(
             onPressed: onTrailing,
@@ -273,6 +283,106 @@ class _FirstRunCard extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+/// Offers back an attempt that stopped part-way: the app was closed, the
+/// battery died, or the phone reclaimed memory in the middle of a mock.
+///
+/// Without this the runner is only as durable as the process: a candidate three
+/// hours into a full mock would come back to an empty dashboard.
+class _ResumeNotice extends StatelessWidget {
+  const _ResumeNotice({required this.app});
+
+  final AppState app;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final snapshot = app.pendingAttempt;
+    final exam = app.pendingExam;
+    if (snapshot == null || exam == null) return const SizedBox.shrink();
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(Space.lg),
+      decoration: BoxDecoration(
+        color: c.primarySoft,
+        borderRadius: BorderRadius.circular(Radii.md),
+        border: Border(left: BorderSide(color: c.primary, width: 3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Icon(
+                Icons.play_circle_outline_rounded,
+                size: 18,
+                color: c.primary,
+              ),
+              const SizedBox(width: Space.sm),
+              Flexible(
+                child: Text(
+                  'Attempt in progress',
+                  style: context.text.titleSmall?.copyWith(
+                    color: c.textPrimary,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: Space.xs),
+          Text(
+            '${snapshot.title} was interrupted. ${snapshot.progressLabel}, '
+            '${snapshot.answeredLabel}. The clock picks up where it stopped.',
+            style: context.text.bodySmall?.copyWith(
+              color: c.textSecondary,
+              height: 1.5,
+            ),
+          ),
+          const SizedBox(height: Space.md),
+          Wrap(
+            spacing: Space.sm,
+            runSpacing: Space.xs,
+            children: <Widget>[
+              FilledButton(
+                onPressed: () => AppRoutes.resumeExam(context, exam, snapshot),
+                child: const Text('Resume'),
+              ),
+              TextButton(
+                onPressed: () => _confirmDiscard(context),
+                child: const Text('Discard'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _confirmDiscard(BuildContext context) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Discard this attempt?'),
+        content: const Text(
+          'The answers you have given so far are thrown away. Your finished '
+          'results are not affected.',
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Keep it'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Discard'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed ?? false) await app.clearPending();
   }
 }
 
@@ -528,84 +638,98 @@ class _NextActionCard extends StatelessWidget {
     return AppCard(
       accent: c.primary,
       padding: const EdgeInsets.all(Space.lg),
-      child: Row(
+      // The call to action sits under the copy rather than beside it: with the
+      // system font size enlarged its label alone is wider than the card.
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: c.primary,
-              borderRadius: BorderRadius.circular(Radii.md),
-            ),
-            child: Icon(_iconFor(action.kind), size: 20, color: c.onPrimary),
-          ),
-          const SizedBox(width: Space.lg),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const Eyebrow('Do this next'),
-                const SizedBox(height: 2),
-                Text(
-                  action.title,
-                  style: context.text.titleMedium?.copyWith(
-                    color: c.textPrimary,
-                  ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: c.primary,
+                  borderRadius: BorderRadius.circular(Radii.md),
                 ),
-                const SizedBox(height: 2),
-                Text(action.body, style: context.text.bodySmall),
-              ],
-            ),
+                child: Icon(
+                  _iconFor(action.kind),
+                  size: 20,
+                  color: c.onPrimary,
+                ),
+              ),
+              const SizedBox(width: Space.lg),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Eyebrow('Do this next'),
+                    const SizedBox(height: 2),
+                    Text(
+                      action.title,
+                      style: context.text.titleMedium?.copyWith(
+                        color: c.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(action.body, style: context.text.bodySmall),
+                  ],
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: Space.md),
-          FilledButton(
-            onPressed: () {
-              switch (action.kind) {
-                case NextActionKind.diagnostic:
-                  AppRoutes.exam(
-                    context,
-                    ExamBuilder.diagnostic(
-                      seed: DateTime.now().millisecondsSinceEpoch % 100000,
-                    ),
-                  );
-                case NextActionKind.mock:
-                  AppRoutes.exam(
-                    context,
-                    ExamBuilder.fullMock(
-                      seed: DateTime.now().millisecondsSinceEpoch % 100000,
-                    ),
-                  );
-                case NextActionKind.lesson:
-                  {
-                    final id = action.skillId;
-                    if (id != null) {
-                      AppRoutes.lesson(context, id);
-                    } else {
-                      onNavigate(1);
+          const SizedBox(height: Space.md),
+          Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: FilledButton(
+              onPressed: () {
+                switch (action.kind) {
+                  case NextActionKind.diagnostic:
+                    AppRoutes.exam(
+                      context,
+                      ExamBuilder.diagnostic(
+                        seed: DateTime.now().millisecondsSinceEpoch % 100000,
+                      ),
+                    );
+                  case NextActionKind.mock:
+                    AppRoutes.exam(
+                      context,
+                      ExamBuilder.fullMock(
+                        seed: DateTime.now().millisecondsSinceEpoch % 100000,
+                      ),
+                    );
+                  case NextActionKind.lesson:
+                    {
+                      final id = action.skillId;
+                      if (id != null) {
+                        AppRoutes.lesson(context, id);
+                      } else {
+                        onNavigate(1);
+                      }
                     }
-                  }
-                case NextActionKind.review:
-                  AppRoutes.exam(
-                    context,
-                    ExamBuilder.review(
-                      app.dueReviewQuestions,
-                      seed: DateTime.now().millisecondsSinceEpoch % 100000,
-                    ),
-                  );
-                case NextActionKind.drill:
-                  AppRoutes.exam(
-                    context,
-                    ExamBuilder.drill(
-                      skillIds: AdaptiveEngine.weakSkillIds(report, limit: 5),
-                      seed: DateTime.now().millisecondsSinceEpoch % 100000,
-                    ),
-                  );
-                case NextActionKind.jobs:
-                  onNavigate(3);
-              }
-            },
-            child: Text(action.cta),
+                  case NextActionKind.review:
+                    AppRoutes.exam(
+                      context,
+                      ExamBuilder.review(
+                        app.dueReviewQuestions,
+                        seed: DateTime.now().millisecondsSinceEpoch % 100000,
+                      ),
+                    );
+                  case NextActionKind.drill:
+                    AppRoutes.exam(
+                      context,
+                      ExamBuilder.drill(
+                        skillIds: AdaptiveEngine.weakSkillIds(report, limit: 5),
+                        seed: DateTime.now().millisecondsSinceEpoch % 100000,
+                      ),
+                    );
+                  case NextActionKind.jobs:
+                    onNavigate(3);
+                }
+              },
+              child: Text(action.cta),
+            ),
           ),
         ],
       ),
@@ -816,21 +940,31 @@ class _EligibilityTeaser extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
+          // spaceBetween keeps the count on the right when both fit, and drops
+          // it onto its own line when an enlarged label cannot share the width.
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: Space.sm,
+            runSpacing: Space.xs,
             children: <Widget>[
-              Icon(Icons.workspaces_outline, size: 18, color: c.primary),
-              const SizedBox(width: Space.sm),
-              Flexible(
-                child: Text(
-                  'Job eligibility',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: context.text.titleSmall?.copyWith(
-                    color: c.textPrimary,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(Icons.workspaces_outline, size: 18, color: c.primary),
+                  const SizedBox(width: Space.sm),
+                  Flexible(
+                    child: Text(
+                      'Job eligibility',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.text.titleSmall?.copyWith(
+                        color: c.textPrimary,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-              const Spacer(),
               Pill(
                 '${summary.qualified.length} of ${summary.total} open',
                 tone: PillTone.primary,
@@ -869,8 +1003,10 @@ class _EligibilityTeaser extends StatelessWidget {
                         ),
                       ),
                     ),
+                    const SizedBox(width: Space.xs),
                     Text(
                       '${EligibilityEngine.evaluate(m.gate, report).bestShortfall} pts short',
+                      maxLines: 1,
                       style: context.text.labelSmall?.copyWith(
                         color: c.warning,
                       ),

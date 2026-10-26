@@ -160,7 +160,7 @@ abstract final class ExamBuilder {
       );
     }
     return Exam(
-      id: 'review-' + seed.toString(),
+      id: 'review-$seed',
       kind: ExamKind.review,
       sections: sections,
       title: 'Review session',

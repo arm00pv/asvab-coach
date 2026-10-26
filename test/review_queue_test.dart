@@ -35,7 +35,7 @@ Attempt _attempt(
     elapsedSeconds: 400,
   );
   return Attempt(
-    id: 'a-' + DateTime.now().microsecondsSinceEpoch.toString(),
+    id: 'a-${DateTime.now().microsecondsSinceEpoch}',
     kind: kind,
     startedAt: DateTime.now().subtract(const Duration(minutes: 7)),
     finishedAt: DateTime.now(),
@@ -211,7 +211,7 @@ void main() {
 
       final reloaded = await _state();
       // Mock prefs are reset per test, so reload from the same state object.
-      final persisted = await state.reviews.first.toJson();
+      final persisted = state.reviews.first.toJson();
       final restored = ReviewItem.fromJson(persisted);
       expect(restored, isNotNull);
       expect(restored!.questionId, q.id);

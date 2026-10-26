@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/exam_snapshot.dart';
 import '../models/mos.dart';
 import '../models/review_item.dart';
 import '../models/score.dart';
@@ -17,6 +18,7 @@ class PersistedState {
     required this.soundOn,
     required this.onboarded,
     required this.reviews,
+    this.pending,
     this.unreadableKeys = const <String>[],
     this.skippedRecords = 0,
   });
@@ -33,6 +35,9 @@ class PersistedState {
 
   /// Spaced-repetition queue: questions missed or flagged, with due dates.
   final List<ReviewItem> reviews;
+
+  /// An attempt that was interrupted mid-exam, if there is one.
+  final ExamSnapshot? pending;
 
   /// Storage keys that could not be read, so the app can say so instead of
   /// silently presenting an empty history as if it were the whole truth.
@@ -52,6 +57,7 @@ class PersistedState {
     soundOn: true,
     onboarded: false,
     reviews: <ReviewItem>[],
+    pending: null,
     unreadableKeys: <String>[],
     skippedRecords: 0,
   );
@@ -74,6 +80,7 @@ abstract final class Storage {
   static const _kSound = 'asvab.sound.v1';
   static const _kOnboarded = 'asvab.onboarded.v1';
   static const _kReviews = 'asvab.reviews.v1';
+  static const _kPending = 'asvab.pending.v1';
 
   /// Reads everything that survives a refresh.
   ///
@@ -99,6 +106,7 @@ abstract final class Storage {
         soundOn: true,
         onboarded: false,
         reviews: <ReviewItem>[],
+        pending: null,
         unreadableKeys: <String>['all'],
         skippedRecords: 0,
       );
@@ -159,6 +167,20 @@ abstract final class Storage {
     if (reviews.failed) unreadable.add('reviews');
     skipped += reviews.skipped;
 
+    // An interrupted attempt. A file from an older version of the app decodes
+    // to null, which simply means there is nothing to resume.
+    ExamSnapshot? pending;
+    final pendingRaw = prefs.getString(_kPending);
+    if (pendingRaw != null) {
+      try {
+        pending = ExamSnapshot.fromJson(
+          (jsonDecode(pendingRaw) as Map).cast<String, dynamic>(),
+        );
+      } catch (_) {
+        unreadable.add('attempt in progress');
+      }
+    }
+
     return PersistedState(
       goal: goal,
       attempts: attempts,
@@ -167,14 +189,16 @@ abstract final class Storage {
       soundOn: prefs.getBool(_kSound) ?? true,
       onboarded: prefs.getBool(_kOnboarded) ?? false,
       reviews: reviews.items,
+      pending: pending,
       unreadableKeys: unreadable,
       skippedRecords: skipped,
     );
   }
 
   static _Recovered<ReviewItem> _reviewsFrom(String? raw) {
-    if (raw == null)
+    if (raw == null) {
       return const _Recovered<ReviewItem>(<ReviewItem>[], 0, false);
+    }
     try {
       final out = <ReviewItem>[];
       var skipped = 0;
@@ -230,6 +254,16 @@ abstract final class Storage {
         for (final e in orders.entries) e.key: e.value,
       }),
     );
+  }
+
+  /// Stores, or with null clears, the attempt in progress.
+  static Future<void> savePending(ExamSnapshot? snapshot) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (snapshot == null) {
+      await prefs.remove(_kPending);
+      return;
+    }
+    await prefs.setString(_kPending, jsonEncode(snapshot.toJson()));
   }
 
   static Future<void> saveTheme(bool dark) async {

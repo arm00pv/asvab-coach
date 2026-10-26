@@ -11,7 +11,11 @@
 // It starts by clearing this app's saved data, so run it against a development
 // install, not against a phone somebody is using to revise.
 import 'package:asvab_guard_coach/app.dart';
+import 'package:asvab_guard_coach/core/screen_awake.dart';
+import 'package:asvab_guard_coach/engines/exam_builder.dart';
+import 'package:asvab_guard_coach/screens/exam_screen.dart';
 import 'package:asvab_guard_coach/state/app_state.dart';
+import 'package:asvab_guard_coach/data/models/catalog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -148,5 +152,55 @@ void main() {
           find.text('Correct').evaluate().isNotEmpty,
       isTrue,
     );
+  });
+
+  // The two behaviours that only exist on the device: the platform channel that
+  // keeps the screen on, and the snapshot that survives the app being sent to
+  // the background. Neither can be proved against a mock.
+  testWidgets('the platform keeps the screen awake, and a backgrounded exam is '
+      'still there afterwards', (tester) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    final awake = await ScreenAwake.keepOn(true);
+    expect(
+      awake,
+      isTrue,
+      reason: 'MainActivity should answer asvabcoach/screen',
+    );
+    expect(await ScreenAwake.keepOn(false), isTrue);
+
+    final state = AppState();
+    await state.init();
+    final exam = ExamBuilder.section(Subtest.ar, seed: 5);
+    await tester.pumpWidget(
+      ChangeNotifierProvider<AppState>.value(
+        value: state,
+        child: MaterialApp(home: ExamScreen(exam: exam)),
+      ),
+    );
+    await settle(tester);
+    await tester.tap(find.text('Begin section'));
+    await settle(tester);
+    await tester.sendKeyEvent(LogicalKeyboardKey.digit2);
+    await settle(tester, pumps: 2);
+
+    // Sent to the background the way a phone call does it.
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+    await settle(tester, pumps: 2);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await settle(tester, pumps: 2);
+
+    final reopened = AppState();
+    await reopened.init();
+    expect(reopened.hasPendingAttempt, isTrue);
+    expect(reopened.pendingAttempt!.answered, 1);
+    expect(reopened.pendingAttempt!.sections.first.subtest, Subtest.ar);
+
+    // And the runner that comes of it is the same attempt, not a fresh one.
+    final rebuilt = reopened.pendingExam;
+    expect(rebuilt, isNotNull);
+    expect(rebuilt!.allQuestions.first.id, exam.allQuestions.first.id);
+    expect(rebuilt.allQuestions.first.order, exam.allQuestions.first.order);
   });
 }

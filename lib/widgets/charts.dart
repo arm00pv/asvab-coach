@@ -47,42 +47,53 @@ class ReadinessGauge extends StatelessWidget {
           progress: color ?? c.primary,
           marker: c.textPrimary,
         ),
+        // The ring's caption grows with the system font size. Scaling the block
+        // down keeps the arc readable instead of painting an overflow stripe
+        // through the middle of the gauge.
         child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              if (bandLabel != null)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 2),
-                  child: Text(
-                    bandLabel!,
-                    style: context.text.labelSmall?.copyWith(
-                      color: color ?? c.primary,
-                      letterSpacing: 1.1,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: size * 0.14),
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  if (bandLabel != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 2),
+                      child: Text(
+                        bandLabel!,
+                        style: context.text.labelSmall?.copyWith(
+                          color: color ?? c.primary,
+                          letterSpacing: 1.1,
+                        ),
+                      ),
+                    ),
+                  Text(
+                    '$value',
+                    style: context.text.displayMedium?.copyWith(
+                      fontSize: size * 0.28,
+                      height: 1.0,
                     ),
                   ),
-                ),
-              Text(
-                '$value',
-                style: context.text.displayMedium?.copyWith(
-                  fontSize: size * 0.28,
-                  height: 1.0,
-                ),
+                  const SizedBox(height: 2),
+                  Text(
+                    label,
+                    style: context.text.labelMedium?.copyWith(
+                      color: c.textMuted,
+                    ),
+                  ),
+                  const SizedBox(height: 1),
+                  Text(
+                    sublabel,
+                    style: context.text.bodySmall?.copyWith(
+                      color: c.textMuted,
+                      fontSize: 11,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 2),
-              Text(
-                label,
-                style: context.text.labelMedium?.copyWith(color: c.textMuted),
-              ),
-              const SizedBox(height: 1),
-              Text(
-                sublabel,
-                style: context.text.bodySmall?.copyWith(
-                  color: c.textMuted,
-                  fontSize: 11,
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),
@@ -322,6 +333,10 @@ class _RadarPainter extends CustomPainter {
         text: TextSpan(
           text: labels[i],
           style: TextStyle(
+            // Named explicitly, like the figure painters: an unstyled family
+            // resolves to whatever the platform calls default, and the visual
+            // review harness can then only draw block glyphs.
+            fontFamily: 'Roboto',
             fontSize: 10,
             fontWeight: FontWeight.w700,
             letterSpacing: 0.3,

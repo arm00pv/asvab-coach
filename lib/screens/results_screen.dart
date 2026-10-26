@@ -31,11 +31,21 @@ class ResultsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(attempt.kind.label),
         actions: <Widget>[
-          TextButton.icon(
-            onPressed: () => AppRoutes.review(context, attempt),
-            icon: const Icon(Icons.fact_check_outlined, size: 16),
-            label: const Text('Review answers'),
-          ),
+          // With the system font size turned up, the labelled action and the
+          // title together are wider than the bar; the icon carries the same
+          // meaning and the tooltip keeps it named.
+          if (MediaQuery.textScalerOf(context).scale(1) > 1.3)
+            IconButton(
+              onPressed: () => AppRoutes.review(context, attempt),
+              tooltip: 'Review answers',
+              icon: const Icon(Icons.fact_check_outlined),
+            )
+          else
+            TextButton.icon(
+              onPressed: () => AppRoutes.review(context, attempt),
+              icon: const Icon(Icons.fact_check_outlined, size: 16),
+              label: const Text('Review answers'),
+            ),
           const SizedBox(width: Space.sm),
         ],
       ),
@@ -412,15 +422,20 @@ class _SubtestRow extends StatelessWidget {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Text(
-                      '${score.correct}/${score.total} correct',
-                      style: context.text.bodySmall?.copyWith(
-                        color: c.textSecondary,
+                    Expanded(
+                      child: Text(
+                        '${score.correct}/${score.total} correct',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.text.bodySmall?.copyWith(
+                          color: c.textSecondary,
+                        ),
                       ),
                     ),
-                    const Spacer(),
+                    const SizedBox(width: Space.sm),
                     Text(
                       'SS ${score.standardScore}',
+                      maxLines: 1,
                       style: context.text.labelMedium?.copyWith(
                         color: c.textPrimary,
                       ),
@@ -530,9 +545,14 @@ class _EligibilityBlock extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Text(
-                '${summary.qualified.length} of ${summary.total}',
-                style: context.text.displaySmall?.copyWith(fontSize: 26),
+              // A display figure, clamped rather than scaled without limit: at
+              // 2x this number alone is wider than the card.
+              MediaQuery.withClampedTextScaling(
+                maxScaleFactor: 1.3,
+                child: Text(
+                  '${summary.qualified.length} of ${summary.total}',
+                  style: context.text.displaySmall?.copyWith(fontSize: 26),
+                ),
               ),
               const SizedBox(width: Space.md),
               Expanded(

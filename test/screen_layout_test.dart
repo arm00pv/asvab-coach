@@ -5,7 +5,9 @@ import 'package:asvab_guard_coach/data/models/mos.dart';
 import 'package:asvab_guard_coach/data/models/question.dart';
 import 'package:asvab_guard_coach/data/models/score.dart';
 import 'package:asvab_guard_coach/engines/personas.dart';
+import 'package:asvab_guard_coach/engines/exam_builder.dart';
 import 'package:asvab_guard_coach/screens/dashboard_screen.dart';
+import 'package:asvab_guard_coach/screens/exam_screen.dart';
 import 'package:asvab_guard_coach/screens/jobs_screen.dart';
 import 'package:asvab_guard_coach/screens/lesson_screen.dart';
 import 'package:asvab_guard_coach/screens/onboarding_screen.dart';
@@ -35,6 +37,7 @@ Future<void> pumpScreen(
   Widget screen, {
   AppState? state,
   Size size = phone,
+  double textScale = 1,
 }) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1.0;
@@ -50,7 +53,18 @@ Future<void> pumpScreen(
   await tester.pumpWidget(
     ChangeNotifierProvider<AppState>.value(
       value: resolved,
-      child: MaterialApp(theme: AppTheme.build(Brightness.light), home: screen),
+      child: MaterialApp(
+        theme: AppTheme.build(Brightness.light),
+        home: textScale == 1
+            ? screen
+            : Builder(
+                builder: (context) => MediaQuery(
+                  data: MediaQuery.of(context)
+                      .copyWith(textScaler: TextScaler.linear(textScale)),
+                  child: screen,
+                ),
+              ),
+      ),
     ),
   );
   await tester.pump();
@@ -211,5 +225,94 @@ void main() {
     testWidgets('QA lab', (tester) async {
       await pumpScreen(tester, const QaLabScreen());
     });
+  });
+
+  // The system font size is a setting the candidate owns, and Android offers up
+  // to 2x. An enlarged label that does not fit becomes a painted overflow
+  // stripe, and a runner whose options are clipped is a runner nobody finishes.
+  group('every screen survives enlarged system text', () {
+    for (final scale in <double>[1.3, 2]) {
+      testWidgets('dashboard at ${scale}x', (tester) async {
+        final state = await seededState();
+        await pumpScreen(
+          tester,
+          DashboardScreen(onNavigate: (_) {}),
+          state: state,
+          textScale: scale,
+        );
+      });
+
+      testWidgets('results at ${scale}x', (tester) async {
+        final state = await seededState();
+        await pumpScreen(
+          tester,
+          ResultsScreen(attempt: state.attempts.last),
+          state: state,
+          textScale: scale,
+        );
+      });
+
+      testWidgets('review at ${scale}x', (tester) async {
+        final state = await seededState();
+        await pumpScreen(
+          tester,
+          ReviewScreen(attempt: state.attempts.last),
+          state: state,
+          textScale: scale,
+        );
+      });
+
+      testWidgets('settings at ${scale}x', (tester) async {
+        final state = await seededState();
+        await pumpScreen(
+          tester,
+          const SettingsScreen(),
+          state: state,
+          textScale: scale,
+        );
+      });
+
+      testWidgets('the runner at ${scale}x', (tester) async {
+        final state = await seededState();
+        await pumpScreen(
+          tester,
+          ExamScreen(exam: ExamBuilder.section(Subtest.ar, seed: 8)),
+          state: state,
+          textScale: scale,
+        );
+      });
+    }
+  });
+
+  group('every screen survives a small phone', () {
+    // 360x640 is a cheap Android handset; 640x360 is the same one held sideways,
+    // where the runner has to fit a question, four options and a footer into 360
+    // logical pixels of height.
+    for (final size in <Size>[const Size(360, 640), const Size(640, 360)]) {
+      testWidgets('dashboard at ${size.width.toInt()}x${size.height.toInt()}', (
+        tester,
+      ) async {
+        final state = await seededState();
+        await pumpScreen(
+          tester,
+          DashboardScreen(onNavigate: (_) {}),
+          state: state,
+          size: size,
+        );
+      });
+
+      testWidgets(
+        'the runner at ${size.width.toInt()}x${size.height.toInt()}',
+        (tester) async {
+          final state = await seededState();
+          await pumpScreen(
+            tester,
+            ExamScreen(exam: ExamBuilder.section(Subtest.ar, seed: 8)),
+            state: state,
+            size: size,
+          );
+        },
+      );
+    }
   });
 }

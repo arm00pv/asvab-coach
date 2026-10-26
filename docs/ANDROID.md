@@ -22,6 +22,12 @@ location, contacts, the microphone, or external storage, so it asks for none of
 them. An app that requests permissions it does not need is asking the person
 installing it to trust a claim that is not true.
 
+One thing that would normally need a permission does not: keeping the screen
+awake during a timed section. `FLAG_KEEP_SCREEN_ON` is a window flag rather than
+a wakelock, so `MainActivity` sets it through a one-method channel
+(`asvabcoach/screen`) and the manifest stays empty. The runner turns it on when
+it opens and off again when it closes.
+
 The only `INTERNET` entry in the tree is in
 `android/app/src/debug/AndroidManifest.xml`, which Flutter adds so the
 development tool can attach for hot reload. It is not in the release APK. You
@@ -99,7 +105,12 @@ flutter install --release
 ## What the app stores, and where it goes
 
 Attempt history, the goal, the spaced-repetition queue and theme preference are
-kept in the app's private storage. Nothing leaves the device. Uninstalling the
+kept in the app's private storage. Nothing leaves the device.
+
+An attempt still in progress is written there too, after every answer and again
+whenever the app goes to the background, so a phone that is closed or reclaimed
+mid-mock comes back to the question it stopped on. That snapshot is deleted the
+moment the attempt is submitted or discarded. Uninstalling the
 app deletes all of it, and **Settings > Erase all data** does the same without
 uninstalling.
 

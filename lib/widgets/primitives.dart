@@ -198,10 +198,17 @@ class StatTile extends StatelessWidget {
                   number,
                 if (suffix != null) ...<Widget>[
                   const SizedBox(width: 2),
-                  Text(
-                    suffix!,
-                    style: context.text.titleMedium?.copyWith(
-                      color: c.textMuted,
+                  // The suffix is text too, so it grows with the system font
+                  // size; it has to be allowed to give way rather than push the
+                  // row past its edge.
+                  Flexible(
+                    child: Text(
+                      suffix!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.text.titleMedium?.copyWith(
+                        color: c.textMuted,
+                      ),
                     ),
                   ),
                 ],
