@@ -40,6 +40,33 @@ class LessonScreen extends StatelessWidget {
         .where((q) => q.skills.contains(skillId))
         .length;
 
+    final bool stack = MediaQuery.textScalerOf(context).scale(1) > 1.3;
+    final Widget checkCopy = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Mastery check',
+          style: context.text.titleSmall?.copyWith(color: c.textPrimary),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          '$questionCount questions in the bank test this skill. '
+          'Four of them will tell you whether the lesson landed.',
+          style: context.text.bodySmall,
+        ),
+      ],
+    );
+    final Widget checkButton = FilledButton(
+      onPressed: () => AppRoutes.exam(
+        context,
+        ExamBuilder.lessonQuiz(
+          skillId,
+          seed: DateTime.now().millisecondsSinceEpoch % 100000,
+        ),
+      ),
+      child: const Text('Check myself'),
+    );
+
     return Scaffold(
       // The reading time used to sit in the bar, where it took the width the
       // subtest name needed and cut "Auto & Shop Information" short. It belongs
@@ -136,6 +163,20 @@ class LessonScreen extends StatelessWidget {
               _ExampleCard(example: ex),
               const SizedBox(height: Space.md),
             ],
+            if (lesson.commonMistakes.isNotEmpty) ...<Widget>[
+              const SizedBox(height: Space.sm),
+              Text(
+                lesson.commonMistakes.length == 1
+                    ? 'The common mistake'
+                    : 'Common mistakes',
+                style: context.text.titleMedium?.copyWith(color: c.textPrimary),
+              ),
+              const SizedBox(height: Space.sm),
+              for (final m in lesson.commonMistakes) ...<Widget>[
+                _MistakeCard(mistake: m),
+                const SizedBox(height: Space.md),
+              ],
+            ],
             const SizedBox(height: Space.sm),
             Text(
               'Rules worth memorising',
@@ -188,40 +229,26 @@ class LessonScreen extends StatelessWidget {
             AppCard(
               accent: c.primary,
               padding: const EdgeInsets.all(Space.lg),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              // The button keeps its own width, so beside the copy it can only
+              // survive while the copy still has room. At an enlarged system
+              // font the label alone is wider than the card, so the pair stacks
+              // instead of painting an overflow stripe over the check.
+              child: stack
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        Text(
-                          'Mastery check',
-                          style: context.text.titleSmall?.copyWith(
-                            color: c.textPrimary,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          '$questionCount questions in the bank test this skill. '
-                          'Four of them will tell you whether the lesson landed.',
-                          style: context.text.bodySmall,
-                        ),
+                        checkCopy,
+                        const SizedBox(height: Space.md),
+                        checkButton,
+                      ],
+                    )
+                  : Row(
+                      children: <Widget>[
+                        Expanded(child: checkCopy),
+                        const SizedBox(width: Space.md),
+                        checkButton,
                       ],
                     ),
-                  ),
-                  const SizedBox(width: Space.md),
-                  FilledButton(
-                    onPressed: () => AppRoutes.exam(
-                      context,
-                      ExamBuilder.lessonQuiz(
-                        skillId,
-                        seed: DateTime.now().millisecondsSinceEpoch % 100000,
-                      ),
-                    ),
-                    child: const Text('Check myself'),
-                  ),
-                ],
-              ),
             ),
             const SizedBox(height: Space.xxl),
           ],
@@ -287,6 +314,56 @@ class _Section extends StatelessWidget {
             ),
         ],
       ],
+    );
+  }
+}
+
+/// The wrong answer a lesson expects, set apart from the worked examples so
+/// the two are never confused: this is the value to stop writing down.
+class _MistakeCard extends StatelessWidget {
+  const _MistakeCard({required this.mistake});
+  final CommonMistake mistake;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return AppCard(
+      accent: c.danger,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              // A fixed icon beside wrapping text is safe at any font scale,
+              // where a fixed width label would clip the answer itself.
+              Padding(
+                padding: const EdgeInsets.only(top: 2),
+                child: Icon(Icons.close_rounded, size: 15, color: c.danger),
+              ),
+              const SizedBox(width: Space.sm),
+              Expanded(
+                child: Text(
+                  mistake.answer,
+                  style: context.text.bodyMedium?.copyWith(
+                    color: c.danger,
+                    fontWeight: FontWeight.w600,
+                    height: 1.45,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: Space.sm),
+          Text(
+            mistake.why,
+            style: context.text.bodySmall?.copyWith(
+              color: c.textSecondary,
+              height: 1.5,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

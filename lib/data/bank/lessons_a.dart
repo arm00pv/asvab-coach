@@ -46,6 +46,15 @@ const List<Lesson> lessonsA = <Lesson>[
         ],
         answer: '25 percent',
       ),
+      WorkedExample(
+        prompt: 'A replacement part costs 250 dollars and the shop marks it up 12 percent. What does the part sell for?',
+        steps: <String>[
+          'Turn the percent into a decimal: 12 percent is 0.12.',
+          'Find the markup: 0.12 x 250 = 30.',
+          'A markup is added, so 250 + 30 = 280.',
+        ],
+        answer: '280 dollars',
+      ),
     ],
     quickRules: <String>[
       'Percent means per hundred, so 37 percent is 0.37 before you touch the numbers.',
@@ -57,6 +66,16 @@ const List<Lesson> lessonsA = <Lesson>[
       'Dividing the change by the new value: 600 / 3,000 gives 20 percent, and 20 percent is sitting right there as a choice.',
       'Subtracting the percent as if it were a dollar amount: 84 - 25 = 59 dollars instead of 63.',
       'Answering the discount when the question asked for the price, so you report 21 dollars and walk away from a correct calculation.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '30 dollars, having stopped once the markup was calculated.',
+        why: 'The markup is not the price. A markup adds to the original, so 250 + 30 = 280 dollars, while 30 is only the amount of the increase.',
+      ),
+      CommonMistake(
+        answer: '2,083 dollars, dividing 250 by 0.12.',
+        why: 'A percent of a price multiplies, it does not divide. Division is for undoing a markup when the final price is the thing you were given.',
+      ),
     ],
   ),
   Lesson(
@@ -113,6 +132,15 @@ const List<Lesson> lessonsA = <Lesson>[
         ],
         answer: '320 vehicles',
       ),
+      WorkedExample(
+        prompt: 'A coolant mix is five parts water to three parts antifreeze. A drum holds 64 litres of the finished mix. How much water is in it?',
+        steps: <String>[
+          'Add the parts: 5 + 3 = 8 parts in total.',
+          'One part is 64 / 8 = 8 litres.',
+          'Water is five parts: 5 x 8 = 40 litres.',
+        ],
+        answer: '40 litres of water',
+      ),
     ],
     quickRules: <String>[
       'Keep matching units in matching positions, or the proportion answers a question you were not asked.',
@@ -124,6 +152,16 @@ const List<Lesson> lessonsA = <Lesson>[
       'Inverting the ratio: dividing 120 by 8 and multiplying by 3 gives 45 vehicles instead of 320.',
       'Reading 2 to 3 as 2 out of 3, which splits 60 dollars into 20 and 40 instead of the correct 24 and 36.',
       'Putting servings on top on one side and cups on top on the other, which silently inverts the answer.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '8 litres, stopping at the size of one part.',
+        why: 'One part is 8 litres, but the water is five of those parts, so the answer is 5 x 8 = 40 litres.',
+      ),
+      CommonMistake(
+        answer: '24 litres, which is the antifreeze share.',
+        why: '24 litres is 3 parts, the antifreeze. The question asks for water, the 5 part of the ratio, which is 40 litres.',
+      ),
     ],
   ),
   Lesson(
@@ -180,6 +218,15 @@ const List<Lesson> lessonsA = <Lesson>[
         ],
         answer: '15 hours',
       ),
+      WorkedExample(
+        prompt: 'A supply truck averages 56 miles per hour over a 210 mile run. How long does the run take?',
+        steps: <String>[
+          'Rearrange distance equals rate times time: t = d / r.',
+          'Divide: 210 / 56 = 3.75 hours.',
+          'Convert the fraction of an hour: 0.75 x 60 = 45 minutes.',
+        ],
+        answer: '3 hours and 45 minutes',
+      ),
     ],
     quickRules: <String>[
       'd = rt, r = d/t, t = d/r. Only one formula exists.',
@@ -191,6 +238,16 @@ const List<Lesson> lessonsA = <Lesson>[
       'Subtracting the times in a combined-work problem: 10 - 6 gives 4 hours instead of 15.',
       'Averaging two speeds: 120 miles at 60 mph and back at 40 mph is 240 miles in 5 hours, so 48 mph, not 50.',
       'Leaving the time in minutes, which turns the answer into a number sixty times too large.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '3 hours and 75 minutes, reading 0.75 as minutes.',
+        why: '0.75 of an hour is 45 minutes, because a minute is one sixtieth of an hour and not one hundredth.',
+      ),
+      CommonMistake(
+        answer: '4 hours, rounding 3.75 up to a whole number.',
+        why: 'Rounding the time falsifies the trip: 3.75 hours at 56 miles per hour is exactly 210 miles, while 4 hours would be 224 miles.',
+      ),
     ],
   ),
   Lesson(
@@ -247,6 +304,15 @@ const List<Lesson> lessonsA = <Lesson>[
         ],
         answer: '170 pounds',
       ),
+      WorkedExample(
+        prompt: 'Five soldiers average 172 pounds. A sixth soldier joins the squad and the average becomes 174 pounds. How much does the sixth soldier weigh?',
+        steps: <String>[
+          'Old total: 5 x 172 = 860 pounds.',
+          'New total: 6 x 174 = 1,044 pounds.',
+          'The difference is the newcomer: 1,044 - 860 = 184 pounds.',
+        ],
+        answer: '184 pounds',
+      ),
     ],
     quickRules: <String>[
       'average = total / count, so total = average x count. Work backwards from the total.',
@@ -258,6 +324,17 @@ const List<Lesson> lessonsA = <Lesson>[
       'Averaging the group averages: (175 + 160) / 2 = 167.5 pounds, which ignores that twice as many soldiers are in the heavier group.',
       'Finding the current average of 86 and adding the 2 point gap to reach 88 instead of the 96 that is actually required.',
       'Using the old count when a new score is added, so you divide the required total by 4 instead of 5.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer:
+            '174 pounds, reporting the new average instead of the newcomer.',
+        why: 'The average is a summary, not a weight. The sixth soldier adds 184 pounds, and that is what lifts the average to 174.',
+      ),
+      CommonMistake(
+        answer: '12 pounds, reporting only the rise in the total.',
+        why: 'The total rose by 12 pounds, and that rise sits on top of the average the squad already carried: 172 + 12 = 184 pounds.',
+      ),
     ],
   ),
   Lesson(
@@ -314,6 +391,15 @@ const List<Lesson> lessonsA = <Lesson>[
         ],
         answer: '170 miles',
       ),
+      WorkedExample(
+        prompt: 'A convoy has twice as many trucks as trailers, and 48 vehicles in all. How many trucks are in the convoy?',
+        steps: <String>[
+          'Let t be the trailers, so the trucks are 2t.',
+          'Write the total: t + 2t = 48, which is 3t = 48.',
+          'Solve: t = 16 trailers, so trucks are 2 x 16 = 32.',
+        ],
+        answer: '32 trucks',
+      ),
     ],
     quickRules: <String>[
       'Define the variable before writing the equation, and define the thing the question asks for.',
@@ -325,6 +411,16 @@ const List<Lesson> lessonsA = <Lesson>[
       'Solving for the variable and reporting it when the question asked for one part: 750 dollars when the rent was 300.',
       'Reversing the equation so the flat fee is subtracted from the rate, which produces a negative mileage.',
       'Dropping the flat fee entirely: 96 / 0.30 = 320 miles instead of 170.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '16, solving for the trailers and stopping there.',
+        why: 'The letter stood for the count you were not asked for. There are 16 trailers, so there are 2 x 16 = 32 trucks.',
+      ),
+      CommonMistake(
+        answer: '24 trucks, splitting 48 evenly between the two kinds.',
+        why: 'An even split ignores the doubling. A ratio of 2 to 1 splits 48 into 32 and 16, not into two halves.',
+      ),
     ],
   ),
   Lesson(
@@ -381,6 +477,15 @@ const List<Lesson> lessonsA = <Lesson>[
         ],
         answer: '314 square feet',
       ),
+      WorkedExample(
+        prompt: 'A rectangular lot measures 36 feet by 24 feet. How many feet of fence close it in?',
+        steps: <String>[
+          'Fencing runs around the edge, so the quantity asked for is a perimeter.',
+          'Perimeter of a rectangle is 2 x (length + width).',
+          'Compute: 2 x (36 + 24) = 2 x 60 = 120 feet.',
+        ],
+        answer: '120 feet of fence',
+      ),
     ],
     quickRules: <String>[
       'Area is squared units, perimeter is plain units, volume is cubed units.',
@@ -392,6 +497,16 @@ const List<Lesson> lessonsA = <Lesson>[
       'Reporting the area when the question asked for fencing: 1,000 square feet when the answer was 130 feet of fence.',
       'Squaring the diameter: 3.14 x 400 = 1,256 square feet for a ground whose real area is 314.',
       'Adding measurements without converting: 24 inches plus 2 feet answered as 26 instead of 4 feet.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '864 square feet, the area of the lot.',
+        why: 'Area measures the surface inside; fence measures the edge. The answer is the perimeter, 2 x (36 + 24) = 120 feet.',
+      ),
+      CommonMistake(
+        answer: '60 feet, adding the two sides once.',
+        why: 'A rectangle has two of each side, so 36 + 24 = 60 has to be doubled to 120 feet.',
+      ),
     ],
   ),
   Lesson(
@@ -448,6 +563,16 @@ const List<Lesson> lessonsA = <Lesson>[
         ],
         answer: '-11',
       ),
+      WorkedExample(
+        prompt: 'Evaluate -3 x (4 - 7) + (-2) squared.',
+        steps: <String>[
+          'Parentheses first: 4 - 7 = -3.',
+          'Multiply: -3 x -3 = 9, because two negatives give a positive.',
+          'Square the second term: (-2) x (-2) = 4.',
+          'Add: 9 + 4 = 13.',
+        ],
+        answer: '13',
+      ),
     ],
     quickRules: <String>[
       'Multiplication and division are one rank, so work them left to right.',
@@ -459,6 +584,16 @@ const List<Lesson> lessonsA = <Lesson>[
       'Adding before multiplying: 3 + 4 x 6 becomes 42 instead of 27.',
       'Treating -3 squared and (-3) squared as the same, so you answer 9 where -9 is correct.',
       'Returning -8 for the absolute value of -8, which is why choices containing the raw negative exist.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '-5, keeping a minus on the product of two negatives.',
+        why: 'Negative times negative is positive, so -3 x -3 is 9, and 9 + 4 = 13.',
+      ),
+      CommonMistake(
+        answer: '5, treating (-2) squared as -4.',
+        why: 'The brackets put the minus inside the power, so (-2) x (-2) = 4. The second term adds 4, and 9 + 4 = 13.',
+      ),
     ],
   ),
   Lesson(
@@ -515,6 +650,15 @@ const List<Lesson> lessonsA = <Lesson>[
         ],
         answer: '1 7/12',
       ),
+      WorkedExample(
+        prompt: 'Multiply 2 1/2 by 1 3/5.',
+        steps: <String>[
+          'Convert both mixed numbers: 2 1/2 = 5/2 and 1 3/5 = 8/5.',
+          'Multiply straight across: (5 x 8) / (2 x 5) = 40/10.',
+          'Reduce: 40/10 = 4.',
+        ],
+        answer: '4',
+      ),
     ],
     quickRules: <String>[
       'Same denominators before you add or subtract, no exceptions.',
@@ -526,6 +670,16 @@ const List<Lesson> lessonsA = <Lesson>[
       'Adding across: 1/2 + 1/3 answered as 2/5 instead of 5/6.',
       'Ignoring the sign when subtracting fractions, so 3 1/4 - 1 2/3 comes out as 2 5/12 instead of 1 7/12.',
       'Multiplying mixed numbers without converting: 1 1/2 x 2/3 answered as 2 1/3 instead of 1.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '2 3/10, multiplying the whole numbers and the fractions separately.',
+        why: 'Mixed numbers become improper fractions first, and 5/2 x 8/5 = 40/10 = 4, not 2 3/10.',
+      ),
+      CommonMistake(
+        answer: '10/4, flipping the second fraction before multiplying.',
+        why: 'Flipping is the rule for division. Multiplication goes straight across, so the answer is 40/10 = 4.',
+      ),
     ],
   ),
   Lesson(
@@ -582,6 +736,15 @@ const List<Lesson> lessonsA = <Lesson>[
         ],
         answer: '6 times the square root of 2, about 8.49',
       ),
+      WorkedExample(
+        prompt: 'Simplify (2x squared) cubed.',
+        steps: <String>[
+          'The exponent outside the bracket applies to everything inside it.',
+          'Cube the coefficient: 2 x 2 x 2 = 8.',
+          'Multiply the exponents on x: 2 x 3 = 6, giving x to the sixth.',
+        ],
+        answer: '8x to the sixth power',
+      ),
     ],
     quickRules: <String>[
       'Multiplying like bases adds exponents; dividing subtracts them.',
@@ -593,6 +756,16 @@ const List<Lesson> lessonsA = <Lesson>[
       'Multiplying exponents where you should add: 2 cubed times 2 to the fourth answered as 2 to the twelfth, which is 4,096 instead of 128.',
       'Distributing a square over addition: (x + 3) squared answered as x squared + 9 instead of x squared + 6x + 9.',
       'Reading a negative exponent as a negative answer: 2 to the negative 3 answered as -8 instead of 1/8.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '2x to the sixth, cubing only the x.',
+        why: 'The power outside the bracket reaches the coefficient too, so 2 cubed is 8 and the answer is 8x to the sixth.',
+      ),
+      CommonMistake(
+        answer: '6x to the sixth, multiplying the coefficient by the exponent.',
+        why: 'A power repeats the coefficient as a factor: 2 x 2 x 2 = 8, not 2 x 3 = 6.',
+      ),
     ],
   ),
   Lesson(
@@ -649,6 +822,15 @@ const List<Lesson> lessonsA = <Lesson>[
         ],
         answer: 'x = 2 or x = 3',
       ),
+      WorkedExample(
+        prompt: 'Solve 2(x - 3) = 18 - 4x.',
+        steps: <String>[
+          'Distribute the 2 across the bracket: 2x - 6 = 18 - 4x.',
+          'Add 4x to both sides: 6x - 6 = 18.',
+          'Add 6: 6x = 24, so x = 4.',
+        ],
+        answer: 'x = 4',
+      ),
     ],
     quickRules: <String>[
       'Undo addition and subtraction before multiplication and division.',
@@ -660,6 +842,16 @@ const List<Lesson> lessonsA = <Lesson>[
       'Dividing only part of a side, so 3x + 6 = 12 becomes x + 6 = 4 instead of x = 2.',
       'Losing a sign when distributing: 5x - (x - 3) simplified to 4x - 3 instead of 4x + 3.',
       'Factoring with the wrong signs: x squared + 5x + 6 written as (x - 2)(x - 3), which actually expands to x squared - 5x + 6.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'x = 3.5, distributing the 2 only to the x.',
+        why: 'The 2 multiplies both terms inside the bracket, so the equation is 2x - 6 = 18 - 4x, which gives x = 4.',
+      ),
+      CommonMistake(
+        answer: 'x = -12, subtracting 4x from the left instead of adding it.',
+        why: 'Moving a negative term across the equals sign changes its sign: 2x + 4x = 24, so x = 4.',
+      ),
     ],
   ),
   Lesson(
@@ -715,6 +907,16 @@ const List<Lesson> lessonsA = <Lesson>[
         ],
         answer: '219.8 feet',
       ),
+      WorkedExample(
+        prompt: 'A right triangle has one leg of 9 feet and a hypotenuse of 15 feet. How long is the other leg?',
+        steps: <String>[
+          'The theorem says leg squared plus leg squared equals hypotenuse squared.',
+          'Square what you have: 15 squared is 225 and 9 squared is 81.',
+          'Subtract, because the missing side is a leg: 225 - 81 = 144.',
+          'Take the root: the square root of 144 is 12.',
+        ],
+        answer: '12 feet',
+      ),
     ],
     quickRules: <String>[
       'Straight line is 180 degrees, full turn is 360 degrees, triangle is 180 degrees.',
@@ -726,6 +928,16 @@ const List<Lesson> lessonsA = <Lesson>[
       'Using the diameter where the formula wants the radius: a 35 foot radius gives 109.9 feet per lap instead of 219.8.',
       'Adding the legs instead of squaring them: 6 + 8 = 14 feet for a hypotenuse that is 10.',
       'Stopping after adding the two known angles and reporting 113 when the question asked for the third angle, 67.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'About 17.5 feet, adding 81 and 225 under the root.',
+        why: 'Adding finds the hypotenuse. With the hypotenuse already given, the leg comes from subtracting, and the root of 144 is 12 feet.',
+      ),
+      CommonMistake(
+        answer: '6 feet, subtracting the sides as plain lengths, 15 - 9.',
+        why: 'The theorem squares the sides first, so the step is the square root of 144, which is 12 feet, not 6.',
+      ),
     ],
   ),
   Lesson(
@@ -782,6 +994,16 @@ const List<Lesson> lessonsA = <Lesson>[
         ],
         answer: '1/12',
       ),
+      WorkedExample(
+        prompt: 'Two fair dice are rolled. What is the probability that the two numbers add to 7?',
+        steps: <String>[
+          'Count the equally likely outcomes: 6 x 6 = 36 ordered pairs.',
+          'List the pairs totalling 7: 1 and 6, 2 and 5, 3 and 4, and each pair reversed.',
+          'That is 6 favourable pairs, so the probability is 6/36.',
+          'Reduce: 6/36 = 1/6.',
+        ],
+        answer: '1/6',
+      ),
     ],
     quickRules: <String>[
       'Probability = favourable / total, and it always falls between 0 and 1.',
@@ -793,6 +1015,16 @@ const List<Lesson> lessonsA = <Lesson>[
       'Building the denominator from one group instead of the total: 5/7 instead of the true 5/12.',
       'Adding where you should multiply: 1/6 + 1/2 = 2/3 instead of 1/12.',
       'Counting arrangements linearly: 3 distinct items answered as 3 orders instead of 6.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '1/11, counting the eleven possible totals.',
+        why: 'Totals are not equally likely, so they cannot be the denominator. The outcomes to count are the 36 ordered pairs, of which 6 total 7.',
+      ),
+      CommonMistake(
+        answer: '3/36, counting only the pairs 1 and 6, 2 and 5, 3 and 4.',
+        why: 'Each of those pairs can land in either order, so there are 6 favourable outcomes, giving 6/36 = 1/6.',
+      ),
     ],
   ),
   Lesson(
@@ -849,6 +1081,15 @@ const List<Lesson> lessonsA = <Lesson>[
         ],
         answer: 'shorten',
       ),
+      WorkedExample(
+        prompt: 'RELUCTANT most nearly means which of: eager, unwilling, reliable, confused.',
+        steps: <String>[
+          'Define the stem word before looking at the choices: reluctant means holding back, not keen to act.',
+          'Compare each choice against that definition, not against how the word sounds.',
+          'Reliable is a sound-alike and eager is the opposite, so both lose.',
+        ],
+        answer: 'unwilling',
+      ),
     ],
     quickRules: <String>[
       'Predict the meaning before you read the options, every single time.',
@@ -860,6 +1101,16 @@ const List<Lesson> lessonsA = <Lesson>[
       'Choosing the antonym because it is the only familiar word: obstinate answered as flexible instead of stubborn.',
       'Choosing a related but stronger word: curtail answered as cancel instead of shorten.',
       'Choosing a consequence rather than a meaning: meticulous answered as slow instead of very careful.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'Reliable, because reluctant sounds like reliant.',
+        why: 'A sound-alike is not a meaning. Reluctant means unwilling, while reliant means depending on something else.',
+      ),
+      CommonMistake(
+        answer: 'Eager, choosing the strongest feeling on the list.',
+        why: 'Eager is the opposite of reluctant. The word describes someone who hesitates, not someone who rushes forward.',
+      ),
     ],
   ),
   Lesson(
@@ -916,6 +1167,15 @@ const List<Lesson> lessonsA = <Lesson>[
         ],
         answer: 'unclear',
       ),
+      WorkedExample(
+        prompt: 'The supply clerk was FRUGAL, reusing every crate and repairing gear rather than replacing it. FRUGAL most nearly means which of: wasteful, thrifty, dishonest, generous.',
+        steps: <String>[
+          'Read the clue the sentence supplies: reusing and repairing instead of buying.',
+          'Turn the clue into a meaning: careful with money, getting full use from what is already there.',
+          'Match it: thrifty, while generous and dishonest have no support in the sentence.',
+        ],
+        answer: 'thrifty',
+      ),
     ],
     quickRules: <String>[
       'Read the full sentence first, then the options.',
@@ -927,6 +1187,17 @@ const List<Lesson> lessonsA = <Lesson>[
       'Answering the military sense out of habit when the sentence is asking about something else entirely.',
       'Choices that describe the mood of the situation rather than the word: answering dangerous for an ambiguous order that was merely unclear.',
       'Picking a true statement about the scenario, such as lengthy, when the sentence needs the word itself defined.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer:
+            'Wasteful, because crates are being kept rather than thrown away.',
+        why: 'Keeping and repairing is the opposite of waste. The sentence describes saving money, which is thrifty.',
+      ),
+      CommonMistake(
+        answer: 'Generous, because the gear is used to help the unit.',
+        why: 'Nothing in the sentence spends anything on other people. The clue is reuse for the sake of cost, not giving.',
+      ),
     ],
   ),
   Lesson(
@@ -983,6 +1254,15 @@ const List<Lesson> lessonsA = <Lesson>[
         ],
         answer: 'persistent',
       ),
+      WorkedExample(
+        prompt: 'The medics managed to REVIVE the collapsed runner. REVIVE most nearly means which of: bring back to life, recall to duty, record in writing, reduce in size.',
+        steps: <String>[
+          'Split the word: re means again, and viv means life.',
+          'Join the pieces: to give life again, which is to bring back to life.',
+          'Check against the sentence: medics acting on a collapsed runner fit restoring life, not paperwork.',
+        ],
+        answer: 'bring back to life',
+      ),
     ],
     quickRules: <String>[
       'Read the prefix first, because in-, un- and non- invert the entire answer.',
@@ -994,6 +1274,16 @@ const List<Lesson> lessonsA = <Lesson>[
       'Ignoring a negating prefix, so inaudible gets answered as loud or easy to hear instead of not able to be heard.',
       'Swapping similar roots: aud heard as vid, which turns inaudible into invisible.',
       'Reading a familiar chunk into an unfamiliar word, such as taking the ten in tenacious as the number ten instead of the root meaning to hold.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'Record in writing, matching the re in revive with the re in report.',
+        why: 'Take the root with the prefix: viv means life, so revive is to restore life, not to write something down.',
+      ),
+      CommonMistake(
+        answer: 'Recall to duty, using only the prefix re.',
+        why: 'A prefix is half the word. Re means again and viv means life, which rules out a summons back to work.',
+      ),
     ],
   ),
   Lesson(
@@ -1050,6 +1340,15 @@ const List<Lesson> lessonsA = <Lesson>[
         ],
         answer: 'very careful',
       ),
+      WorkedExample(
+        prompt: 'The inspector gave a SUPERFICIAL look at the vehicle, glancing at the tyres before walking away. SUPERFICIAL most nearly means which of: thorough, shallow, hurried, detailed.',
+        steps: <String>[
+          'Find the root: superficial comes from surface.',
+          'Build the meaning: on the surface only, without depth.',
+          'Compare: thorough and detailed are opposites, and hurried describes the pace rather than the depth.',
+        ],
+        answer: 'shallow',
+      ),
     ],
     quickRules: <String>[
       'Learn the pair, not the single word; the antonym is a planted distractor.',
@@ -1061,6 +1360,16 @@ const List<Lesson> lessonsA = <Lesson>[
       'Recognising the word but guessing at its register: abundant answered as outdated because old surplus comes to mind.',
       'Confusing near neighbours: ambiguous answered as conflicted, which is ambivalent, when the sentence needed unclear.',
       'Overshooting the meaning: meticulous answered as obsessive instead of very careful.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'Hurried, because the inspector walked away quickly.',
+        why: 'Speed is the symptom, not the meaning. Superficial says the inspection never went below the surface, whatever its pace.',
+      ),
+      CommonMistake(
+        answer: 'Thorough, because the word is long and formal.',
+        why: 'Length is not meaning. Superficial comes from surface and means without depth, the opposite of thorough.',
+      ),
     ],
   ),
 ];

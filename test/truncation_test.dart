@@ -146,7 +146,7 @@ Future<void> loadRealFonts() async {
   if (marker < 0) return;
   final sep = Platform.pathSeparator;
   final root = Platform.resolvedExecutable.substring(0, marker);
-  final dir = '${root}bin${sep}cache${sep}artifacts${sep}material_fonts${sep}';
+  final dir = '${root}bin${sep}cache${sep}artifacts${sep}material_fonts$sep';
   for (final name in <String>[
     'Roboto-Regular.ttf',
     'Roboto-Medium.ttf',

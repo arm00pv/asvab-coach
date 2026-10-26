@@ -56,6 +56,15 @@ const List<Lesson> lessonsD = <Lesson>[
         ],
         answer: 'complicated',
       ),
+      WorkedExample(
+        prompt: 'The sergeant told the squad to EXPEDITE the paperwork before the inspection. As used here, EXPEDITE most nearly means which of: speed up, delay, explain, file.',
+        steps: <String>[
+          'Take the clue from the deadline: the inspection is coming, so the paperwork has to be done sooner.',
+          'Define the word to fit that clue: to expedite is to move something along faster.',
+          'Reject the neighbours: explain is a sound-alike, and file describes the object rather than the action asked for.',
+        ],
+        answer: 'speed up',
+      ),
     ],
     quickRules: <String>[
       'Define the word in the situation the passage describes, not in the abstract.',
@@ -67,6 +76,16 @@ const List<Lesson> lessonsD = <Lesson>[
       'Answering the dictionary sense: a sparing sergeant described as generous when the passage meant that his praise was limited.',
       'Answering a mood: hostile for a sergeant who was merely brief, which imports an attitude the passage never shows.',
       'Answering something true about the scene but not about the word, such as expensive for a cumbersome procedure.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'Explain, because expedite sounds like explicate.',
+        why: 'Sound-alikes are the commonest trap on this skill. Expedite means to speed something up, which is what a deadline demands.',
+      ),
+      CommonMistake(
+        answer: 'File, because the sentence is about paperwork.',
+        why: 'Paperwork is the thing being handled, not the meaning of the verb. Expedite says how to handle it: quickly.',
+      ),
     ],
   ),
   Lesson(
@@ -124,6 +143,15 @@ const List<Lesson> lessonsD = <Lesson>[
         ],
         answer: 'The old coolant corroded aluminum.',
       ),
+      WorkedExample(
+        prompt: 'The crew set the press, checked the setting against a test block, then ran the first bearing. The first bearing came out oversize, so they rechecked the press before the second. Which step came immediately after the press was set?',
+        steps: <String>[
+          'Draw the order as a list: set, check against the block, run the first bearing, recheck, run the second.',
+          'Locate the step named in the question, which is setting the press.',
+          'Read the next entry: the check against the test block.',
+        ],
+        answer: 'The setting was checked against a test block.',
+      ),
     ],
     quickRules: <String>[
       'Underline first, then, before, after and finally before you answer anything.',
@@ -135,6 +163,16 @@ const List<Lesson> lessonsD = <Lesson>[
       'Reversing the pair joined by before, which hands you the event that came afterwards instead of the one asked about.',
       'Reading the later result as the cause: answering that the fall in failures caused the coolant change, when the corrosion did.',
       'Treating two events mentioned side by side as cause and effect when the passage only says they happened together.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'Running the first bearing, skipping the check in between.',
+        why: 'The check against the block stands between the setting and the first bearing, so it is the step immediately after.',
+      ),
+      CommonMistake(
+        answer: 'Rechecking the press, because it is mentioned later in the passage.',
+        why: 'Later in the passage is not next in the sequence. The recheck follows the oversize bearing, not the setting.',
+      ),
     ],
   ),
   Lesson(
@@ -193,6 +231,15 @@ const List<Lesson> lessonsD = <Lesson>[
         ],
         answer: '6 volts normally, 3 volts with one cell reversed.',
       ),
+      WorkedExample(
+        prompt: 'A household circuit is protected by a 20 ampere breaker on 120 volts. What is the largest load, in watts, that the circuit can supply?',
+        steps: <String>[
+          'Power is volts times amperes.',
+          'Multiply: 120 x 20 = 2,400 watts.',
+          'Read it as a ceiling: a load above 2,400 watts trips the breaker, so the circuit is designed around that number.',
+        ],
+        answer: '2,400 watts',
+      ),
     ],
     quickRules: <String>[
       'Generator: motion in, voltage out. Motor: voltage in, motion out.',
@@ -204,6 +251,16 @@ const List<Lesson> lessonsD = <Lesson>[
       'Wiring cells in parallel and adding the voltages anyway: four 1.5 volt cells answered as 6 volts instead of 1.5.',
       'Adding the currents in a series string, so two lamps that each carry 5 amps are answered as 10 amps.',
       'Expecting a transformer to work on a steady direct current, where the field never changes and the output is zero volts.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '140 watts, adding the volts to the amperes.',
+        why: 'Volts and amperes are different units, so they multiply rather than add: 120 x 20 = 2,400 watts.',
+      ),
+      CommonMistake(
+        answer: '20,000 watts, treating the breaker rating as a wattage.',
+        why: 'A breaker is rated in amperes. Its wattage ceiling is 120 x 20 = 2,400 watts at this voltage.',
+      ),
     ],
   ),
   Lesson(
@@ -261,6 +318,15 @@ const List<Lesson> lessonsD = <Lesson>[
         ],
         answer: '700 revolutions per minute',
       ),
+      WorkedExample(
+        prompt: 'An engine makes 300 pound feet of torque, and the gearbox plus final drive give a combined reduction of 12 to 1. Ignoring losses, what torque reaches the axles?',
+        steps: <String>[
+          'A reduction trades speed for torque, so the torque is multiplied by the ratio.',
+          'Multiply: 300 x 12 = 3,600 pound feet.',
+          'Check the trade: the axles turn twelve times slower than the engine, which is where the extra turning force comes from.',
+        ],
+        answer: '3,600 pound feet',
+      ),
     ],
     quickRules: <String>[
       'Clutch and torque converter both couple the engine to the transmission and both allow slip at low speed.',
@@ -272,6 +338,16 @@ const List<Lesson> lessonsD = <Lesson>[
       'Multiplying instead of dividing the gear reduction: 2,400 x 12 answered as 28,800 revolutions per minute at the axle.',
       'Assuming both rear wheels turn at the same speed through a turn, which would make a car scrub its tires on dry pavement.',
       'Blaming the shock absorbers for a sagging car, when it is the springs that carry the weight.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '25 pound feet, dividing the engine torque by the reduction.',
+        why: 'A reduction multiplies torque while it divides speed. Dividing gives 25, which is what the speed does to the engine figure.',
+      ),
+      CommonMistake(
+        answer: '300 pound feet, because gears cannot change torque.',
+        why: 'Gears change both. The axles turn twelve times slower and carry three thousand six hundred pound feet.',
+      ),
     ],
   ),
   Lesson(
@@ -331,6 +407,15 @@ const List<Lesson> lessonsD = <Lesson>[
         ],
         answer: '2,400 watts, and the bad ground steals voltage from the starter before it can use it.',
       ),
+      WorkedExample(
+        prompt: 'A charged twelve volt battery reads 12.6 volts. Six cells in series make up the battery. What will the same battery read if one cell shorts out?',
+        steps: <String>[
+          'Each cell carries an equal share: 12.6 / 6 = 2.1 volts per cell.',
+          'A shorted cell contributes nothing, leaving five working cells.',
+          'Multiply: 5 x 2.1 = 10.5 volts, which is why the engine cranks slowly.',
+        ],
+        answer: 'About 10.5 volts',
+      ),
     ],
     quickRules: <String>[
       'Battery for starting, alternator for running, starter for cranking.',
@@ -342,6 +427,16 @@ const List<Lesson> lessonsD = <Lesson>[
       'Replacing the battery when the alternator is at fault: a 12.1 volt running reading answered as a bad battery.',
       'Calling a plug good because it has voltage at the tip, when a fouled plug passes voltage and still misfires.',
       'Overlooking the ground cable because it carries no voltage of its own, which leaves a slow crank unexplained.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '11.6 volts, subtracting a flat one volt for the shorted cell.',
+        why: 'A cell is worth about 2.1 volts, not one. Losing one takes the battery from 12.6 volts down to about 10.5.',
+      ),
+      CommonMistake(
+        answer: '6.3 volts, halving the reading for one bad cell in six.',
+        why: 'Cells in series share the voltage evenly. One cell is about 2.1 volts, and 6.3 would be three cells gone at once.',
+      ),
     ],
   ),
   Lesson(
@@ -400,6 +495,15 @@ const List<Lesson> lessonsD = <Lesson>[
         ],
         answer: 'About 7.4 cubic yards',
       ),
+      WorkedExample(
+        prompt: 'A wall is 24 feet long and 8 feet high, with a door opening 3 feet wide and 7 feet high. How many square feet of drywall cover the wall?',
+        steps: <String>[
+          'Wall area: 24 x 8 = 192 square feet.',
+          'Door area, which is not covered: 3 x 7 = 21 square feet.',
+          'Subtract the opening: 192 - 21 = 171 square feet.',
+        ],
+        answer: '171 square feet',
+      ),
     ],
     quickRules: <String>[
       'Footings, foundation, frame, roof, rough utilities, finish: the sequence does not change.',
@@ -411,6 +515,16 @@ const List<Lesson> lessonsD = <Lesson>[
       'Multiplying by the scale instead of dividing: 3 inches of wall answered as 0.75 feet instead of 12 feet.',
       'Forgetting the 27 cubic feet in a cubic yard, so a 200 cubic foot slab is ordered as 200 cubic yards.',
       'Reading a dashed line as a visible edge when it marks something hidden inside the wall.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '192 square feet, the wall before the opening is taken out.',
+        why: 'A door is a hole in the surface, not part of it. The board needed is 192 - 21 = 171 square feet.',
+      ),
+      CommonMistake(
+        answer: '168 square feet, deducting the door as 3 by 8.',
+        why: 'The opening is 3 by 7, which is 21 square feet. The wall is 8 feet high, but the door is not.',
+      ),
     ],
   ),
   Lesson(
@@ -470,6 +584,15 @@ const List<Lesson> lessonsD = <Lesson>[
         ],
         answer: 'About 160 feet',
       ),
+      WorkedExample(
+        prompt: 'A crate slides across a floor at 6 metres per second and stops in 3 seconds. What is its deceleration, and how far does it slide?',
+        steps: <String>[
+          'Deceleration is the change in speed over time: 6 / 3 = 2 metres per second squared.',
+          'The slowdown is steady, so the average speed is halfway: 3 metres per second.',
+          'Distance is average speed times time: 3 x 3 = 9 metres.',
+        ],
+        answer: '2 metres per second squared, sliding 9 metres',
+      ),
     ],
     quickRules: <String>[
       'Acceleration is change in velocity over time, in either direction.',
@@ -481,6 +604,16 @@ const List<Lesson> lessonsD = <Lesson>[
       'Dividing the time by the speed: 12 / 60 answered as 0.2 instead of the 5 miles per hour per second that the truck actually gains.',
       'Treating a braking truck as having no acceleration, when it has a large negative one.',
       'Assuming a doubled speed doubles the stopping distance, so 40 miles per hour is answered as 80 feet instead of 160.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '18 metres, using the starting speed for the whole slide.',
+        why: 'The crate slows the whole way, so its average speed is 3 metres per second and the distance is 9 metres.',
+      ),
+      CommonMistake(
+        answer: '2 metres, dividing the speed by the time and calling it a distance.',
+        why: '6 divided by 3 is the deceleration, in metres per second squared. Distance is average speed times time, which is 9 metres.',
+      ),
     ],
   ),
   Lesson(
@@ -541,6 +674,15 @@ const List<Lesson> lessonsD = <Lesson>[
         ],
         answer: 'About 0.031 inches, which is close to one thirty-second of an inch',
       ),
+      WorkedExample(
+        prompt: 'A metal block weighs 900 grams and displaces 100 cubic centimetres of water. What is its density, and would it float?',
+        steps: <String>[
+          'Density is mass divided by volume: 900 / 100 = 9 grams per cubic centimetre.',
+          'Compare with water, which is 1 gram per cubic centimetre.',
+          'Nine times denser than water means it sinks, whatever its total mass happens to be.',
+        ],
+        answer: '9 grams per cubic centimetre, and it sinks',
+      ),
     ],
     quickRules: <String>[
       'Strength resists breaking, hardness resists wear, elasticity returns to shape, toughness resists cracking.',
@@ -552,6 +694,17 @@ const List<Lesson> lessonsD = <Lesson>[
       'Choosing the hardest material for a part that must absorb a shock, so a hardened handle cracks instead of bending.',
       'Dividing volume by mass, which turns 40 pounds over 2 cubic feet into 0.05 instead of 20 pounds per cubic foot.',
       'Forgetting to convert feet to inches, so the 10 foot bar is answered as growing 0.0026 inches instead of 0.0312.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer:
+            '0.11 grams per cubic centimetre, dividing the volume by the mass.',
+        why: 'Density is mass over volume: 900 / 100 = 9 grams per cubic centimetre, which is nine times the density of water.',
+      ),
+      CommonMistake(
+        answer: 'It floats, because 900 grams is less than a kilogram.',
+        why: 'Floating depends on density rather than total mass. At 9 grams per cubic centimetre the block is far denser than water.',
+      ),
     ],
   ),
   Lesson(
@@ -611,6 +764,15 @@ const List<Lesson> lessonsD = <Lesson>[
         ],
         answer: 'Attach the short rectangle at C on the midpoint of the long one; the centred version is impossible.',
       ),
+      WorkedExample(
+        prompt: 'Piece one has a tab labelled D on its long edge and a slot labelled E on its short edge. Piece two has a single tab labelled E. A choice shows D joined to E. What is the verdict?',
+        steps: <String>[
+          'Read the letters as the instruction: matching letters are the joints.',
+          'The only pair available is E with E, so piece two takes the slot on the short edge.',
+          'D has no D to meet in that choice, so D against E cannot be right.',
+        ],
+        answer: 'Wrong, because E joins E and D has to meet a D.',
+      ),
     ],
     quickRules: <String>[
       'Match the letters before you match the outlines.',
@@ -622,6 +784,16 @@ const List<Lesson> lessonsD = <Lesson>[
       'Joining two long straight edges because they look flush, which produces a figure with a joint where no letter ever appeared.',
       'Flipping a piece to make it fit, so the assembled shape is the mirror image of the one that can actually be built.',
       'Ignoring a second lettered point, which leaves one joint in the answer figure unmatched and makes that figure impossible.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'Correct, because a tab can join any slot that fits.',
+        why: 'Connection items are settled by the letters, not by fit. Matching letters meet, so the E tab goes to the E slot.',
+      ),
+      CommonMistake(
+        answer: 'Correct, because the two pieces have to touch somewhere.',
+        why: 'Touching is not joining. Each marked point meets the same letter on the other piece, whatever the shapes would physically allow.',
+      ),
     ],
   ),
 ];

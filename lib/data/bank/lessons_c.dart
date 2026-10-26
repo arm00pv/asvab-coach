@@ -89,6 +89,15 @@ const List<Lesson> lessonsC = <Lesson>[
         ],
         answer: 'The figure whose zig-zag matches the handedness given.',
       ),
+      WorkedExample(
+        prompt: 'A figure to be built has to contain six cells. The pieces given are a four-cell L and a two-cell bar. One choice fills a seven-cell outline perfectly. What rules that choice out?',
+        steps: <String>[
+          'Count the inventory before comparing shapes: 4 + 2 = 6 cells in total.',
+          'The cell count cannot change during assembly, so the finished figure has exactly six cells.',
+          'An outline of seven cells needs a seventh cell from somewhere, so that choice can never be built.',
+        ],
+        answer: 'The cell count is fixed at six, so the seven-cell choice is impossible.',
+      ),
     ],
     quickRules: <String>[
       'Inventory, overlap, connection, always in that order.',
@@ -100,6 +109,17 @@ const List<Lesson> lessonsC = <Lesson>[
       'Choosing the mirrored piece because it looks like a rotation at a glance.',
       'Missing an overlap hidden under the largest piece.',
       'Picking a figure that is really two islands touching at a single corner.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer:
+            'Counting the outline once and assuming the pieces will fill it.',
+        why: 'The pieces set the total, 4 + 2 = 6 cells. An outline that needs seven cannot be built however convincing it looks.',
+      ),
+      CommonMistake(
+        answer: 'Assuming a cell can be trimmed off the L to make the fit.',
+        why: 'Trimming is not assembling. Pieces are used whole, so a shorter piece is a piece you were not given.',
+      ),
     ],
   ),
 ];

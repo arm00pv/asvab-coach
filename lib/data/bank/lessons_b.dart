@@ -60,6 +60,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: 'The layered growth of a reef records how long it has been growing.',
       ),
+      WorkedExample(
+        prompt: 'A hydraulic press can crush a bearing in seconds if it is set wrong, so the shop rule is that the operator set the press against a test block before every shift. The rule costs ninety seconds. A crushed bearing costs four hours and a new part. The block is not a formality; it is the cheapest insurance on the floor. Which choice states the main idea?',
+        steps: <String>[
+          'Ask what the whole passage is doing, not what the first sentence mentions.',
+          'The passage weighs a ninety second cost against a four hour loss, which is an argument.',
+          'The claim being argued is that the test block is cheap insurance, and the figures exist to support it.',
+        ],
+        answer: 'Setting the press against a test block is cheap insurance against a costly mistake.',
+      ),
     ],
     quickRules: <String>[
       'Read the question, then the passage, then the question again.',
@@ -71,6 +80,16 @@ const List<Lesson> lessonsB = <Lesson>[
       'Picking the most interesting fact in the passage. It is a detail, so you choose a true statement and still miss the item.',
       'Choosing the broadest sounding answer because it feels safe. It usually names a topic the passage never develops, which is the too broad error.',
       'Skipping the sentence that begins with that is why or therefore, which is where short passages usually hide the main point.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'A hydraulic press can crush a bearing in seconds.',
+        why: 'That is the detail that sets up the warning. The passage is arguing about the test block, not reporting on press speed.',
+      ),
+      CommonMistake(
+        answer: 'A crushed bearing costs four hours and a new part.',
+        why: 'The figure is evidence for the rule. A main idea states the claim the evidence serves, which is that the block pays for itself.',
+      ),
     ],
   ),
   Lesson(
@@ -131,6 +150,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: 'Brazing supplies a hotter process than solder can deliver.',
       ),
+      WorkedExample(
+        prompt: 'The shop holds three grades of hydraulic oil. The light grade serves the press and is changed every 250 hours. The medium grade serves the forklift and runs 400 hours between changes. The heavy grade fills the crane reservoir and is changed once a year, at the annual inspection. Which grade is changed on a calendar interval rather than on the hour meter?',
+        steps: <String>[
+          'The question names the distinction: hours on a meter against time on a calendar.',
+          'Scan for the two hour figures: 250 and 400 belong to the press and the forklift.',
+          'The heavy grade is changed once a year, at the inspection, so it is the calendar one.',
+        ],
+        answer: 'The heavy grade in the crane reservoir.',
+      ),
     ],
     quickRules: <String>[
       'Hunt a search term first and never try to memorise the passage.',
@@ -142,6 +170,16 @@ const List<Lesson> lessonsB = <Lesson>[
       'Answering from half a sentence, which produces the choice that fits the first clause and ignores the correction in the second.',
       'Picking a true sounding choice the passage never states, because the answer is on the page and outside knowledge is a wrong answer wearing good manners.',
       'Re-reading the whole passage instead of rescanning for the term, which burns a minute a question in a twenty two minute section.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'The light grade, because 250 hours is the shortest interval.',
+        why: 'The question asks which grade is set by the calendar. 250 hours is an hour meter figure, however short it is.',
+      ),
+      CommonMistake(
+        answer: 'The grade in the largest machine, the crane.',
+        why: 'The answer is not the crane because of its size. The heavy grade is the calendar one because it is changed once a year at the inspection.',
+      ),
     ],
   ),
   Lesson(
@@ -201,6 +239,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: 'At the swivel, because that is where failures concentrate.',
       ),
+      WorkedExample(
+        prompt: 'The shop logs every torque wrench calibration. In the eighteen months since the log began, no wrench has drifted more than two percent, and every failed fastener trace has landed on a bolt that was tightened by hand. What is the most reasonable inference?',
+        steps: <String>[
+          'Notice where the evidence points twice: the wrenches held, the hand work failed.',
+          'Take one step from that: the failures come from hand tightening rather than from wrench drift.',
+          'Stop there, and reject anything about training budgets or new tools, which the log cannot show.',
+        ],
+        answer: 'Hand tightening, not wrench drift, is where the fastener failures come from.',
+      ),
     ],
     quickRules: <String>[
       'Locate the evidence sentence first and read the choices second.',
@@ -212,6 +259,16 @@ const List<Lesson> lessonsB = <Lesson>[
       'Choosing the most dramatic conclusion. It usually needs a second step and it usually flips a cause, which is a double failure.',
       'Picking a real world fact that never appears in the passage, which is a correct statement answering the wrong question.',
       'Letting only may or tends to talk you out of the right answer because it sounds weak; that weak wording is how the passage protects itself.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'Every wrench in the shop is brand new.',
+        why: 'The log shows that drift stayed small, not that the tools are new. Nothing in the passage mentions their age.',
+      ),
+      CommonMistake(
+        answer: 'Hand tightening should be banned in the shop.',
+        why: 'That is a policy decision, two steps past the evidence. An inference states what the evidence implies, not what should be done about it.',
+      ),
     ],
   ),
   Lesson(
@@ -272,6 +329,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: 'To explain why the drum surface is inspected every shift.',
       ),
+      WorkedExample(
+        prompt: 'A new bench procedure has halved the time to fit a bearing, but it has also doubled the scrap rate, and the parts it wastes cost more than the hours it saves. Before the procedure is written into the shop order, both sides of that sum need another quarter of figures. What is the purpose of the last sentence?',
+        steps: <String>[
+          'The passage puts a saving against a cost, which is a weighing up.',
+          'The last sentence draws the conclusion from that weighing: wait for the rest of the figures.',
+          'A sentence that tells the reader what to do before deciding is a recommendation.',
+        ],
+        answer: 'To recommend delaying the decision until the cost of the procedure is measured.',
+      ),
     ],
     quickRules: <String>[
       'Classify first: explain, persuade, narrate or instruct.',
@@ -283,6 +349,16 @@ const List<Lesson> lessonsB = <Lesson>[
       'Answering with the topic instead of the purpose, which gives you a choice that says what the passage is about rather than what it does.',
       'Missing a persuasive purpose because the passage sounds calm and factual; calm is a persuasive technique, and a recommendation is still persuasion.',
       'Reading only the first sentence and guessing the job, which turns a cautionary bulletin into a neutral explanation.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'To describe the new procedure step by step.',
+        why: 'The procedure is described only enough to weigh it. The last sentence asks for time, which is a recommendation and not a description.',
+      ),
+      CommonMistake(
+        answer: 'To state that the new procedure is faster.',
+        why: 'The speed is in the first sentence. The last sentence is about when to decide, which is a different job.',
+      ),
     ],
   ),
   Lesson(
@@ -343,6 +419,15 @@ const List<Lesson> lessonsB = <Lesson>[
         answer:
             'More mitochondria, because muscle work demands energy on demand.',
       ),
+      WorkedExample(
+        prompt: 'A plant is left in a dark cupboard for three days. The starch in its leaves falls to almost nothing and it stops growing, though it recovers when it is returned to a window. Why did the starch disappear?',
+        steps: <String>[
+          'Starch is built from the sugar that photosynthesis makes, and photosynthesis needs light.',
+          'With no light there is no new sugar, so the plant draws on the starch it stored.',
+          'Recovery in the window proves the machinery was never destroyed, only starved of light.',
+        ],
+        answer: 'With no light there was no photosynthesis, so the plant used up its stored starch.',
+      ),
     ],
     quickRules: <String>[
       'One job per organelle: nucleus controls, mitochondrion releases energy, ribosome builds protein.',
@@ -354,6 +439,17 @@ const List<Lesson> lessonsB = <Lesson>[
       'Claiming plants only photosynthesise, which makes you choose the answer that a plant releases oxygen only by day; it respires continuously.',
       'Treating dominant as meaning more common, which flips a correct allele count into a wrong one.',
       'Reading the three tall boxes as three halves of the total, which produces the two in three answer that appears in nearly every square item.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer:
+            'The plant stopped respiring for lack of oxygen in the cupboard.',
+        why: 'Respiration carries on in the dark, and it is the process that consumes the starch. What stops is photosynthesis, which needs light.',
+      ),
+      CommonMistake(
+        answer: 'The darkness destroyed the chlorophyll for good.',
+        why: 'The plant recovered at the window, so nothing was destroyed permanently. The pigment was simply given nothing to work with.',
+      ),
     ],
   ),
   Lesson(
@@ -413,6 +509,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: '4Fe plus 3O2 gives 2Fe2O3.',
       ),
+      WorkedExample(
+        prompt: 'Twelve grams of carbon burns completely in thirty-two grams of oxygen, leaving nothing but carbon dioxide. What mass of carbon dioxide is formed?',
+        steps: <String>[
+          'In a closed reaction no mass is created or lost, it only changes partners.',
+          'Every gram of carbon and of oxygen ends up in the product.',
+          'Add: 12 + 32 = 44 grams.',
+        ],
+        answer: '44 grams of carbon dioxide',
+      ),
     ],
     quickRules: <String>[
       'Atomic number is protons, and neutrons are mass number minus atomic number.',
@@ -424,6 +529,16 @@ const List<Lesson> lessonsB = <Lesson>[
       'Confusing the mass number with the atomic number, which doubles the proton count and sends you to the wrong element entirely.',
       'Balancing by editing a subscript instead of a coefficient, which turns water into hydrogen peroxide and produces an equation nobody asked for.',
       'Calling a strong base a strong acid because the number is large, which reverses every pH item on the test.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '20 grams, subtracting the smaller number from the larger.',
+        why: 'The reactants combine rather than cancel, and 12 + 32 = 44 grams of carbon dioxide leaves the reaction.',
+      ),
+      CommonMistake(
+        answer: 'A mass between 12 and 32 grams, depending on the flame.',
+        why: 'Mass conservation does not depend on how fast the burn is. Every gram of the two reactants appears in the product, so it is 44 grams.',
+      ),
     ],
   ),
   Lesson(
@@ -483,6 +598,16 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: '200 joules, which friction converts to heat.',
       ),
+      WorkedExample(
+        prompt: 'A radio station broadcasts at 100 megahertz. Radio waves travel at about 300,000 kilometres per second. What is the wavelength of the signal?',
+        steps: <String>[
+          'The rule is speed equals frequency times wavelength, so wavelength is speed divided by frequency.',
+          'Put the speed into metres: 300,000 kilometres per second is 300,000,000 metres per second.',
+          'Write the frequency as a number: 100 megahertz is 100,000,000 cycles per second.',
+          'Divide: 300,000,000 / 100,000,000 = 3 metres.',
+        ],
+        answer: 'About 3 metres',
+      ),
     ],
     quickRules: <String>[
       'Force equals mass times acceleration, and work equals force times distance.',
@@ -494,6 +619,17 @@ const List<Lesson> lessonsB = <Lesson>[
       'Reporting weight in kilograms, which makes a force answer wrong by a factor of gravity.',
       'Counting the force you use to hold a crate against a wall as work, which produces a large joule figure for something that never moved.',
       'Multiplying frequency by wavelength but treating a shorter wavelength as a lower frequency, which reverses the answer.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'About 300 metres, multiplying the speed by the frequency.',
+        why: 'Speed and frequency are divided, not multiplied. Multiplying them produces a number that is not a length at all.',
+      ),
+      CommonMistake(
+        answer:
+            'About 3 kilometres, leaving the speed in kilometres per second.',
+        why: 'The units have to agree before dividing. In metres per second the answer is 3 metres, which is 0.003 kilometres.',
+      ),
     ],
   ),
   Lesson(
@@ -553,6 +689,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: 'One plate is diving beneath another, and the melting feeds the volcanoes inland.',
       ),
+      WorkedExample(
+        prompt: 'Fossils of the same shallow water shellfish are found in rock on two continents that an ocean now separates. What does that most reasonably tell you?',
+        steps: <String>[
+          'Establish what the animals needed: shallow water on a sea floor, not an open ocean crossing.',
+          'The same species on two coasts is easier to explain if the coasts were once one piece of land.',
+          'The ocean then opened after the shellfish were buried, which is why the fossils now sit far apart.',
+        ],
+        answer: 'The two continents were joined by shallow water when those animals were alive.',
+      ),
     ],
     quickRules: <String>[
       'Igneous cools, sedimentary layers, metamorphic cooks without melting.',
@@ -564,6 +709,16 @@ const List<Lesson> lessonsB = <Lesson>[
       'Blaming summer on being closer to the sun, when the northern hemisphere is actually nearer the sun during its winter.',
       'Calling any coarse grained rock igneous, which misses a banded metamorphic rock that the item described deliberately.',
       'Putting volcanoes at a sliding boundary, which sends you to the fault answer when the trench should have pointed at subduction.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'The shellfish swam across the ocean.',
+        why: 'These animals lived on a shallow sea floor, which rules out a deep water crossing. Joined land is the simpler explanation.',
+      ),
+      CommonMistake(
+        answer: 'The ocean used to be shallow enough to walk across.',
+        why: 'A shallower ocean still leaves two separate coasts. Matching fossils on both sides point to one piece of land that later split.',
+      ),
     ],
   ),
   Lesson(
@@ -622,6 +777,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: '0.5 amperes and 240 ohms.',
       ),
+      WorkedExample(
+        prompt: 'A heater draws 8 amperes from a 120 volt circuit. What is its resistance, and how much power does it use?',
+        steps: <String>[
+          'Resistance comes from the pair you know: R = V / I.',
+          'Divide: 120 / 8 = 15 ohms.',
+          'Power is volts times amperes: 120 x 8 = 960 watts.',
+        ],
+        answer: '15 ohms and 960 watts',
+      ),
     ],
     quickRules: <String>[
       'V equals I R, and the other two forms are just rearrangements.',
@@ -633,6 +797,16 @@ const List<Lesson> lessonsB = <Lesson>[
       'Multiplying volts by ohms, which produces a resistance answer with a nonsense unit and a number many times too large.',
       'Treating a rating as a measurement, so a 60 watt lamp gets recorded as drawing 60 amperes from a 120 volt supply.',
       'Skipping the milliampere conversion, which turns 20 milliamperes into 20 amperes and inflates the wattage a thousandfold.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '0.067 ohms, dividing the amperes by the volts.',
+        why: 'Resistance is volts over amperes: 120 / 8 = 15 ohms. Dividing the other way gives the reciprocal of resistance.',
+      ),
+      CommonMistake(
+        answer: '960 ohms, reporting the wattage as a resistance.',
+        why: 'The number is right and the unit is wrong. 960 is watts; the resistance is 15 ohms, and the unit label tells you which is which.',
+      ),
     ],
   ),
   Lesson(
@@ -693,6 +867,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: '2 amperes and 4 amperes, giving 6 amperes total.',
       ),
+      WorkedExample(
+        prompt: 'A 10 ohm resistor and a 20 ohm resistor are joined in series across 30 volts. What current flows, and what is the voltage across the 20 ohm resistor?',
+        steps: <String>[
+          'Series resistances add: 10 + 20 = 30 ohms.',
+          'Current is the supply divided by the total: 30 / 30 = 1 ampere.',
+          'One current flows through both, so the drop is 1 x 20 = 20 volts.',
+        ],
+        answer: '1 ampere, with 20 volts across the 20 ohm resistor',
+      ),
     ],
     quickRules: <String>[
       'Series adds resistance, parallel divides it down below the smallest branch.',
@@ -704,6 +887,17 @@ const List<Lesson> lessonsB = <Lesson>[
       'Adding parallel resistances the series way, which gives 9 ohms for a 6 ohm and a 3 ohm branch and a total current far too small.',
       'Assuming current is used up as it travels through series resistors, so the last component is thought to get none; the current is the same in every part of the loop.',
       'Giving each parallel branch a share of the voltage, which halves every branch current and makes a perfectly good circuit look broken.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '1.5 amperes, using the 20 ohm resistor as the whole circuit.',
+        why: 'In series the resistances add, so the circuit is 30 ohms and the current is 1 ampere, not 1.5.',
+      ),
+      CommonMistake(
+        answer:
+            '15 volts across the 20 ohm resistor, splitting the supply evenly.',
+        why: 'Series voltage divides in proportion to resistance. The 20 ohm part takes 20 of the 30 volts, leaving 10 for the other resistor.',
+      ),
     ],
   ),
   Lesson(
@@ -764,6 +958,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: 'It fails, so you fit one rated at least 50 volts instead.',
       ),
+      WorkedExample(
+        prompt: 'A 100 ohm resistor carries 0.2 amperes. How much power does it turn into heat, and what rating should you fit?',
+        steps: <String>[
+          'Power in a resistor is current squared times resistance.',
+          'Multiply: 0.2 x 0.2 = 0.04, then 0.04 x 100 = 4 watts.',
+          'A part run at exactly its rating gets very hot, so fit the next standard size up, 5 watts or more.',
+        ],
+        answer: '4 watts dissipated, so fit a 5 watt or larger resistor',
+      ),
     ],
     quickRules: <String>[
       'Resistor limits current, capacitor stores charge, inductor stores magnetic energy.',
@@ -775,6 +978,16 @@ const List<Lesson> lessonsB = <Lesson>[
       'Wiring an LED with no series resistor, which lets the current run away and destroys the diode on the first application of power.',
       'Treating a capacitor as a reservoir for steady current, when its blocking of direct current means the circuit simply stops.',
       'Fitting a transformer to step a battery supply down, which does nothing at all because a transformer needs a changing current.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '20 watts, multiplying the resistance by the current once.',
+        why: 'Resistance times current gives volts, not watts. Power is current squared times resistance: 0.04 x 100 = 4 watts.',
+      ),
+      CommonMistake(
+        answer: 'A quarter watt resistor, on the grounds that 4 watts sounds small.',
+        why: 'A resistor is rated above the power it will actually see. A quarter watt part asked to absorb 4 watts burns open.',
+      ),
     ],
   ),
   Lesson(
@@ -834,6 +1047,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: 'The breaker trips, and the load needs a circuit that can carry it.',
       ),
+      WorkedExample(
+        prompt: 'A metal enclosure is connected back to the panel by a green conductor. What is that conductor for, and what changes if it is left disconnected?',
+        steps: <String>[
+          'The green conductor is the equipment ground, a dedicated fault path that carries no working current.',
+          'When a live conductor touches the case, the ground gives the current a low resistance route back to the panel.',
+          'That surge is what trips the breaker. Without the ground, the case simply sits at line voltage waiting for a hand.',
+        ],
+        answer: 'It is the fault path that lets the breaker trip; without it the metal case can stay live.',
+      ),
     ],
     quickRules: <String>[
       'Lock out, tag out, test, then touch.',
@@ -845,6 +1067,17 @@ const List<Lesson> lessonsB = <Lesson>[
       'Trusting a meter that was never proved on a live source, which reports a dead circuit that is in fact live.',
       'Connecting an ammeter across a component, which puts a near short across it and blows the meter fuse.',
       'Upsizing a fuse to stop nuisance trips, which removes the protection the conductor needs and turns a trip into a fire.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'It carries the working current back, so it can be left off while the circuit still runs.',
+        why: 'Working current returns on the neutral. The green conductor carries nothing until a fault, which is exactly the moment it has to be there.',
+      ),
+      CommonMistake(
+        answer:
+            'It is only for lightning, so nothing inside the building changes.',
+        why: 'The ground is what clears an internal fault. Disconnect it and a short to the case no longer trips anything.',
+      ),
     ],
   ),
   Lesson(
@@ -903,6 +1136,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: '1600 power strokes per minute.',
       ),
+      WorkedExample(
+        prompt: 'A V8 engine has eight cylinders, each sweeping 400 cubic centimetres. What is its displacement in litres?',
+        steps: <String>[
+          'Displacement counts the swept volume of every cylinder, not the clearance space.',
+          'Multiply: 8 x 400 = 3,200 cubic centimetres.',
+          'Convert: 1,000 cubic centimetres is one litre, so 3,200 is 3.2 litres.',
+        ],
+        answer: '3.2 litres',
+      ),
     ],
     quickRules: <String>[
       'Intake, compression, power, exhaust, and two crank turns finish the cycle.',
@@ -914,6 +1156,16 @@ const List<Lesson> lessonsB = <Lesson>[
       'Listing the strokes out of order and putting the power stroke before compression, which is the most common miss on a cycle question.',
       'Saying one revolution completes the cycle, which halves your firing count and lands on exactly half the correct number of power strokes.',
       'Adding the clearance volume twice when you work out a compression ratio, which gives a figure that looks close and is quietly too high.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'Adding the clearance volumes to the swept volume.',
+        why: 'Displacement is swept volume only. The clearance space above the piston sets the compression ratio; it does not add litres.',
+      ),
+      CommonMistake(
+        answer: '3,200 litres, leaving the answer in cubic centimetres.',
+        why: 'A litre is 1,000 cubic centimetres, so 3,200 cubic centimetres is 3.2 litres.',
+      ),
     ],
   ),
   Lesson(
@@ -972,6 +1224,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: 'A tap, used gently if the hole is already threaded.',
       ),
+      WorkedExample(
+        prompt: 'You must measure the outside diameter of a shaft to a thousandth of an inch. Which tool, and why is a steel rule not enough?',
+        steps: <String>[
+          'Name the job: a diameter measured to a thousandth of an inch, which is a precision outside measurement.',
+          'Name the tool: an outside micrometer, read against its thimble.',
+          'Say why the rule fails: it is divided in sixteenths, which is over sixty times coarser than a thousandth.',
+        ],
+        answer: 'An outside micrometer, because a rule only resolves about a sixteenth of an inch',
+      ),
     ],
     quickRules: <String>[
       'A tap cuts inside, a die cuts outside.',
@@ -983,6 +1244,16 @@ const List<Lesson> lessonsB = <Lesson>[
       'Using a pipe wrench on a hex nut, which rounds the flats and leaves you with the right tool on a fastener you can no longer turn.',
       'Setting a torque wrench that reads inch pounds to a foot pound figure, which under torques the bolt twelvefold and leaves nothing tight.',
       'Dragging a file or a hacksaw on the return stroke, which dulls the teeth and lets the cut wander off the line.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'A steel rule, because it is marked in inches.',
+        why: 'Inches are the unit, not the resolution. A rule cannot read to a thousandth, so the measurement would be a guess.',
+      ),
+      CommonMistake(
+        answer: 'A tape measure pressed against the end of the shaft.',
+        why: 'A tape measures length or distance, and it cannot span a diameter squarely. The precision tool for a diameter is a micrometer.',
+      ),
     ],
   ),
   Lesson(
@@ -1041,6 +1312,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: 'One eighth of an inch.',
       ),
+      WorkedExample(
+        prompt: 'The same plank bends far less when it is stood on edge than when it lies flat. Why?',
+        steps: <String>[
+          'The amount of wood is identical either way, so the answer is not more material.',
+          'Bending is resisted by how far the material sits from the middle of the section, and on edge the plank is deeper.',
+          'Stiffness grows with the cube of that depth, so a small increase in depth is a large gain in stiffness.',
+        ],
+        answer: 'On edge the plank is deeper, and stiffness rises with the cube of depth.',
+      ),
     ],
     quickRules: <String>[
       'Hardwood and softwood name the tree, not the board.',
@@ -1052,6 +1332,17 @@ const List<Lesson> lessonsB = <Lesson>[
       'Ordering lumber as if the nominal size were actual, which leaves a frame half an inch short on every stud.',
       'Swapping a grade marked bolt for an unmarked one of the same diameter, which quietly gives away most of the clamping load.',
       'Pouring a slab with no steel and then wondering why it cracks across the span, because concrete cannot carry the tension.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer:
+            'Lying flat puts more wood under the load, so it must be stronger.',
+        why: 'The section holds the same amount of wood in both positions. What changes is the depth, and depth is what resists bending.',
+      ),
+      CommonMistake(
+        answer: 'On edge the plank is narrower, and narrow is stiffer.',
+        why: 'Narrower is weaker, not stiffer. The gain comes from the depth, where a doubled depth means eight times the stiffness.',
+      ),
     ],
   ),
   Lesson(
@@ -1111,6 +1402,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: '15 pounds per square inch or less, with the cylinder upright.',
       ),
+      WorkedExample(
+        prompt: 'Why must an arc welder keep the electrode holder dry and clamp the ground lead to clean metal close to the joint?',
+        steps: <String>[
+          'The holder carries the welding voltage at the electrode, so a damp holder puts that voltage in the welder hand.',
+          'The ground clamp completes the circuit, so the current has to get back to it through the work.',
+          'Clamped close to the joint, the return path is short and no current wanders through bearings, chains or the bench.',
+        ],
+        answer: 'A dry holder keeps the welder insulated, and a close clean ground keeps the return path short.',
+      ),
     ],
     quickRules: <String>[
       'Welding melts the base metal, brazing and soldering do not.',
@@ -1122,6 +1422,16 @@ const List<Lesson> lessonsB = <Lesson>[
       'Calling brazing welding, which pushes you to the answer where the base metal melts and to strength claims the joint cannot support.',
       'Choosing MIG for an outdoor job in wind, where the gas blows away and the weld is porous from the first inch.',
       'Ignoring slag between passes on a stick weld, which stops the next pass bonding and leaves a joint that looks sound and is not.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'The ground clamp is only there to hold the work still.',
+        why: 'The clamp is an electrical connection, not a hold down. It completes the circuit, and where it sits decides the path the current takes.',
+      ),
+      CommonMistake(
+        answer: 'A damp holder is safe because welding gloves are leather.',
+        why: 'Leather soaks through. A wet holder puts the open circuit voltage into the welder hand, which is why holders are kept dry.',
+      ),
     ],
   ),
   Lesson(
@@ -1180,6 +1490,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: '6 feet from the fulcrum, at the far end of the plank.',
       ),
+      WorkedExample(
+        prompt: 'A wheelbarrow carries its load 1.5 feet from the wheel, and the handles are 5 feet from the wheel. How much effort lifts a 200 pound load?',
+        steps: <String>[
+          'The wheel is the fulcrum, so the load arm is 1.5 feet and the effort arm is 5 feet.',
+          'Balance the moments: effort x 5 = 200 x 1.5 = 300.',
+          'Divide: effort = 300 / 5 = 60 pounds.',
+        ],
+        answer: '60 pounds of effort',
+      ),
     ],
     quickRules: <String>[
       'Moment equals force times distance from the fulcrum.',
@@ -1191,6 +1510,16 @@ const List<Lesson> lessonsB = <Lesson>[
       'Using the whole bar as the effort arm, which gives an advantage of 10 in place of 9 and an effort of 18 pounds where the answer was 20.',
       'Dividing the arms the wrong way round, which reports an effort larger than the load itself and tells you to push harder than lifting by hand.',
       'Assuming a long lever multiplies distance along with force; it does the opposite, giving force and taking distance.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '40 pounds, using 5 feet as the load arm.',
+        why: 'The load sits 1.5 feet from the wheel. Effort x 5 = 200 x 1.5 balances at 60 pounds, not 40.',
+      ),
+      CommonMistake(
+        answer: '133 pounds, dividing the load by the load arm alone.',
+        why: 'The mechanical advantage is the ratio of the arms, 5 / 1.5, which is about 3.3, so the effort is 200 / 3.3 = 60 pounds.',
+      ),
     ],
   ),
   Lesson(
@@ -1249,6 +1578,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: '120 revolutions per minute, with about five times the torque.',
       ),
+      WorkedExample(
+        prompt: 'A single movable pulley lifts a 300 pound load. Ignoring friction, what effort holds it, and how much rope is pulled in to raise the load 4 feet?',
+        steps: <String>[
+          'A movable pulley hangs on two rope sections, so the effort is half the load.',
+          'Halve it: 300 / 2 = 150 pounds.',
+          'The trade is rope for force, so the rope moves twice as far as the load: 2 x 4 = 8 feet.',
+        ],
+        answer: '150 pounds of effort, with 8 feet of rope pulled',
+      ),
     ],
     quickRules: <String>[
       'Count only the rope sections that support the movable block.',
@@ -1260,6 +1598,16 @@ const List<Lesson> lessonsB = <Lesson>[
       'Counting every visible rope line, which doubles the section count and reports half the effort the system can really give you.',
       'Assuming a fixed pulley halves the effort, which answers with half the load weight when the honest answer is the whole weight.',
       'Saying meshed gears turn the same way, which reverses every direction item and gets a simple two gear chain exactly wrong.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '300 pounds, because a pulley only changes the direction of the pull.',
+        why: 'That is true of a fixed pulley. A movable pulley hangs on two rope sections and halves the effort to 150 pounds.',
+      ),
+      CommonMistake(
+        answer: '150 pounds with only 4 feet of rope pulled.',
+        why: 'The effort halves, so the distance doubles. 8 feet of rope has to come in to raise the load 4 feet.',
+      ),
     ],
   ),
   Lesson(
@@ -1318,6 +1666,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: 'About one more atmosphere, or roughly 14.7 pounds per square inch extra.',
       ),
+      WorkedExample(
+        prompt: 'A 150 pound soldier stands on snowshoes with a total contact area of 300 square inches. What pressure does he put on the snow?',
+        steps: <String>[
+          'Pressure is force divided by area.',
+          'Divide: 150 / 300 = 0.5 pounds per square inch.',
+          'Notice the point of the snowshoe: the same weight over a bigger area is a pressure the snow can hold.',
+        ],
+        answer: '0.5 pounds per square inch',
+      ),
     ],
     quickRules: <String>[
       'Pressure equals force divided by area.',
@@ -1329,6 +1686,17 @@ const List<Lesson> lessonsB = <Lesson>[
       'Multiplying force by area instead of dividing, which makes pressure grow as the contact area grows, the exact opposite of the truth.',
       'Forgetting that the output piston travels less far, so a jack looks as though it creates energy from nothing.',
       'Confusing gauge pressure with absolute pressure, which understates the total by about 14.7 pounds per square inch at sea level.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer:
+            '150 pounds per square inch, reporting the load as the pressure.',
+        why: '150 pounds is the force. Pressure spreads it over 300 square inches, which is 0.5 pounds per square inch.',
+      ),
+      CommonMistake(
+        answer: '45,000 pounds per square inch, multiplying force by area.',
+        why: 'Pressure is force divided by area. Multiplying the two turns a small pressure into an impossible number.',
+      ),
     ],
   ),
   Lesson(
@@ -1387,6 +1755,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: 'About 30 pounds to start it, and less to keep it moving.',
       ),
+      WorkedExample(
+        prompt: 'A wire rope has a breaking strength of 8,000 pounds. What load is it rated to lift with a safety factor of 4?',
+        steps: <String>[
+          'A safety factor protects the rope by keeping the working load below the breaking strength.',
+          'Divide the breaking strength by the factor: 8,000 / 4 = 2,000 pounds.',
+          'Read the direction: the factor makes the working load smaller, never larger.',
+        ],
+        answer: '2,000 pounds',
+      ),
     ],
     quickRules: <String>[
       'Stress equals force divided by area.',
@@ -1398,6 +1775,16 @@ const List<Lesson> lessonsB = <Lesson>[
       'Reversing tension and compression in a sagging beam, which puts the stretch on top and loses the item even though you read the sag correctly.',
       'Calculating friction from the push you apply instead of the normal force, which gives a friction figure that changes depending on how hard you are already pushing.',
       'Duplicating a rectangle instead of bracing it, which adds weight and does nothing, because the diagonal is what resists racking.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: '32,000 pounds, multiplying the strength by the factor.',
+        why: 'A safety factor divides. Lifting 32,000 pounds with an 8,000 pound rope takes it past the point where it fails.',
+      ),
+      CommonMistake(
+        answer: '8,000 pounds, because that is what the rope is rated for.',
+        why: 'Breaking strength is where the rope parts. The working load sits a factor of safety below it, at 2,000 pounds.',
+      ),
     ],
   ),
   Lesson(
@@ -1457,6 +1844,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: 'The choice is a mirror image, so it is wrong; the correct plate has the chamfer bottom right.',
       ),
+      WorkedExample(
+        prompt: 'A piece is a square with a single dot in its top right corner. It is turned 90 degrees counter clockwise. Where does the dot end up?',
+        steps: <String>[
+          'Fix one reference point and turn it, rather than turning the whole picture in your head.',
+          'A quarter turn counter clockwise carries the top right corner around to the top left.',
+          'Check with a second point if the piece has one: top left would go to bottom left, and the whole square stays a square.',
+        ],
+        answer: 'The top left corner.',
+      ),
     ],
     quickRules: <String>[
       'Physically rotate the paper, because it costs nothing.',
@@ -1468,6 +1864,16 @@ const List<Lesson> lessonsB = <Lesson>[
       'Accepting the choice that only fits after an imagined flip, which is the mirror image and is wrong every time it appears.',
       'Comparing whole figures at once, which lets a matching outline disguise a mirrored piece and burns two minutes on one item.',
       'Ignoring a corner that must have moved after a half turn, which leaves you confident in a choice whose chamfer sits in the wrong diagonal.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'The bottom right corner, which is where a clockwise quarter turn puts it.',
+        why: 'Clockwise and counter clockwise are opposite turns. Counter clockwise from top right lands at top left.',
+      ),
+      CommonMistake(
+        answer: 'The bottom left corner, which is half a turn away.',
+        why: 'Bottom left is where a 180 degree turn sends the dot. A 90 degree counter clockwise turn stops at the top left.',
+      ),
     ],
   ),
   Lesson(
@@ -1528,6 +1934,15 @@ const List<Lesson> lessonsB = <Lesson>[
         ],
         answer: 'It is a wrong choice, because the strip was swapped for a shorter one.',
       ),
+      WorkedExample(
+        prompt: 'The pieces are two identical rectangles, each twice as long as it is wide. A choice shows a square whose side equals the long side of one rectangle. Can it be built?',
+        steps: <String>[
+          'Take the inventory: two rectangles, each 2 by 1.',
+          'Lay them with their long edges together and the outline is a square 2 by 2.',
+          'Nothing was cut, flipped or left over, so the choice stands.',
+        ],
+        answer: 'Yes, with the two rectangles laid long edge to long edge.',
+      ),
     ],
     quickRules: <String>[
       'Tally the pieces before you look at the answer choices.',
@@ -1539,6 +1954,16 @@ const List<Lesson> lessonsB = <Lesson>[
       'Chasing the outline and ignoring the interior, so a choice that fills the big shape with three copies of a piece you were given twice looks correct and is not.',
       'Accepting a lookalike piece without checking its length, which is the substitution the writers bank on and the most common lost point here.',
       'Building every figure completely in your head, which eats the section time; checking two pieces is normally enough.',
+    ],
+    commonMistakes: <CommonMistake>[
+      CommonMistake(
+        answer: 'No, because two rectangles can never make a square.',
+        why: 'Two copies of the same rectangle meeting along their long edges close up into a square whose side is the long side.',
+      ),
+      CommonMistake(
+        answer: 'Yes, but only if one rectangle is trimmed to fit.',
+        why: 'Trimmed pieces are not the pieces you were given. Both whole rectangles fit, so no trimming is needed.',
+      ),
     ],
   ),
 ];
