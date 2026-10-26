@@ -569,23 +569,35 @@ class _EligibilityBlock extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
+          // A Wrap, not a Row. The figure and the sentence beside it cannot
+          // share one line on a phone: "44 of 156" is three digits now that the
+          // roster has grown, and at the 1.3x ceiling the clamp below imposes it
+          // is 330 pixels wide inside a card that leaves 324 for the whole row,
+          // so with the caption's 12 pixel gap the Row painted an 18 pixel
+          // overflow stripe - at 1.3x and again at 2x, where the clamp holds the
+          // figure at its widest. A Wrap gives the caption its own line when the
+          // two do not fit, and the figure is clamped and scalable, so the
+          // number that carries the meaning is never cut and never squeezes the
+          // explanation into a one-word column.
+          Wrap(
+            spacing: Space.md,
+            runSpacing: Space.sm,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: <Widget>[
-              // A display figure, clamped rather than scaled without limit: at
-              // 2x this number alone is wider than the card.
               MediaQuery.withClampedTextScaling(
                 maxScaleFactor: 1.3,
-                child: Text(
-                  '${summary.qualified.length} of ${summary.total}',
-                  style: context.text.displaySmall?.copyWith(fontSize: 26),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    '${summary.qualified.length} of ${summary.total}',
+                    style: context.text.displaySmall?.copyWith(fontSize: 26),
+                  ),
                 ),
               ),
-              const SizedBox(width: Space.md),
-              Expanded(
-                child: Text(
-                  'catalogued jobs currently clear their published aptitude gate.',
-                  style: context.text.bodySmall,
-                ),
+              Text(
+                'catalogued jobs currently clear their published aptitude gate.',
+                style: context.text.bodySmall,
               ),
             ],
           ),
