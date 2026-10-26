@@ -19,8 +19,11 @@ Future<void> settle(WidgetTester tester, {int pumps = 6}) async {
   }
 }
 
-Future<AppState> pumpApp(WidgetTester tester) async {
-  tester.view.physicalSize = const Size(1400, 2200);
+Future<AppState> pumpApp(
+  WidgetTester tester, {
+  Size size = const Size(1400, 2200),
+}) async {
+  tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1.0;
   addTearDown(tester.view.reset);
   SharedPreferences.setMockInitialValues(<String, Object>{});
@@ -186,6 +189,68 @@ void main() {
     await tester.tap(find.text('Test'));
     await settle(tester);
     expect(find.text('Built from your five weakest skills.'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('the core loop works on a phone', (tester) async {
+    // A soldier is more likely to rehearse on a phone than on a desktop, and
+    // the phone is where layout and hit targets are tightest.
+    await pumpApp(tester, size: const Size(390, 844));
+    await completeOnboarding(tester);
+
+    final sections = await runDiagnostic(tester);
+    expect(sections, 9);
+    expect(tester.takeException(), isNull);
+    expect(find.text('Line scores'), findsOneWidget);
+
+    // The review has to be reachable by scrolling on a phone.
+    final reviewButton = find.text('Review every answer');
+    await tester.ensureVisible(reviewButton);
+    await settle(tester);
+    await tester.tap(reviewButton);
+    await settle(tester);
+    expect(find.text('Review'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('the coach sends a weak candidate into a reinforcement lesson', (
+    tester,
+  ) async {
+    await pumpApp(tester);
+    await completeOnboarding(tester);
+    await runDiagnostic(tester);
+    await tester.pageBack();
+    await settle(tester, pumps: 12);
+
+    // Back on Home the recommendation has to be the lesson, because the misses
+    // from this attempt are not due for review until tomorrow.
+    await tester.tap(find.text('Home'));
+    await settle(tester);
+    final cta = find.text('Open lesson');
+    expect(
+      cta,
+      findsOneWidget,
+      reason: 'a scored attempt with weak skills should point at a lesson',
+    );
+
+    await tester.ensureVisible(cta);
+    await settle(tester);
+    await tester.tap(cta);
+    await settle(tester, pumps: 10);
+    // The eyebrow renders its label in capitals, so the assertion has to match
+    // what is actually painted.
+    expect(find.text('REINFORCEMENT LESSON'), findsOneWidget);
+    // And it must be the lesson for the skill the coach recommended, not any
+    // lesson at all.
+    expect(find.text('Your mastery'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+
+    // The mastery check is the part that proves the lesson was read.
+    final check = find.text('Check myself');
+    await tester.ensureVisible(check);
+    await settle(tester);
+    await tester.tap(check);
+    await settle(tester);
     expect(tester.takeException(), isNull);
   });
 }

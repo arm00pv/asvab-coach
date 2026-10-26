@@ -244,13 +244,15 @@ class _FirstRunCard extends StatelessWidget {
             style: context.text.bodyMedium,
           ),
           const SizedBox(height: Space.lg),
-          Row(
+          Wrap(
+            spacing: Space.md,
+            runSpacing: Space.sm,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: <Widget>[
               FilledButton(
                 onPressed: onStart,
                 child: const Text('Begin diagnostic'),
               ),
-              const SizedBox(width: Space.md),
               Text(
                 'about 30 minutes',
                 style: context.text.bodySmall?.copyWith(color: c.textMuted),

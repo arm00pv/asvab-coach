@@ -125,6 +125,21 @@ void main() {
       );
     });
 
+    testWidgets('dashboard before the first attempt', (tester) async {
+      // A first-run dashboard is a different screen: the readiness hero is
+      // replaced by a card inviting the diagnostic, and that card overflowed a
+      // phone until the journey test visited it.
+      SharedPreferences.setMockInitialValues(<String, Object>{});
+      final state = AppState();
+      await state.init();
+      await pumpScreen(
+        tester,
+        DashboardScreen(onNavigate: (_) {}),
+        state: state,
+      );
+      expect(find.text('Begin diagnostic'), findsOneWidget);
+    });
+
     testWidgets('jobs', (tester) async {
       await pumpScreen(tester, const JobsScreen());
     });

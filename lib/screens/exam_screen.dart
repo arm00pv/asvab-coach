@@ -754,8 +754,13 @@ class _ExamFooter extends StatelessWidget {
               FilledButton.icon(
                 onPressed: onFinishSection,
                 icon: const Icon(Icons.check_rounded, size: 17),
+                // On a phone the full label plus the back and flag buttons run
+                // past the edge of the screen, and the header already names the
+                // action, so the footer keeps the short form.
                 label: Text(
-                  session.isLastSection ? 'Submit exam' : 'Finish section',
+                  session.isLastSection
+                      ? 'Submit exam'
+                      : (context.isCompact ? 'Finish' : 'Finish section'),
                 ),
               )
             else
