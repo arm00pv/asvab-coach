@@ -335,6 +335,7 @@ class _ReviewCard extends StatelessWidget {
               ],
             ),
           ),
+          _DistractorNotes(served: item.served, picked: item.displaySelected),
           const SizedBox(height: Space.md),
           Wrap(
             spacing: Space.sm,
@@ -417,6 +418,79 @@ class _ReviewOption extends StatelessWidget {
             Icon(Icons.close_rounded, size: 15, color: c.danger),
         ],
       ),
+    );
+  }
+}
+
+/// Why the options the candidate did not pick are wrong.
+///
+/// The "Why" box above explains the correct answer. That is not where a
+/// candidate who picked B learns anything: the lesson is in why B seemed
+/// right and is not. Renders nothing for items not yet annotated.
+class _DistractorNotes extends StatelessWidget {
+  const _DistractorNotes({required this.served, required this.picked});
+
+  final ServedQuestion served;
+  final int? picked;
+
+  @override
+  Widget build(BuildContext context) {
+    final question = served.base;
+    if (question.choiceNotes.isEmpty) return const SizedBox.shrink();
+
+    final rows = <Widget>[];
+    for (var i = 0; i < served.displayChoices.length; i++) {
+      final bank = served.order[i];
+      if (bank == question.answerIndex) continue;
+      final note = question.noteFor(bank);
+      if (note == null) continue;
+      final chosen = picked == i;
+      rows.add(
+        Padding(
+          padding: const EdgeInsets.only(bottom: Space.sm),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(
+                width: 18,
+                child: Text(
+                  String.fromCharCode(65 + i),
+                  style: context.text.labelMedium?.copyWith(
+                    color: context.colors.textSecondary,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  chosen ? '$note (your answer)' : note,
+                  style: context.text.bodySmall?.copyWith(
+                    color: context.colors.textSecondary,
+                    height: 1.5,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    if (rows.isEmpty) return const SizedBox.shrink();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const SizedBox(height: Space.md),
+        Text(
+          rows.length == 1
+              ? 'Why the other option fails'
+              : 'Why the others fail',
+          style: context.text.labelMedium?.copyWith(
+            color: context.colors.textSecondary,
+          ),
+        ),
+        const SizedBox(height: Space.xs),
+        ...rows,
+      ],
     );
   }
 }
