@@ -63,6 +63,17 @@ class DashboardScreen extends StatelessWidget {
                     ),
                 ],
               ),
+              if (app.storageRecovered) ...<Widget>[
+                const SizedBox(height: Space.lg),
+                _StorageNotice(
+                  app: app,
+                  onOpenSettings: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const SettingsScreen(),
+                    ),
+                  ),
+                ),
+              ],
               const SizedBox(height: Space.xl),
               if (report == null)
                 _FirstRunCard(onStart: () => _startDiagnostic(context))
@@ -265,6 +276,101 @@ class _FirstRunCard extends StatelessWidget {
   }
 }
 
+/// Tells the candidate when part of their saved history did not load.
+///
+/// The alternative is worse than it sounds. An app that quietly shows an empty
+/// history looks like it deleted everything, and a candidate who has been
+/// practising for a month cannot tell a partial recovery from a reset.
+class _StorageNotice extends StatelessWidget {
+  const _StorageNotice({required this.app, required this.onOpenSettings});
+
+  final AppState app;
+  final VoidCallback onOpenSettings;
+
+  static const _labelled = <String, String>{
+    'all': 'saved history',
+    'goal': 'your goal',
+    'attempts': 'your attempt history',
+    'orders': 'the answer orderings kept for review',
+    'reviews': 'your review queue',
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final keys = <String>[
+      for (final key in app.unreadableKeys) _labelled[key] ?? key,
+    ];
+    final what = keys.isEmpty
+        ? 'part of your saved history'
+        : keys.toSet().join(', ');
+    final skipped = app.skippedRecords;
+    final records = skipped == 1 ? 'record' : 'records';
+    final tail = skipped == 0
+        ? 'Everything else is intact and new activity saves normally.'
+        : '$skipped saved $records could not be read. Everything else is '
+              'intact.';
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(Space.lg),
+      decoration: BoxDecoration(
+        color: c.warningSoft,
+        borderRadius: BorderRadius.circular(Radii.md),
+        border: Border(left: BorderSide(color: c.warning, width: 3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Icon(
+                Icons.report_gmailerrorred_rounded,
+                size: 18,
+                color: c.warning,
+              ),
+              const SizedBox(width: Space.sm),
+              Flexible(
+                child: Text(
+                  'Some saved data could not be read',
+                  style: context.text.titleSmall?.copyWith(
+                    color: c.textPrimary,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: Space.xs),
+          Text(
+            'On this device, $what did not load. $tail Nothing was deleted, '
+            'and you can clear the leftovers in Settings if you prefer a clean '
+            'start.',
+            style: context.text.bodySmall?.copyWith(
+              color: c.textSecondary,
+              height: 1.5,
+            ),
+          ),
+          const SizedBox(height: Space.md),
+          Wrap(
+            spacing: Space.sm,
+            runSpacing: Space.xs,
+            children: <Widget>[
+              FilledButton(
+                onPressed: app.dismissStorageWarning,
+                child: const Text('Got it'),
+              ),
+              TextButton(
+                onPressed: onOpenSettings,
+                child: const Text('Open settings'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _ReadinessHero extends StatelessWidget {
   const _ReadinessHero({required this.report, required this.app});
 
@@ -351,13 +457,14 @@ class _ReadinessHero extends StatelessWidget {
                     const SizedBox(height: Space.sm),
                     Text(_explain(report), style: context.text.bodyMedium),
                     const SizedBox(height: Space.lg),
-                    Row(
-                      children: <Widget>[
-                        for (var i = 0; i < stats.length; i++) ...<Widget>[
-                          if (i > 0) const SizedBox(width: Space.xl),
-                          stats[i],
-                        ],
-                      ],
+                    // A Wrap: the hero keeps the gauge beside the figures on a
+                    // wide window, and the figures stack rather than overflowing
+                    // when the card is narrowed by a narrower window.
+                    Wrap(
+                      spacing: Space.xl,
+                      runSpacing: Space.md,
+                      crossAxisAlignment: WrapCrossAlignment.start,
+                      children: stats,
                     ),
                   ],
                 ),

@@ -1,4 +1,12 @@
 import 'package:asvab_guard_coach/app.dart';
+import 'package:asvab_guard_coach/core/theme/app_theme.dart';
+import 'package:asvab_guard_coach/data/bank/question_bank.dart';
+import 'package:asvab_guard_coach/data/models/catalog.dart';
+import 'package:asvab_guard_coach/data/models/exam.dart';
+import 'package:asvab_guard_coach/data/models/mos.dart';
+import 'package:asvab_guard_coach/data/models/score.dart';
+import 'package:asvab_guard_coach/engines/exam_builder.dart';
+import 'package:asvab_guard_coach/screens/exam_screen.dart';
 import 'package:asvab_guard_coach/state/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -100,6 +108,26 @@ Future<void> answerSection(WidgetTester tester, int section) async {
   await settle(tester);
   await tester.tap(find.text(label).last);
   await settle(tester);
+}
+
+/// Answers every question in the section on screen without finishing it.
+Future<int> answerEverythingOnScreen(WidgetTester tester, int section) async {
+  var answered = 0;
+  for (var guard = 0; guard < 40; guard++) {
+    final at = counter();
+    if (at == null) break;
+    await tester.sendKeyEvent(
+      (answered + section).isEven
+          ? LogicalKeyboardKey.digit1
+          : LogicalKeyboardKey.digit4,
+    );
+    await settle(tester, pumps: 2);
+    answered++;
+    if (at.$1 >= at.$2) break;
+    await tester.sendKeyEvent(LogicalKeyboardKey.arrowRight);
+    await settle(tester, pumps: 2);
+  }
+  return answered;
 }
 
 Future<int> runDiagnostic(WidgetTester tester) async {
@@ -252,5 +280,215 @@ void main() {
     await tester.tap(check);
     await settle(tester);
     expect(tester.takeException(), isNull);
+  });
+  testWidgets('a full mock runs all ten sections in order', (tester) async {
+    // The diagnostic is nine sections. The full mock is ten, because Auto &
+    // Shop is administered as a separate Auto block and Shop block, and the
+    // section index math that broke at the end of the diagnostic has to hold
+    // for a different section count too.
+    await pumpApp(tester);
+    await completeOnboarding(tester);
+    await tester.tap(find.text('Test'));
+    await settle(tester);
+    await tester.tap(find.text('Full mock ASVAB'));
+    await settle(tester);
+
+    final expected = <String>[];
+    for (final subtest in Subtest.administrationOrder) {
+      if (subtest == Subtest.as) {
+        expected.add('Auto Information');
+        expected.add('Shop Information');
+      } else {
+        expected.add(subtest.label);
+      }
+    }
+    expect(expected, hasLength(10));
+
+    var sections = 0;
+    while (sections < 12 && find.text('Begin section').evaluate().isNotEmpty) {
+      expect(
+        find.text(expected[sections]),
+        findsOneWidget,
+        reason: 'section $sections should be ${expected[sections]}',
+      );
+      await answerSection(tester, sections);
+      sections++;
+    }
+    expect(sections, 10);
+    await settle(tester, pumps: 12);
+    expect(tester.takeException(), isNull);
+    expect(find.text('Line scores'), findsOneWidget);
+  });
+
+  testWidgets('the header finish action also submits', (tester) async {
+    // There are two ways to end a section: the footer button and the header
+    // action. Only the footer was ever exercised.
+    tester.view.physicalSize = const Size(1400, 2200);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+    SharedPreferences.setMockInitialValues(<String, Object>{});
+    final state = AppState();
+    await state.init();
+    await state.setGoal(
+      const GoalProfile(
+        displayName: 'Header Soldier',
+        targetAfqt: 60,
+        targetGt: 110,
+        targetMosCodes: <String>[],
+        targetDate: null,
+        officerTrack: false,
+        dailyMinutes: 30,
+      ),
+    );
+
+    final exam = ExamBuilder.section(Subtest.wk, seed: 11);
+    await tester.pumpWidget(
+      ChangeNotifierProvider<AppState>.value(
+        value: state,
+        child: MaterialApp(
+          theme: AppTheme.build(Brightness.light),
+          home: ExamScreen(exam: exam),
+        ),
+      ),
+    );
+    await settle(tester);
+    await tester.tap(find.text('Begin section'));
+    await settle(tester);
+
+    // The header action is deliberately disabled until every question in the
+    // section is answered, so answer them all and then use it.
+    final answered = await answerEverythingOnScreen(tester, 0);
+    expect(answered, greaterThan(1));
+
+    // This is a single-section exam, so the header action reads "Submit".
+    await tester.tap(find.text('Submit').first);
+    await settle(tester);
+    await tester.tap(find.text('Submit exam').last);
+    await settle(tester, pumps: 14);
+    expect(tester.takeException(), isNull);
+    expect(find.text('Line scores'), findsOneWidget);
+    expect(state.attempts, hasLength(1));
+  });
+
+  testWidgets('leaving an attempt mid-way records nothing', (tester) async {
+    tester.view.physicalSize = const Size(1400, 2200);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+    SharedPreferences.setMockInitialValues(<String, Object>{});
+    final state = AppState();
+    await state.init();
+    await state.setGoal(
+      const GoalProfile(
+        displayName: 'Quitter',
+        targetAfqt: 60,
+        targetGt: 110,
+        targetMosCodes: <String>[],
+        targetDate: null,
+        officerTrack: false,
+        dailyMinutes: 30,
+      ),
+    );
+
+    final exam = ExamBuilder.section(Subtest.gs, seed: 4);
+    await tester.pumpWidget(
+      ChangeNotifierProvider<AppState>.value(
+        value: state,
+        child: MaterialApp(
+          theme: AppTheme.build(Brightness.light),
+          home: ExamScreen(exam: exam),
+        ),
+      ),
+    );
+    await settle(tester);
+    await tester.tap(find.text('Begin section'));
+    await settle(tester);
+    await tester.sendKeyEvent(LogicalKeyboardKey.digit2);
+    await settle(tester, pumps: 2);
+
+    // A system back must not silently drop the attempt; it asks first.
+    await tester.binding.defaultBinaryMessenger.handlePlatformMessage(
+      'flutter/navigation',
+      const JSONMethodCodec().encodeMethodCall(const MethodCall('popRoute')),
+      (_) {},
+    );
+    await settle(tester);
+    expect(find.text('Leave this attempt?'), findsOneWidget);
+    await tester.tap(find.text('Discard attempt'));
+    await settle(tester, pumps: 8);
+
+    expect(tester.takeException(), isNull);
+    expect(
+      state.attempts,
+      isEmpty,
+      reason: 'a discarded attempt must not score',
+    );
+    expect(find.text('Line scores'), findsNothing);
+  });
+
+  testWidgets('the section clock ends the exam and still reports', (
+    tester,
+  ) async {
+    // Time running out is the same completion path as pressing submit, one
+    // caller away from the bug that made the last section unfinishable.
+    tester.view.physicalSize = const Size(1400, 2200);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+    SharedPreferences.setMockInitialValues(<String, Object>{});
+    final state = AppState();
+    await state.init();
+    await state.setGoal(
+      const GoalProfile(
+        displayName: 'Late Soldier',
+        targetAfqt: 60,
+        targetGt: 110,
+        targetMosCodes: <String>[],
+        targetDate: null,
+        officerTrack: false,
+        dailyMinutes: 30,
+      ),
+    );
+
+    final pool = QuestionBank.bySubtest(Subtest.wk);
+    final exam = Exam(
+      id: 'expiry',
+      kind: ExamKind.section,
+      title: 'Word Knowledge',
+      sections: <ExamSection>[
+        ExamSection(
+          subtest: Subtest.wk,
+          questions: <ServedQuestion>[
+            ServedQuestion.identity(pool.first),
+            ServedQuestion.identity(pool[1]),
+          ],
+          minutes: 1,
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      ChangeNotifierProvider<AppState>.value(
+        value: state,
+        child: MaterialApp(
+          theme: AppTheme.build(Brightness.light),
+          home: ExamScreen(exam: exam),
+        ),
+      ),
+    );
+    await settle(tester);
+    await tester.tap(find.text('Begin section'));
+    await settle(tester);
+    await tester.sendKeyEvent(LogicalKeyboardKey.digit1);
+    await settle(tester, pumps: 2);
+
+    // Run the one-minute clock out.
+    for (var second = 0; second < 65; second++) {
+      await tester.pump(const Duration(seconds: 1));
+    }
+    await settle(tester, pumps: 14);
+
+    expect(tester.takeException(), isNull);
+    expect(find.text('Line scores'), findsOneWidget);
+    expect(state.attempts, hasLength(1));
+    expect(state.attempts.single.responses, isNotEmpty);
   });
 }

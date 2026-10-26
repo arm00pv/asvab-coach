@@ -140,6 +140,19 @@ void main() {
       expect(find.text('Begin diagnostic'), findsOneWidget);
     });
 
+    testWidgets('dashboard at an intermediate width', (tester) async {
+      // Between the phone layout and the wide one there is a window where the
+      // readiness gauge sits beside its figures in a column barely wide enough
+      // for both. That is where the hero's stat row overflowed.
+      final state = await seededState();
+      await pumpScreen(
+        tester,
+        DashboardScreen(onNavigate: (_) {}),
+        state: state,
+        size: const Size(1000, 1600),
+      );
+    });
+
     testWidgets('jobs', (tester) async {
       await pumpScreen(tester, const JobsScreen());
     });

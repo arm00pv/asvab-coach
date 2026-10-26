@@ -24,6 +24,9 @@ class AppState extends ChangeNotifier {
   bool _soundOn = true;
   bool _onboarded = false;
   bool _loading = true;
+  List<String> _unreadableKeys = const <String>[];
+  int _skippedRecords = 0;
+  bool _storageWarningDismissed = false;
 
   GoalProfile? get goal => _goal;
   List<Attempt> get attempts => List<Attempt>.unmodifiable(_attempts);
@@ -32,6 +35,28 @@ class AppState extends ChangeNotifier {
   bool get onboarded => _onboarded;
   bool get loading => _loading;
   bool get hasGoal => _goal != null;
+
+  /// True when part of the saved history could not be read and the candidate
+  /// has not yet acknowledged it.
+  ///
+  /// Silence is the wrong answer here: an app that quietly presents an empty
+  /// history looks like it lost everything, and a candidate cannot tell a
+  /// recovery from a reset.
+  bool get storageRecovered =>
+      !_storageWarningDismissed &&
+      (_unreadableKeys.isNotEmpty || _skippedRecords > 0);
+
+  /// Storage keys that failed to load, for the notice's wording.
+  List<String> get unreadableKeys => List<String>.unmodifiable(_unreadableKeys);
+
+  /// Individual records skipped inside keys that did load.
+  int get skippedRecords => _skippedRecords;
+
+  void dismissStorageWarning() {
+    if (_storageWarningDismissed) return;
+    _storageWarningDismissed = true;
+    notifyListeners();
+  }
 
   /// The spaced-repetition queue, soonest due first.
   List<ReviewItem> get reviews => List<ReviewItem>.unmodifiable(_reviews);
@@ -126,16 +151,27 @@ class AppState extends ChangeNotifier {
       <String>{for (final a in _attempts) ...a.report.skillMastery.keys}.length;
 
   Future<void> init() async {
-    final persisted = await Storage.load();
-    _goal = persisted.goal;
-    _attempts = List<Attempt>.of(persisted.attempts);
-    _orders = persisted.orders;
-    _darkMode = persisted.darkMode;
-    _soundOn = persisted.soundOn;
-    _onboarded = persisted.onboarded;
-    _reviews = List<ReviewItem>.of(persisted.reviews);
-    _loading = false;
-    notifyListeners();
+    try {
+      final persisted = await Storage.load();
+      _goal = persisted.goal;
+      _attempts = List<Attempt>.of(persisted.attempts);
+      _orders = persisted.orders;
+      _darkMode = persisted.darkMode;
+      _soundOn = persisted.soundOn;
+      _onboarded = persisted.onboarded;
+      _reviews = List<ReviewItem>.of(persisted.reviews);
+      _unreadableKeys = persisted.unreadableKeys;
+      _skippedRecords = persisted.skippedRecords;
+    } catch (error) {
+      // The repository recovers key by key, so reaching here means something
+      // it did not anticipate. Boot with what we have: a cleared history the
+      // candidate can rebuild beats a spinner that never resolves.
+      _unreadableKeys = const <String>['all'];
+      debugPrint('ASVAB coach: could not restore saved state: $error');
+    } finally {
+      _loading = false;
+      notifyListeners();
+    }
   }
 
   Future<void> setGoal(GoalProfile goal) async {

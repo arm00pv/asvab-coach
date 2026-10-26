@@ -118,6 +118,11 @@ flutter test
 | `personas_test` | Seven synthetic learners scored through the real engines: a strong candidate outscores a weak one, a pure guesser stays below the AFQT 31 floor, an officer-minded candidate clears GT 110, a maths-anxious candidate is coached on maths, and eligibility grows with ability. |
 | `review_queue_test` | A missed or flagged question enters the queue due tomorrow, a correct first answer does not, intervals widen 1 to 3 to 7 to 21 days, four clean retrievals graduate it, a wrong review resets it, and a review session contains exactly the questions that were due. |
 | `widget_test` | Onboarding renders, advances through all four steps, and lands on the dashboard. |
+| `journey_test` | The whole candidate path, driven the way a candidate drives it: onboarding, the placement diagnostic answered by keyboard, the score report arriving on its own, the review, back into the app, a reload, and the reinforcement lesson the coach recommends. A full mock runs all ten sections in the official order, including the separate Auto and Shop blocks. The header finish action, leaving mid-attempt, and the section clock running out all end correctly. The core loop is also driven at phone width. |
+| `screen_layout_test` | Every screen paints without a framework exception at phone width, plus the first-run dashboard and an intermediate width. Overflow stripes are not a crash a candidate can read, so this is the guard for the whole class. |
+| `exam_screen_layout_test` | The runner specifically: a reading passage, a diagram, an assembly puzzle, a phone, and an answer being recorded. |
+| `storage_recovery_test` | A corrupt or partially evicted store never bricks the boot and never costs more than the records that were actually unreadable: one bad attempt leaves the goal, the theme and the streak intact, a bad key does not discard the others, and the dashboard says what could not be read instead of quietly presenting an empty history. |
+| `settings_and_review_test` | Dark mode persists, the history export reaches the clipboard, erase-all really clears the store, and a due review session advances the spaced-repetition schedule. |
 
 The persona harness is also available in-app under **Settings > QA lab**, so the
 whole pipeline can be spot-checked without sitting a two-hour mock. See
@@ -177,6 +182,9 @@ Set Pages to **Source: GitHub Actions** and the app is served from
 - Scores are an estimate. ETS item-response equating cannot be reproduced from a
   practice test; the model treats difficulty-weighted accuracy as a percentile of
   ability and says so.
+- Saved history is per-browser. If part of it cannot be read - a browser evicting
+  storage, an interrupted write - the app says so on the dashboard and keeps
+  whatever was readable rather than silently starting over.
 - The bank is 372 items. A mock draws the official item count per subtest, so
   heavy repeat use will start to repeat questions across attempts.
 - Assembling Objects uses polyomino puzzles. They enforce the real subtest's

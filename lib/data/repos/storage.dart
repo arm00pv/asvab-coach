@@ -17,6 +17,8 @@ class PersistedState {
     required this.soundOn,
     required this.onboarded,
     required this.reviews,
+    this.unreadableKeys = const <String>[],
+    this.skippedRecords = 0,
   });
 
   final GoalProfile? goal;
@@ -32,6 +34,16 @@ class PersistedState {
   /// Spaced-repetition queue: questions missed or flagged, with due dates.
   final List<ReviewItem> reviews;
 
+  /// Storage keys that could not be read, so the app can say so instead of
+  /// silently presenting an empty history as if it were the whole truth.
+  final List<String> unreadableKeys;
+
+  /// How many individual records were skipped inside keys that did parse.
+  final int skippedRecords;
+
+  bool get recoveredPartially =>
+      unreadableKeys.isNotEmpty || skippedRecords > 0;
+
   static const empty = PersistedState(
     goal: null,
     attempts: <Attempt>[],
@@ -40,7 +52,18 @@ class PersistedState {
     soundOn: true,
     onboarded: false,
     reviews: <ReviewItem>[],
+    unreadableKeys: <String>[],
+    skippedRecords: 0,
   );
+}
+
+/// A decoded list plus what went wrong on the way through.
+class _Recovered<T> {
+  const _Recovered(this.items, this.skipped, this.failed);
+
+  final List<T> items;
+  final int skipped;
+  final bool failed;
 }
 
 abstract final class Storage {
@@ -52,69 +75,126 @@ abstract final class Storage {
   static const _kOnboarded = 'asvab.onboarded.v1';
   static const _kReviews = 'asvab.reviews.v1';
 
+  /// Reads everything that survives a refresh.
+  ///
+  /// Recovery is per key and per record, not all or nothing. A single malformed
+  /// attempt must not cost the candidate their goal, their streak and their
+  /// spaced-repetition queue, and it must not throw them back through
+  /// onboarding: that reads as "the app forgot me" when in fact one record was
+  /// bad. Whatever cannot be read is named in [PersistedState.unreadableKeys]
+  /// and [PersistedState.skippedRecords] so the app can say so out loud.
   static Future<PersistedState> load() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final goalRaw = prefs.getString(_kGoal);
-      final attemptsRaw = prefs.getString(_kAttempts);
-      final ordersRaw = prefs.getString(_kOrders);
+    final unreadable = <String>[];
+    var skipped = 0;
 
-      GoalProfile? goal;
-      if (goalRaw != null) {
+    SharedPreferences prefs;
+    try {
+      prefs = await SharedPreferences.getInstance();
+    } catch (_) {
+      return const PersistedState(
+        goal: null,
+        attempts: <Attempt>[],
+        orders: <String, Map<String, List<int>>>{},
+        darkMode: false,
+        soundOn: true,
+        onboarded: false,
+        reviews: <ReviewItem>[],
+        unreadableKeys: <String>['all'],
+        skippedRecords: 0,
+      );
+    }
+
+    GoalProfile? goal;
+    final goalRaw = prefs.getString(_kGoal);
+    if (goalRaw != null) {
+      try {
         goal = GoalProfile.fromJson(
           (jsonDecode(goalRaw) as Map).cast<String, dynamic>(),
         );
+      } catch (_) {
+        unreadable.add('goal');
       }
+    }
 
-      final attempts = <Attempt>[];
-      if (attemptsRaw != null) {
+    final attempts = <Attempt>[];
+    final attemptsRaw = prefs.getString(_kAttempts);
+    if (attemptsRaw != null) {
+      try {
         for (final entry in (jsonDecode(attemptsRaw) as List)) {
-          attempts.add(
-            Serialization.attemptFromJson(
-              (entry as Map).cast<String, dynamic>(),
-            ),
-          );
+          try {
+            attempts.add(
+              Serialization.attemptFromJson(
+                (entry as Map).cast<String, dynamic>(),
+              ),
+            );
+          } catch (_) {
+            skipped++;
+          }
         }
+      } catch (_) {
+        unreadable.add('attempts');
       }
+    }
 
-      final orders = <String, Map<String, List<int>>>{};
-      if (ordersRaw != null) {
+    final orders = <String, Map<String, List<int>>>{};
+    final ordersRaw = prefs.getString(_kOrders);
+    if (ordersRaw != null) {
+      try {
         final decoded = (jsonDecode(ordersRaw) as Map).cast<String, dynamic>();
         for (final e in decoded.entries) {
-          orders[e.key] = Serialization.ordersFromJson(<String, dynamic>{
-            'orders': e.value,
-          });
+          try {
+            orders[e.key] = Serialization.ordersFromJson(<String, dynamic>{
+              'orders': e.value,
+            });
+          } catch (_) {
+            skipped++;
+          }
         }
+      } catch (_) {
+        unreadable.add('orders');
       }
-
-      return PersistedState(
-        goal: goal,
-        attempts: attempts,
-        orders: orders,
-        darkMode: prefs.getBool(_kTheme) ?? false,
-        soundOn: prefs.getBool(_kSound) ?? true,
-        onboarded: prefs.getBool(_kOnboarded) ?? false,
-        reviews: _reviewsFrom(prefs.getString(_kReviews)),
-      );
-    } catch (_) {
-      // Corrupt or unavailable storage must never brick the app.
-      return PersistedState.empty;
     }
+
+    final reviews = _reviewsFrom(prefs.getString(_kReviews));
+    if (reviews.failed) unreadable.add('reviews');
+    skipped += reviews.skipped;
+
+    return PersistedState(
+      goal: goal,
+      attempts: attempts,
+      orders: orders,
+      darkMode: prefs.getBool(_kTheme) ?? false,
+      soundOn: prefs.getBool(_kSound) ?? true,
+      onboarded: prefs.getBool(_kOnboarded) ?? false,
+      reviews: reviews.items,
+      unreadableKeys: unreadable,
+      skippedRecords: skipped,
+    );
   }
 
-  static List<ReviewItem> _reviewsFrom(String? raw) {
-    if (raw == null) return <ReviewItem>[];
+  static _Recovered<ReviewItem> _reviewsFrom(String? raw) {
+    if (raw == null)
+      return const _Recovered<ReviewItem>(<ReviewItem>[], 0, false);
     try {
       final out = <ReviewItem>[];
+      var skipped = 0;
       for (final entry in jsonDecode(raw) as List) {
-        final item = ReviewItem.fromJson(
-          (entry as Map).cast<String, dynamic>(),
-        );
-        if (item != null) out.add(item);
+        try {
+          final item = ReviewItem.fromJson(
+            (entry as Map).cast<String, dynamic>(),
+          );
+          if (item == null) {
+            skipped++;
+          } else {
+            out.add(item);
+          }
+        } catch (_) {
+          skipped++;
+        }
       }
-      return out;
+      return _Recovered<ReviewItem>(out, skipped, false);
     } catch (_) {
-      return <ReviewItem>[];
+      return const _Recovered<ReviewItem>(<ReviewItem>[], 0, true);
     }
   }
 
