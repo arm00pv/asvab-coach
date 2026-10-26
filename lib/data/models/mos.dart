@@ -57,6 +57,62 @@ abstract final class MosComponent {
   ];
 }
 
+/// Where a plain-language sentence about an MOS was read from.
+///
+/// The kind is recorded separately from the URL because the five answers carry
+/// different weight: the pamphlet states what the job is, a training publication
+/// states what the soldier does all day, and COOL, O*NET and a recruiting site
+/// state where the job leads afterwards. A candidate is entitled to know which
+/// of those is talking, and a description that cannot say is not shown.
+enum MosSourceKind {
+  /// DA Pam 611-21 chapter 10 section C - the authority the gates come from.
+  pamphlet,
+
+  /// A Soldier Training Publication: the MOS's own manual and task list.
+  stp,
+
+  /// Army Credentialing Opportunities On-Line, which maps a MOS to civilian
+  /// certifications.
+  cool,
+
+  /// O*NET or the Occupational Outlook Handbook: civilian occupational data.
+  onet,
+
+  /// An official service site (GoArmy, nationalguard.com, a proponent page).
+  serviceSite,
+}
+
+/// A short piece of prose about an MOS together with where it came from.
+///
+/// Every field is required and non-nullable on purpose, and there is no
+/// text-only constructor to fall into by accident: an unsourced sentence about a
+/// job is indistinguishable from an invention, and an invention read by someone
+/// planning an enlistment is the expensive mistake this app exists to prevent.
+///
+/// [retrievedOn] is a *date*, so anything comparing it to "now" should compare
+/// at day granularity. A time component is not a claim about when it was read.
+class SourcedText {
+  const SourcedText({
+    required this.text,
+    required this.sourceUrl,
+    required this.retrievedOn,
+    required this.sourceKind,
+  });
+
+  /// The sentence or two a candidate reads, in plain language.
+  final String text;
+
+  /// The page it was read from, as an `https://` URL so the citation can be
+  /// opened and checked rather than trusted.
+  final String sourceUrl;
+
+  /// The day the page was read, not the day the job or pamphlet changed.
+  final DateTime retrievedOn;
+
+  /// Which kind of source [sourceUrl] points at.
+  final MosSourceKind sourceKind;
+}
+
 /// A military occupational specialty with its Army aptitude gate.
 class Mos {
   const Mos({
@@ -72,6 +128,8 @@ class Mos {
     this.source,
     this.gateStatus = MosGateStatus.published,
     this.componentLimit,
+    this.description,
+    this.civilianNote,
   });
 
   final String code;
@@ -106,6 +164,17 @@ class Mos {
   /// The component restriction the authority prints, verbatim, or null when it
   /// prints none. See [MosComponent] for the accepted values.
   final String? componentLimit;
+
+  /// What the job actually is, in plain language, with the source it came from.
+  /// Null until someone transcribes one from a cited page: the space is left
+  /// empty rather than filled with a plausible-sounding sentence, and
+  /// `test/mos_provenance_test.dart` holds any value that does arrive to its
+  /// provenance.
+  final SourcedText? description;
+
+  /// Where the job leads in civilian life, with the source it came from. Same
+  /// rule as [description]: nothing is invented to fill it.
+  final SourcedText? civilianNote;
 
   String get id => code;
 
