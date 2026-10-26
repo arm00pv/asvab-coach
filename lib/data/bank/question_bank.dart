@@ -10,6 +10,7 @@ import 'auto_shop_tools.dart';
 import 'bank_audit.dart';
 import 'electronics.dart';
 import 'electronics_extra.dart';
+import 'expansion_2026.dart';
 import 'general_science.dart';
 import 'general_science_extra.dart';
 import 'mathematics.dart';
@@ -49,6 +50,7 @@ abstract final class QuestionBank {
     ...assemblingObjectsBank,
     ...assemblingObjectsConnectionBank,
     ...skillDepthBank,
+    ...expansionItems,
   ]);
 
   static final Map<Subtest, List<Question>> _bySubtest = () {
