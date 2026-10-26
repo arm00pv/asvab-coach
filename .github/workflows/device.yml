@@ -37,8 +37,12 @@ jobs:
         run: flutter pub get
 
       # The plain AOSP image, not Google APIs: this test needs no Play services,
-      # and the leaner image boots sooner and has far fewer background processes
+      # and the leaner image boots sooner and has fewer background processes
       # fighting the emulator for the runner's CPU.
+      #
+      # Note that the action runs each line of 'script' as its own command, so
+      # every line below has to stand alone; the wait loop lives inside the
+      # quoted adb command, where the device's shell can run it.
       - name: Run the journey on an emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -50,20 +54,7 @@ jobs:
             -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
             -no-snapshot -camera-back none -camera-front none
           script: |
-            set -e
-            # The action reports the device as started before the package
-            # manager is serving requests, and 'flutter test' installs
-            # immediately: without this wait the run dies with
-            # "Can't find service: package".
             adb wait-for-device
-            echo "waiting for the package service"
-            for attempt in $(seq 1 60); do
-              if adb shell pm list packages >/dev/null 2>&1; then
-                echo "package service answered after $((attempt * 5))s"
-                break
-              fi
-              sleep 5
-            done
-            adb shell pm list packages | head -3
+            adb shell 'until pm list packages > /dev/null 2>&1; do sleep 2; done'
             adb shell getprop sys.boot_completed
             flutter test integration_test/journey_test.dart -d emulator-5554
