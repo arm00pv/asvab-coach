@@ -1,0 +1,28 @@
+Stop cutting labels off, explain the jargon, and update over the air
+
+Three things a real phone user runs into, in the order they run into them.
+
+Nothing truncates any more. A test now walks the render tree of every screen at
+phone, small-phone and tablet width and fails if any paragraph had to drop words,
+which found real cuts in places that mattered: the dashboard stat suffix (/135
+cut to /), the subtest rows, the plan and progress skill names, the test centre
+subtest names, the MOS titles and their gate verdict (Qualified became Quali...),
+the enlistment and officer requirement sentences, the search hint, the results
+title, and the lesson title. Names wrap now, chips holding a requirement became a
+bulleted list, and the runner's section card scrolls when enlarged text makes it
+too tall. The test measures with real Roboto metrics, so it reports what a phone
+shows rather than what the Ahem test font would.
+
+The app explains itself. A glossary covers AFQT, VE, SS, GT and the ten line
+scores, the nine subtests, MOS gates, PiCAT and Vtest, and the category bands, in
+plain words, reachable from the dashboard, the report headings and Settings.
+
+And it can update itself. Settings > Updates shows the installed build, checks
+GitHub for a newer release at launch (switchable), and downloads and hands the
+APK to Android's installer. Two permissions now exist and both are declared with
+their reason: INTERNET for that check, REQUEST_INSTALL_PACKAGES for the hand-off.
+Nothing about the candidate is sent, and no attempt data ever leaves the device.
+
+Also: the update lookup is detached from boot, because a platform-channel round
+trip needs the real event loop and awaiting it inside init() made every widget
+test hang for minutes.

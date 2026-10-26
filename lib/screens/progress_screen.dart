@@ -232,8 +232,6 @@ class _SkillGrid extends StatelessWidget {
                       Expanded(
                         child: Text(
                           p.skill.label,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
                           style: context.text.bodySmall?.copyWith(
                             color: c.textPrimary,
                             fontWeight: FontWeight.w500,

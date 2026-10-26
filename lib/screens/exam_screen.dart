@@ -747,7 +747,6 @@ class _ExamHeader extends StatelessWidget {
                   style: context.text.titleSmall?.copyWith(
                     color: c.textPrimary,
                   ),
-                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),

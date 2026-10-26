@@ -86,12 +86,18 @@ class Pill extends StatelessWidget {
     this.tone = PillTone.neutral,
     this.icon,
     this.dense = false,
+    this.maxLines = 1,
   });
 
   final String label;
   final PillTone tone;
   final IconData? icon;
   final bool dense;
+
+  /// How many lines the label may use. One is right for a short chip; a chip
+  /// holding a real requirement gets more, because a requirement cut off at
+  /// "Bachelor's degree (senior in final semes…" tells the candidate nothing.
+  final int maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +127,7 @@ class Pill extends StatelessWidget {
         builder: (context, constraints) {
           final text = Text(
             label,
-            maxLines: 1,
+            maxLines: maxLines,
             overflow: TextOverflow.ellipsis,
             style: context.text.labelMedium?.copyWith(
               color: fg,
@@ -187,31 +193,22 @@ class StatTile extends StatelessWidget {
                           : context.text.displaySmall)
                       ?.copyWith(color: tone ?? c.textPrimary),
             );
-            return Row(
-              crossAxisAlignment: CrossAxisAlignment.baseline,
-              textBaseline: TextBaseline.alphabetic,
-              mainAxisSize: MainAxisSize.min,
+            // A Wrap, not a Row: "/135" and "day" are part of the number, and
+            // cutting them off leaves "96" looking like the whole score.
+            // Wrapping puts the unit under the figure when it cannot sit beside
+            // it, and the figure itself is never ellipsised.
+            return Wrap(
+              crossAxisAlignment: WrapCrossAlignment.end,
+              spacing: 2,
               children: <Widget>[
-                if (constraints.maxWidth.isFinite)
-                  Flexible(child: number)
-                else
-                  number,
-                if (suffix != null) ...<Widget>[
-                  const SizedBox(width: 2),
-                  // The suffix is text too, so it grows with the system font
-                  // size; it has to be allowed to give way rather than push the
-                  // row past its edge.
-                  Flexible(
-                    child: Text(
-                      suffix!,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: context.text.titleMedium?.copyWith(
-                        color: c.textMuted,
-                      ),
+                number,
+                if (suffix != null)
+                  Text(
+                    suffix!,
+                    style: context.text.titleMedium?.copyWith(
+                      color: c.textMuted,
                     ),
                   ),
-                ],
               ],
             );
           },

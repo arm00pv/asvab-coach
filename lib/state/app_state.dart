@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 
+import '../core/app_update.dart';
 import '../data/bank/question_bank.dart';
 import '../data/models/catalog.dart';
 import '../data/models/exam.dart';
@@ -25,6 +27,13 @@ class AppState extends ChangeNotifier {
   List<ReviewItem> _reviews = <ReviewItem>[];
   ExamSnapshot? _pending;
   Exam? _pendingExam;
+
+  // ---- Updates ------------------------------------------------------------
+  String? _installedVersion;
+  AppUpdate? _availableUpdate;
+  bool _autoCheckUpdates = true;
+  bool _checkingUpdate = false;
+  String? _updateError;
   bool _darkMode = false;
   bool _soundOn = true;
   bool _onboarded = false;
@@ -169,6 +178,7 @@ class AppState extends ChangeNotifier {
       _skippedRecords = persisted.skippedRecords;
       // After the counters are in place: refusing a snapshot adds to them.
       _adoptPending(persisted.pending);
+      _autoCheckUpdates = persisted.autoCheckUpdates;
     } catch (error) {
       // The repository recovers key by key, so reaching here means something
       // it did not anticipate. Boot with what we have: a cleared history the
@@ -179,6 +189,90 @@ class AppState extends ChangeNotifier {
       _loading = false;
       notifyListeners();
     }
+    // The version and any newer release, looked up quietly in the background:
+    // boot must not wait on the network, and a failure must not surface unless
+    // the candidate asked for it.
+    // Detached on purpose. A platform-channel round trip needs the real event
+    // loop, and a widget test drives a fake one, so awaiting it here made every
+    // screen test hang for minutes waiting for a reply that could never arrive.
+    // Nothing on screen needs the version before it arrives.
+    unawaited(_loadUpdateInfo());
+  }
+
+  Future<void> _loadUpdateInfo() async {
+    try {
+      if (!UpdateService.isSupported) return;
+      _installedVersion = await UpdateService.installedVersion();
+      notifyListeners();
+      if (_autoCheckUpdates) await checkForUpdates(silent: true);
+    } catch (error) {
+      // An update check must never be the reason the app fails to start.
+      debugPrint('ASVAB coach: update lookup skipped: $error');
+    }
+  }
+
+  // ---- Updates ------------------------------------------------------------
+
+  /// The version of the build that is running, when the platform says.
+  String? get installedVersion => _installedVersion;
+
+  /// A newer release than the installed one, if there is one.
+  AppUpdate? get availableUpdate => _availableUpdate;
+
+  bool get autoCheckUpdates => _autoCheckUpdates;
+  bool get checkingUpdate => _checkingUpdate;
+
+  /// Why the last check failed. Null on success, and never set by a silent
+  /// check: a candidate who did not ask should not be shown a network error.
+  String? get updateError => _updateError;
+
+  Future<void> setAutoCheckUpdates(bool value) async {
+    _autoCheckUpdates = value;
+    notifyListeners();
+    await Storage.saveAutoCheckUpdates(value);
+    if (value) unawaited(checkForUpdates(silent: true));
+  }
+
+  /// Asks GitHub for the newest release and compares it with this build.
+  Future<void> checkForUpdates({bool silent = false}) async {
+    if (!UpdateService.isSupported || _checkingUpdate) return;
+    _checkingUpdate = true;
+    if (!silent) {
+      _updateError = null;
+      notifyListeners();
+    }
+    try {
+      _installedVersion ??= await UpdateService.installedVersion();
+      final latest = await UpdateService.check();
+      final installed = _installedVersion;
+      if (latest != null &&
+          (installed == null || AppVersions.isNewer(latest.tag, installed))) {
+        _availableUpdate = latest;
+      } else {
+        _availableUpdate = null;
+      }
+      _updateError = null;
+    } catch (error) {
+      if (!silent) {
+        _updateError = error is UpdateException
+            ? error.message
+            : 'Could not reach the update server.';
+      }
+      debugPrint('ASVAB coach: update check failed: $error');
+    } finally {
+      _checkingUpdate = false;
+      notifyListeners();
+    }
+  }
+
+  /// Downloads the newer build and hands it to Android's installer.
+  Future<bool> installAvailableUpdate() async {
+    final update = _availableUpdate;
+    if (update == null) return false;
+    final started = await UpdateService.install(update);
+    if (!started) _updateError = 'The download could not be started.';
+    notifyListeners();
+    return started;
   }
 
   // ---- Attempt in progress ----------------------------------------------

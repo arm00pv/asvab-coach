@@ -52,6 +52,18 @@ back at the exact question it stopped on, with the same options in the same orde
 and the clock where it left off. The clock itself counts real seconds, not
 ticker ticks, so a backgrounded app never quietly gains time.
 
+**Explains itself.** Every abbreviation in the app - AFQT, VE, SS, GT and the ten
+line scores, the nine subtests, MOS gates, PiCAT and Vtest - is spelled out in a
+glossary reachable from the dashboard, the report and Settings. No label is
+allowed to be cut off: a test walks the render tree of every screen at phone,
+small-phone and tablet widths and fails if any text had to drop words.
+
+**Updates itself.** The app can check GitHub for a newer build, download it and
+hand it to Android's own installer, so a phone or tablet running an old copy can
+be brought up to date without a cable. It is the only reason the app uses the
+network, it can be switched off, and the download and install still go through
+Android's confirmation.
+
 **Shows you the trend.** Attempt history, per-subtest sparklines, a skill mastery
 grid and streaks, all persisted locally on the device.
 
@@ -159,6 +171,8 @@ flutter test
 | `exam_screen_layout_test` | The runner specifically: a reading passage, a diagram, an assembly puzzle, a phone, and an answer being recorded. |
 | `storage_recovery_test` | A corrupt or partially evicted store never bricks the boot and never costs more than the records that were actually unreadable: one bad attempt leaves the goal, the theme and the streak intact, a bad key does not discard the others, and the dashboard says what could not be read instead of quietly presenting an empty history. |
 | `settings_and_review_test` | Dark mode persists, the history export reaches the clipboard, erase-all really clears the store, and a due review session advances the spaced-repetition schedule. |
+| `truncation_test` | Every screen at phone, small-phone and tablet width is walked for text that actually dropped words. Real font metrics, so a label that fits on a phone is not reported and one that does not is. |
+| `update_test` | Version arithmetic ("1.10.0" beats "1.9.9"), a release payload, an empty answer, a failing server that is reported only when the candidate asked, and the remembered preference. |
 | `exam_resume_test` | An interrupted attempt comes back exactly as it was left: the snapshot survives JSON, rebuilt questions keep their option order, a snapshot naming a retired item or a scrambled permutation is refused, the clock charges the real interval after the ticker is suspended, the section introduction costs no time, the dashboard offers the attempt back, and submitting clears it. |
 | `screen_layout_test` (large text and small screens) | Every screen also paints at 1.3x and 2.0x system font size and on a 360x640 phone, portrait and landscape. Enlarged text and a sideways phone are the two states a desk-bound test never visits. |
 

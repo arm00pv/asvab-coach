@@ -5,6 +5,7 @@ import '../data/models/exam.dart';
 import '../data/models/exam_snapshot.dart';
 import '../data/models/score.dart';
 import '../screens/exam_screen.dart';
+import '../screens/glossary_screen.dart';
 import '../screens/lesson_screen.dart';
 import '../screens/review_screen.dart';
 import '../screens/results_screen.dart';
@@ -66,6 +67,10 @@ abstract final class AppRoutes {
 
   static Future<void> settings(BuildContext context) =>
       _push<void>(context, const SettingsScreen());
+
+  /// The plain-language explanation of every abbreviation the app prints.
+  static Future<void> glossary(BuildContext context) =>
+      _push<void>(context, const GlossaryScreen());
 }
 
 /// Convenience access to the shared app state.

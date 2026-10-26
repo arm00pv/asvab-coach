@@ -18,6 +18,7 @@ class PersistedState {
     required this.soundOn,
     required this.onboarded,
     required this.reviews,
+    this.autoCheckUpdates = true,
     this.pending,
     this.unreadableKeys = const <String>[],
     this.skippedRecords = 0,
@@ -39,6 +40,9 @@ class PersistedState {
   /// An attempt that was interrupted mid-exam, if there is one.
   final ExamSnapshot? pending;
 
+  /// Whether the app may ask GitHub whether a newer release exists.
+  final bool autoCheckUpdates;
+
   /// Storage keys that could not be read, so the app can say so instead of
   /// silently presenting an empty history as if it were the whole truth.
   final List<String> unreadableKeys;
@@ -58,6 +62,7 @@ class PersistedState {
     onboarded: false,
     reviews: <ReviewItem>[],
     pending: null,
+    autoCheckUpdates: true,
     unreadableKeys: <String>[],
     skippedRecords: 0,
   );
@@ -81,6 +86,7 @@ abstract final class Storage {
   static const _kOnboarded = 'asvab.onboarded.v1';
   static const _kReviews = 'asvab.reviews.v1';
   static const _kPending = 'asvab.pending.v1';
+  static const _kAutoUpdate = 'asvab.autoupdate.v1';
 
   /// Reads everything that survives a refresh.
   ///
@@ -190,6 +196,7 @@ abstract final class Storage {
       onboarded: prefs.getBool(_kOnboarded) ?? false,
       reviews: reviews.items,
       pending: pending,
+      autoCheckUpdates: prefs.getBool(_kAutoUpdate) ?? true,
       unreadableKeys: unreadable,
       skippedRecords: skipped,
     );
@@ -264,6 +271,11 @@ abstract final class Storage {
       return;
     }
     await prefs.setString(_kPending, jsonEncode(snapshot.toJson()));
+  }
+
+  static Future<void> saveAutoCheckUpdates(bool on) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_kAutoUpdate, on);
   }
 
   static Future<void> saveTheme(bool dark) async {

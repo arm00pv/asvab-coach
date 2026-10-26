@@ -89,8 +89,6 @@ class PlanScreen extends StatelessWidget {
                         Expanded(
                           child: Text(
                             s.label,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
                             style: context.text.titleSmall?.copyWith(
                               color: c.textPrimary,
                             ),
@@ -221,8 +219,6 @@ class _SkillLessonChip extends StatelessWidget {
           children: <Widget>[
             Text(
               skill.label,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
               style: context.text.bodySmall?.copyWith(
                 color: c.textPrimary,
                 fontWeight: FontWeight.w600,
@@ -380,8 +376,6 @@ class _ScheduleCard extends StatelessWidget {
                               w.skills.isEmpty
                                   ? 'Consolidate'
                                   : w.skillObjects.first.label,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
                               style: context.text.bodySmall?.copyWith(
                                 color: c.textPrimary,
                                 fontSize: 11,

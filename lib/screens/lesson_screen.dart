@@ -41,20 +41,10 @@ class LessonScreen extends StatelessWidget {
         .length;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(lesson.subtest.label),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: Space.lg),
-            child: Center(
-              child: Text(
-                '${lesson.minutes} min read',
-                style: context.text.labelSmall?.copyWith(color: c.textMuted),
-              ),
-            ),
-          ),
-        ],
-      ),
+      // The reading time used to sit in the bar, where it took the width the
+      // subtest name needed and cut "Auto & Shop Information" short. It belongs
+      // with the content, not with the title.
+      appBar: AppBar(title: Text(lesson.subtest.label)),
       body: PageBody(
         maxWidth: 720,
         child: Column(
@@ -68,9 +58,16 @@ class LessonScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Eyebrow('Reinforcement lesson'),
+                      const Eyebrow('Reinforcement lesson'),
                       const SizedBox(height: 2),
                       Text(lesson.title, style: context.text.headlineSmall),
+                      const SizedBox(height: 2),
+                      Text(
+                        '${lesson.minutes} min read',
+                        style: context.text.bodySmall?.copyWith(
+                          color: c.textMuted,
+                        ),
+                      ),
                     ],
                   ),
                 ),

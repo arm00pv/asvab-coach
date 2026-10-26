@@ -122,8 +122,6 @@ class TestCenterScreen extends StatelessWidget {
                                   Flexible(
                                     child: Text(
                                       s.label,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
                                       style: context.text.titleSmall?.copyWith(
                                         color: c.textPrimary,
                                       ),

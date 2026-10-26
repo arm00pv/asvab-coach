@@ -31,10 +31,12 @@ class ResultsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(attempt.kind.label),
         actions: <Widget>[
-          // With the system font size turned up, the labelled action and the
-          // title together are wider than the bar; the icon carries the same
-          // meaning and the tooltip keeps it named.
-          if (MediaQuery.textScalerOf(context).scale(1) > 1.3)
+          // The labelled action and the title together are wider than a phone
+          // bar, and the title lost that fight - "Full Mock" came out as "Full
+          // M…". The icon carries the same meaning and the tooltip keeps it
+          // named, so it takes the label's place whenever space is short.
+          if (MediaQuery.textScalerOf(context).scale(1) > 1.3 ||
+              MediaQuery.sizeOf(context).width < 520)
             IconButton(
               onPressed: () => AppRoutes.review(context, attempt),
               tooltip: 'Review answers',
@@ -66,11 +68,11 @@ class ResultsScreen extends StatelessWidget {
                   'anything that matters on the real test.',
             ),
             const SizedBox(height: Space.lg),
-            _SectionTitle('Line scores'),
+            const _SectionTitle('Line scores', explain: true),
             const SizedBox(height: Space.sm),
             _LineScoreTable(report: report, goal: app.goal),
             const SizedBox(height: Space.xl),
-            _SectionTitle('Subtest profile'),
+            const _SectionTitle('Subtest profile', explain: true),
             const SizedBox(height: Space.md),
             LayoutBuilder(
               builder: (context, constraints) {
@@ -173,12 +175,37 @@ class ResultsScreen extends StatelessWidget {
 }
 
 class _SectionTitle extends StatelessWidget {
-  const _SectionTitle(this.text);
+  const _SectionTitle(this.text, {this.explain = false});
   final String text;
 
+  /// Shows a small "what is this?" affordance beside the heading, so the
+  /// explanation is one tap from the number that needs it.
+  final bool explain;
+
   @override
-  Widget build(BuildContext context) =>
-      Text(text, style: context.text.titleMedium);
+  Widget build(BuildContext context) {
+    if (!explain) return Text(text, style: context.text.titleMedium);
+    // spaceBetween: the explanation sits on the right when it fits and drops to
+    // its own line when enlarged text will not share the width.
+    return Wrap(
+      alignment: WrapAlignment.spaceBetween,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      spacing: Space.sm,
+      children: <Widget>[
+        Text(text, style: context.text.titleMedium),
+        TextButton.icon(
+          onPressed: () => AppRoutes.glossary(context),
+          style: TextButton.styleFrom(
+            minimumSize: Size.zero,
+            padding: const EdgeInsets.symmetric(horizontal: Space.sm),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          icon: const Icon(Icons.help_outline_rounded, size: 15),
+          label: const Text('What is this?'),
+        ),
+      ],
+    );
+  }
 }
 
 class _Hero extends StatelessWidget {
@@ -425,8 +452,6 @@ class _SubtestRow extends StatelessWidget {
                     Expanded(
                       child: Text(
                         '${score.correct}/${score.total} correct',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                         style: context.text.bodySmall?.copyWith(
                           color: c.textSecondary,
                         ),

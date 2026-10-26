@@ -11,32 +11,62 @@ account and no server.
 - **Version:** taken from `version:` in `pubspec.yaml` - `1.0.0+1` means
   version name 1.0.0, version code 1. Bump both for every release.
 
-## Permissions: none, deliberately
+## Permissions: two, and both of them explained
 
-The manifest requests **no permissions at all**, not even `INTERNET`.
+The manifest declares exactly two permissions:
 
-That is not an oversight. The app never opens a socket: the item bank is
-compiled in, scoring happens on the device, and history is written to the app's
-own private storage through `shared_preferences`. It has no use for the camera,
-location, contacts, the microphone, or external storage, so it asks for none of
-them. An app that requests permissions it does not need is asking the person
-installing it to trust a claim that is not true.
+| Permission | What it is for |
+| --- | --- |
+| `INTERNET` | Asking GitHub whether a newer release exists, and downloading it if the person says yes. |
+| `REQUEST_INSTALL_PACKAGES` | Handing that download to Android's own installer. A sideloaded app cannot update itself silently; this is what lets it ask. |
 
-One thing that would normally need a permission does not: keeping the screen
-awake during a timed section. `FLAG_KEEP_SCREEN_ON` is a window flag rather than
-a wakelock, so `MainActivity` sets it through a one-method channel
-(`asvabcoach/screen`) and the manifest stays empty. The runner turns it on when
-it opens and off again when it closes.
+Neither is used for anything else. No attempt, score, goal or identifier ever
+leaves the device: the item bank is compiled in, scoring happens locally, and
+history is written to the app's own private storage through
+`shared_preferences`. The app asks for no camera, no location, no contacts, no
+microphone and no external storage, because it has no use for any of them.
 
-The only `INTERNET` entry in the tree is in
-`android/app/src/debug/AndroidManifest.xml`, which Flutter adds so the
-development tool can attach for hot reload. It is not in the release APK. You
-can verify that on a built APK with:
+The update check is a plain request to
+`api.github.com/repos/arm00pv/asvab-coach/releases/latest` with no cookie, no
+account and nothing about the candidate in it. It runs at launch by default and
+can be switched off in **Settings > Updates**, which is also where the current
+build number and the manual **Check for updates** button live.
+
+Two things that would normally need a permission do not:
+
+- **Keeping the screen awake** during a timed section. `FLAG_KEEP_SCREEN_ON` is a
+  window flag rather than a wakelock, so `MainActivity` sets it through a
+  one-method channel (`asvabcoach/screen`).
+- **Reading the downloaded APK.** It is written to the app's own cache directory
+  and handed over through a `FileProvider`, so no storage permission is involved.
+
+You can verify the list on a built APK:
 
 ```bash
 aapt dump permissions build/app/outputs/flutter-apk/app-release.apk
 ```
 
+The debug-only `INTERNET` entry in `android/app/src/debug/AndroidManifest.xml` is
+Flutter's, for the development tool to attach; the release manifest declares the
+permission itself now, for the updater.
+
+## Updates without a cable
+
+**Settings > Updates** shows the installed version, offers a manual check, and
+turns the launch check on or off. When a newer release is published the dashboard
+says so, and the update card downloads the universal APK and opens Android's
+installer.
+
+The first time, Android asks the person to allow installs from ASVAB Coach
+(Settings > Apps > ASVAB Coach > Install unknown apps). That is the operating
+system's rule for any sideloaded app, and no app can skip it. After that, an
+update is two taps.
+
+The update is signed with the same key as every previous release, so it installs
+over the copy already on the device and keeps the history. That key lives in
+`android/keystore.jks` and `android/key.properties`, both gitignored - back them
+up, because a build signed with a different key cannot be installed over an
+existing one.
 ## Building
 
 ```bash

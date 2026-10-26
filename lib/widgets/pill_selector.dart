@@ -84,8 +84,6 @@ class _MosPickerState extends State<MosPicker> {
                                   style: context.text.bodyMedium?.copyWith(
                                     color: c.textPrimary,
                                   ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                               const SizedBox(width: Space.sm),

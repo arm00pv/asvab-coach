@@ -52,13 +52,17 @@ class DashboardScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+                  // Beside the settings button at every width: the first
+                  // question a new candidate asks is what these numbers mean.
+                  IconButton(
+                    onPressed: () => AppRoutes.glossary(context),
+                    tooltip: 'What the terms mean',
+                    icon: const Icon(Icons.menu_book_outlined),
+                  ),
                   if (!context.isMediumUp)
                     IconButton(
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => const SettingsScreen(),
-                        ),
-                      ),
+                      onPressed: () => AppRoutes.settings(context),
+                      tooltip: 'Settings',
                       icon: const Icon(Icons.settings_outlined),
                     ),
                 ],
@@ -66,6 +70,10 @@ class DashboardScreen extends StatelessWidget {
               if (app.hasPendingAttempt) ...<Widget>[
                 const SizedBox(height: Space.lg),
                 _ResumeNotice(app: app),
+              ],
+              if (app.availableUpdate != null) ...<Widget>[
+                const SizedBox(height: Space.lg),
+                _UpdateNotice(app: app),
               ],
               if (app.storageRecovered) ...<Widget>[
                 const SizedBox(height: Space.lg),
@@ -198,8 +206,6 @@ class _SectionHeader extends StatelessWidget {
         Flexible(
           child: Text(
             title,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
             style: context.text.titleMedium?.copyWith(
               color: context.colors.textPrimary,
             ),
@@ -279,6 +285,57 @@ class _FirstRunCard extends StatelessWidget {
                 style: context.text.bodySmall?.copyWith(color: c.textMuted),
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Tells the candidate a newer build exists without nagging: one line, one
+/// button, and it never reappears once the app is up to date.
+class _UpdateNotice extends StatelessWidget {
+  const _UpdateNotice({required this.app});
+
+  final AppState app;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final update = app.availableUpdate;
+    if (update == null) return const SizedBox.shrink();
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(Space.lg),
+      decoration: BoxDecoration(
+        color: c.surfaceSunken,
+        borderRadius: BorderRadius.circular(Radii.md),
+        border: Border(left: BorderSide(color: c.accent, width: 3)),
+      ),
+      child: Wrap(
+        alignment: WrapAlignment.spaceBetween,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: Space.sm,
+        runSpacing: Space.xs,
+        children: <Widget>[
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Icon(Icons.system_update_alt_rounded, size: 18, color: c.accent),
+              const SizedBox(width: Space.sm),
+              Flexible(
+                child: Text(
+                  'Version ${update.version} is available',
+                  style: context.text.titleSmall?.copyWith(
+                    color: c.textPrimary,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          TextButton(
+            onPressed: () => AppRoutes.settings(context),
+            child: const Text('See what changed'),
           ),
         ],
       ),
@@ -866,8 +923,6 @@ class _SubtestSnapshot extends StatelessWidget {
                             Flexible(
                               child: Text(
                                 rows[i].shortLabel,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
                                 style: context.text.bodySmall?.copyWith(
                                   color: c.textPrimary,
                                 ),
@@ -956,8 +1011,6 @@ class _EligibilityTeaser extends StatelessWidget {
                   Flexible(
                     child: Text(
                       'Job eligibility',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                       style: context.text.titleSmall?.copyWith(
                         color: c.textPrimary,
                       ),
@@ -996,8 +1049,6 @@ class _EligibilityTeaser extends StatelessWidget {
                     Expanded(
                       child: Text(
                         m.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                         style: context.text.bodySmall?.copyWith(
                           color: c.textPrimary,
                         ),
@@ -1006,7 +1057,6 @@ class _EligibilityTeaser extends StatelessWidget {
                     const SizedBox(width: Space.xs),
                     Text(
                       '${EligibilityEngine.evaluate(m.gate, report).bestShortfall} pts short',
-                      maxLines: 1,
                       style: context.text.labelSmall?.copyWith(
                         color: c.warning,
                       ),

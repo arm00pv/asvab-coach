@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import '../core/routes.dart';
 import '../core/theme/tokens.dart';
 import '../data/bank/question_bank.dart';
 import '../data/repos/mos_repository.dart';
@@ -43,6 +44,30 @@ class SettingsScreen extends StatelessWidget {
                       'Easier on the eyes for long evening sessions.',
                       style: context.text.bodySmall,
                     ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: Space.lg),
+            _Group(
+              title: 'Understanding the app',
+              children: <Widget>[
+                Material(
+                  type: MaterialType.transparency,
+                  child: ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: const Icon(Icons.menu_book_outlined),
+                    title: Text(
+                      'What the terms mean',
+                      style: context.text.titleSmall,
+                    ),
+                    subtitle: Text(
+                      'AFQT, VE, standard scores, line scores, MOS gates - every '
+                      'abbreviation in the app, in plain words.',
+                      style: context.text.bodySmall,
+                    ),
+                    trailing: const Icon(Icons.chevron_right_rounded),
+                    onTap: () => AppRoutes.glossary(context),
                   ),
                 ),
               ],
@@ -118,6 +143,116 @@ class SettingsScreen extends StatelessWidget {
                   style: TextButton.styleFrom(foregroundColor: c.danger),
                   icon: const Icon(Icons.delete_outline_rounded, size: 16),
                   label: const Text('Erase all data'),
+                ),
+              ],
+            ),
+            const SizedBox(height: Space.lg),
+            _Group(
+              title: 'Updates',
+              children: <Widget>[
+                _kv(
+                  context,
+                  'This build',
+                  app.installedVersion ?? 'not reported on this platform',
+                ),
+                if (app.availableUpdate != null) ...<Widget>[
+                  const SizedBox(height: Space.sm),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(Space.md),
+                    decoration: BoxDecoration(
+                      color: c.primarySoft,
+                      borderRadius: BorderRadius.circular(Radii.md),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Version ${app.availableUpdate!.version} is available',
+                          style: context.text.titleSmall?.copyWith(
+                            color: c.textPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'Downloading it and handing it to Android costs about '
+                          '${app.availableUpdate!.sizeLabel}. Android will ask you to '
+                          'allow installs from ASVAB Coach the first time, then '
+                          'confirm the update itself. Your history is kept.',
+                          style: context.text.bodySmall,
+                        ),
+                        const SizedBox(height: Space.sm),
+                        FilledButton.tonalIcon(
+                          onPressed: () => app.installAvailableUpdate(),
+                          icon: const Icon(
+                            Icons.system_update_alt_rounded,
+                            size: 16,
+                          ),
+                          label: const Text('Download and install'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+                if (app.updateError != null) ...<Widget>[
+                  const SizedBox(height: Space.sm),
+                  Text(
+                    app.updateError!,
+                    style: context.text.bodySmall?.copyWith(color: c.warning),
+                  ),
+                ],
+                const SizedBox(height: Space.sm),
+                Wrap(
+                  spacing: Space.md,
+                  runSpacing: Space.xs,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: <Widget>[
+                    FilledButton.tonalIcon(
+                      onPressed: app.checkingUpdate
+                          ? null
+                          : () => app.checkForUpdates(),
+                      icon: app.checkingUpdate
+                          ? const SizedBox(
+                              width: 14,
+                              height: 14,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Icon(Icons.refresh_rounded, size: 16),
+                      label: Text(
+                        app.checkingUpdate
+                            ? 'Checking...'
+                            : 'Check for updates',
+                      ),
+                    ),
+                    if (app.availableUpdate == null &&
+                        !app.checkingUpdate &&
+                        app.updateError == null)
+                      Text(
+                        'You are up to date.',
+                        style: context.text.bodySmall?.copyWith(
+                          color: c.textMuted,
+                        ),
+                      ),
+                  ],
+                ),
+                const SizedBox(height: Space.sm),
+                Material(
+                  type: MaterialType.transparency,
+                  child: SwitchListTile.adaptive(
+                    contentPadding: EdgeInsets.zero,
+                    value: app.autoCheckUpdates,
+                    onChanged: app.setAutoCheckUpdates,
+                    title: Text(
+                      'Check automatically at launch',
+                      style: context.text.titleSmall,
+                    ),
+                    subtitle: Text(
+                      'The update check is the only time the app uses the '
+                      'internet: it asks GitHub for the newest public release and '
+                      'sends nothing about you or your scores.',
+                      style: context.text.bodySmall,
+                    ),
+                  ),
                 ),
               ],
             ),

@@ -70,7 +70,8 @@ class _JobsScreenState extends State<JobsScreen> {
               const SizedBox(height: Space.lg),
               TextField(
                 decoration: const InputDecoration(
-                  hintText: 'Search by code, title or category',
+                  // Short enough to survive a narrow phone without being cut off.
+                  hintText: 'Search jobs',
                   prefixIcon: Icon(Icons.search_rounded, size: 18),
                 ),
                 onChanged: (v) => setState(() => _query = v),
@@ -316,8 +317,6 @@ class _MosRow extends StatelessWidget {
               children: <Widget>[
                 Text(
                   mos.title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                   style: context.text.bodyMedium?.copyWith(
                     color: c.textPrimary,
                     fontWeight: FontWeight.w500,
@@ -328,8 +327,6 @@ class _MosRow extends StatelessWidget {
                     Flexible(
                       child: Text(
                         mos.gate.label,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                         style: context.text.bodySmall?.copyWith(
                           color: c.textMuted,
                           fontSize: 11,
@@ -358,9 +355,11 @@ class _MosRow extends StatelessWidget {
             ),
           ),
           const SizedBox(width: Space.sm),
-          // A gate label can be long enough to run the card off a phone, so
-          // the pill shrinks and ellipsises rather than pushing the row.
-          Flexible(child: Pill(label, tone: tone, dense: true)),
+          // A gate label can be long enough to run the card off a phone, so the
+          // pill is allowed to shrink - but it wraps onto a second line rather
+          // than cutting the verdict off, because "Qualified" and "Short by 8"
+          // are the whole reason the row exists.
+          Flexible(child: Pill(label, tone: tone, dense: true, maxLines: 2)),
         ],
       ),
     );
@@ -619,13 +618,38 @@ class _OfficerSection extends StatelessWidget {
                   const SizedBox(height: Space.xs),
                   Text(p.summary, style: context.text.bodySmall),
                   const SizedBox(height: Space.sm),
-                  Wrap(
-                    spacing: Space.sm,
-                    runSpacing: Space.xs,
-                    children: <Widget>[
-                      for (final r in p.otherRequirements) Pill(r, dense: true),
-                    ],
-                  ),
+                  // Requirements are sentences, not labels. A chip holding a
+                  // sentence has to either run off the card or cut itself off,
+                  // and both lose the requirement; a short bulleted list says
+                  // the whole thing.
+                  for (final requirement in p.otherRequirements)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(top: 6, right: 6),
+                            child: Container(
+                              width: 4,
+                              height: 4,
+                              decoration: BoxDecoration(
+                                color: c.border,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              requirement,
+                              style: context.text.bodySmall?.copyWith(
+                                color: c.textSecondary,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   if (p.whyNote != null) ...<Widget>[
                     const SizedBox(height: Space.sm),
                     Text(
@@ -697,8 +721,6 @@ class _EnlistmentFacts extends StatelessWidget {
               Flexible(
                 child: Text(
                   'Enlistment requirements',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                   style: context.text.titleSmall?.copyWith(
                     color: c.textPrimary,
                   ),
