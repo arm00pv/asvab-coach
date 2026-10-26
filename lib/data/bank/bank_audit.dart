@@ -228,6 +228,25 @@ abstract final class BankAudit {
             );
           }
         case Subtest.ar:
+          // Verified against the official samples: AR options are bare numerals
+          // or currency amounts, never explanatory words. Units printed beside
+          // each option are a crutch the real test does not offer, because they
+          // tell the candidate which quantity a distractor is before the
+          // arithmetic is even attempted.
+          for (var i = 0; i < q.choices.length; i++) {
+            final choice = q.choices[i].trim();
+            final hasLetters = RegExp(r'[A-Za-z]').hasMatch(choice);
+            final hasDigit = RegExp(r'[0-9]').hasMatch(choice);
+            if (hasLetters || !hasDigit) {
+              error(
+                'ar-option-units',
+                'Option ${i + 1} reads "$choice". Arithmetic Reasoning options '
+                    'are bare numerals or currency amounts on the real test, and '
+                    'the stem is supposed to name the unit',
+                q.id,
+              );
+            }
+          }
           if (!RegExp(r'[0-9]').hasMatch(q.stem)) {
             error(
               'ar-no-numbers',

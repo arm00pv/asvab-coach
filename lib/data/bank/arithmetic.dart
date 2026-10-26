@@ -8,19 +8,14 @@ const List<Question> arithmeticBank = <Question>[
     id: 'ar-001',
     subtest: Subtest.ar,
     stem:
-        'A cold-weather jacket is priced at 84.00 dollars and is marked down 25 percent. '
+        'A cold-weather jacket is priced at \$84.00 and is marked down 25 percent. '
         'What is the sale price?',
-    choices: <String>[
-      '59.00 dollars',
-      '61.00 dollars',
-      '63.00 dollars',
-      '67.00 dollars',
-    ],
+    choices: <String>['\$59', '\$61', '\$63', '\$67'],
     answerIndex: 2,
     explanation:
         'Twenty-five percent of 84 is 0.25 x 84 = 21. Subtract the discount: '
         '84 - 21 = 63 dollars. Multiplying by 0.75 in one step gives the same answer. '
-        'The 59 and 61 dollar options come from subtracting a rounded 25 or 30 instead '
+        'The \$59 and \$61 options come from subtracting a rounded 25 or 30 instead '
         'of computing the discount exactly.',
     difficulty: Difficulty.easy,
     skills: <String>['ar.percent'],
@@ -29,9 +24,9 @@ const List<Question> arithmeticBank = <Question>[
     id: 'ar-002',
     subtest: Subtest.ar,
     stem:
-        'A unit spent 2,400 dollars on fuel last quarter and 3,000 dollars this quarter. '
+        'A unit spent \$2,400 on fuel last quarter and \$3,000 this quarter. '
         'What was the percent increase?',
-    choices: <String>['20 percent', '25 percent', '30 percent', '17 percent'],
+    choices: <String>['20', '25', '30', '17'],
     answerIndex: 1,
     explanation:
         'Percent change is the change divided by the ORIGINAL amount: '
@@ -47,7 +42,7 @@ const List<Question> arithmeticBank = <Question>[
     stem:
         'A recipe that serves 12 uses 3 cups of rice. How many cups are needed to '
         'serve 20 at the same ratio?',
-    choices: <String>['4.5 cups', '5 cups', '5.5 cups', '6 cups'],
+    choices: <String>['4.5', '5', '5.5', '6'],
     answerIndex: 1,
     explanation:
         'Set up the proportion 3/12 = x/20. Cross multiply: 12x = 60, so x = 5 '
@@ -75,9 +70,9 @@ const List<Question> arithmeticBank = <Question>[
     id: 'ar-005',
     subtest: Subtest.ar,
     stem:
-        'A convoy covers 270 miles in 4.5 hours. At the same average speed, how far '
+        'A convoy covers 270 miles in 4.5 hours. At the same average speed, how many miles '
         'does it travel in 7 hours?',
-    choices: <String>['390 miles', '420 miles', '405 miles', '450 miles'],
+    choices: <String>['390', '420', '405', '450'],
     answerIndex: 1,
     explanation:
         'The rate is 270 / 4.5 = 60 miles per hour. In 7 hours the convoy covers '
@@ -91,8 +86,8 @@ const List<Question> arithmeticBank = <Question>[
     subtest: Subtest.ar,
     stem:
         'Working alone, one soldier can finish a task in 10 hours. Two soldiers working '
-        'together finish it in 6 hours. How long would the second soldier take alone?',
-    choices: <String>['12 hours', '15 hours', '18 hours', '20 hours'],
+        'together finish it in 6 hours. How many hours would the second soldier take working alone?',
+    choices: <String>['12', '15', '18', '20'],
     answerIndex: 1,
     explanation:
         'Work rates add. The pair completes 1/6 of the task per hour and the first '
@@ -123,8 +118,8 @@ const List<Question> arithmeticBank = <Question>[
     subtest: Subtest.ar,
     stem:
         'Twenty soldiers average 175 pounds and ten soldiers average 160 pounds. What is '
-        'the average weight of all thirty?',
-    choices: <String>['167.5 pounds', '170 pounds', '171 pounds', '168 pounds'],
+        'the average weight of all thirty, in pounds?',
+    choices: <String>['167.5', '170', '171', '168'],
     answerIndex: 1,
     explanation:
         'Work with totals, never with the two averages: 20 x 175 = 3,500 and '
@@ -138,14 +133,9 @@ const List<Question> arithmeticBank = <Question>[
     id: 'ar-009',
     subtest: Subtest.ar,
     stem:
-        'A soldier spends two fifths of a monthly bonus on rent and has 450 dollars '
+        'A soldier spends two fifths of a monthly bonus on rent and has \$450 '
         'left. How large was the bonus?',
-    choices: <String>[
-      '750 dollars',
-      '675 dollars',
-      '900 dollars',
-      '1,125 dollars',
-    ],
+    choices: <String>['\$750', '\$675', '\$900', '\$1,125'],
     answerIndex: 0,
     explanation:
         'If two fifths went to rent, three fifths remain: (3/5)x = 450, so '
@@ -158,14 +148,9 @@ const List<Question> arithmeticBank = <Question>[
     id: 'ar-010',
     subtest: Subtest.ar,
     stem:
-        'A rectangular training field is 60 feet by 40 feet. Fencing costs 7.50 dollars '
+        'A rectangular training field is 60 feet by 40 feet. Fencing costs \$7.50 '
         'per foot. What is the total fence cost?',
-    choices: <String>[
-      '1,080 dollars',
-      '1,500 dollars',
-      '2,100 dollars',
-      '1,800 dollars',
-    ],
+    choices: <String>['\$1,080', '\$1,500', '\$2,100', '\$1,800'],
     answerIndex: 1,
     explanation:
         'Fencing follows the perimeter: 2(60 + 40) = 200 feet, and 200 x 7.50 = '
@@ -177,13 +162,8 @@ const List<Question> arithmeticBank = <Question>[
   Question(
     id: 'ar-011',
     subtest: Subtest.ar,
-    stem: 'A soldier saves 45 dollars each month. How much is saved in 18 months?',
-    choices: <String>[
-      '720 dollars',
-      '810 dollars',
-      '855 dollars',
-      '900 dollars',
-    ],
+    stem: 'A soldier saves \$45 each month. How much is saved in 18 months?',
+    choices: <String>['\$720', '\$810', '\$855', '\$900'],
     answerIndex: 1,
     explanation:
         '45 x 18 = 45 x 20 - 45 x 2 = 900 - 90 = 810 dollars. Breaking a two-digit '
@@ -209,9 +189,9 @@ const List<Question> arithmeticBank = <Question>[
     id: 'ar-013',
     subtest: Subtest.ar,
     stem:
-        '1,200 dollars is invested at 4.5 percent simple annual interest. How much '
+        '\$1,200 is invested at 4.5 percent simple annual interest. How much '
         'interest is earned in 2 years?',
-    choices: <String>['54 dollars', '97 dollars', '108 dollars', '216 dollars'],
+    choices: <String>['\$54', '\$97', '\$108', '\$216'],
     answerIndex: 2,
     explanation:
         'Simple interest is I = P x r x t = 1200 x 0.045 x 2. Since 1200 x 0.045 = '
@@ -224,9 +204,9 @@ const List<Question> arithmeticBank = <Question>[
     id: 'ar-014',
     subtest: Subtest.ar,
     stem:
-        'Food for 30 soldiers lasts 12 days. If 6 more soldiers join, how long does the '
+        'Food for 30 soldiers lasts 12 days. If 6 more soldiers join, how many days does the '
         'same food last?',
-    choices: <String>['9 days', '10 days', '11 days', '15 days'],
+    choices: <String>['9', '10', '11', '15'],
     answerIndex: 1,
     explanation:
         'Total food is 30 x 12 = 360 soldier-days. With 36 soldiers, 360 / 36 = '
@@ -240,8 +220,8 @@ const List<Question> arithmeticBank = <Question>[
     subtest: Subtest.ar,
     stem:
         'A map scale is 1 inch to 25 miles. A route measures 3.5 inches on the map. How '
-        'long is the actual route?',
-    choices: <String>['75 miles', '80 miles', '87.5 miles', '95 miles'],
+        'many miles long is the actual route?',
+    choices: <String>['75', '80', '87.5', '95'],
     answerIndex: 2,
     explanation:
         'Multiply by the scale: 3.5 x 25 = 87.5 miles. Splitting it as 3 x 25 = 75 '
@@ -255,12 +235,7 @@ const List<Question> arithmeticBank = <Question>[
     stem:
         'A vehicle travels 3 hours 45 minutes, stops for 40 minutes, then travels 2 hours '
         '50 minutes. What is the total time from start to finish?',
-    choices: <String>[
-      '6 hours 35 minutes',
-      '7 hours 15 minutes',
-      '7 hours 5 minutes',
-      '6 hours 55 minutes',
-    ],
+    choices: <String>['6:35', '7:15', '7:05', '6:55'],
     answerIndex: 1,
     explanation:
         'Add the driving time first: 3h45m + 2h50m = 5h95m = 6h35m, then add the '
@@ -273,9 +248,8 @@ const List<Question> arithmeticBank = <Question>[
   Question(
     id: 'ar-017',
     subtest: Subtest.ar,
-    stem:
-        'Boots cost 1,584 dollars for 24 pairs. What is the price of one pair?',
-    choices: <String>['62 dollars', '64 dollars', '66 dollars', '68 dollars'],
+    stem: 'Boots cost \$1,584 for 24 pairs. What is the price of one pair?',
+    choices: <String>['\$62', '\$64', '\$66', '\$68'],
     answerIndex: 2,
     explanation:
         'Divide 1,584 by 24. Since 24 x 60 = 1,440 and the remainder is 144, and '
@@ -288,14 +262,9 @@ const List<Question> arithmeticBank = <Question>[
     id: 'ar-018',
     subtest: Subtest.ar,
     stem:
-        'A unit buys 500 items at 2.20 dollars each and sells all of them at 3.25 dollars '
+        'A unit buys 500 items at \$2.20 each and sells all of them at \$3.25 '
         'each. What is the total profit?',
-    choices: <String>[
-      '425 dollars',
-      '500 dollars',
-      '525 dollars',
-      '575 dollars',
-    ],
+    choices: <String>['\$425', '\$500', '\$525', '\$575'],
     answerIndex: 2,
     explanation:
         'Profit per item is 3.25 - 2.20 = 1.05 dollars, and 500 x 1.05 = 525 '
@@ -309,8 +278,8 @@ const List<Question> arithmeticBank = <Question>[
     subtest: Subtest.ar,
     stem:
         'Two angles are complementary. One measures 3x degrees and the other 2x degrees. '
-        'What is the measure of the larger angle?',
-    choices: <String>['36 degrees', '45 degrees', '54 degrees', '72 degrees'],
+        'What is the measure of the larger angle, in degrees?',
+    choices: <String>['36', '45', '54', '72'],
     answerIndex: 2,
     explanation:
         'Complementary angles sum to 90 degrees, so 5x = 90 and x = 18. The angles '
@@ -323,9 +292,9 @@ const List<Question> arithmeticBank = <Question>[
     id: 'ar-020',
     subtest: Subtest.ar,
     stem:
-        'A 40 foot rope is cut so that one piece is 3 times as long as the other. How long '
+        'A 40 foot rope is cut so that one piece is 3 times as long as the other. How many feet '
         'is the shorter piece?',
-    choices: <String>['8 feet', '10 feet', '13 feet', '30 feet'],
+    choices: <String>['8', '10', '13', '30'],
     answerIndex: 1,
     explanation:
         'Call the shorter piece x, so the longer is 3x and x + 3x = 40. Then 4x = 40 '
@@ -340,12 +309,7 @@ const List<Question> arithmeticBank = <Question>[
     stem:
         'A tank holds 480 gallons and is currently 35 percent full. How many more gallons '
         'are needed to fill it?',
-    choices: <String>[
-      '168 gallons',
-      '288 gallons',
-      '312 gallons',
-      '336 gallons',
-    ],
+    choices: <String>['168', '288', '312', '336'],
     answerIndex: 2,
     explanation:
         'The tank already holds 0.35 x 480 = 168 gallons, so 480 - 168 = 312 '
@@ -358,14 +322,9 @@ const List<Question> arithmeticBank = <Question>[
     id: 'ar-022',
     subtest: Subtest.ar,
     stem:
-        'A rectangular room measures 15 feet by 18 feet. Carpet costs 4 dollars per square '
+        'A rectangular room measures 15 feet by 18 feet. Carpet costs \$4 per square '
         'foot. What is the cost to carpet the room?',
-    choices: <String>[
-      '528 dollars',
-      '660 dollars',
-      '1,080 dollars',
-      '1,320 dollars',
-    ],
+    choices: <String>['\$528', '\$660', '\$1,080', '\$1,320'],
     answerIndex: 2,
     explanation:
         'Carpet covers an area, so multiply the sides: 15 x 18 = 270 square feet, '

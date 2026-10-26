@@ -68,7 +68,7 @@ Paragraph Comprehension items also carry `passage: '...'`.
 | Subtest | Convention |
 | --- | --- |
 | **GS** | Four short factual options. Direct questions ("Which of the following...", "What is..."). One-step causal reasoning at most. No diagrams. |
-| **AR** | A narrative word problem that always contains numbers, usually two steps. Units matter and distractors are the unasked intermediate result. Never a bare equation. |
+| **AR** | A narrative word problem that always contains numbers, usually two steps. The stem names the unit; the four options are **bare numerals or currency amounts** (`420`, `$1,250`), never "420 miles". This is the verified official convention, and it is also fairer: units printed on each option tell a candidate which quantity a distractor is before any arithmetic happens. Distractors are the unasked intermediate result. Never a bare equation. |
 | **WK** | Either a word alone, or a word pinned by a short sentence, with four near-synonyms of the same register. Never a definition stem like "The word X means". |
 | **PC** | A passage of 60 to 130 words, then a question. Two questions may share a passage. Ask for main idea, stated detail, inference, purpose or tone, vocabulary in context, or sequence. |
 | **MK** | Pure computation, algebra or geometry. Symbolic notation as plain text: x^2, sqrt(3), (x - 3)(x - 4). No word problems, no calculator, no long stems. |

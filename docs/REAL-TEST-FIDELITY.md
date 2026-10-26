@@ -50,9 +50,14 @@ figures, no calculator.
 
 **This app:** narrative word problems containing numbers, usually two steps.
 Distractors are the unasked intermediate value.
-**Divergence:** options carry their units ("420 miles", "63.00 dollars"). The
-real test prints bare numerals. Units are retained deliberately because they make
-review clearer, but this is a real difference.
+
+**Options match the real convention:** bare numerals or currency amounts, with
+the unit named in the stem instead ("How many miles does it travel in 7 hours?"
+against 390 / 420 / 405 / 450). Every AR item was converted from the earlier
+"420 miles" style, because units printed beside each option quietly hand the
+candidate information the real test withholds: they say which quantity a
+distractor is before any arithmetic has been attempted. The item audit now
+rejects a letter in an AR option.
 
 ### Word Knowledge (WK)
 **Real format:** two official forms, and a representative bank must contain both.
@@ -188,9 +193,7 @@ of the real items.
    The real subtest is figure-led throughout.
 2. **Assembling Objects pieces are grid polygons**, not the drawn line art of the
    real items. The rules are enforced exactly; the artwork is a simplification.
-3. **Arithmetic Reasoning options carry units** ("420 miles"). The real test
-   prints bare numerals. Units are kept for clarity in review.
-4. **Bank size.** 372 items against a 135-item mock means a determined user will
+3. **Bank size.** 372 items against a 135-item mock means a determined user will
    see repeats across many attempts. The real computer form draws from a far
    larger pool, and up to 15 unscored tryout items may appear on top of that.
 
