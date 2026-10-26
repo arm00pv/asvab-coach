@@ -215,8 +215,10 @@ class _SectionHeader extends StatelessWidget {
         if (trailing != null)
           TextButton(
             onPressed: onTrailing,
+            // A 44 dp floor, not Size.zero: the persona UX audit found this
+            // action painting at 17 dp tall, which is a target a thumb misses.
             style: TextButton.styleFrom(
-              minimumSize: Size.zero,
+              minimumSize: const Size(0, 44),
               padding: const EdgeInsets.symmetric(horizontal: Space.sm),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),

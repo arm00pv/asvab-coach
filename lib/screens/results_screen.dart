@@ -195,8 +195,9 @@ class _SectionTitle extends StatelessWidget {
         Text(text, style: context.text.titleMedium),
         TextButton.icon(
           onPressed: () => AppRoutes.glossary(context),
+          // 44 dp tall, so the explanation is a target a thumb can hit.
           style: TextButton.styleFrom(
-            minimumSize: Size.zero,
+            minimumSize: const Size(0, 44),
             padding: const EdgeInsets.symmetric(horizontal: Space.sm),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
