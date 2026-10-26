@@ -7,6 +7,7 @@ import '../data/models/line_score.dart';
 import '../data/models/mos.dart';
 import '../data/models/score.dart';
 import '../data/repos/mos_civilian.dart';
+import '../data/repos/mos_descriptions.dart';
 import '../data/repos/mos_repository.dart';
 import '../engines/eligibility_engine.dart';
 import '../engines/unlock_path.dart';
@@ -529,10 +530,11 @@ class _MosDetail extends StatelessWidget {
           const SizedBox(height: Space.lg),
           // The two sourced blocks sit directly above the gate: what the job is,
           // then where it leads afterwards. Each renders nothing when its source
-          // is silent - no entry has a description transcribed yet, and the
-          // crosswalk misses six codes - so the condition is repeated here to
-          // keep the sheet from opening with a gap where a block would be.
-          if (mos.description != null) ...<Widget>[
+          // is silent - the merged description catalogue reports any code it
+          // does not describe, and the crosswalk misses six - so the condition
+          // is repeated here to keep the sheet from opening with a gap where a
+          // block would be.
+          if (MosDescriptions.forMos(mos) != null) ...<Widget>[
             MosDescriptionCard(mos: mos),
             const SizedBox(height: Space.md),
           ],

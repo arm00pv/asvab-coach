@@ -165,6 +165,10 @@ void main() {
     await launch(tester, state);
     await openSheet(tester, met);
 
+    // The description card now sits above the gate, so on a 360 dp phone at 2x
+    // text the verdict is below the fold: scroll to it the way a candidate does
+    // before asserting it is there.
+    await reveal(tester, find.text('You qualify'));
     expect(find.text('You qualify'), findsOneWidget);
     expect(
       find.text('WHAT IT WOULD TAKE'),

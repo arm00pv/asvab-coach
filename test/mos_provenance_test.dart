@@ -9,16 +9,24 @@
 /// length a candidate will actually read, and wording that means a human wrote
 /// it.
 ///
-/// It is deliberately not a count. On the day this landed, 0 of 156 entries were
-/// described, and the test passes on that number because an absent description is
-/// honest and an invented one is not. What it refuses is a description that
-/// arrives without its working - which is the only way this field can do harm.
-/// The coverage line it prints is there so the number stops being invisible.
+/// It is deliberately not a count. What it refuses is a description that arrives
+/// without its working - which is the only way this field can do harm - and an
+/// absent description is honest, so a roster with none is a pass.
+///
+/// The prose has since moved. [Mos.description] is null on every one of the 156
+/// entries, so a scan of that field alone reaches nothing and reports 0
+/// described; the sentences a candidate actually reads live in the four slice
+/// files merged by [MosDescriptions]. Both piles are scanned here - the roster's
+/// empty slots, so a value that does arrive in the model is still held to the
+/// rules, and the merged catalogue, which is where the 156 descriptions are.
+/// The coverage line it prints is there so the number stops being invisible: it
+/// now reads 156 described rather than the misleading zero.
 library;
 
 import 'dart:io';
 
 import 'package:asvab_guard_coach/data/models/mos.dart';
+import 'package:asvab_guard_coach/data/repos/mos_descriptions.dart';
 import 'package:asvab_guard_coach/data/repos/mos_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -125,6 +133,14 @@ void main() {
     for (final m in roster) '${m.code} civilianNote': m.civilianNote,
   };
 
+  /// The prose the app actually holds: the four description slices merged by
+  /// [MosDescriptions]. A scan of the roster's own field reaches nothing today,
+  /// so this is the pile the rules have to bite on.
+  final mergedSlots = <String, SourcedText?>{
+    for (final entry in MosDescriptions.all.entries)
+      '${entry.key} description': entry.value,
+  };
+
   group('catalogue provenance', () {
     test('the scan reaches every entry and both fields', () {
       // A provenance test that checks no values passes forever, so the scan
@@ -151,6 +167,62 @@ void main() {
       );
     });
 
+    test('the merged catalogue is the prose the roster field has not got', () {
+      // The roster carries the empty slot; the slices carry the sentences. Both
+      // are scanned, and this asserts the second pile exists, is on the roster,
+      // and never contradicts a value the model does carry - so neither scan can
+      // pass by reaching nothing.
+      expect(MosDescriptions.all, isNotEmpty);
+      final rosterCodes = <String>{for (final m in roster) m.code};
+      final strayCodes = MosDescriptions.all.keys
+          .where((String code) => !rosterCodes.contains(code))
+          .toList();
+      expect(
+        strayCodes,
+        isEmpty,
+        reason:
+            'a description keyed to a code the roster does not carry can never '
+            'be shown: ${strayCodes.join(', ')}',
+      );
+      // Two piles are only a problem when they disagree, so they are compared
+      // rather than one being required to stay empty: [Mos.description] is null
+      // on every entry today, and an entry filled in later has to say the same
+      // thing as the merged catalogue or one of the two is a stale
+      // transcription of the pamphlet.
+      final disagreements = <String>[
+        for (final m in roster)
+          if (m.description != null &&
+              m.description!.text != MosDescriptions.textFor(m.code))
+            m.code,
+      ];
+      expect(
+        disagreements,
+        isEmpty,
+        reason:
+            'these entries carry a [Mos.description] that is not the sentence '
+            'the merged catalogue holds, so one of the two is stale: '
+            '${disagreements.join(', ')}',
+      );
+      expect(mergedSlots, hasLength(MosDescriptions.count));
+    });
+
+    test(
+      'every merged description is dated, https, its own words and readable',
+      () {
+        final problems = <String>[];
+        for (final entry in mergedSlots.entries) {
+          problems.addAll(provenanceProblems(entry.key, entry.value));
+        }
+        expect(
+          problems,
+          isEmpty,
+          reason:
+              'a description without a dated https citation is a guess shown as a '
+              'fact:\n  ${problems.join('\n  ')}',
+        );
+      },
+    );
+
     test('the model still names the five kinds of source', () {
       expect(
         MosSourceKind.values.map((k) => k.name).toList(),
@@ -159,7 +231,17 @@ void main() {
     });
 
     test('the coverage line counts described against undescribed', () {
-      final described = roster.where((m) => m.description != null).length;
+      // A described entry is one a sheet can print a sentence for, and that is
+      // the merged catalogue rather than the roster field it replaced: reading
+      // [Mos.description] alone reported 0 of 156 described, which was true of
+      // the field and false about the app.
+      final described = roster
+          .where(
+            (m) =>
+                m.description != null ||
+                MosDescriptions.forCode(m.code) != null,
+          )
+          .length;
       final noted = roster.where((m) => m.civilianNote != null).length;
       final undescribed = roster.length - described;
       final percent = roster.isEmpty
@@ -175,6 +257,9 @@ void main() {
         '$noted with a civilian note, '
         '$undescribed without a description',
       );
+      // The same fact from the catalogue's own side, so the log names both the
+      // count and any code the slices leave out.
+      stdout.writeln(MosDescriptions.coverageLine);
 
       expect(described + undescribed, roster.length);
       expect(described, inInclusiveRange(0, roster.length));
@@ -183,11 +268,11 @@ void main() {
   });
 
   group('the rules bite', () {
-    // The roster carries no descriptions yet, so the scan above cannot fail on
-    // its own. These cases are what makes that pass mean something: each hands
-    // the same checker a value a data pass could plausibly produce and requires
-    // it to be rejected for the right reason. None of this text describes any
-    // MOS - it is bait.
+    // These cases are what makes the scans above mean something: each hands the
+    // same checker a value a data pass could plausibly produce and requires it to
+    // be rejected for the right reason, so the rules are proven to bite on a
+    // value rather than assumed to. None of this text describes any MOS - it is
+    // bait.
     final today = DateTime.now();
     final good = SourcedText(
       text:
@@ -301,8 +386,9 @@ void main() {
     }
 
     test('an absent description is absent, not broken', () {
-      // The honest starting point: no entry is described yet, and that is a
-      // pass. Only a description that exists has to prove itself.
+      // A code nobody described is a pass: only a description that exists has to
+      // prove itself. The roster field is empty on all 156 entries and that is
+      // still not a defect - the sentences come from the merged catalogue.
       expect(provenanceProblems('11B description', null), isEmpty);
     });
   });

@@ -5,6 +5,7 @@ import 'package:asvab_guard_coach/data/models/mos.dart';
 import 'package:asvab_guard_coach/data/models/question.dart';
 import 'package:asvab_guard_coach/data/models/score.dart';
 import 'package:asvab_guard_coach/data/repos/mos_civilian.dart';
+import 'package:asvab_guard_coach/data/repos/mos_descriptions.dart';
 import 'package:asvab_guard_coach/data/repos/mos_repository.dart';
 import 'package:asvab_guard_coach/engines/personas.dart';
 import 'package:asvab_guard_coach/screens/jobs_screen.dart';
@@ -29,10 +30,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 ///    because a guessed civilian title is the one line on this sheet a candidate
 ///    could enlist on.
 ///
-/// [Mos.description] is null on every entry today, so the description block is
-/// asserted to stay absent over the whole roster - and, so that absence is not
-/// just untested code, the block itself is pumped with a fabricated, properly
-/// cited [SourcedText] and required to print its provenance line.
+/// The description block reads [MosDescriptions] (the roster's own
+/// [Mos.description] field is null on every entry), so the sheet is asserted to
+/// print the sentence the merged catalogue holds for a code and to keep the
+/// provenance line under it - and, so that the block's silent case is not just
+/// untested code, it is pumped with a code the catalogue does not describe and
+/// with a fabricated, properly cited [SourcedText].
 Future<AppState> seededState() async {
   SharedPreferences.setMockInitialValues(<String, Object>{});
   final state = AppState();
@@ -169,8 +172,8 @@ SourcedText citedDescription({
   sourceKind: kind,
 );
 
-Mos mosWith(SourcedText? description) => Mos(
-  code: '88M',
+Mos mosWith(SourcedText? description, {String code = '88M'}) => Mos(
+  code: code,
   title: 'Motor Transport Operator',
   category: 'Transportation',
   gate: g('GT 90'),
@@ -200,9 +203,13 @@ void main() {
       expect(find.textContaining('CC BY 4.0'), findsOneWidget);
       expect(find.textContaining('USDOL/ETA'), findsOneWidget);
 
-      // No description has been transcribed for any entry, so its block must
-      // not appear at all rather than appear empty.
-      expect(find.text('WHAT THIS JOB IS'), findsNothing);
+      // The description block is above the crosswalk block, and its sentence
+      // comes from the merged slice catalogue rather than the roster's empty
+      // [Mos.description] field.
+      final description = MosDescriptions.forCode('68W');
+      expect(description, isNotNull);
+      expect(find.text('WHAT THIS JOB IS'), findsOneWidget);
+      expect(find.text(description!.text), findsOneWidget);
 
       expect(tester.takeException(), isNull);
       expect(
@@ -244,7 +251,8 @@ void main() {
 
       // A military-only occupation is still O*NET content, so the credit stays.
       expect(find.text(MosCivilian.creditLine), findsOneWidget);
-      expect(find.text('WHAT THIS JOB IS'), findsNothing);
+      expect(find.text('WHAT THIS JOB IS'), findsOneWidget);
+      expect(find.text(MosDescriptions.textFor('11B')!), findsOneWidget);
       expect(tester.takeException(), isNull);
       expect(
         clippedText(tester, of: find.byType(DraggableScrollableSheet)),
@@ -269,7 +277,11 @@ void main() {
       expect(find.textContaining('In civilian life'), findsNothing);
       expect(find.text(MosCivilian.creditLine), findsNothing);
       expect(find.textContaining('CC BY 4.0'), findsNothing);
-      expect(find.text('WHAT THIS JOB IS'), findsNothing);
+      // The description block is not the crosswalk and is not silent: 19C has a
+      // pamphlet description, and only the civilian block is allowed to say
+      // nothing.
+      expect(find.text('WHAT THIS JOB IS'), findsOneWidget);
+      expect(find.text(MosDescriptions.textFor('19C')!), findsOneWidget);
       expect(tester.takeException(), isNull);
       expect(
         clippedText(tester, of: find.byType(DraggableScrollableSheet)),
@@ -277,28 +289,41 @@ void main() {
       );
     });
 
-    testWidgets('no entry in the roster has a description to show yet', (
+    testWidgets('the sheet prints what the merged catalogue holds', (
       tester,
     ) async {
-      // The block is not missing: there is nothing sourced to put in it. This is
-      // the assertion that the sheet did not fake one.
-      final described = <String>[
-        for (final mos in MosRepository.all)
-          if (mos.description != null) mos.code,
-      ];
+      // The sheet used to gate on [Mos.description], which nobody populated, so
+      // it showed nothing for all 156 codes. The gate is
+      // [MosDescriptions.forMos] now, and this is the assertion that the sheet
+      // reads it: the roster field is still null, the catalogue has a sentence,
+      // and that sentence is on screen with its provenance line.
+      final mos = MosRepository.all.first;
       expect(
-        described,
-        isEmpty,
+        mos.description,
+        isNull,
+        reason: 'the roster still carries no description field for a code',
+      );
+      final description = MosDescriptions.forCode(mos.code);
+      expect(
+        description,
+        isNotNull,
         reason:
-            'these entries gained a description, so this test (and the sheet '
-            'this test stands in for) needs revisiting: $described',
+            '${mos.code} is on the roster and every roster code is described',
       );
 
       final state = await seededState();
       await launchJobs(tester, state);
-      await openSheet(tester, MosRepository.all.first.code);
-      expect(find.text('WHAT THIS JOB IS'), findsNothing);
+      await openSheet(tester, mos.code);
+
+      expect(find.text('WHAT THIS JOB IS'), findsOneWidget);
+      expect(find.text(description!.text), findsOneWidget);
+      expect(find.text(mosProvenanceLine(description)), findsOneWidget);
       expect(tester.takeException(), isNull);
+      expect(
+        clippedText(tester, of: find.byType(DraggableScrollableSheet)),
+        isEmpty,
+        reason: 'the description card cut text off at 360 dp with 2x text',
+      );
     });
   });
 
@@ -350,8 +375,17 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('is silent when the entry has no description', (tester) async {
-      await pumpBlock(tester, MosDescriptionCard(mos: mosWith(null)));
+    testWidgets('is silent when neither the entry nor the catalogue has one', (
+      tester,
+    ) async {
+      // 00Z is not a code the catalogue carries, so neither the roster field nor
+      // the merged map has a sentence for it. The block stays absent rather than
+      // printing a heading over nothing.
+      expect(MosDescriptions.covers('00Z'), isFalse);
+      await pumpBlock(
+        tester,
+        MosDescriptionCard(mos: mosWith(null, code: '00Z')),
+      );
       expect(find.byType(Text), findsNothing);
       expect(tester.takeException(), isNull);
     });

@@ -3,19 +3,22 @@ import 'package:flutter/material.dart';
 import '../core/theme/tokens.dart';
 import '../data/models/mos.dart';
 import '../data/repos/mos_civilian.dart';
+import '../data/repos/mos_descriptions.dart';
 import 'primitives.dart';
 
 /// The two sourced blocks a job sheet carries above its aptitude gate: what the
 /// job is, and what it transfers to in civilian life.
 ///
 /// Both are silent when the data behind them is absent, and the silence is the
-/// feature. [Mos.description] is null on every entry today, and the O*NET
-/// crosswalk does not cover six of the codes this app carries. A block that
-/// printed a heading over an empty card would read as "this job is nothing",
-/// and a block that filled the gap with a plausible sentence would be a careers
-/// claim with no source behind it - the one mistake that costs a candidate
-/// years. So nothing here writes its own copy about a job: every sentence on
-/// screen is a value, and every value arrives with its attribution.
+/// feature. The roster's own [Mos.description] is null on every entry, so the
+/// description comes from the merged slice catalogue behind
+/// [MosDescriptions.forCode]; the O*NET crosswalk does not cover six of the
+/// codes this app carries. A block that printed a heading over an empty card
+/// would read as "this job is nothing", and a block that filled the gap with a
+/// plausible sentence would be a careers claim with no source behind it - the
+/// one mistake that costs a candidate years. So nothing here writes its own
+/// copy about a job: every sentence on screen is a value, and every value
+/// arrives with its attribution.
 
 /// The wording for one [MosSourceKind], for the provenance line under a sourced
 /// description.
@@ -72,9 +75,12 @@ String mosProvenanceLine(SourcedText sourced) =>
 /// "What this job is": the plain-language sentence about the work, with the
 /// provenance that makes it safe to show underneath.
 ///
-/// Renders nothing at all when [Mos.description] is null, which is every entry
-/// in the catalogue today. The space is left empty rather than filled: see
-/// test/mos_provenance_test.dart, which holds any description that does arrive
+/// The sentence is [MosDescriptions.forMos]: the entry's own [Mos.description]
+/// when it carries one, and otherwise the merged slice catalogue's entry for
+/// this code. Renders nothing at all when neither has one - the space is left
+/// empty rather than filled, and an undescribed code is reported by
+/// [MosDescriptions.coverageLine] instead of being hidden behind an empty card.
+/// test/mos_provenance_test.dart holds every description that reaches this card
 /// to a dated https:// citation.
 class MosDescriptionCard extends StatelessWidget {
   const MosDescriptionCard({super.key, required this.mos});
@@ -83,7 +89,7 @@ class MosDescriptionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final description = mos.description;
+    final description = MosDescriptions.forMos(mos);
     if (description == null) return const SizedBox.shrink();
     final c = context.colors;
     // A column of two paragraphs, never a row: at 2x system text on a 360 dp
