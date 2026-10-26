@@ -19,7 +19,13 @@ import '../widgets/primitives.dart';
 /// Guard jobs does this score actually open, and what would it take to open the
 /// rest.
 class JobsScreen extends StatefulWidget {
-  const JobsScreen({super.key});
+  const JobsScreen({super.key, this.now});
+
+  /// The day the screen is read against, for the rescission dates the pamphlet
+  /// prints. Null means today. A widget cannot own a clock and a test cannot
+  /// wait for October to end, so the one date-sensitive comparison on this
+  /// screen is passed in rather than read from [DateTime.now] deep in a row.
+  final DateTime? now;
 
   @override
   State<JobsScreen> createState() => _JobsScreenState();
@@ -37,6 +43,7 @@ class _JobsScreenState extends State<JobsScreen> {
     final app = context.watch<AppState>();
     final report = app.lastReport;
     final c = context.colors;
+    final now = widget.now ?? DateTime.now();
 
     final all = MosRepository.search(_query)
         .where(
@@ -224,7 +231,8 @@ class _JobsScreenState extends State<JobsScreen> {
                     child: _MosRow(
                       mos: m,
                       report: report,
-                      onTap: () => _openDetail(context, m, report),
+                      now: now,
+                      onTap: () => _openDetail(context, m, report, now),
                     ),
                   ),
               if (_type != _Type.enlisted) ...<Widget>[
@@ -245,8 +253,12 @@ class _JobsScreenState extends State<JobsScreen> {
                     'requirement in the accession system. '
                     '${MosRepository.notGuardFielded.length} of these jobs are '
                     'restricted by the pamphlet to another component and are '
-                    'marked as not Guard jobs. Treat this screen as a planning '
-                    'tool, not an authority.',
+                    'marked as not Guard jobs. '
+                    '${MosRepository.rescindMarked.length} entries the same '
+                    'pamphlet marks rescinded are kept and shown as retired or '
+                    'retiring, so you recognise the code rather than because '
+                    'they are jobs worth aiming at. Treat this screen as a '
+                    'planning tool, not an authority.',
               ),
               const SizedBox(height: Space.xxl),
             ],
@@ -256,7 +268,12 @@ class _JobsScreenState extends State<JobsScreen> {
     );
   }
 
-  void _openDetail(BuildContext context, Mos mos, ScoreReport? report) {
+  void _openDetail(
+    BuildContext context,
+    Mos mos,
+    ScoreReport? report,
+    DateTime now,
+  ) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -264,7 +281,7 @@ class _JobsScreenState extends State<JobsScreen> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(Radii.xl)),
       ),
-      builder: (context) => _MosDetail(mos: mos, report: report),
+      builder: (context) => _MosDetail(mos: mos, report: report, now: now),
     );
   }
 }
@@ -365,10 +382,16 @@ class _SummaryStrip extends StatelessWidget {
 }
 
 class _MosRow extends StatelessWidget {
-  const _MosRow({required this.mos, required this.report, required this.onTap});
+  const _MosRow({
+    required this.mos,
+    required this.report,
+    required this.now,
+    required this.onTap,
+  });
 
   final Mos mos;
   final ScoreReport? report;
+  final DateTime now;
   final VoidCallback onTap;
 
   @override
@@ -381,22 +404,33 @@ class _MosRow extends StatelessWidget {
     final evaluation = (report == null || !evaluable)
         ? null
         : EligibilityEngine.evaluate(mos.gate, report!);
-    final tone = notGuard
-        ? PillTone.neutral
-        : (evaluation == null
-              ? PillTone.neutral
-              : (evaluation.qualified
-                    ? PillTone.success
-                    : (evaluation.nearMiss
-                          ? PillTone.warning
-                          : PillTone.danger)));
-    final label = notGuard
-        ? 'Not a Guard job'
-        : (evaluation == null
-              ? (mos.hasGate ? mos.gate.label : mos.gateSummary)
-              : (evaluation.qualified
-                    ? 'Qualified'
-                    : '${evaluation.bestShortfall} pts short'));
+    // A rescinded MOS is not a verdict at all, in either direction: "Qualified"
+    // offers a job that no longer exists and "8 pts short" invites a candidate to
+    // chase one. The date is the fact, and it wins over the gate.
+    final retired = mos.retiredAt(now);
+    final retiring = mos.retiringAt(now);
+    final rescindLine = mos.rescindHeadline(now);
+    final String label;
+    final PillTone tone;
+    if (retired) {
+      label = 'Retired';
+      tone = PillTone.danger;
+    } else if (retiring) {
+      label = 'Retiring';
+      tone = PillTone.warning;
+    } else if (notGuard) {
+      label = 'Not a Guard job';
+      tone = PillTone.neutral;
+    } else if (evaluation == null) {
+      label = mos.hasGate ? mos.gate.label : mos.gateSummary;
+      tone = PillTone.neutral;
+    } else if (evaluation.qualified) {
+      label = 'Qualified';
+      tone = PillTone.success;
+    } else {
+      label = '${evaluation.bestShortfall} pts short';
+      tone = evaluation.nearMiss ? PillTone.warning : PillTone.danger;
+    }
     return AppCard(
       onTap: onTap,
       padding: const EdgeInsets.symmetric(
@@ -423,6 +457,21 @@ class _MosRow extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
+                // Dated, spelled out and coloured like a warning rather than a
+                // grey footnote: a candidate scanning the list has to be able to
+                // tell this row from an open job without opening anything.
+                if (rescindLine != null) ...<Widget>[
+                  const SizedBox(height: 2),
+                  Text(
+                    rescindLine,
+                    style: context.text.bodySmall?.copyWith(
+                      color: retired ? c.danger : c.warning,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      height: 1.3,
+                    ),
+                  ),
+                ],
                 Row(
                   children: <Widget>[
                     Flexible(
@@ -468,27 +517,39 @@ class _MosRow extends StatelessWidget {
 }
 
 class _MosDetail extends StatelessWidget {
-  const _MosDetail({required this.mos, required this.report});
+  const _MosDetail({
+    required this.mos,
+    required this.report,
+    required this.now,
+  });
 
   final Mos mos;
   final ScoreReport? report;
+  final DateTime now;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    final evaluation = report == null
+    // A retired MOS has no verdict to give and nothing to raise: no line score
+    // opens it, so "You qualify" and "raise EL by 3" would both be lies about a
+    // job that no longer exists.
+    final retired = mos.retiredAt(now);
+    final retiring = mos.retiringAt(now);
+    final evaluation = (report == null || retired)
         ? null
         : EligibilityEngine.evaluate(mos.gate, report!);
     // "What would it take?" is answered by the unlock engine, from the same line
     // scores this sheet already shows. With no attempt on record there is
     // nothing to raise from, so the sheet asks for one rather than reading every
     // gate as a zero - a false floor is worse than no floor at all.
-    final path = report == null
+    final path = (report == null || retired)
         ? null
         : UnlockPathEngine.forMos(mos, report!.lineScores);
-    final Widget? unlock = report == null
-        ? (mos.hasGate ? const _ScoredAttemptNeeded() : null)
-        : (path!.qualified ? null : _UnlockPathCard(path: path));
+    final Widget? unlock = retired
+        ? null
+        : (report == null
+              ? (mos.hasGate ? const _ScoredAttemptNeeded() : null)
+              : (path!.qualified ? null : _UnlockPathCard(path: path)));
     return DraggableScrollableSheet(
       expand: false,
       initialChildSize: 0.72,
@@ -528,6 +589,22 @@ class _MosDetail extends StatelessWidget {
             style: context.text.bodySmall?.copyWith(color: c.textMuted),
           ),
           const SizedBox(height: Space.lg),
+          // The rescission comes first, before anything that reads like a job
+          // description or a gate, because it is the answer to the question the
+          // sheet was opened to ask.
+          if (mos.rescindMarked) ...<Widget>[
+            Callout(
+              tone: retiring ? PillTone.warning : PillTone.danger,
+              icon: retiring
+                  ? Icons.schedule_rounded
+                  : Icons.event_busy_rounded,
+              title:
+                  '${retiring ? 'Retiring' : 'Retired'} '
+                  '${mos.rescindMonthLabel}',
+              text: mos.rescindDetail(now)!,
+            ),
+            const SizedBox(height: Space.md),
+          ],
           // The two sourced blocks sit directly above the gate: what the job is,
           // then where it leads afterwards. Each renders nothing when its source
           // is silent - the merged description catalogue reports any code it
@@ -546,7 +623,11 @@ class _MosDetail extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Eyebrow('Aptitude gate'),
+                Eyebrow(
+                  mos.retiredAt(now)
+                      ? 'Aptitude gate (no longer opens an enlistment)'
+                      : 'Aptitude gate',
+                ),
                 const SizedBox(height: Space.sm),
                 if (!mos.hasGate)
                   Text(
@@ -604,10 +685,10 @@ class _MosDetail extends StatelessWidget {
               ],
             ),
           ),
-          if (report != null) ...<Widget>[
+          if (evaluation != null) ...<Widget>[
             const SizedBox(height: Space.md),
             AppCard(
-              accent: evaluation!.qualified ? c.success : c.warning,
+              accent: evaluation.qualified ? c.success : c.warning,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[

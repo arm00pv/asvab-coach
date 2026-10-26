@@ -21,6 +21,7 @@ reviewed by eye.
 | Entries marked "no aptitude requirement is published" | **3** (18F, 42R, 42S) |
 | Entries marked "gate not verified" | **0** |
 | Entries marked as not an Army National Guard job | **9** |
+| Entries the pamphlet marks rescinded | **3** (12M 202510; 15E and 15W 202610) |
 
 Verified as of **26 October 2026** against the **04 December 2025 build** of DA
 Pam 611-21, chapter 10, section C. The app carries that date as
@@ -172,6 +173,45 @@ effective 202510; 25E "Electromagnetic Spectrum Manager"; 42S "Special Band
 Musician"). The lesson is that the chapter file lags the per-MOS files, so a diff
 against one build can invent a gap that is really a stale source.
 
+### 3g. Three rescinded MOS were offered as live enlistment targets
+
+The pamphlet marks a rescinded section in the section heading itself, with the
+month it takes effect. The app carried none of those markings, so a candidate
+whose line scores cleared 12M was told they qualified for a Firefighter
+enlistment the Army retired in October 2025, with a written description of the
+work attached. There are exactly three, and they are the only three:
+
+| MOS | Heading, as printed | Rescind date |
+|---|---|---|
+| 12M | `10-12M. MOS 12M--Firefighter, CMF 12 (Rescind) 202510)` | **202510** - retired October 2025 |
+| 15E | `10-15E. MOS 15E—TUAS Repairer CMF 15 (Rescind 202610)` | **202610** - retires October 2026 |
+| 15W | `10-15W. MOS 15W—TUAS Operator, CMF 15 (Rescind` / `202610)` | **202610** - same date |
+
+15W is the one that hides from a line-by-line search: the annotation wraps, with
+"(Rescind" ending one line and "202610)" opening the next, so the heading has to
+be read as a block. 12M prints a stray bracket - "(Rescind) 202510)" - which is
+why the extractor reads the date loosely instead of demanding tidy punctuation.
+
+Two things were deliberately **not** done:
+
+- **the entries were not deleted.** A candidate still meets the code in older
+  material and in the roster of soldiers who hold it, and a list that quietly
+  forgot 12M would leave them unable to find out what happened to it. The gate,
+  the description and the civilian crosswalk all stay;
+- **the two cases were not collapsed into one.** A rescission month in the past
+  is "Retired October 2025 - not available for enlistment". A rescission month
+  that has not passed is "Retiring October 2026 - confirm with a recruiter before
+  planning around it", because that job still stands today.
+
+What the app does now: `Mos.rescindOn` carries the month, the row shows that
+sentence instead of a verdict (a retired MOS never reads "Qualified" or "8 pts
+short"), the detail sheet opens on a callout naming the pamphlet's own date and
+withholds the "You qualify" and "what it would take" cards, and the onboarding
+picker marks the entry too. `test/mos_rescind_test.dart` reads
+`docs/research/_raw/ch10c.txt` back, extracts every marked heading, prints the
+list it found, and fails if the data carries a rescission the pamphlet does not
+show or misses one it does.
+
 ## 4. The 59 added
 
 Family by family (gate shown as the app now carries it, `&` = both required,
@@ -314,6 +354,9 @@ Verified on 26 October 2026:
 - every entry cites the section it came from (`Mos.source`), so the working is
   visible in the app;
 - component restrictions the pamphlet prints are carried and shown;
+- every rescission the pamphlet marks in a section heading is carried, with the
+  month it takes effect, and is shown as retired or retiring rather than as a job
+  to aim at;
 - the 97 legacy ids are stable, tested, and still resolve.
 
 **Not** claimed, and not verifiable from this repo:

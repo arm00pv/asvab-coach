@@ -33,6 +33,20 @@ abstract final class MosRepository {
       .where((m) => m.gateStatus == MosGateStatus.unverified)
       .toList(growable: false);
 
+  /// Entries the pamphlet marks rescinded, whatever the date: a candidate may
+  /// still meet these codes, so they are kept and marked rather than dropped.
+  static List<Mos> get rescindMarked =>
+      allMos.where((m) => m.rescindMarked).toList(growable: false);
+
+  /// Entries whose rescission month has passed: no line score opens them.
+  static List<Mos> retiredAsOf(DateTime now) =>
+      allMos.where((m) => m.retiredAt(now)).toList(growable: false);
+
+  /// Entries marked for rescission in the current month or a later one: they
+  /// stand today, but they are on the way out.
+  static List<Mos> retiringAsOf(DateTime now) =>
+      allMos.where((m) => m.retiringAt(now)).toList(growable: false);
+
   /// Entries where the pamphlet states there is no aptitude-area requirement.
   static List<Mos> get noAptitudeRequirement => allMos
       .where((m) => m.gateStatus == MosGateStatus.noRequirement)

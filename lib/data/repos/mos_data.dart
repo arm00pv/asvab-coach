@@ -22,6 +22,13 @@
 ///  * A component restriction the pamphlet prints is carried too: telling a
 ///    Guard candidate they qualify for a job the Guard does not field is the
 ///    same harm in the other direction.
+///  * A rescission the pamphlet prints is carried too. Section headings marked
+///    "(Rescind) YYYYMM" (12M is 202510; 15E and 15W are 202610) stay in the
+///    roster with [Mos.rescindOn] set. Deleting them would be deleting history:
+///    a candidate still meets the code in older material, so the entry is kept
+///    and the jobs screen shows it as retired or retiring instead of as a job
+///    worth aiming at. `test/mos_rescind_test.dart` reads the extracted
+///    pamphlet back and fails if this file drifts from it.
 ///
 /// Requirements change. DA Pam 611-21 is revised, the Army re-issues single
 /// sections between revisions, and several entries here note an effective date.
@@ -200,7 +207,12 @@ final List<Mos> allMos = <Mos>[
     title: 'Firefighter',
     category: MosCategory.combatSupportEngineer,
     gate: g('GM 88'),
-    source: 'DA Pam 611-21 ch.10 sec.C, section 10-12M',
+    // The heading reads "10-12M. MOS 12M--Firefighter, CMF 12 (Rescind) 202510)",
+    // so the MOS was retired in October 2025. Kept, and marked, because a
+    // candidate still meets the code.
+    rescindOn: DateTime(2025, 10),
+    source:
+        'DA Pam 611-21 ch.10 sec.C, section 10-12M, marked (Rescind) 202510',
   ),
   Mos(
     code: '12N',
@@ -678,7 +690,12 @@ final List<Mos> allMos = <Mos>[
     gate: g('EL 93&MM 104'),
     securityClearance: true,
     note: 'Renamed from RQ-7 Repairer, effective 202510',
-    source: 'DA Pam 611-21 ch.10 sec.C, section 10-15E',
+    // The heading ends "(Rescind 202610)", so this MOS is retired from October
+    // 2026 - the month it was read in, hence the "retiring" copy rather than
+    // "retired".
+    rescindOn: DateTime(2026, 10),
+    source:
+        'DA Pam 611-21 ch.10 sec.C, section 10-15E, marked (Rescind 202610)',
   ),
   Mos(
     code: '15F',
@@ -742,7 +759,11 @@ final List<Mos> allMos = <Mos>[
     gate: g('SC 102'),
     securityClearance: true,
     note: 'Renamed from RQ-7 Operator, effective 202510',
-    source: 'DA Pam 611-21 ch.10 sec.C, section 10-15W',
+    // The heading wraps: "... (Rescind" ends the line and "202610)" opens the
+    // next. Same rescission as 15E.
+    rescindOn: DateTime(2026, 10),
+    source:
+        'DA Pam 611-21 ch.10 sec.C, section 10-15W, marked (Rescind 202610)',
   ),
   Mos(
     code: '27D',

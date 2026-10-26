@@ -79,11 +79,31 @@ class _MosPickerState extends State<MosPicker> {
                                 ),
                               ),
                               Expanded(
-                                child: Text(
-                                  m.title,
-                                  style: context.text.bodyMedium?.copyWith(
-                                    color: c.textPrimary,
-                                  ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      m.title,
+                                      style: context.text.bodyMedium?.copyWith(
+                                        color: c.textPrimary,
+                                      ),
+                                    ),
+                                    // A target MOS the pamphlet has rescinded is
+                                    // not a target. Onboarding cannot carry the
+                                    // full jobs-screen banner, but it can refuse
+                                    // to look like an ordinary choice.
+                                    if (m.rescindMarked)
+                                      Text(
+                                        m.rescindHeadline(DateTime.now())!,
+                                        style: context.text.labelSmall
+                                            ?.copyWith(
+                                              color: m.retiredAt(DateTime.now())
+                                                  ? c.danger
+                                                  : c.warning,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                      ),
+                                  ],
                                 ),
                               ),
                               const SizedBox(width: Space.sm),

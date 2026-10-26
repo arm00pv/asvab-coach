@@ -130,6 +130,7 @@ class Mos {
     this.componentLimit,
     this.description,
     this.civilianNote,
+    this.rescindOn,
   });
 
   final String code;
@@ -176,10 +177,82 @@ class Mos {
   /// rule as [description]: nothing is invented to fill it.
   final SourcedText? civilianNote;
 
+  /// The month the authority retires this MOS, or null while it stands.
+  ///
+  /// DA Pam 611-21 chapter 10 section C marks a rescinded section in its own
+  /// heading - "10-12M. MOS 12M--Firefighter, CMF 12 (Rescind) 202510)" - and
+  /// the date it prints there is the month the MOS stops being an enlistment
+  /// target. It is a month, not a day: [DateTime] carries it because the app
+  /// needs something it can compare, and the value is the first of its month.
+  ///
+  /// A rescinded MOS stays in the catalogue. A candidate still meets the code in
+  /// older material and in the roster of soldiers who hold it, and a list that
+  /// quietly dropped 12M would leave them unable to find out what happened to
+  /// it. What the app must never do is present it as a job they can be enlisted
+  /// into - see [retiredAt], [retiringAt] and [rescindHeadline].
+  final DateTime? rescindOn;
+
   String get id => code;
 
   /// True when the entry carries at least one gate alternative.
   bool get hasGate => gate.alternatives.isNotEmpty;
+
+  /// True when the pamphlet marks this MOS for rescission, whatever the date.
+  bool get rescindMarked => rescindOn != null;
+
+  /// True when the rescission month has passed: the MOS is retired and no line
+  /// score opens it.
+  ///
+  /// The comparison is by calendar month, not by day, because the authority
+  /// dates a rescission in YYYYMM and a day taken from that would be a guess.
+  bool retiredAt(DateTime now) {
+    final on = rescindOn;
+    if (on == null) return false;
+    return now.year > on.year || (now.year == on.year && now.month > on.month);
+  }
+
+  /// True when a rescission is recorded for the month [now] sits in or a later
+  /// one: the MOS stands today but is on the way out. Never confused with
+  /// [retiredAt] in the copy, because one is a job you can still take and the
+  /// other is not.
+  bool retiringAt(DateTime now) => rescindOn != null && !retiredAt(now);
+
+  /// "October 2025" - the month a rescission takes effect, written out, because
+  /// 202510 is not a date a candidate reads.
+  String get rescindMonthLabel => rescindOn == null
+      ? ''
+      : '${mosMonthName(rescindOn!.month)} ${rescindOn!.year}';
+
+  /// The line a rescind-marked MOS carries on its row and in its sheet, or null
+  /// for every MOS the pamphlet does not mark.
+  String? rescindHeadline(DateTime now) {
+    if (rescindOn == null) return null;
+    final month = rescindMonthLabel;
+    return retiredAt(now)
+        ? 'Retired $month - not available for enlistment'
+        : 'Retiring $month - confirm with a recruiter before planning around it';
+  }
+
+  /// The same fact in the detail sheet, with the pamphlet's own date in it and
+  /// an explanation of why a retired code is still on the screen at all.
+  String? rescindDetail(DateTime now) {
+    final on = rescindOn;
+    if (on == null) return null;
+    final month = rescindMonthLabel;
+    final stamp = '${on.year}${on.month.toString().padLeft(2, '0')}';
+    if (retiredAt(now)) {
+      return 'The pamphlet prints this section heading with the rescission '
+          'date $stamp, so $code was retired in $month and is not available '
+          'for enlistment: no line score opens it. It is still listed because '
+          'soldiers hold the code and older material still names it - read what '
+          'follows as the job that used to exist, not one you can choose.';
+    }
+    return 'The pamphlet prints this section heading with the rescission date '
+        '$stamp, so $code is being retired in $month. It stands today, but '
+        'the Army has already scheduled its removal. Treat any plan built '
+        'around it as at risk, and confirm its current status with a recruiter '
+        'before you rely on it.';
+  }
 
   /// False only when the gate is a genuine unknown: the app must then report
   /// neither qualification nor disqualification.
@@ -357,6 +430,31 @@ class GoalProfile {
 
 /// Convenience so screens can talk about categories without importing catalog.
 String mosCategoryLabel(Mos m) => m.category;
+
+/// The month names a rescission date is written out with.
+///
+/// DA Pam 611-21 dates a rescission in `YYYYMM` - 202510 - which is not a date
+/// a candidate reads, so every label the app prints spells the month out. Kept
+/// here rather than pulled from an internationalisation package because the app
+/// has no date formatting dependency and this is the only date it writes.
+String mosMonthName(int month) {
+  const names = <String>[
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  if (month < 1 || month > 12) return 'month $month';
+  return names[month - 1];
+}
 
 /// Exposed for the jobs screen filter chips.
 const List<String> allMosCategories = MosCategory.ordered;
