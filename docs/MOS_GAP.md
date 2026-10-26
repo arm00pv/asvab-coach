@@ -336,7 +336,7 @@ Verified on 26 October 2026:
 ```bash
 # 1. pull the current chapter 10 section C (api.army.mil 403s to scripts; use the
 #    archive snapshot of the newest build directory)
-python docs/research/_raw/extract_ch10c.py
+python docs/research/extract_ch10c.py
 # 2. compare with the extract committed here
 #    docs/research/mos-roster-2025-12.json holds, per code, the pamphlet's own
 #    qualifying-score sentence next to the gate the app carries

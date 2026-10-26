@@ -39,6 +39,12 @@ final List<Question> readingPassageBank = <Question>[
       'the readings are kept apart from the hours recorded on the work order',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Reads as tidy fleet-wide policy, but the comparison the passage draws stays inside one engine.',
+      'The passage\'s one claim, supported twice: a lone reading shows no trend, so it needs that engine\'s own baseline.',
+      'A true detail the text does state, but it props up the point about trend instead of being the point.',
+      'This inverts the passage, which puts the dates with the hours precisely so a trend can be matched to them.',
+    ],
     explanation:
         'The passage makes one point and supports it twice: a single reading '
         'cannot show a trend, so the samples are compared with the engine own '
@@ -73,6 +79,12 @@ final List<Question> readingPassageBank = <Question>[
       'on a tag wired to the dipstick',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The text names the work order and gives the reason: readings have to be tied to hours on the engine.',
+      'The very place the passage rules out, offered because a purpose-built log sounds better organised.',
+      'The laboratory report is where metals get listed, not dates, so a detail is moved to the wrong document.',
+      'No dipstick or tag appears anywhere in the text; a reader picturing the job invents this one.',
+    ],
     explanation:
         'The passage says the dates are kept on the work order rather than in a '
         'separate log, and gives the reason: the readings have to be tied to '
@@ -103,6 +115,12 @@ final List<Question> readingPassageBank = <Question>[
       'a section rarely has the equipment needed to draw one',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Nothing is doubted about lab precision; the objection is to the timing of a single reading.',
+      'The second sentence supplies exactly this, since one reading cannot tell a rise from a fall.',
+      'Reverses the passage, which builds its case on samples taken across many months being compared.',
+      'Who owns or lacks sampling gear is never discussed, so this objection is borrowed from outside the text.',
+    ],
     explanation:
         'The second sentence gives the reason: one reading cannot say whether a '
         'metal is rising or falling, so only a series shows the trend. The '
@@ -137,6 +155,12 @@ final List<Question> readingPassageBank = <Question>[
       'nearest the door the trucks load from',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Confuses the two rankings: the back holds the heaviest, least requested stock, the opposite case.',
+      'Space is the measure the passage explicitly demotes in favour of how often an item is touched.',
+      'How long stock has sat is never weighed, because the ranking in the text is by pick frequency.',
+      'Stated plainly, and it is the conclusion the whole walking argument is built to reach.',
+    ],
     explanation:
         'The passage states it plainly: the items that leave most often go '
         'nearest the door. The heaviest and least requested stock is what sits '
@@ -166,6 +190,12 @@ final List<Question> readingPassageBank = <Question>[
       'heavy pallets are the main cause of slow loading at a busy depot',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'No equipment purchase is proposed; a reader\'s own improvement is grafted onto the example.',
+      'The single decision the paragraph is organised around, with its benefit then counted in steps saved.',
+      'The polished long summary, but the passage promises shorter walks, not a queue-free dock, and costs never appear.',
+      'Heavy pallets are one symptom inside one example, not the cause the author is arguing for.',
+    ],
     explanation:
         'The paragraph is built around one decision - rank stock by how often '
         'it is touched rather than by how much space it takes - and then '
@@ -197,6 +227,12 @@ final List<Question> readingPassageBank = <Question>[
       'a depot that saves steps must spend more on pallet trucks',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The last sentence ties distance walked to the minutes a truck sits idle, so fewer steps save time.',
+      'A pay scheme is invented here; the text counts steps to explain loading delays, never wages.',
+      'Contradicts the link the final sentence draws between how far a picker walks and dock time.',
+      'Nothing in the text says saving steps costs money; equipment spending is absent entirely.',
+    ],
     explanation:
         'The last sentence ties steps to the minutes a truck spends at the '
         'dock, which is the reason a shorter walk is worth anything at all. '
@@ -229,6 +265,12 @@ final List<Question> readingPassageBank = <Question>[
       'the slow wander of a compass needle as a patrol moves between checkpoints',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Confuses a map-reading term with elevation, a quantity the passage never ties to the word.',
+      'That is leg length, a separate distance the text mentions without ever making it the definition.',
+      'The second sentence defines the term precisely this way, as the angle between two different norths.',
+      'A long technical-sounding option, yet the text credits the needle with no wander at all.',
+    ],
     explanation:
         'The passage defines the word in its second sentence: the angle between '
         'magnetic north and the north printed on the map. The long option about '
@@ -262,6 +304,12 @@ final List<Question> readingPassageBank = <Question>[
       'once, before the march begins',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'Named in the passage as the mistake that stacks a second error on the first.',
+      'A plausible order of march the text never gives, which sets the correction before the move.',
+      'Ties the fix to a needle fault, while the passage ties it to the gap between two norths.',
+      'The text puts the fix before the move and repeats convert once, then follow the written number.',
+    ],
     explanation:
         'The passage says the correction is applied before the march rather '
         'than during it, and the last sentence repeats the order of work: '
@@ -295,6 +343,12 @@ final List<Question> readingPassageBank = <Question>[
       'simplify the arithmetic for soldiers who are already tired',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'The passage credits the repeats with a real effect, so calling them harmless reverses the last sentence.',
+      'The closing sentence says this in its own words, describing errors that accumulate rather than cancel.',
+      'Overstates the claim, since an added error is described without a guaranteed miss of the checkpoint.',
+      'Soldiers here are taught to convert once, so more arithmetic is the burden, never the relief.',
+    ],
     explanation:
         'The final sentence says recomputing at each halt is how a patrol '
         'acquires a second error on top of the first, so the implied result is '
@@ -329,6 +383,12 @@ final List<Question> readingPassageBank = <Question>[
       'written procedures are less dependable than the habits of experienced soldiers',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'The passage\'s single observation: pages that go unused go uncorrected until the mistakes surface late.',
+      'A polished administrative fix the author never proposes, since no review cycle appears in the text.',
+      'Commander handover is invented, and the author offers no remedy of any kind.',
+      'Reverses the author, who opens by denying that writing procedures down is the trouble.',
+    ],
     explanation:
         'The passage turns on one observation: a page nobody uses is a page '
         'nobody corrects, so its mistakes are found late. The option about '
@@ -362,6 +422,12 @@ final List<Question> readingPassageBank = <Question>[
       'hostile toward the soldiers who write procedures',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'The text predicts no improvement whatsoever, and its image of the unopened binder is not cheerful.',
+      'Explaining a habit through dry images is not the same as writing a specification for one.',
+      'The unopened binder and the dry worst possible moment show a wry observer counting himself in.',
+      'Nobody is blamed, because the author includes the unit among those who never open the binder.',
+    ],
     explanation:
         'The opening image - a binder nobody opens until something goes wrong - '
         'and the dry phrase about the worst possible moment show a wry, '
@@ -395,6 +461,12 @@ final List<Question> readingPassageBank = <Question>[
       'each time it misleads the person using it',
     ],
     answerIndex: 3,
+    choiceNotes: <String>[
+      'This describes the annual page, the exact case the passage sets against the frequent one.',
+      'Inspections are never mentioned, and the text has the page corrected by being used, not audited.',
+      'New printings are a plausible manual change, but the passage has daily use catching the errors.',
+      'Stated outright, and it is the contrast the whole argument about the yearly page depends on.',
+    ],
     explanation:
         'The passage states that a page consulted daily is corrected every time '
         'it misleads someone, and contrasts that with a page consulted once a '
@@ -431,6 +503,12 @@ final List<Question> readingPassageBank = <Question>[
       'the old coating is inspected for cracks',
     ],
     answerIndex: 1,
+    choiceNotes: <String>[
+      'Tempting because painting comes soon after, but one listed step sits between the wash and the coat.',
+      'The listed order runs wash, dry, coat, which puts the drying step directly after the wash.',
+      'Scale and old coating come off first, before the wash, so this runs the sequence backwards.',
+      'Examining for cracks appears nowhere; the old coating is stripped away rather than studied.',
+    ],
     explanation:
         'The passage gives the order of work explicitly: remove the scale and '
         'the old coating, wash off the salt, let the steel dry, and only then '
@@ -463,6 +541,12 @@ final List<Question> readingPassageBank = <Question>[
       'mill scale does no harm once a coat of paint has covered it',
     ],
     answerIndex: 2,
+    choiceNotes: <String>[
+      'Goes past the text, which calls salt the most common skipped step, not the most destructive substance.',
+      'Reverses the curing rule, since each layer goes on before the one under it has hardened.',
+      'The passage opens on paint failing from the steel outward, then spends its length on that order.',
+      'The opposite of the text, which says scale flakes and takes the coating away with it.',
+    ],
     explanation:
         'The passage opens by saying paint fails from the steel outward and '
         'then spends its length on the order of preparation, which is the point '
@@ -498,6 +582,12 @@ final List<Question> readingPassageBank = <Question>[
       'make the next coat of paint unnecessary',
     ],
     answerIndex: 0,
+    choiceNotes: <String>[
+      'Salt under intact-looking paint keeps drawing moisture, so corrosion starts beneath a cosmetically fine coat.',
+      'That sheet failure belongs to mill scale, a different defect the passage describes earlier.',
+      'Hardness is never mentioned; the text only says salt keeps pulling moisture into the steel.',
+      'One layer never removes the need for the next, and the passage describes coating over coating.',
+    ],
     explanation:
         'The passage describes salt under a sound-looking coat drawing moisture '
         'and starting rust, so the implied result is a coat that appears sound '
