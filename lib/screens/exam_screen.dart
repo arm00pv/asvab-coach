@@ -769,8 +769,13 @@ class _ExamHeader extends StatelessWidget {
           else
             const Pill('Untimed'),
           const SizedBox(width: Space.md),
+          // Finishing early is allowed, and it runs through the same
+          // confirmation as the footer. Leaving this disabled until every item
+          // was answered made the control look broken rather than careful: a
+          // candidate tapping it on question one got no dialog, no message and
+          // no change, while the clock kept running.
           TextButton(
-            onPressed: session.sectionAllAnswered ? onFinishSection : null,
+            onPressed: onFinishSection,
             child: Text(session.isLastSection ? 'Submit' : 'Finish section'),
           ),
         ],

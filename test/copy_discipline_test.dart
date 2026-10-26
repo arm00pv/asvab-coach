@@ -33,6 +33,21 @@ void main() {
     );
   });
 
+  test('no screen repeats a phrase twice in a row', () {
+    // The Settings privacy paragraph shipped saying "Everything is stored
+    // practice questions. Everything is stored on this device only" after a
+    // bad merge. It is the sentence that promises where a candidate's data
+    // lives, so it is the last place a stutter should survive.
+    final offenders = <String>[];
+    final repeated = RegExp(r'(\b\w[\w ]{12,}?\.)\s*\1');
+    for (final File file in screens) {
+      if (repeated.hasMatch(file.readAsStringSync())) {
+        offenders.add(file.uri.pathSegments.last);
+      }
+    }
+    expect(offenders, isEmpty, reason: 'A sentence is duplicated verbatim');
+  });
+
   test('the onboarding line promises device storage, not browser storage', () {
     final String source = File('lib/screens/onboarding_screen.dart')
         .readAsStringSync();

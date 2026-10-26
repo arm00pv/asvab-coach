@@ -113,7 +113,7 @@ class SettingsScreen extends StatelessWidget {
                   '${app.attempts.length} '
                   '${app.attempts.length == 1 ? 'attempt' : 'attempts'} and '
                   '${QuestionBank.total} practice questions. Everything is stored '
-                  'practice questions. Everything is stored on this device only - '
+                  'on this device only - '
                   'no account, no server, and no attempt or score ever leaves it.',
                   style: context.text.bodySmall,
                 ),
@@ -319,11 +319,34 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: Space.xs),
                 Text(
-                  'Reference values from published Army aptitude-area tables '
-                  '(DA PAM 611-21 is the governing document and is revised '
-                  'regularly). Confirm every requirement with a recruiter before '
-                  'you sign anything.',
+                  'Transcribed from DA Pam 611-21, chapter 10, section C, and '
+                  'last verified against it on '
+                  '${MosRepository.rosterVerifiedAsOf}. That pamphlet is revised '
+                  'regularly, and the Army re-issues single sections between '
+                  'revisions, so confirm every requirement with a recruiter '
+                  'before you sign anything.',
                   style: context.text.bodySmall?.copyWith(height: 1.6),
+                ),
+                const SizedBox(height: Space.md),
+                _kv(
+                  context,
+                  'MOS roster verified',
+                  MosRepository.rosterVerifiedAsOf,
+                ),
+                _kv(
+                  context,
+                  'Enlisted MOS carried',
+                  '${MosRepository.enlistedCount}',
+                ),
+                _kv(
+                  context,
+                  'No aptitude gate',
+                  '${MosRepository.noAptitudeRequirement.length}',
+                ),
+                _kv(
+                  context,
+                  'Not Guard jobs',
+                  '${MosRepository.notGuardFielded.length}',
                 ),
               ],
             ),
