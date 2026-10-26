@@ -159,6 +159,15 @@ class _ReviewItem {
   }
 
   bool get correct => served.isCorrect(displaySelected);
+
+  /// Whether the candidate reached this item at all.
+  ///
+  /// A blank is not a wrong answer. Both are worth no points, but they are
+  /// different events - one is a choice that lost, the other is time that ran
+  /// out or a question skipped - and a card that badges them identically tells
+  /// the candidate they picked an option they never saw. No response at all and
+  /// a response with no selection both mean blank.
+  bool get blank => !(response?.isAnswered ?? false);
 }
 
 class _FilterChip extends StatelessWidget {
@@ -205,6 +214,7 @@ class _ReviewCard extends StatelessWidget {
     final c = context.colors;
     final q = item.served.base;
     final ok = item.correct;
+    final blank = item.blank;
     return AppCard(
       padding: const EdgeInsets.all(Space.lg),
       child: Column(
@@ -214,17 +224,44 @@ class _ReviewCard extends StatelessWidget {
             children: <Widget>[
               SubtestGlyph(abbr: q.subtest.abbr, size: 28),
               const SizedBox(width: Space.sm),
-              Pill(
-                ok ? 'Correct' : 'Missed',
-                tone: ok ? PillTone.success : PillTone.danger,
-                icon: ok ? Icons.check_rounded : Icons.close_rounded,
-                dense: true,
+              // The badges sit in a Wrap inside the space the time on the right
+              // leaves. "Left blank" and "Flagged" are two pills that no longer
+              // fit a 360 dp card once the system font is doubled, and a Row
+              // cannot drop one to a second line: it paints an overflow stripe
+              // across the card. A Wrap stacks them, and because the pills are
+              // measured against a real width here rather than an unbounded one,
+              // each label can give way inside its own pill instead of running
+              // off the edge.
+              Expanded(
+                child: Wrap(
+                  spacing: Space.xs,
+                  runSpacing: Space.xs,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: <Widget>[
+                    // Three outcomes, not two. "Missed" next to a red cross says
+                    // the candidate chose an option and it was wrong; for an
+                    // item they never answered that is simply untrue, so the
+                    // blank gets its own words - the same ones the score
+                    // report's Pace block uses - and a warning tone rather than
+                    // a failure one.
+                    Pill(
+                      ok ? 'Correct' : (blank ? 'Left blank' : 'Missed'),
+                      tone: ok
+                          ? PillTone.success
+                          : (blank ? PillTone.warning : PillTone.danger),
+                      icon: ok
+                          ? Icons.check_rounded
+                          : (blank
+                                ? Icons.remove_circle_outline_rounded
+                                : Icons.close_rounded),
+                      dense: true,
+                    ),
+                    if (item.response?.flagged ?? false)
+                      const Pill('Flagged', tone: PillTone.accent, dense: true),
+                  ],
+                ),
               ),
-              if (item.response?.flagged ?? false) ...<Widget>[
-                const SizedBox(width: Space.xs),
-                const Pill('Flagged', tone: PillTone.accent, dense: true),
-              ],
-              const Spacer(),
+              const SizedBox(width: Space.sm),
               Text(
                 '${item.response?.secondsSpent ?? 0}s',
                 style: context.text.labelSmall?.copyWith(color: c.textMuted),

@@ -313,6 +313,61 @@ void main() {
           );
         },
       );
+
+      // The two screens that are mostly text in rows. The results card that
+      // counts qualifying jobs is a display figure and a sentence, and the
+      // review card is badges and option lines: both are the shapes that
+      // overrun a narrow phone.
+      testWidgets(
+        'results at ${size.width.toInt()}x${size.height.toInt()}',
+        (tester) async {
+          final state = await seededState();
+          await pumpScreen(
+            tester,
+            ResultsScreen(attempt: state.attempts.last),
+            state: state,
+            size: size,
+          );
+        },
+      );
+
+      testWidgets(
+        'review at ${size.width.toInt()}x${size.height.toInt()}',
+        (tester) async {
+          final state = await seededState();
+          await pumpScreen(
+            tester,
+            ReviewScreen(attempt: state.attempts.last),
+            state: state,
+            size: size,
+          );
+        },
+      );
     }
+
+    // Both hard conditions at once: the cheapest handset this app claims to
+    // support and the largest text Android offers. The eligibility figure
+    // overran its Row by 18 pixels here long before 390 dp showed it.
+    testWidgets('results at 360x640 with 2x text', (tester) async {
+      final state = await seededState();
+      await pumpScreen(
+        tester,
+        ResultsScreen(attempt: state.attempts.last),
+        state: state,
+        size: const Size(360, 640),
+        textScale: 2,
+      );
+    });
+
+    testWidgets('review at 360x640 with 2x text', (tester) async {
+      final state = await seededState();
+      await pumpScreen(
+        tester,
+        ReviewScreen(attempt: state.attempts.last),
+        state: state,
+        size: const Size(360, 640),
+        textScale: 2,
+      );
+    });
   });
 }
