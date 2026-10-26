@@ -118,6 +118,49 @@ abstract final class BankAudit {
         error('choice-dup', 'Two options have identical text', q.id);
       }
 
+      // --- per-choice notes ------------------------------------------------
+      // An unannotated item is not yet a finding: the notes are being rolled
+      // out across the bank. Once present they must line up exactly, because
+      // a note attached to the wrong option is worse than no note at all.
+      if (q.choiceNotes.isNotEmpty) {
+        if (q.choiceNotes.length != q.choices.length) {
+          error(
+            'choice-note-count',
+            'choiceNotes has ${q.choiceNotes.length} lines for '
+                '${q.choices.length} options',
+            q.id,
+          );
+        }
+        for (var i = 0; i < q.choiceNotes.length; i++) {
+          if (q.choiceNotes[i].trim().length > 160) {
+            warn(
+              'choice-note-long',
+              'Note for option ${i + 1} is ${q.choiceNotes[i].trim().length} '
+                  'characters; reviews read best under 160',
+              q.id,
+            );
+          }
+          if (q.choiceNotes[i].trim().isEmpty) {
+            error(
+              'choice-note-blank',
+              'Note for option ${i + 1} is blank',
+              q.id,
+            );
+          }
+        }
+        final trimmed = q.choiceNotes
+            .map((n) => n.trim().toLowerCase())
+            .toList();
+        if (trimmed.toSet().length != trimmed.length) {
+          error(
+            'choice-note-dup',
+            'Two options share the same note, so one is attached to the '
+                'wrong option',
+            q.id,
+          );
+        }
+      }
+
       // --- distractors -----------------------------------------------------
       for (var i = 0; i < q.choices.length; i++) {
         final choice = q.choices[i].trim();

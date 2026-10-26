@@ -16,6 +16,7 @@ class Question {
     required this.explanation,
     required this.difficulty,
     required this.skills,
+    this.choiceNotes = const <String>[],
     this.passage,
     this.puzzle,
     this.figure,
@@ -35,6 +36,22 @@ class Question {
   /// Worked explanation shown in review and reused inside reinforcement
   /// lessons.
   final String explanation;
+
+  /// One short line per choice, in bank coordinates, saying why that choice
+  /// is wrong (or, for the keyed one, why it holds). This is where a
+  /// candidate who picked B learns something: telling them only that A is
+  /// correct teaches nothing.
+  ///
+  /// Empty means the item has not been annotated yet; an annotated item must
+  /// carry exactly one note per choice, which the bank audit enforces.
+  final List<String> choiceNotes;
+
+  /// The note for the choice at [index] in bank coordinates, if annotated.
+  String? noteFor(int index) {
+    if (index < 0 || index >= choiceNotes.length) return null;
+    final String note = choiceNotes[index].trim();
+    return note.isEmpty ? null : note;
+  }
 
   final Difficulty difficulty;
   final List<String> skills;

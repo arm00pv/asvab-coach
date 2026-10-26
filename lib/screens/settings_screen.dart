@@ -396,7 +396,7 @@ class SettingsScreen extends StatelessWidget {
       builder: (dialogContext) => AlertDialog(
         title: const Text('Erase everything?'),
         content: const Text(
-          'This deletes your goal and every attempt from this browser. It cannot '
+          'This deletes your goal and every attempt from this device. It cannot '
           'be undone.',
         ),
         actions: <Widget>[

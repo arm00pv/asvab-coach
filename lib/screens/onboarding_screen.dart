@@ -235,7 +235,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             const SizedBox(height: Space.sm),
             Text(
               'Your name is only used to address you in the app. Everything is '
-              'stored in this browser and never leaves it.',
+              'stored on this device and never leaves it.',
               style: context.text.bodyMedium,
             ),
             const SizedBox(height: Space.xl),

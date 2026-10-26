@@ -62,6 +62,13 @@ void main(List<String> args) {
   }
   stdout.writeln('');
 
+  final annotated = questions.where((q) => q.choiceNotes.isNotEmpty).length;
+  stdout.writeln(
+    'Per-choice explanations: $annotated of ${questions.length} items '
+    '(${(100 * annotated / questions.length).round()}%)',
+  );
+  stdout.writeln('');
+
   if (errors.isNotEmpty) {
     stdout.writeln('ERRORS (${errors.length})');
     for (final e in errors) {
