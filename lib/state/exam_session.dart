@@ -211,6 +211,11 @@ class ExamSession extends ChangeNotifier {
   /// clock ran out.
   void completeSection({bool force = false}) {
     _commitTiming();
+    // Mark the session finished before telling the screen, because the screen
+    // decides from `finished` whether to submit the attempt or to show the next
+    // section. Calling back first left the last section looking like any other,
+    // so the runner tried to introduce a tenth section of a nine-section exam.
+    if (isLastSection) _finished = true;
     onSectionComplete?.call(_sectionIndex);
     if (isLastSection) {
       finish();

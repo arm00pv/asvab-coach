@@ -262,9 +262,11 @@ class _ReviewCard extends StatelessWidget {
               runSpacing: Space.sm,
               children: <Widget>[
                 for (var i = 0; i < 4; i++)
+                  // Width only. A fixed 96 pixel height cut the drawing and the
+                  // option letter off the bottom of every assembly tile, and the
+                  // four tiles are structurally identical, so they still line up.
                   SizedBox(
                     width: 108,
-                    height: 96,
                     child: AssemblyOption(
                       label: String.fromCharCode(65 + i),
                       poly: q.puzzle!.silhouette(i),

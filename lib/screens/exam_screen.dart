@@ -69,7 +69,9 @@ class _ExamScreenState extends State<ExamScreen> {
     if (mounted) {
       setState(() {
         _sectionIntro = true;
-        _introIndex = index + 1;
+        // Clamp defensively: an index one past the end would be a broken
+        // section intro rather than a report.
+        _introIndex = (index + 1).clamp(0, session.exam.sections.length - 1);
       });
     }
   }
@@ -778,7 +780,7 @@ class _ResultsForwarder extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (context.mounted) {
-        AppRoutes.results(context, attempt);
+        AppRoutes.resultsReplacing(context, attempt);
       }
     });
     return const Scaffold(body: Center(child: CircularProgressIndicator()));

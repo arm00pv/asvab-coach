@@ -1,4 +1,5 @@
 import 'package:asvab_guard_coach/core/theme/app_theme.dart';
+import 'package:asvab_guard_coach/data/bank/question_bank.dart';
 import 'package:asvab_guard_coach/data/models/catalog.dart';
 import 'package:asvab_guard_coach/data/models/mos.dart';
 import 'package:asvab_guard_coach/data/models/question.dart';
@@ -57,6 +58,14 @@ Future<void> pumpScreen(
   expect(tester.takeException(), isNull);
 }
 
+/// One item per presentation shape, all answered wrongly so the review screen
+/// shows them.
+final List<Question> reviewQuestions = <Question>[
+  QuestionBank.bySubtest(Subtest.pc).first,
+  QuestionBank.bySubtest(Subtest.mc).firstWhere((q) => q.figure != null),
+  QuestionBank.bySubtest(Subtest.ao).first,
+];
+
 /// A state with a finished attempt, so the screens that need history have some.
 Future<AppState> seededState() async {
   SharedPreferences.setMockInitialValues(<String, Object>{});
@@ -81,8 +90,19 @@ Future<AppState> seededState() async {
       startedAt: DateTime.now().subtract(const Duration(minutes: 150)),
       finishedAt: DateTime.now().subtract(const Duration(minutes: 20)),
       report: result.report,
-      responses: const <QuestionResponse>[],
-      questionIds: const <String>[],
+      // Real wrong answers for three item shapes, so the review screen has to
+      // render its passage, diagram and assembly cards rather than its empty
+      // state. The assembly card is what caught a fixed-height tile that cut
+      // the drawing off the bottom.
+      responses: <QuestionResponse>[
+        for (final q in reviewQuestions)
+          QuestionResponse(
+            questionId: q.id,
+            selectedIndex: (q.answerIndex + 1) % q.choices.length,
+            secondsSpent: 25,
+          ),
+      ],
+      questionIds: <String>[for (final q in reviewQuestions) q.id],
       subtests: Subtest.administrationOrder,
     ),
     const <String, List<int>>{},
@@ -140,6 +160,10 @@ void main() {
         ReviewScreen(attempt: state.attempts.last),
         state: state,
       );
+      // The default filter is "missed", and every seeded answer is wrong, so
+      // all three shapes must be on screen.
+      expect(find.text('Correct'), findsNothing);
+      expect(find.text('Missed'), findsNWidgets(reviewQuestions.length));
     });
 
     testWidgets('lesson', (tester) async {

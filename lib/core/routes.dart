@@ -36,6 +36,20 @@ abstract final class AppRoutes {
   static Future<void> results(BuildContext context, Attempt attempt) =>
       _push<void>(context, ResultsScreen(attempt: attempt));
 
+  /// Replaces the current route with the report.
+  ///
+  /// The runner submits from inside its own route, so the report has to replace
+  /// it. Pushing the report on top instead left the back button pointing at the
+  /// runner's exit screen, which is a spinner no longer connected to anything:
+  /// the candidate finished the exam, read the report, pressed back, and landed
+  /// on a blank screen.
+  static Future<void> resultsReplacing(BuildContext context, Attempt attempt) =>
+      Navigator.of(context).pushReplacement<void, void>(
+        MaterialPageRoute<void>(
+          builder: (_) => ResultsScreen(attempt: attempt),
+        ),
+      );
+
   static Future<void> review(BuildContext context, Attempt attempt) =>
       _push<void>(context, ReviewScreen(attempt: attempt));
 
