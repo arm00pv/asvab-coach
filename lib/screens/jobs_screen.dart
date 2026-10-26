@@ -8,6 +8,7 @@ import '../data/models/mos.dart';
 import '../data/models/score.dart';
 import '../data/repos/mos_repository.dart';
 import '../engines/eligibility_engine.dart';
+import '../engines/unlock_path.dart';
 import '../state/app_state.dart';
 import '../widgets/primitives.dart';
 
@@ -70,6 +71,15 @@ class _JobsScreenState extends State<JobsScreen> {
                     ? 'Sit an attempt to unlock personalised eligibility.'
                     : 'Scored against your latest attempt (AFQT ${report.afqtPercentile}, '
                           'GT ${report.gt}).',
+                style: context.text.bodySmall?.copyWith(color: c.textMuted),
+              ),
+              const SizedBox(height: Space.xs),
+              // A requirement with no date on it cannot be checked, so the date
+              // it was last checked against the pamphlet travels with the list.
+              Text(
+                '${MosRepository.enlistedCount} enlisted MOS transcribed from '
+                'DA Pam 611-21 chapter 10 section C, verified '
+                '${MosRepository.rosterVerifiedAsOf}.',
                 style: context.text.bodySmall?.copyWith(color: c.textMuted),
               ),
               const SizedBox(height: Space.lg),
@@ -189,8 +199,11 @@ class _JobsScreenState extends State<JobsScreen> {
                 ),
               const SizedBox(height: Space.lg),
               if (shown.isEmpty)
-                SizedBox(
-                  height: 260,
+                // Padding rather than a fixed height: at 2x system text the
+                // empty state is taller than any height worth guessing, and a
+                // guessed one paints an overflow stripe instead of the message.
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: Space.xxl),
                   child: EmptyState(
                     icon: Icons.search_off_rounded,
                     title: _mode == _Mode.near && report != null
@@ -216,16 +229,21 @@ class _JobsScreenState extends State<JobsScreen> {
                 _OfficerSection(report: report, routes: routes),
               ],
               const SizedBox(height: Space.lg),
-              const Callout(
+              Callout(
                 tone: PillTone.warning,
                 icon: Icons.gavel_rounded,
                 title: 'Verify before you sign',
                 text:
-                    'These gates are reference values from published Army '
-                    'aptitude tables. DA PAM 611-21 is revised regularly and a '
-                    'recruiter confirms the current requirement in the accession '
-                    'system. Treat this screen as a planning tool, not an '
-                    'authority.',
+                    'These gates are transcribed from published Army aptitude '
+                    'tables and were last checked against DA Pam 611-21 chapter '
+                    '10 section C on ${MosRepository.rosterVerifiedAsOf}. That '
+                    'pamphlet is revised, and the Army re-issues single sections '
+                    'between revisions, so a recruiter confirms the current '
+                    'requirement in the accession system. '
+                    '${MosRepository.notGuardFielded.length} of these jobs are '
+                    'restricted by the pamphlet to another component and are '
+                    'marked as not Guard jobs. Treat this screen as a planning '
+                    'tool, not an authority.',
               ),
               const SizedBox(height: Space.xxl),
             ],
@@ -315,21 +333,27 @@ class _SummaryStrip extends StatelessWidget {
             ),
           ),
           const SizedBox(width: Space.lg),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Pill(
-                '${summary.nearMiss.length} within reach',
-                tone: PillTone.warning,
-                dense: true,
-              ),
-              const SizedBox(height: Space.xs),
-              // ignore: avoid_print
-              Text(
-                '${summary.outOfReach.length} further out',
-                style: context.text.bodySmall?.copyWith(color: c.textMuted),
-              ),
-            ],
+          // Flexible, not a bare Column: at 2x system text "44 within reach"
+          // is wider than this card, and the row would carry the overflow off
+          // the right edge. The pill wraps onto a second line instead.
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Pill(
+                  '${summary.nearMiss.length} within reach',
+                  tone: PillTone.warning,
+                  dense: true,
+                  maxLines: 2,
+                ),
+                const SizedBox(height: Space.xs),
+                Text(
+                  '${summary.outOfReach.length} further out',
+                  textAlign: TextAlign.end,
+                  style: context.text.bodySmall?.copyWith(color: c.textMuted),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -347,19 +371,29 @@ class _MosRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    final evaluation = report == null
+    // A job the pamphlet restricts to another component is not one the Guard can
+    // give this candidate, so it never reads as "Qualified" here.
+    final notGuard = !mos.guardFielded;
+    final evaluable = mos.gateIsKnown && mos.hasGate;
+    final evaluation = (report == null || !evaluable)
         ? null
         : EligibilityEngine.evaluate(mos.gate, report!);
-    final tone = evaluation == null
+    final tone = notGuard
         ? PillTone.neutral
-        : (evaluation.qualified
-              ? PillTone.success
-              : (evaluation.nearMiss ? PillTone.warning : PillTone.danger));
-    final label = evaluation == null
-        ? mos.gate.label
-        : (evaluation.qualified
-              ? 'Qualified'
-              : '${evaluation.bestShortfall} pts short');
+        : (evaluation == null
+              ? PillTone.neutral
+              : (evaluation.qualified
+                    ? PillTone.success
+                    : (evaluation.nearMiss
+                          ? PillTone.warning
+                          : PillTone.danger)));
+    final label = notGuard
+        ? 'Not a Guard job'
+        : (evaluation == null
+              ? (mos.hasGate ? mos.gate.label : mos.gateSummary)
+              : (evaluation.qualified
+                    ? 'Qualified'
+                    : '${evaluation.bestShortfall} pts short'));
     return AppCard(
       onTap: onTap,
       padding: const EdgeInsets.symmetric(
@@ -390,7 +424,7 @@ class _MosRow extends StatelessWidget {
                   children: <Widget>[
                     Flexible(
                       child: Text(
-                        mos.gate.label,
+                        mos.hasGate ? mos.gate.label : mos.gateSummary,
                         style: context.text.bodySmall?.copyWith(
                           color: c.textMuted,
                           fontSize: 11,
@@ -442,6 +476,16 @@ class _MosDetail extends StatelessWidget {
     final evaluation = report == null
         ? null
         : EligibilityEngine.evaluate(mos.gate, report!);
+    // "What would it take?" is answered by the unlock engine, from the same line
+    // scores this sheet already shows. With no attempt on record there is
+    // nothing to raise from, so the sheet asks for one rather than reading every
+    // gate as a zero - a false floor is worse than no floor at all.
+    final path = report == null
+        ? null
+        : UnlockPathEngine.forMos(mos, report!.lineScores);
+    final Widget? unlock = report == null
+        ? (mos.hasGate ? const _ScoredAttemptNeeded() : null)
+        : (path!.qualified ? null : _UnlockPathCard(path: path));
     return DraggableScrollableSheet(
       expand: false,
       initialChildSize: 0.72,
@@ -487,22 +531,32 @@ class _MosDetail extends StatelessWidget {
               children: <Widget>[
                 const Eyebrow('Aptitude gate'),
                 const SizedBox(height: Space.sm),
+                if (!mos.hasGate)
+                  Text(
+                    mos.gateStatus == MosGateStatus.noRequirement
+                        ? 'The pamphlet states no aptitude-area requirement for '
+                              'this MOS, so there is no line score to reach.'
+                        : 'The aptitude gate for this MOS has not been verified '
+                              'against the pamphlet here, so this app will not '
+                              'tell you either way.',
+                    style: context.text.bodySmall?.copyWith(height: 1.5),
+                  ),
+                // A Wrap, not a Row: 12P asks for three areas at once and at
+                // 2x text three pills do not fit across a 360 dp phone.
                 for (final alt in mos.gate.alternatives)
                   Padding(
                     padding: const EdgeInsets.only(bottom: Space.md),
-                    child: Row(
+                    child: Wrap(
+                      spacing: Space.sm,
+                      runSpacing: Space.xs,
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       children: <Widget>[
                         for (var i = 0; i < alt.length; i++) ...<Widget>[
                           if (i > 0)
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: Space.sm,
-                              ),
-                              child: Text(
-                                'and',
-                                style: context.text.bodySmall?.copyWith(
-                                  color: c.textMuted,
-                                ),
+                            Text(
+                              'and',
+                              style: context.text.bodySmall?.copyWith(
+                                color: c.textMuted,
                               ),
                             ),
                           _ScorePill(
@@ -555,6 +609,22 @@ class _MosDetail extends StatelessWidget {
               ),
             ),
           ],
+          if (unlock != null) ...<Widget>[
+            const SizedBox(height: Space.md),
+            unlock,
+          ],
+          if (!mos.guardFielded) ...<Widget>[
+            const SizedBox(height: Space.md),
+            Callout(
+              tone: PillTone.warning,
+              icon: Icons.flag_outlined,
+              title: 'Not an Army National Guard job',
+              text:
+                  'The pamphlet prints (${mos.componentLimit}) for this MOS. A '
+                  'Guard recruiter cannot put you in it, so the gate above only '
+                  'matters if you are also weighing another component.',
+            ),
+          ],
           if (mos.securityClearance) ...<Widget>[
             const SizedBox(height: Space.md),
             const Callout(
@@ -589,6 +659,167 @@ class _MosDetail extends StatelessWidget {
   }
 }
 
+/// One job's answer to "what would it take", taken whole from the unlock
+/// engine.
+///
+/// The message is the engine's own sentence: it already names the cheapest
+/// raise that unlocks the MOS, and says so plainly when no single raise does.
+/// The routes under it are the same arithmetic broken out one line score at a
+/// time, cheapest first, each with the points needed and what it leaves short.
+/// Nothing here computes a figure of its own - the sheet shows the engine's
+/// working or it shows nothing.
+class _UnlockPathCard extends StatelessWidget {
+  const _UnlockPathCard({required this.path});
+
+  final UnlockPath path;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return AppCard(
+      accent: path.hasRoute ? c.warning : c.borderStrong,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const Eyebrow('What it would take'),
+          const SizedBox(height: Space.sm),
+          Text(
+            path.message,
+            style: context.text.bodySmall?.copyWith(height: 1.5),
+          ),
+          if (path.routes.length > 1) ...<Widget>[
+            const SizedBox(height: Space.sm),
+            Text(
+              'Cheapest first.',
+              style: context.text.bodySmall?.copyWith(
+                color: c.textMuted,
+                fontSize: 11,
+              ),
+            ),
+          ],
+          for (final route in path.routes) ...<Widget>[
+            const SizedBox(height: Space.md),
+            _UnlockRouteRow(route: route, mosCode: path.mosCode),
+          ],
+          if (path.caveats.isNotEmpty) ...<Widget>[
+            const SizedBox(height: Space.md),
+            // A clearance, an audition or an AFQT floor is not a line score, so
+            // no route above reaches it. Saying so is the difference between
+            // "this is what it takes" and "this is what the arithmetic can see".
+            Text(
+              'Also required, and not reachable by raising a line score:',
+              style: context.text.bodySmall?.copyWith(
+                color: c.textMuted,
+                fontSize: 11,
+              ),
+            ),
+            const SizedBox(height: Space.xs),
+            for (final caveat in path.caveats)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Text(
+                  caveat,
+                  style: context.text.bodySmall?.copyWith(
+                    color: c.textMuted,
+                    fontSize: 11,
+                    height: 1.45,
+                  ),
+                ),
+              ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// One route: the badge for scanning, the raise as a sentence, and what the
+/// raise leaves behind.
+///
+/// A column rather than a row of badge and text: at 2x system text a badge and
+/// a full sentence will not sit side by side on a 360 dp phone, and the sentence
+/// is the part that must not be cut.
+class _UnlockRouteRow extends StatelessWidget {
+  const _UnlockRouteRow({required this.route, required this.mosCode});
+
+  final UnlockRoute route;
+  final String mosCode;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Pill(
+          '${route.score.abbr} +${route.pointsNeeded}',
+          tone: route.unlocksAlone ? PillTone.success : PillTone.warning,
+          dense: true,
+        ),
+        const SizedBox(height: Space.xs),
+        Text(route.action, style: context.text.labelLarge),
+        const SizedBox(height: 2),
+        Text(
+          _outcome,
+          style: context.text.bodySmall?.copyWith(color: c.textMuted),
+        ),
+      ],
+    );
+  }
+
+  /// What this raise achieves, in the engine's own reading of the gate: either
+  /// the job opens, or these areas are still short afterwards.
+  String get _outcome {
+    if (!route.unlocksAlone) {
+      final short = route.remaining.map((row) => row.readable).join(' and ');
+      return short.isEmpty
+          ? 'That is not enough on its own.'
+          : 'Still short after this: $short.';
+    }
+    return route.remaining.isEmpty
+        ? 'That alone opens $mosCode.'
+        : 'Opens $mosCode through another published alternative.';
+  }
+}
+
+/// The sheet's answer when no scored attempt exists yet.
+///
+/// Reading every gate as zero would print a shortfall the candidate may not
+/// have, so the sheet asks for the attempt instead of inventing a floor.
+class _ScoredAttemptNeeded extends StatelessWidget {
+  const _ScoredAttemptNeeded();
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const Eyebrow('What it would take'),
+          const SizedBox(height: Space.sm),
+          Text(
+            'Sit a scored attempt first. Without one there are no line scores to '
+            'measure against this gate, and reading every area as zero would '
+            'state a shortfall that is not real.',
+            style: context.text.bodySmall?.copyWith(height: 1.5),
+          ),
+          const SizedBox(height: Space.sm),
+          Text(
+            'With a score on record this sheet names the line score that is '
+            'short, by how many points, and whether one raise is enough.',
+            style: context.text.bodySmall?.copyWith(
+              color: c.textMuted,
+              fontSize: 11,
+              height: 1.45,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _ScorePill extends StatelessWidget {
   const _ScorePill({required this.req, required this.actual});
 
@@ -609,8 +840,12 @@ class _ScorePill extends StatelessWidget {
         borderRadius: BorderRadius.circular(Radii.sm),
         border: Border.all(color: met ? c.success : c.border),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
+      // The two figures wrap rather than overflow: at 2x text on a 360 dp
+      // phone "GT 110" plus "you: 104" is wider than the card.
+      child: Wrap(
+        spacing: Space.sm,
+        runSpacing: 2,
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: <Widget>[
           Text(
             '${req.score.abbr} ${req.min}',
@@ -618,15 +853,13 @@ class _ScorePill extends StatelessWidget {
               color: met ? c.success : c.textPrimary,
             ),
           ),
-          if (actual != null) ...<Widget>[
-            const SizedBox(width: Space.sm),
+          if (actual != null)
             Text(
               'you: $actual',
               style: context.text.labelSmall?.copyWith(
                 color: met ? c.success : c.warning,
               ),
             ),
-          ],
         ],
       ),
     );
@@ -673,14 +906,22 @@ class _OfficerSection extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Pill(
-                        p.gtLabel,
-                        tone: p.gtMinimum == null
-                            ? PillTone.neutral
-                            : (report != null && report!.gt >= p.gtMinimum!
-                                  ? PillTone.success
-                                  : PillTone.warning),
-                        dense: true,
+                      const SizedBox(width: Space.sm),
+                      // The gate label is the reason this card exists, so it
+                      // keeps its place beside the route name by shrinking and
+                      // wrapping onto a second line - the same rule the job
+                      // rows use - instead of running off the card at 2x text.
+                      Flexible(
+                        child: Pill(
+                          p.gtLabel,
+                          tone: p.gtMinimum == null
+                              ? PillTone.neutral
+                              : (report != null && report!.gt >= p.gtMinimum!
+                                    ? PillTone.success
+                                    : PillTone.warning),
+                          dense: true,
+                          maxLines: 2,
+                        ),
                       ),
                     ],
                   ),
