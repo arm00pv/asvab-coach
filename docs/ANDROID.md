@@ -124,6 +124,79 @@ white, so the first frame does not flash a colour the app never uses.
 
 Nothing in the icon imitates an official Army or National Guard insignia.
 
+## Running the tests on a device
+
+The widget suite in `test/` runs against a mocked `shared_preferences`, which
+proves the logic but not the plugin. `integration_test/journey_test.dart` runs
+the whole journey - onboarding, placement diagnostic answered by keyboard, score
+report, review - against the **real** plugin on Android, then reads the history
+back out of the store.
+
+Everything it needs is free and ships with the Android SDK: the emulator binary,
+x86_64 system images and an AVD. Nothing to buy. If you have none:
+
+```bash
+sdkmanager "system-images;android-30;google_apis;x86_64"
+avdmanager create avd -n asvab_test -k "system-images;android-30;google_apis;x86_64"
+```
+
+### The normal way
+
+With a phone attached, or an emulator running:
+
+```bash
+flutter test integration_test/journey_test.dart -d <device-id>
+```
+
+This builds a debug APK, installs it and reports pass or fail. Expect about two
+minutes once the APK exists.
+
+**The device has to be awake and unlocked.** A locked phone renders no frames,
+and the test then waits forever rather than failing: check with
+`adb shell dumpsys gfxinfo com.arm00pv.asvabcoach | grep "Total frames rendered"`
+if a run appears to hang at zero.
+
+### On a memory-tight machine
+
+The Flutter compiler needs roughly a gigabyte. With an emulator already running
+on an 8 GB laptop the compile step can fail with:
+
+```
+error: Could not start thread DartWorker: 22
+```
+
+That is the host, not the app. Two ways through:
+
+```bash
+# 1. Build while the emulator is down, then boot it and run.
+flutter build apk --debug --target-platform android-x64 -t integration_test/journey_test.dart
+emulator -avd <name> -no-window -gpu swiftshader_indirect -memory 1536 -cores 2 &
+adb wait-for-device
+flutter test integration_test/journey_test.dart -d emulator-5554
+
+# 2. Or skip the tool's build entirely and read the result from logcat. The
+#    test entry point is main(), so launching the test APK runs the tests.
+adb install -r build/app/outputs/flutter-apk/app-debug.apk
+adb logcat -c
+adb shell am start -n com.arm00pv.asvabcoach/.MainActivity
+adb logcat -d | grep -E "All tests passed|Some tests failed"
+```
+
+`flutter drive` also works with a pre-built binary and needs no Gradle:
+
+```bash
+flutter drive --driver=test_driver/integration_test.dart \
+  --target=integration_test/journey_test.dart -d emulator-5554 \
+  --use-application-binary=build/app/outputs/flutter-apk/app-debug.apk
+```
+
+### Automatically
+
+`.github/workflows/device.yml` runs the same journey on an emulator for every
+push to `main`, so a plugin or platform regression shows up without anyone
+owning an Android device. It is a separate workflow because it takes several
+minutes and should not hold up the main CI feedback.
+
 ## Continuous integration
 
 `ci.yml` builds the Android APK on every push and uploads it as a build

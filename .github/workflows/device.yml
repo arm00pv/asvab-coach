@@ -1,0 +1,51 @@
+name: Device check
+
+# Runs the journey in integration_test/ on a real Android runtime, because the
+# widget tests in test/ exercise a mocked storage plugin and this one exercises
+# the real one. It is slower than the main CI job and it needs an emulator, so it
+# lives in its own workflow rather than holding up every push's feedback.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: device-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  android-journey:
+    name: Journey on an emulator
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # API 30 is the lightest image that is still a realistic modern target and
+      # it boots fastest on a runner. The test itself is API-agnostic.
+      - name: Run the journey on an emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          disable-animations: true
+          emulator-options: >-
+            -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+            -camera-back none -camera-front none
+          script: flutter test integration_test/journey_test.dart -d emulator-5554
