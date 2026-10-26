@@ -134,10 +134,16 @@ abstract final class UpdateService {
     final url = update.url;
     if (url == null || url.isEmpty) return false;
     try {
-      await _channel.invokeMethod<Map<dynamic, dynamic>>(
-        'install',
-        <String, String>{'url': url, 'tag': update.tag},
-      );
+      await _channel.invokeMethod<Map<dynamic, dynamic>>('install', <
+        String,
+        Object
+      >{
+        'url': url,
+        'tag': update.tag,
+        // The expected size lets the download be thrown away rather than handed
+        // to the installer half-finished.
+        'bytes': update.bytes,
+      });
       return true;
     } catch (error) {
       debugPrint('ASVAB coach: install could not start: $error');

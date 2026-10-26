@@ -58,9 +58,17 @@ says so, and the update card downloads the universal APK and opens Android's
 installer.
 
 The first time, Android asks the person to allow installs from ASVAB Coach
-(Settings > Apps > ASVAB Coach > Install unknown apps). That is the operating
-system's rule for any sideloaded app, and no app can skip it. After that, an
-update is two taps.
+(Settings > Apps > ASVAB Coach > Install unknown apps). Google Play Protect may
+also offer to scan the app on the way through, and says so before allowing the
+install. Both are the operating system's rules for anything installed outside
+the Play Store, and no app can skip them. After the first one, an update is two
+taps.
+
+The updater asks for the system package installer by name, so a device with a
+terminal or file manager that also handles APK files does not get an "Open with"
+chooser in the middle of an update. A download that stops early is deleted rather
+than handed to the installer, because Android's own answer to a truncated APK is
+a bare "App not installed" with no explanation.
 
 The update is signed with the same key as every previous release, so it installs
 over the copy already on the device and keeps the history. That key lives in

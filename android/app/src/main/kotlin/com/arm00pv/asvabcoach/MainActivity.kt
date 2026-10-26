@@ -53,10 +53,11 @@ class MainActivity : FlutterActivity() {
                 "install" -> {
                     val url = call.argument<String>("url")
                     val tag = call.argument<String>("tag") ?: "update"
+                    val expected = (call.argument<Number>("bytes"))?.toLong() ?: 0L
                     if (url.isNullOrBlank()) {
                         result.error("bad_args", "No download address was given.", null)
                     } else {
-                        offMainThread(result) { downloadAndInstall(url, tag) }
+                        offMainThread(result) { downloadAndInstall(url, tag, expected) }
                     }
                 }
                 else -> result.notImplemented()
@@ -141,11 +142,22 @@ class MainActivity : FlutterActivity() {
     }
 
     /// Downloads the APK into the app's cache and hands it to the installer.
-    private fun downloadAndInstall(link: String, tag: String): Map<String, Any?> {
+    private fun downloadAndInstall(
+        link: String,
+        tag: String,
+        expectedBytes: Long,
+    ): Map<String, Any?> {
         val directory = File(cacheDir, "updates").apply { mkdirs() }
         val safeTag = tag.replace(Regex("[^A-Za-z0-9._-]"), "_")
         val target = File(directory, "asvab-coach-$safeTag.apk")
-        if (!target.exists() || target.length() == 0L) {
+        // A half-finished download from an earlier attempt is worse than none:
+        // Android answers it with a bare "App not installed". Throw it away
+        // rather than handing it to the installer.
+        val complete = target.exists() &&
+            target.length() > 0L &&
+            (expectedBytes <= 0L || target.length() == expectedBytes)
+        if (!complete) {
+            target.delete()
             val connection = URL(link).openConnection() as HttpURLConnection
             connection.instanceFollowRedirects = true
             connection.connectTimeout = 20000
@@ -160,6 +172,13 @@ class MainActivity : FlutterActivity() {
             } finally {
                 connection.disconnect()
             }
+            if (expectedBytes > 0L && target.length() != expectedBytes) {
+                target.delete()
+                throw IOException(
+                    "The download stopped early (" + target.length() + " of " +
+                        expectedBytes + " bytes).",
+                )
+            }
         }
         val uri: Uri = FileProvider.getUriForFile(
             this,
@@ -170,6 +189,19 @@ class MainActivity : FlutterActivity() {
             setDataAndType(uri, "application/vnd.android.package-archive")
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        // Go straight to the system installer when it is there. Without this,
+        // any app that also handles APK files - a terminal, a file manager -
+        // puts a "Open with" chooser between the candidate and the update.
+        val handlers = packageManager.queryIntentActivities(intent, 0)
+        val systemInstaller = handlers.firstOrNull {
+            it.activityInfo.packageName.contains("packageinstaller", ignoreCase = true)
+        }
+        if (systemInstaller != null) {
+            intent.setClassName(
+                systemInstaller.activityInfo.packageName,
+                systemInstaller.activityInfo.name,
+            )
         }
         main.post { startActivity(intent) }
         return mapOf("path" to target.absolutePath, "bytes" to target.length())

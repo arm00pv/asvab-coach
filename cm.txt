@@ -1,0 +1,20 @@
+﻿Prove the update path on a real phone, and fix what it found
+
+Ran the updater end to end on a Pixel 7 Pro: the installed build said 1.1.9, the
+launch check found the published 1.2.1, the dashboard offered it, the download
+completed and the phone came out the other side on 1.2.1 with its history intact.
+
+Three things that run turned up, all fixed here:
+
+- A download that stopped early was handed straight to the installer, and Android
+  answered it with a bare "App not installed". The expected size now travels with
+  the request, a short file is deleted and the real reason is reported.
+- With Termux installed, the update went through an Open with chooser. The
+  updater now asks for the system package installer by name and falls back to the
+  chooser only when there is none.
+- The settings screen told an Android user their history was stored in this
+  browser only, and said 1 attempts.
+
+Play Protect also appears on the way through for anything installed outside the
+Play Store; the update card says so now instead of leaving the candidate to guess
+whether something is wrong.

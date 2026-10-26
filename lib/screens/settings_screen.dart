@@ -110,9 +110,11 @@ class SettingsScreen extends StatelessWidget {
               title: 'Your data',
               children: <Widget>[
                 Text(
-                  '${app.attempts.length} attempts and ${QuestionBank.total} '
-                  'practice questions. Everything is stored in this browser only - '
-                  'no account, no server, nothing leaves the device.',
+                  '${app.attempts.length} '
+                  '${app.attempts.length == 1 ? 'attempt' : 'attempts'} and '
+                  '${QuestionBank.total} practice questions. Everything is stored '
+                  'practice questions. Everything is stored on this device only - '
+                  'no account, no server, and no attempt or score ever leaves it.',
                   style: context.text.bodySmall,
                 ),
                 const SizedBox(height: Space.md),
@@ -178,7 +180,10 @@ class SettingsScreen extends StatelessWidget {
                           'Downloading it and handing it to Android costs about '
                           '${app.availableUpdate!.sizeLabel}. Android will ask you to '
                           'allow installs from ASVAB Coach the first time, then '
-                          'confirm the update itself. Your history is kept.',
+                          'confirm the update itself; Play Protect may offer to '
+                          'scan the app on the way through, which is the normal '
+                          'path for anything installed outside the Play Store. '
+                          'Your history is kept.',
                           style: context.text.bodySmall,
                         ),
                         const SizedBox(height: Space.sm),
