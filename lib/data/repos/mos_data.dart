@@ -1,18 +1,58 @@
+/// The enlisted MOS catalogue with its Army aptitude gates.
+///
+/// EVERY entry here is transcribed from DA Pam 611-21, chapter 10, section C
+/// (Enlisted MOS specifications). The [Mos.source] field carries the section
+/// reference for each one, so the app can show its working instead of asking to
+/// be trusted.
+///
+/// The roster was diffed against the whole of section C on 26 October 2026 and
+/// now carries every substantive enlisted code the pamphlet specifies - see
+/// docs/MOS_GAP.md for the diff, the count, what was deliberately left out (the
+/// 00-series position reporting codes, 09U, and the senior-sergeant codes) and
+/// why. [mosRosterVerifiedAsOf] is the date a candidate is shown.
+///
+/// House rules, and they are not negotiable:
+///
+///  * A gate is a transcription. Nothing here is rounded, inferred or filled in
+///    with a plausible-looking number. Where the pamphlet states no aptitude
+///    requirement, the entry says so through [MosGateStatus.noRequirement]
+///    rather than showing an empty gate that would read as "you qualify".
+///  * Every OR alternative the pamphlet prints is carried. Dropping one turns a
+///    reachable job into an unreachable one.
+///  * A component restriction the pamphlet prints is carried too: telling a
+///    Guard candidate they qualify for a job the Guard does not field is the
+///    same harm in the other direction.
+///
+/// Requirements change. DA Pam 611-21 is revised, the Army re-issues single
+/// sections between revisions, and several entries here note an effective date.
+/// A recruiter confirms the current number in the accession system before
+/// anything is signed.
+///
+/// Hand-maintained since the 2026-10-26 diff. docs/research/mos.json holds the
+/// earlier 97-entry machine-readable extract and is NOT the source of this file
+/// any more.
+library;
+
 import '../models/catalog.dart';
 import '../models/mos.dart';
 import 'mos_repository.dart';
 
-/// Army National Guard MOS catalogue with aptitude gates.
-///
-/// Every gate below is transcribed from DA Pam 611-21 chapter 10, section C,
-/// which lists the aptitude area and minimum score per MOS. The [Mos.source]
-/// field carries the exact section reference so the app can show its working.
-///
-/// Requirements change: DA Pam 611-21 is revised, and several entries here note
-/// a specific effective date. A recruiter confirms the current number in the
-/// accession system before anything is signed.
-///
-/// GENERATED from docs/research/mos.json. Do not hand-edit.
+/// When this roster was last worked through against the authority. Surfaced in
+/// the jobs screen, in Settings and in the glossary, because a published
+/// requirement with no date on it is a claim the app cannot back up.
+const String mosRosterVerifiedAsOf = '26 October 2026';
+
+/// What it was verified against, in enough detail to re-do the work.
+const String mosRosterAuthority =
+    'DA Pam 611-21, chapter 10, section C (Enlisted MOS specifications), '
+    '04 December 2025 build';
+
+/// The sentence that has to travel with the gates.
+const String mosRosterCaveat =
+    'Transcribed from the pamphlet, not from a recruiter. Requirements change '
+    'and the Army re-issues sections between revisions, so confirm the current '
+    'gate with a recruiter before you sign anything.';
+
 final List<Mos> allMos = <Mos>[
   Mos(
     code: '11B',
@@ -134,8 +174,10 @@ final List<Mos> allMos = <Mos>[
     code: '12D',
     title: 'Diver',
     category: MosCategory.combatSupportEngineer,
-    gate: g('GM 98&GT 107'),
-    extraTest: 'Y',
+    gate: g('GM 98&GT 107|GM 98&ST 106'),
+    note:
+        'GM 98 and then either GT 107 or ST 106. Both alternatives the pamphlet '
+        'prints are carried here',
     source: 'DA Pam 611-21 ch.10 sec.C, section 10-12D',
   ),
   Mos(
@@ -247,8 +289,8 @@ final List<Mos> allMos = <Mos>[
     code: '89B',
     title: 'Ammunition Specialist',
     category: MosCategory.combatService,
-    gate: g('ST 91'),
-    extraTest: 'N',
+    gate: g('ST 91|ST 86&GT 85'),
+    note: 'ST 91, or the combination ST 86 with GT 85',
     source: 'DA Pam 611-21 ch.10 sec.C, section 10-89B',
   ),
   Mos(
@@ -369,32 +411,32 @@ final List<Mos> allMos = <Mos>[
     code: '91B',
     title: 'Wheeled Vehicle Mechanic',
     category: MosCategory.mechanical,
-    gate: g('MM 92'),
-    extraTest: 'N',
+    gate: g('MM 92|MM 87&GT 85'),
+    note: 'MM 92, or the combination MM 87 with GT 85',
     source: 'DA Pam 611-21 ch.10 sec.C, section 10-91B',
   ),
   Mos(
     code: '91E',
     title: 'Allied Trades Specialist',
     category: MosCategory.mechanical,
-    gate: g('GM 88&GT 95'),
-    extraTest: 'N',
+    gate: g('GM 88&GT 95|GM 98'),
+    note: 'GM 88 with GT 95, or GM 98 on its own',
     source: 'DA Pam 611-21 ch.10 sec.C, section 10-91E',
   ),
   Mos(
     code: '91S',
     title: 'Stryker Systems Maintainer',
     category: MosCategory.mechanical,
-    gate: g('MM 87&GT 85'),
-    extraTest: 'N',
+    gate: g('MM 87&GT 85|MM 92'),
+    note: 'MM 87 with GT 85, or MM 92 on its own',
     source: 'DA Pam 611-21 ch.10 sec.C, section 10-91S',
   ),
   Mos(
     code: '94E',
     title: 'Radio Equipment Repairer',
     category: MosCategory.mechanical,
-    gate: g('EL 102'),
-    extraTest: 'Y',
+    gate: g('EL 102|EL 97&ST 90'),
+    note: 'EL 102, or the combination EL 97 with ST 90',
     source: 'DA Pam 611-21 ch.10 sec.C, section 10-94E',
   ),
   Mos(
@@ -631,10 +673,11 @@ final List<Mos> allMos = <Mos>[
   ),
   Mos(
     code: '15E',
-    title: 'RQ-7 Repairer',
+    title: 'Tactical Unmanned Aircraft System (TUAS) Repairer',
     category: MosCategory.aviation,
     gate: g('EL 93&MM 104'),
     securityClearance: true,
+    note: 'Renamed from RQ-7 Repairer, effective 202510',
     source: 'DA Pam 611-21 ch.10 sec.C, section 10-15E',
   ),
   Mos(
@@ -694,10 +737,11 @@ final List<Mos> allMos = <Mos>[
   ),
   Mos(
     code: '15W',
-    title: 'RQ-7 Operator',
+    title: 'Tactical Unmanned Aircraft System (TUAS) Operator',
     category: MosCategory.aviation,
     gate: g('SC 102'),
     securityClearance: true,
+    note: 'Renamed from RQ-7 Operator, effective 202510',
     source: 'DA Pam 611-21 ch.10 sec.C, section 10-15W',
   ),
   Mos(
@@ -740,6 +784,9 @@ final List<Mos> allMos = <Mos>[
     category: MosCategory.specialOps,
     gate: g('GT 105'),
     securityClearance: true,
+    note:
+        'The pamphlet annotates the skill-level-1 duties (USAR Only); confirm '
+        'Army National Guard availability with a Guard recruiter',
     source: 'DA Pam 611-21 ch.10 sec.C, section 10-37F',
   ),
   Mos(
@@ -748,6 +795,10 @@ final List<Mos> allMos = <Mos>[
     category: MosCategory.specialOps,
     gate: g('GT 107'),
     securityClearance: true,
+    componentLimit: MosComponent.usarOnly,
+    note:
+        'The pamphlet prints (USAR Only) against this MOS. Confirm with a Guard '
+        'recruiter before counting it as a Guard job',
     source: 'DA Pam 611-21 ch.10 sec.C, section 10-38B',
   ),
   Mos(
@@ -755,8 +806,12 @@ final List<Mos> allMos = <Mos>[
     title: 'Musician',
     category: MosCategory.band,
     gate: g(''),
+    gateStatus: MosGateStatus.noRequirement,
     extraTest: 'Instrument audition (ACASP)',
-    note: 'No aptitude-area (line-score) requirement published; qualification is by audition',
+    note:
+        'No aptitude-area (line-score) requirement is published; qualification '
+        'is by audition, so an empty gate here means no line-score gate rather '
+        'than a gate we could not find',
     source: 'DA Pam 611-21 ch.10 sec.C, section 10-42R',
   ),
   Mos(
@@ -764,8 +819,12 @@ final List<Mos> allMos = <Mos>[
     title: 'Special Band Musician',
     category: MosCategory.band,
     gate: g(''),
+    gateStatus: MosGateStatus.noRequirement,
     extraTest: 'Instrument audition',
-    note: 'No line-score requirement; must be acceptable to the special band commander',
+    note:
+        'No line-score requirement is published; the special band must also '
+        'accept the candidate, and the pamphlet restricts 42S to the four '
+        'special bands',
     source: 'DA Pam 611-21 ch.10 sec.C, section 10-42S',
   ),
   Mos(
@@ -799,8 +858,563 @@ final List<Mos> allMos = <Mos>[
     category: MosCategory.recruiting,
     gate: g('GT 110'),
     securityClearance: true,
-    note: 'Waiver to GT 100 by CG USAREC, or GT 95 with ST 95',
+    componentLimit: MosComponent.activeComponentAndUsar,
+    note:
+        'Waiver to GT 100 by CG USAREC, or GT 95 with ST 95. The pamphlet '
+        'prints (Active Component and USAR); the Guard recruiter specialty is '
+        '79T',
     source: 'DA Pam 611-21 ch.10 sec.C, section 10-79R',
+  ),
+  // -------------------------------------------------------------------
+  // Added in the 2026-10-26 roster diff: every substantive enlisted code in
+  // DA Pam 611-21 chapter 10 section C that this catalogue was missing. Gates
+  // are transcriptions, including every OR alternative the pamphlet prints.
+  // -------------------------------------------------------------------
+  Mos(
+    code: '08H',
+    title: 'Army Equestrian',
+    category: MosCategory.ceremonial,
+    gate: g('ST 91'),
+    securityClearance: true,
+    note: 'Effective 202603. The ceremonial CMF 08 specialty',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-08H',
+  ),
+  Mos(
+    code: '12C',
+    title: 'Bridge Crewmember',
+    category: MosCategory.combatSupportEngineer,
+    gate: g('CO 82'),
+    note: 'Score effective 9 October 2023',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-12C',
+  ),
+  Mos(
+    code: '12H',
+    title: 'Construction Engineering Supervisor',
+    category: MosCategory.combatSupportEngineer,
+    gate: g('GM 93'),
+    note:
+        'Awarded at skill level 3 by reclassification from 12W, 12K or '
+        '12R, so it is not a first-term enlistment option',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-12H',
+  ),
+  Mos(
+    code: '12Q',
+    title: 'Powerline Distribution Specialist',
+    category: MosCategory.combatSupportEngineer,
+    gate: g('EL 93'),
+    componentLimit: MosComponent.reserveComponents,
+    extraTest: 'ACASP designation',
+    note:
+        'The pamphlet prints (Reserve Components), which covers the Army '
+        'National Guard and the USAR',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-12Q',
+  ),
+  Mos(
+    code: '14E',
+    title: 'Patriot Fire Control Enhanced Operator/Maintainer',
+    category: MosCategory.airDefense,
+    gate: g('MM 92'),
+    securityClearance: true,
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-14E',
+  ),
+  Mos(
+    code: '14G',
+    title: 'Air Defense Battle Management System Operator',
+    category: MosCategory.airDefense,
+    gate: g('MM 91&GT 90'),
+    securityClearance: true,
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-14G',
+  ),
+  Mos(
+    code: '14H',
+    title: 'Air Defense Enhanced Early Warning System Operator',
+    category: MosCategory.airDefense,
+    gate: g('MM 91&GT 90'),
+    securityClearance: true,
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-14H',
+  ),
+  Mos(
+    code: '14P',
+    title: 'Air and Missile Defense Crewmember',
+    category: MosCategory.airDefense,
+    gate: g('OF 87'),
+    securityClearance: true,
+    note: 'Score effective 202406',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-14P',
+  ),
+  Mos(
+    code: '14T',
+    title: 'Patriot Launching Station Enhanced Operator/Maintainer',
+    category: MosCategory.airDefense,
+    gate: g('OF 87'),
+    securityClearance: true,
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-14T',
+  ),
+  Mos(
+    code: '15C',
+    title: 'MQ-1 Operator',
+    category: MosCategory.aviation,
+    gate: g('SC 102'),
+    securityClearance: true,
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-15C',
+  ),
+  Mos(
+    code: '15D',
+    title: 'Aircraft Powertrain Repairer',
+    category: MosCategory.aviation,
+    gate: g('MM 104'),
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-15D',
+  ),
+  Mos(
+    code: '15G',
+    title: 'Aircraft Structural Repairer',
+    category: MosCategory.aviation,
+    gate: g('MM 104'),
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-15G',
+  ),
+  Mos(
+    code: '15H',
+    title: 'Aircraft Pneudraulics Repairer',
+    category: MosCategory.aviation,
+    gate: g('MM 104'),
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-15H',
+  ),
+  Mos(
+    code: '15M',
+    title: 'MQ-1 Repairer',
+    category: MosCategory.aviation,
+    gate: g('EL 93&MM 104'),
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-15M',
+  ),
+  Mos(
+    code: '15X',
+    title: 'Tactical Unmanned Aircraft System (TUAS) Specialist',
+    category: MosCategory.aviation,
+    gate: g('EL 93&MM 99&SC 102'),
+    securityClearance: true,
+    note:
+        'Effective 202610. All three aptitude areas are required, not any '
+        'one of them',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-15X',
+  ),
+  Mos(
+    code: '15Y',
+    title: 'AH-64 Armament/Electrical/Avionics Systems Repairer',
+    category: MosCategory.aviation,
+    gate: g('EL 98&MM 104'),
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-15Y',
+  ),
+  Mos(
+    code: '18E',
+    title: 'Special Forces Communications Sergeant',
+    category: MosCategory.specialOps,
+    gate: g('GT 110&CO 100'),
+    securityClearance: true,
+    extraTest: 'SFAS / SFQC',
+    note:
+        'Awarded after the Special Forces Qualification Course, not by '
+        'direct enlistment',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-18E',
+  ),
+  Mos(
+    code: '18F',
+    title: 'Special Forces Intelligence Sergeant',
+    category: MosCategory.specialOps,
+    gate: g(''),
+    gateStatus: MosGateStatus.noRequirement,
+    securityClearance: true,
+    extraTest: 'SFAS / SFQC',
+    note:
+        'The pamphlet prints a minimum score in aptitude area of N/A for '
+        'this MOS, so there is no line-score gate to show. SECRET at '
+        'award, then TOP SECRET with SCI within 24 months',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-18F',
+  ),
+  Mos(
+    code: '25S',
+    title: 'Satellite Communication Systems Specialist',
+    category: MosCategory.intelSignal,
+    gate: g('EL 107'),
+    securityClearance: true,
+    note: 'Effective 202510',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-25S',
+  ),
+  Mos(
+    code: '31K',
+    title: 'Working Dog Handler',
+    category: MosCategory.militaryPolice,
+    gate: g('ST 91'),
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-31K',
+  ),
+  Mos(
+    code: '38R',
+    title: 'Civil Reconnaissance Sergeant',
+    category: MosCategory.specialOps,
+    gate: g('GT 107&CO 100'),
+    securityClearance: true,
+    componentLimit: MosComponent.activeComponentOnly,
+    note: 'The pamphlet prints (Active Component Only)',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-38R',
+  ),
+  Mos(
+    code: '38W',
+    title: 'Civil Affairs Medical Sergeant',
+    category: MosCategory.specialOps,
+    gate: g('GT 110&ST 101'),
+    securityClearance: true,
+    componentLimit: MosComponent.activeComponentOnly,
+    note: 'The pamphlet prints (Active Component Only)',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-38W',
+  ),
+  Mos(
+    code: '40D',
+    title: 'Space Operations Specialist',
+    category: MosCategory.space,
+    gate: g('EL 110'),
+    securityClearance: true,
+    note: 'Effective 202610. Requires TOP SECRET access with SCI',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-40D',
+  ),
+  Mos(
+    code: '42T',
+    title: 'Talent Acquisition Specialist',
+    category: MosCategory.recruiting,
+    gate: g('GT 110'),
+    componentLimit: MosComponent.activeComponentAndUsar,
+    note:
+        'Effective 202510. GT 110 is waiverable by CG USAREC to GT 100, '
+        'or to GT 95 with ST 95. The pamphlet prints (Active Component '
+        'and USAR); the Guard recruiting specialty is 79T',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-42T',
+  ),
+  Mos(
+    code: '46T',
+    title: 'Visual Information Equipment Operator-Maintainer',
+    category: MosCategory.publicAffairs,
+    gate: g('EL 93&ST 91&GT 97'),
+    securityClearance: true,
+    extraTest: 'ACASP designation',
+    note: 'Score effective 9 October 2023',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-46T',
+  ),
+  Mos(
+    code: '68B',
+    title: 'Orthopedic Specialist',
+    category: MosCategory.medical,
+    gate: g('ST 101'),
+    extraTest: 'ACASP designation',
+    note: 'Score effective 9 October 2023',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-68B',
+  ),
+  Mos(
+    code: '68D',
+    title: 'Operating Room Specialist',
+    category: MosCategory.medical,
+    gate: g('ST 101'),
+    extraTest: 'ACASP designation',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-68D',
+  ),
+  Mos(
+    code: '68F',
+    title: 'Physical Therapy Specialist',
+    category: MosCategory.medical,
+    gate: g('ST 101'),
+    extraTest: 'ACASP designation',
+    note: 'Score effective 9 October 2023',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-68F',
+  ),
+  Mos(
+    code: '68H',
+    title: 'Optical Laboratory Specialist',
+    category: MosCategory.medical,
+    gate: g('GM 98'),
+    extraTest: 'ACASP designation',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-68H',
+  ),
+  Mos(
+    code: '68L',
+    title: 'Occupational Therapy Specialist',
+    category: MosCategory.medical,
+    gate: g('ST 101'),
+    extraTest: 'ACASP designation',
+    note: 'Score effective 9 October 2023',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-68L',
+  ),
+  Mos(
+    code: '68M',
+    title: 'Nutrition Care Specialist',
+    category: MosCategory.medical,
+    gate: g('OF 95'),
+    extraTest: 'ACASP designation',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-68M',
+  ),
+  Mos(
+    code: '68Q',
+    title: 'Pharmacy Specialist',
+    category: MosCategory.medical,
+    gate: g('ST 95'),
+    extraTest: 'ACASP designation',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-68Q',
+  ),
+  Mos(
+    code: '68R',
+    title: 'Veterinary Food Inspection Specialist',
+    category: MosCategory.medical,
+    gate: g('ST 95'),
+    securityClearance: true,
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-68R',
+  ),
+  Mos(
+    code: '68Y',
+    title: 'Eye Specialist',
+    category: MosCategory.medical,
+    gate: g('ST 101'),
+    extraTest: 'ACASP designation',
+    note: 'Score effective 9 October 2023',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-68Y',
+  ),
+  Mos(
+    code: '79S',
+    title: 'Career Counselor',
+    category: MosCategory.recruiting,
+    gate: g('GT 100&ST 96'),
+    componentLimit: MosComponent.activeComponentOnly,
+    note: 'The pamphlet prints (Active Component). In-service selection',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-79S',
+  ),
+  Mos(
+    code: '79T',
+    title: 'Recruiting and Retention NCO',
+    category: MosCategory.recruiting,
+    gate: g('GT 110'),
+    securityClearance: true,
+    componentLimit: MosComponent.armyNationalGuard,
+    note:
+        'The Army National Guard recruiting specialty. GT 110 waivable to '
+        'GT 100, or to GT 95 with ST 95',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-79T',
+  ),
+  Mos(
+    code: '79V',
+    title: 'Army Reserve Career Counselor',
+    category: MosCategory.recruiting,
+    gate: g('GT 100'),
+    securityClearance: true,
+    componentLimit: MosComponent.usarOnly,
+    note:
+        'The pamphlet prints (Army Reserve). GT 100 is expressly not '
+        'waiverable',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-79V',
+  ),
+  Mos(
+    code: '88P',
+    title: 'Railway Equipment Repairer',
+    category: MosCategory.combatService,
+    gate: g('MM 97'),
+    componentLimit: MosComponent.usarOnly,
+    note:
+        'The pamphlet prints (USAR only). The score is dated: MM 100 for '
+        'tests before 2 January 2002, MM 97 from that date',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-88P',
+  ),
+  Mos(
+    code: '88U',
+    title: 'Railway Specialist',
+    category: MosCategory.combatService,
+    gate: g('MM 92'),
+    securityClearance: true,
+    componentLimit: MosComponent.usarOnly,
+    note: 'The pamphlet prints (USAR only)',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-88U',
+  ),
+  Mos(
+    code: '89A',
+    title: 'Ammunition Stock Control and Accounting Specialist',
+    category: MosCategory.combatService,
+    gate: g('ST 91'),
+    note: 'Effective 202504',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-89A',
+  ),
+  Mos(
+    code: '91A',
+    title: 'M1 Abrams Tank System Maintainer',
+    category: MosCategory.mechanical,
+    gate: g('MM 99|MM 88&GT 90'),
+    extraTest: 'ACASP designation',
+    note: 'MM 99, or the combination MM 88 with GT 90',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-91A',
+  ),
+  Mos(
+    code: '91C',
+    title: 'Utilities Equipment Repairer',
+    category: MosCategory.mechanical,
+    gate: g('GM 93|GM 88&GT 85'),
+    extraTest: 'ACASP designation',
+    note: 'GM 93, or the combination GM 88 with GT 85',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-91C',
+  ),
+  Mos(
+    code: '91D',
+    title: 'Tactical Power Generation Specialist',
+    category: MosCategory.mechanical,
+    gate: g('GM 93|GM 88&GT 85'),
+    extraTest: 'ACASP designation',
+    note: 'GM 93, or the combination GM 88 with GT 85',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-91D',
+  ),
+  Mos(
+    code: '91F',
+    title: 'Small Arms/Towed Artillery Repairer',
+    category: MosCategory.mechanical,
+    gate: g('GM 93|GM 87&GT 85'),
+    extraTest: 'ACASP designation',
+    note: 'GM 93, or the combination GM 87 with GT 85',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-91F',
+  ),
+  Mos(
+    code: '91H',
+    title: 'Tracked Vehicle Repairer',
+    category: MosCategory.mechanical,
+    gate: g('MM 90|MM 85&GT 85'),
+    extraTest: 'ACASP designation',
+    note: 'MM 90, or the combination MM 85 with GT 85',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-91H',
+  ),
+  Mos(
+    code: '91J',
+    title: 'Quartermaster and Chemical Equipment Repairer',
+    category: MosCategory.mechanical,
+    gate: g('MM 87|MM 82&GT 85'),
+    extraTest: 'ACASP designation',
+    note: 'MM 87, or the combination MM 82 with GT 85',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-91J',
+  ),
+  Mos(
+    code: '91L',
+    title: 'Construction Equipment Repairer',
+    category: MosCategory.mechanical,
+    gate: g('MM 87|MM 82&GT 85'),
+    extraTest: 'ACASP designation',
+    note: 'MM 87, or the combination MM 82 with GT 85',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-91L',
+  ),
+  Mos(
+    code: '91M',
+    title: 'Bradley Fighting Vehicle System Maintainer',
+    category: MosCategory.mechanical,
+    gate: g('MM 99|MM 88&GT 90'),
+    extraTest: 'ACASP designation',
+    note: 'MM 99, or the combination MM 88 with GT 90',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-91M',
+  ),
+  Mos(
+    code: '91P',
+    title: 'Self-Propelled Artillery Systems Mechanic',
+    category: MosCategory.mechanical,
+    gate: g('MM 99|MM 88&GT 90'),
+    extraTest: 'ACASP designation',
+    note: 'MM 99, or the combination MM 88 with GT 90',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-91P',
+  ),
+  Mos(
+    code: '94A',
+    title: 'Land Combat Electronic Missile System Repairer',
+    category: MosCategory.mechanical,
+    gate: g('EL 102|EL 97&ST 90'),
+    extraTest: 'ACASP designation',
+    note: 'EL 102, or the combination EL 97 with ST 90',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-94A',
+  ),
+  Mos(
+    code: '94D',
+    title: 'Air Traffic Control Equipment Repairer',
+    category: MosCategory.mechanical,
+    gate: g('EL 102|EL 97&ST 90'),
+    securityClearance: true,
+    extraTest: 'ACASP designation',
+    note: 'EL 102, or the combination EL 97 with ST 90',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-94D',
+  ),
+  Mos(
+    code: '94F',
+    title: 'Computer/Detection Systems Repairer',
+    category: MosCategory.mechanical,
+    gate: g('EL 102|EL 97&ST 90'),
+    securityClearance: true,
+    extraTest: 'ACASP designation',
+    note: 'EL 102, or the combination EL 97 with ST 90',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-94F',
+  ),
+  Mos(
+    code: '94H',
+    title: 'TMDE Maintenance Support Specialist',
+    category: MosCategory.mechanical,
+    gate: g('EL 107|EL 102&ST 90'),
+    extraTest: 'ACASP designation',
+    note:
+        'Test, Measurement and Diagnostic Equipment. EL 107, or the '
+        'combination EL 102 with ST 90',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-94H',
+  ),
+  Mos(
+    code: '94M',
+    title: 'Radar Repairer',
+    category: MosCategory.mechanical,
+    gate: g('EL 107|EL 102&ST 90'),
+    securityClearance: true,
+    extraTest: 'ACASP designation',
+    note: 'EL 107, or the combination EL 102 with ST 90',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-94M',
+  ),
+  Mos(
+    code: '94P',
+    title: 'Multiple Launch Rocket System Repairer',
+    category: MosCategory.mechanical,
+    gate: g('EL 93|EL 88&ST 85'),
+    extraTest: 'ACASP designation',
+    note: 'EL 93, or the combination EL 88 with ST 85',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-94P',
+  ),
+  Mos(
+    code: '94R',
+    title: 'Avionics and Survivability Equipment Repairer',
+    category: MosCategory.mechanical,
+    gate: g('EL 98'),
+    securityClearance: true,
+    extraTest: 'ACASP designation',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-94R',
+  ),
+  Mos(
+    code: '94S',
+    title: 'Patriot System Repairer',
+    category: MosCategory.mechanical,
+    gate: g('EL 107|EL 102&ST 90'),
+    securityClearance: true,
+    extraTest: 'ACASP designation',
+    note: 'EL 107, or the combination EL 102 with ST 90',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-94S',
+  ),
+  Mos(
+    code: '94T',
+    title: 'Short Range Air Defense System Repairer',
+    category: MosCategory.mechanical,
+    gate: g('EL 98'),
+    extraTest: 'ACASP designation',
+    note:
+        'The pamphlet offers a second path of EL 93 with 85 in aptitude '
+        'area ET. ET is not one of the aptitude areas the pamphlet '
+        'defines anywhere else, so this app does not evaluate that path '
+        'rather than guessing that ET means ST. Confirm it with a '
+        'recruiter',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-94T',
+  ),
+  Mos(
+    code: '94Y',
+    title: 'Automatic Test Systems Operator/Maintainer',
+    category: MosCategory.mechanical,
+    gate: g('EL 107|EL 102&ST 90'),
+    note: 'EL 107, or the combination EL 102 with ST 90',
+    source: 'DA Pam 611-21 ch.10 sec.C, section 10-94Y',
   ),
 ];
 

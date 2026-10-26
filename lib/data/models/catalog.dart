@@ -566,6 +566,9 @@ abstract final class MosCategory {
   static const religious = 'Religious';
   static const band = 'Band';
   static const recruiting = 'Recruiting';
+  static const airDefense = 'Air Defense';
+  static const space = 'Space';
+  static const ceremonial = 'Ceremonial';
 
   static const List<String> ordered = <String>[
     combatArms,
@@ -574,6 +577,8 @@ abstract final class MosCategory {
     intelSignal,
     cyberEw,
     aviation,
+    airDefense,
+    space,
     mechanical,
     medical,
     militaryPolice,
@@ -583,5 +588,6 @@ abstract final class MosCategory {
     religious,
     band,
     recruiting,
+    ceremonial,
   ];
 }

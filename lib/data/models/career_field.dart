@@ -17,6 +17,7 @@ class CareerField {
   final String label;
 
   static const List<CareerField> all = <CareerField>[
+    CareerField('08', 'Ceremonial'),
     CareerField('11', 'Infantry'),
     CareerField('12', 'Engineer'),
     CareerField('13', 'Field Artillery'),
@@ -32,6 +33,7 @@ class CareerField {
     CareerField('36', 'Finance'),
     CareerField('37', 'Psychological Operations'),
     CareerField('38', 'Civil Affairs'),
+    CareerField('40', 'Space Operations'),
     CareerField('42', 'Adjutant General'),
     CareerField('46', 'Public Affairs'),
     CareerField('51', 'Acquisition'),

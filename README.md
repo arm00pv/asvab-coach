@@ -29,11 +29,16 @@ ten Army line scores on the Army's average-100 reporting scale using the
 published '97-metric composite weights. Fidelity to the real item formats is documented in [docs/REAL-TEST-FIDELITY.md](docs/REAL-TEST-FIDELITY.md), and the method in
 [docs/SCORING.md](docs/SCORING.md) and enforced by tests.
 
-**Tells you which jobs that opens.** 97 National Guard MOS transcribed from
-DA Pam 611-21 chapter 10 section C, each carrying its aptitude gate and a
-per-MOS source reference, plus nine officer and warrant officer pathways and the
-GT 110 requirement behind them. Eligibility is computed against your real score,
-with a near-miss list and the arithmetic for closing each gap.
+**Tells you which jobs that opens.** All 156 enlisted MOS that DA Pam 611-21
+chapter 10 section C specifies - every one of them, each carrying its aptitude
+gate (including every either/or alternative the pamphlet prints), a per-MOS
+source reference, and a note when the pamphlet publishes no aptitude requirement
+at all. Nine officer and warrant officer pathways carry the GT 110 requirement
+behind them. Eligibility is computed against your real score, with a near-miss
+list and the arithmetic for closing each gap. The roster was diffed against the
+whole of section C on 26 October 2026: the diff, the counts and everything the
+app deliberately does not claim are in [docs/MOS_GAP.md](docs/MOS_GAP.md), and
+that date is shown on the jobs screen, in Settings and in the glossary.
 
 **Revisits what you missed.** Every question you miss or flag enters a spaced-repetition queue and comes back after one day, then three, then seven, then twenty-one, and graduates after four clean retrievals. A backlog outranks every other recommendation on the dashboard, because coming back to a missed question is worth more than new material.
 
@@ -161,6 +166,7 @@ flutter test
 | Suite | What it proves |
 | --- | --- |
 | `bank_integrity_test` | No duplicate ids, four distinct choices, every item has a teachable explanation, every skill has questions behind it, every AO puzzle has exactly one legal assembly in both item families, mirroring a piece is rejected while rotating it is accepted, and the item-quality audit is clean. |
+| `mos_roster_test` | The job roster itself: unique codes, every entry carrying either a published gate or an explicit "no aptitude requirement", every gate structurally sound with no off-scale values, every career field and category resolvable, the filter-chip counts equal to the data behind them, the nine codes the pamphlet restricts to another component marked rather than advertised, the 97 legacy ids still resolving, and the verified-as-of date present and checkable. |
 | `scoring_test` | Half-right lands on the national mean, the conversion is monotonic and clamped, every Army composite returns 100 for an average applicant, GT follows the published slope, AFQT is monotonic and clamped, category bands match the 1997 scale. |
 | `exam_flow_test` | The mock has the official structure (10 sections over 9 subtests, because Auto and Shop are administered separately, 135 items, 197 minutes), shuffling never breaks the answer mapping, answering everything correctly maxes the report while answering nothing bottoms it out, a session advances through every section, and a finished attempt survives a JSON round trip. |
 | `personas_test` | Seven synthetic learners scored through the real engines: a strong candidate outscores a weak one, a pure guesser stays below the AFQT 31 floor, an officer-minded candidate clears GT 110, a maths-anxious candidate is coached on maths, and eligibility grows with ability. |
@@ -187,7 +193,10 @@ whole pipeline can be spot-checked without sitting a two-hour mock. See
 Nothing here invents a number, and where sources disagree the app says so rather
 than quietly picking one. The research trail is committed under
 `docs/research/`, including the reports, the machine-readable extracts and the
-flagged discrepancies.
+flagged discrepancies. `docs/research/mos-roster-2025-12.json` is the roster
+extract: for each of the 156 enlisted codes, the pamphlet's own qualifying-score
+sentence beside the gate the app carries, plus the codes deliberately left out
+and the reason.
 
 - **Score scale, AFQT and composite weights** - Segall, D. O. (2004),
   *Development and Evaluation of the 1997 ASVAB Score Scale*, DMDC: section 2.2
@@ -195,8 +204,12 @@ flagged discrepancies.
   (Army composite weights), Table 2.2 (categories). ASVAB Technical Bulletin
   No. 4, Table C.1.
 - **Item counts and time limits** - official ASVAB fact sheet, 2025-04 edition.
-- **MOS aptitude gates** - DA Pam 611-21 chapter 10 section C, with the exact
-  per-MOS section recorded on every entry.
+- **MOS aptitude gates** - DA Pam 611-21 chapter 10 section C (04 December 2025
+  build of the MOS Smartbook, fetched through the Internet Archive because
+  api.army.mil refuses non-browser clients), with the exact per-MOS section
+  recorded on every entry. The roster was last diffed against it on **26 October
+  2026**: 194 section headings, 156 substantive enlisted MOS, all 156 carried.
+  The working is in [docs/MOS_GAP.md](docs/MOS_GAP.md).
 - **Commissioning requirements** - AR 601-210 (20 Mar 2026) paragraph 9-10.
 - **Test-day mechanics** - PiCAT rules, retest intervals and the Vtest
   confirmation requirement, from the official fact sheets.
@@ -246,6 +259,11 @@ Set Pages to **Source: GitHub Actions** and the app is served from
   AO items are arbitrary line art.
 - Everything is local: no sync, no account, no server. Clearing browser storage
   erases your history.
+- The job roster is complete against the pamphlet but not against reality: it
+  says what DA Pam 611-21 prints, on the date it was checked. Whether a given
+  State's National Guard has a slot for a MOS is a live question for a recruiter,
+  and the app does not guess at it. Physical demand, PULHES, OPAT, medical and
+  clearance adjudication are not modelled at all.
 
 ---
 

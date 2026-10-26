@@ -51,11 +51,21 @@ abstract final class EligibilityEngine {
   }
 
   /// Every MOS the report currently clears, plus the near misses.
+  ///
+  /// A MOS whose gate the app has not verified goes into its own bucket and is
+  /// counted as neither qualified nor unqualified. An empty gate would otherwise
+  /// read as "no requirement" and hand the candidate a job the app knows nothing
+  /// about.
   static EligibilitySummary summarise(ScoreReport report) {
     final qualified = <Mos>[];
     final near = <Mos>[];
     final far = <Mos>[];
+    final unverified = <Mos>[];
     for (final mos in MosRepository.all) {
+      if (!mos.gateIsKnown) {
+        unverified.add(mos);
+        continue;
+      }
       final e = evaluate(mos.gate, report);
       if (e.qualified) {
         qualified.add(mos);
@@ -72,10 +82,12 @@ abstract final class EligibilityEngine {
     });
     qualified.sort((a, b) => a.code.compareTo(b.code));
     far.sort((a, b) => a.code.compareTo(b.code));
+    unverified.sort((a, b) => a.code.compareTo(b.code));
     return EligibilitySummary(
       qualified: qualified,
       nearMiss: near,
       outOfReach: far,
+      unverified: unverified,
       report: report,
     );
   }
@@ -155,14 +167,23 @@ class EligibilitySummary {
     required this.nearMiss,
     required this.outOfReach,
     required this.report,
+    this.unverified = const <Mos>[],
   });
 
   final List<Mos> qualified;
   final List<Mos> nearMiss;
   final List<Mos> outOfReach;
+
+  /// Jobs whose gate the app has not verified, so it can say nothing about them.
+  final List<Mos> unverified;
+
   final ScoreReport report;
 
-  int get total => qualified.length + nearMiss.length + outOfReach.length;
+  int get total =>
+      qualified.length +
+      nearMiss.length +
+      outOfReach.length +
+      unverified.length;
 
   List<Mos> get all => <Mos>[...qualified, ...nearMiss, ...outOfReach];
 

@@ -8,6 +8,36 @@ import 'mos_data.dart';
 abstract final class MosRepository {
   static List<Mos> get all => allMos;
 
+  /// When the roster was last worked through against the pamphlet. Shown to the
+  /// candidate, because a requirement with no date on it cannot be checked.
+  static String get rosterVerifiedAsOf => mosRosterVerifiedAsOf;
+
+  /// What it was verified against.
+  static String get rosterAuthority => mosRosterAuthority;
+
+  /// The sentence that travels with every gate.
+  static String get rosterCaveat => mosRosterCaveat;
+
+  /// Enlisted entries, which is everything in [all].
+  static int get enlistedCount => allMos.length;
+
+  /// Entries the pamphlet restricts to a component the Army National Guard is
+  /// not: telling a Guard candidate they qualify for one of these is the same
+  /// harm as hiding a job they do qualify for.
+  static List<Mos> get notGuardFielded =>
+      allMos.where((m) => !m.guardFielded).toList(growable: false);
+
+  /// Entries whose aptitude gate is a genuine unknown rather than a published
+  /// figure or an explicit "no requirement".
+  static List<Mos> get gatesUnverified => allMos
+      .where((m) => m.gateStatus == MosGateStatus.unverified)
+      .toList(growable: false);
+
+  /// Entries where the pamphlet states there is no aptitude-area requirement.
+  static List<Mos> get noAptitudeRequirement => allMos
+      .where((m) => m.gateStatus == MosGateStatus.noRequirement)
+      .toList(growable: false);
+
   static List<Mos> byCategory(String category) =>
       allMos.where((m) => m.category == category).toList(growable: false);
 

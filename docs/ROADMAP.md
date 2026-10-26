@@ -19,6 +19,25 @@ list is closed or explicitly deferred with a reason; a test asserts unique codes
 and a gate or an explicit "unknown" on every entry; Settings and the jobs screen
 carry a verified-as-of date.
 
+**Status (26 October 2026).** Diffed against the whole of chapter 10 section C
+(04 December 2025 build). 194 section headings: 156 substantive enlisted MOS, 13
+position-reporting or unqualified codes, 25 senior-sergeant/supervisory codes.
+The app carried 97, all of them real; 59 were missing and are now in, so the
+catalogue holds 156 of 156. Six gates were missing an OR alternative the pamphlet
+prints (91B, 91E, 91S, 89B, 94E, 12D) - each of those made a reachable job look
+unreachable - and six entries carried a bogus `extraTest: 'Y'/'N'`. Three entries
+(18F, 42R, 42S) now say "no aptitude requirement published" instead of reading as
+an empty pass, and the nine MOS the pamphlet restricts to another component say
+so. `mosRosterVerifiedAsOf` is surfaced in the jobs screen, Settings and the
+glossary, and `test/mos_roster_test.dart` enforces all of it. Full report:
+[docs/MOS_GAP.md](MOS_GAP.md).
+
+Still open, and deliberately not papered over: per-MOS availability *inside* the
+Guard (jobs.nationalguard.com is not machine-readable - a 4.8 KB JS shell and an
+HTTP 403), State-level slot availability, and warrant officer MOS as first-class
+entries, which needs a schema that can state "service prerequisite, not a score"
+before it can be added honestly.
+
 ## Phase 2 — Explain the wrong answers (per-distractor reasoning)
 
 **Goal.** Every practice item says why each *wrong* option is wrong, not only

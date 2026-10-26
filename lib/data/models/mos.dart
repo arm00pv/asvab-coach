@@ -1,6 +1,62 @@
 import 'catalog.dart';
 import 'line_score.dart';
 
+/// What the entry's aptitude gate actually is, and how far it can be trusted.
+///
+/// These three states exist because two of them look identical in the data and
+/// saying the wrong one harms the candidate:
+///
+///  * [published] - the gate was transcribed from the authority, so an empty
+///    gate on a published entry is a data defect.
+///  * [noRequirement] - the authority itself states the MOS has no aptitude-area
+///    requirement (musician audition, 18F). An empty gate here is the true
+///    answer, not a hole.
+///  * [unverified] - the MOS exists but its gate has not been checked against a
+///    primary source. An empty gate means "not known", and the app must never
+///    report either qualification or disqualification from it.
+enum MosGateStatus { published, noRequirement, unverified }
+
+/// The component restrictions the authority prints for a MOS.
+///
+/// Verbatim from DA Pam 611-21 chapter 10 section C: the pamphlet says
+/// "(National Guard Only)", "(USAR only)", "(Active Component Only)" and so on,
+/// and a job the National Guard does not field is not a job this app may tell a
+/// Guard candidate they qualify for.
+abstract final class MosComponent {
+  static const nationalGuardOnly = 'National Guard only';
+  static const armyNationalGuard = 'Army National Guard';
+  static const reserveComponents = 'Reserve Components';
+  static const usarOnly = 'USAR only';
+  static const activeComponentOnly = 'Active Component only';
+  static const activeComponentAndUsar = 'Active Component and USAR';
+  static const activeComponent = 'Active Component';
+  static const armyReserve = 'Army Reserve';
+  static const activeComponentAndNationalGuard =
+      'Active Component and National Guard';
+
+  /// Every value [Mos.componentLimit] is allowed to hold.
+  static const List<String> all = <String>[
+    nationalGuardOnly,
+    armyNationalGuard,
+    reserveComponents,
+    usarOnly,
+    activeComponentOnly,
+    activeComponentAndUsar,
+    activeComponent,
+    armyReserve,
+    activeComponentAndNationalGuard,
+  ];
+
+  /// The components an enlisted candidate can be accessed into through the
+  /// Army National Guard.
+  static const List<String> guardFielded = <String>[
+    nationalGuardOnly,
+    armyNationalGuard,
+    reserveComponents,
+    activeComponentAndNationalGuard,
+  ];
+}
+
 /// A military occupational specialty with its Army aptitude gate.
 class Mos {
   const Mos({
@@ -14,6 +70,8 @@ class Mos {
     this.physicalDemand,
     this.asvabMinimum,
     this.source,
+    this.gateStatus = MosGateStatus.published,
+    this.componentLimit,
   });
 
   final String code;
@@ -40,7 +98,38 @@ class Mos {
   /// working instead of asking to be trusted.
   final String? source;
 
+  /// Whether [gate] is the Army's published gate, an explicit "no requirement",
+  /// or something this app has not verified. Defaults to [MosGateStatus.published]
+  /// so a new entry cannot arrive claiming a gate it does not carry.
+  final MosGateStatus gateStatus;
+
+  /// The component restriction the authority prints, verbatim, or null when it
+  /// prints none. See [MosComponent] for the accepted values.
+  final String? componentLimit;
+
   String get id => code;
+
+  /// True when the entry carries at least one gate alternative.
+  bool get hasGate => gate.alternatives.isNotEmpty;
+
+  /// False only when the gate is a genuine unknown: the app must then report
+  /// neither qualification nor disqualification.
+  bool get gateIsKnown => gateStatus != MosGateStatus.unverified;
+
+  /// True when the Army National Guard fields this MOS, as far as the authority
+  /// states. A job restricted to the Active Component or the USAR is not one a
+  /// Guard candidate can be told they qualify for.
+  bool get guardFielded =>
+      componentLimit == null ||
+      MosComponent.guardFielded.contains(componentLimit);
+
+  /// How the gate reads in a sentence, including the honest cases.
+  String get gateSummary => switch (gateStatus) {
+    MosGateStatus.published =>
+      hasGate ? gate.label : 'Gate missing - data defect',
+    MosGateStatus.noRequirement => 'No aptitude gate published',
+    MosGateStatus.unverified => 'Gate not verified',
+  };
 }
 
 /// One officer / "official" pathway and the aptitude bar it sets.
