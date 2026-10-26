@@ -269,10 +269,13 @@ class _ReviewCard extends StatelessWidget {
                     width: 108,
                     child: AssemblyOption(
                       label: String.fromCharCode(65 + i),
-                      poly: q.puzzle!.silhouette(i),
+                      // The figures are held in bank order; the tile in this
+                      // slot plays whatever the attempt's permutation put there,
+                      // so replaying an attempt shows the same picture again.
+                      poly: q.puzzle!.silhouette(item.served.order[i]),
                       selected: item.displaySelected == i,
                       cell: 11,
-                      labels: q.puzzle!.optionLabels(i),
+                      labels: q.puzzle!.optionLabels(item.served.order[i]),
                       onTap: () {},
                       state: i == item.served.displayAnswerIndex
                           ? OptionState.correct

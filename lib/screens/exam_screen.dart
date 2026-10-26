@@ -557,13 +557,21 @@ class _QuestionView extends StatelessWidget {
                             crossAxisSpacing: Space.md,
                             childAspectRatio: 0.95,
                             children: <Widget>[
+                              // A puzzle's figures live in bank order, while
+                              // the tile in display slot i shows the option the
+                              // permutation put there. Painting silhouette(i)
+                              // would show one figure and grade another, so the
+                              // figure is always looked up through the served
+                              // order, exactly like the four option texts.
                               for (var i = 0; i < 4; i++)
                                 AssemblyOption(
                                   label: String.fromCharCode(65 + i),
-                                  poly: q.puzzle!.silhouette(i),
+                                  poly: q.puzzle!.silhouette(served.order[i]),
                                   selected: displaySelected == i,
                                   cell: isWide ? 15 : 13,
-                                  labels: q.puzzle!.optionLabels(i),
+                                  labels: q.puzzle!.optionLabels(
+                                    served.order[i],
+                                  ),
                                   onTap: () => session.answer(i),
                                 ),
                             ],

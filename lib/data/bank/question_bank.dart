@@ -4,6 +4,7 @@ import 'arithmetic.dart';
 import 'arithmetic_extra.dart';
 import 'assembling_objects.dart';
 import 'assembling_objects_connection.dart';
+import 'assembling_objects_extra.dart';
 import 'auto_shop.dart';
 import 'auto_shop_extra.dart';
 import 'auto_shop_tools.dart';
@@ -20,6 +21,7 @@ import 'mechanical_extra.dart';
 import 'mechanical_figures.dart';
 import 'mechanical_figures_extra.dart';
 import 'paragraph_comprehension.dart';
+import 'paragraph_comprehension_passages.dart';
 import 'skill_depth.dart';
 import 'paragraph_comprehension_extra.dart';
 import 'word_knowledge.dart';
@@ -36,6 +38,7 @@ abstract final class QuestionBank {
     ...wordKnowledgeExtraBank,
     ...readingBank,
     ...readingExtraBank,
+    ...readingPassageBank,
     ...mathematicsBank,
     ...mathematicsExtraBank,
     ...electronicsBank,
@@ -49,6 +52,7 @@ abstract final class QuestionBank {
     ...mechanicalFigureExtraBank,
     ...assemblingObjectsBank,
     ...assemblingObjectsConnectionBank,
+    ...assemblingObjectsExtraBank,
     ...skillDepthBank,
     ...expansionItems,
   ]);

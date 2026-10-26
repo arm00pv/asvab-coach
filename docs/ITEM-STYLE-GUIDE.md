@@ -70,7 +70,7 @@ Paragraph Comprehension items also carry `passage: '...'`.
 | **GS** | Four short factual options. Direct questions ("Which of the following...", "What is..."). One-step causal reasoning at most. No diagrams. |
 | **AR** | A narrative word problem that always contains numbers, usually two steps. The stem names the unit; the four options are **bare numerals or currency amounts** (`420`, `$1,250`), never "420 miles". This is the verified official convention, and it is also fairer: units printed on each option tell a candidate which quantity a distractor is before any arithmetic happens. Distractors are the unasked intermediate result. Never a bare equation. |
 | **WK** | Either a word alone, or a word pinned by a short sentence, with four near-synonyms of the same register. Never a definition stem like "The word X means". |
-| **PC** | A passage of 60 to 130 words, then a question. Two questions may share a passage. Ask for main idea, stated detail, inference, purpose or tone, vocabulary in context, or sequence. |
+| **PC** | A passage of 60 to 130 words, then a question. Two or three questions may share a passage, but each one asks something different and the computer form serves one question per passage. Ask for main idea, stated detail, inference, purpose or tone, vocabulary in context, or sequence. |
 | **MK** | Pure computation, algebra or geometry. Symbolic notation as plain text: x^2, sqrt(3), (x - 3)(x - 4). No word problems, no calculator, no long stems. |
 | **EI** | Quantities with units, circuit behaviour, component identification, or safety. Numeric items must have clean arithmetic. Schematic symbols are described in words. |
 | **AS** | Name a tool by its job, identify a system fault, or pick the right material or procedure. Shop-floor vocabulary, not engineering. Tool-identification items carry a line-art `Sketch` of the tool, because the real subtest shows a drawing; see below. |
@@ -176,6 +176,24 @@ resolved by shape, so an option may list its pieces in any order.
 filled cell. `.at(dx, dy)` translates a piece. Because the legal count is
 computed, a mis-authored anchor shows up as the wrong number of legal options and
 the check will tell you.
+
+Three authoring rules follow from the fact that the figures are drawn, not
+keyed:
+
+- **The key may sit anywhere in the option list.** `answerIndex` is still the
+  bank coordinate of the one legal assembly, but it does not have to be zero:
+  real items spread the correct figure across the four positions, and so should
+  a new set. `AoPuzzle.correctIndex` must equal `answerIndex`, and the audit
+  fails the item when it does not.
+- **Every fit-together option must draw a different outline.** Two tiles showing
+  the same silhouette leave the item unanswerable. Connection items are exempt,
+  because there the same outline with the letters in different places IS the
+  distractor the family is built on.
+- **The figure a candidate taps has to be the figure that is graded.** Options
+  are permuted per attempt like every other item, so both renderers (the runner
+  and the review screen) look the figures up through
+  `ServedQuestion.order`. Painting `silhouette(i)` straight into display slot
+  i shows one assembly and grades another.
 
 ## Self-check
 

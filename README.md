@@ -86,7 +86,7 @@ storage on Android.
 
 ### Android
 
-The same codebase builds an installable APK, so the whole coach - 372 items, 48
+The same codebase builds an installable APK, so the whole coach - 447 items, 48
 lessons, the scoring engine and the personas - lives on the phone with no
 connection, no account and no server.
 
@@ -113,7 +113,7 @@ lib/
   core/routes.dart     navigation helpers
   data/models/         catalog (subtests, skills), question, polyomino,
                        line_score, score, exam, mos, lesson
-  data/bank/           372 questions, 48 lessons, 32 spatial puzzles,
+  data/bank/           447 questions, 48 lessons, 57 spatial puzzles,
                        plus line art for tool and mechanical items
   data/repos/          MOS catalogue, serialization, browser storage
   engines/             scoring, exam builder, adaptive coach,
@@ -239,7 +239,7 @@ Set Pages to **Source: GitHub Actions** and the app is served from
   dashboard and keeps whatever was readable rather than silently starting over.
 - An interrupted attempt is only kept until you finish it or discard it: there is
   one slot, so starting a new exam replaces the interrupted one.
-- The bank is 372 items. A mock draws the official item count per subtest, so
+- The bank is 447 items. A mock draws the official item count per subtest, so
   heavy repeat use will start to repeat questions across attempts.
 - Assembling Objects uses polyomino puzzles. They enforce the real subtest's
   rules - rotation allowed, mirroring not, no overlap, one joined body - but real
