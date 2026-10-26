@@ -1,20 +1,15 @@
-﻿Prove the update path on a real phone, and fix what it found
+﻿Verify an update against the SHA-256 GitHub publishes
 
-Ran the updater end to end on a Pixel 7 Pro: the installed build said 1.1.9, the
-launch check found the published 1.2.1, the dashboard offered it, the download
-completed and the phone came out the other side on 1.2.1 with its history intact.
+The updater already refused a download that stopped short, by size. Size alone
+cannot tell a truncated file from a rewritten one, and GitHub publishes a SHA-256
+for every release asset, so the check now carries that through: the digest is read
+from the releases API, hashed locally after the download and compared, and a file
+that does not match is deleted rather than handed to the installer. When a release
+carries no digest the check falls back to size alone instead of refusing to
+update.
 
-Three things that run turned up, all fixed here:
+Tested through the channel with the digest present and absent, and proven on
+device: a phone on 1.2.1 found the published 1.2.2 at launch and offered it.
 
-- A download that stopped early was handed straight to the installer, and Android
-  answered it with a bare "App not installed". The expected size now travels with
-  the request, a short file is deleted and the real reason is reported.
-- With Termux installed, the update went through an Open with chooser. The
-  updater now asks for the system package installer by name and falls back to the
-  chooser only when there is none.
-- The settings screen told an Android user their history was stored in this
-  browser only, and said 1 attempts.
-
-Play Protect also appears on the way through for anything installed outside the
-Play Store; the update card says so now instead of leaving the candidate to guess
-whether something is wrong.
+Also says in the update card that Play Protect may offer to scan the app, which
+it does for anything installed outside the Play Store.

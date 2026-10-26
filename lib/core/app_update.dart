@@ -19,6 +19,7 @@ class AppUpdate {
     required this.name,
     required this.url,
     required this.bytes,
+    this.digest,
     this.published,
   });
 
@@ -28,6 +29,11 @@ class AppUpdate {
   /// Direct address of the universal APK in the release.
   final String? url;
   final int bytes;
+
+  /// The SHA-256 GitHub publishes for the asset, as "sha256:...". When it is
+  /// there the download is verified against it, so a truncated or rewritten
+  /// file is refused instead of installed.
+  final String? digest;
   final String? published;
 
   String get version => AppVersions.clean(tag);
@@ -108,6 +114,9 @@ abstract final class UpdateService {
         name: (result['name'] as String?) ?? tag,
         url: result['url'] as String?,
         bytes: (result['bytes'] as num?)?.toInt() ?? 0,
+        digest: (result['digest'] as String?)?.trim().isEmpty ?? true
+            ? null
+            : (result['digest'] as String).trim(),
         published: result['published'] as String?,
       );
     } on MissingPluginException {
@@ -141,8 +150,10 @@ abstract final class UpdateService {
         'url': url,
         'tag': update.tag,
         // The expected size lets the download be thrown away rather than handed
-        // to the installer half-finished.
+        // to the installer half-finished, and the digest proves it is the file
+        // GitHub published rather than something that arrived in its place.
         'bytes': update.bytes,
+        if (update.digest != null) 'digest': update.digest!,
       });
       return true;
     } catch (error) {

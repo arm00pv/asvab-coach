@@ -78,17 +78,38 @@ void main() {
       expect(await UpdateService.check(), isNull);
     });
 
-    test('hands the download address to the installer', () async {
+    test(
+      'hands the download address and its checksum to the installer',
+      () async {
+        lastInstall = null;
+        answer(<String, Object?>{
+          'tag': 'v1.2.0',
+          'url': 'https://example.test/universal.apk',
+          'bytes': 1,
+          'digest': 'sha256:abc123',
+        });
+        final update = await UpdateService.check();
+        expect(await UpdateService.install(update!), isTrue);
+        expect(lastInstall?['url'], 'https://example.test/universal.apk');
+        expect(lastInstall?['tag'], 'v1.2.0');
+        // The published checksum travels with the download, so the platform can
+        // refuse a file that is not the one GitHub served.
+        expect(lastInstall?['digest'], 'sha256:abc123');
+      },
+    );
+
+    test('a release with no published checksum still installs', () async {
       lastInstall = null;
       answer(<String, Object?>{
         'tag': 'v1.2.0',
         'url': 'https://example.test/universal.apk',
         'bytes': 1,
+        'digest': '',
       });
       final update = await UpdateService.check();
-      expect(await UpdateService.install(update!), isTrue);
-      expect(lastInstall?['url'], 'https://example.test/universal.apk');
-      expect(lastInstall?['tag'], 'v1.2.0');
+      expect(update!.digest, isNull);
+      expect(await UpdateService.install(update), isTrue);
+      expect(lastInstall?.containsKey('digest'), isFalse);
     });
   });
 

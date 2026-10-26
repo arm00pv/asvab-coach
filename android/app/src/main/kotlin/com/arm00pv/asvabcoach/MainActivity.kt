@@ -54,10 +54,13 @@ class MainActivity : FlutterActivity() {
                     val url = call.argument<String>("url")
                     val tag = call.argument<String>("tag") ?: "update"
                     val expected = (call.argument<Number>("bytes"))?.toLong() ?: 0L
+                    val digest = call.argument<String>("digest")
                     if (url.isNullOrBlank()) {
                         result.error("bad_args", "No download address was given.", null)
                     } else {
-                        offMainThread(result) { downloadAndInstall(url, tag, expected) }
+                        offMainThread(result) {
+                            downloadAndInstall(url, tag, expected, digest)
+                        }
                     }
                 }
                 else -> result.notImplemented()
@@ -113,6 +116,7 @@ class MainActivity : FlutterActivity() {
             var url: String? = null
             var bytes = 0L
             var named: String? = null
+            var digest: String? = null
             if (assets != null) {
                 for (index in 0 until assets.length()) {
                     val asset = assets.getJSONObject(index)
@@ -123,6 +127,10 @@ class MainActivity : FlutterActivity() {
                     if (url == null || isUniversal) {
                         url = asset.optString("browser_download_url")
                         bytes = asset.optLong("size")
+                        // GitHub publishes a SHA-256 for the asset; carrying it
+                        // through means the download can be checked, not just
+                        // measured.
+                        digest = asset.optString("digest").ifBlank { null }
                         named = name
                         if (isUniversal) break
                     }
@@ -134,6 +142,7 @@ class MainActivity : FlutterActivity() {
                 "asset" to named,
                 "url" to url,
                 "bytes" to bytes,
+                "digest" to digest,
                 "published" to json.optString("published_at"),
             )
         } finally {
@@ -146,6 +155,7 @@ class MainActivity : FlutterActivity() {
         link: String,
         tag: String,
         expectedBytes: Long,
+        expectedDigest: String?,
     ): Map<String, Any?> {
         val directory = File(cacheDir, "updates").apply { mkdirs() }
         val safeTag = tag.replace(Regex("[^A-Za-z0-9._-]"), "_")
@@ -155,7 +165,8 @@ class MainActivity : FlutterActivity() {
         // rather than handing it to the installer.
         val complete = target.exists() &&
             target.length() > 0L &&
-            (expectedBytes <= 0L || target.length() == expectedBytes)
+            (expectedBytes <= 0L || target.length() == expectedBytes) &&
+            (expectedDigest.isNullOrBlank() || expectedDigest == digestOf(target))
         if (!complete) {
             target.delete()
             val connection = URL(link).openConnection() as HttpURLConnection
@@ -173,10 +184,18 @@ class MainActivity : FlutterActivity() {
                 connection.disconnect()
             }
             if (expectedBytes > 0L && target.length() != expectedBytes) {
+                val received = target.length()
                 target.delete()
                 throw IOException(
-                    "The download stopped early (" + target.length() + " of " +
+                    "The download stopped early (" + received + " of " +
                         expectedBytes + " bytes).",
+                )
+            }
+            if (!expectedDigest.isNullOrBlank() && expectedDigest != digestOf(target)) {
+                target.delete()
+                throw IOException(
+                    "The download did not match the published checksum, so it was " +
+                        "discarded. Try again on a steadier connection.",
                 )
             }
         }
@@ -205,5 +224,25 @@ class MainActivity : FlutterActivity() {
         }
         main.post { startActivity(intent) }
         return mapOf("path" to target.absolutePath, "bytes" to target.length())
+    }
+
+    /// "sha256:abcd..." for [file], in the same form GitHub publishes, or null
+    /// when there is nothing to hash.
+    private fun digestOf(file: File): String? {
+        if (!file.exists()) return null
+        return try {
+            val digest = java.security.MessageDigest.getInstance("SHA-256")
+            file.inputStream().use { input ->
+                val buffer = ByteArray(64 * 1024)
+                while (true) {
+                    val read = input.read(buffer)
+                    if (read <= 0) break
+                    digest.update(buffer, 0, read)
+                }
+            }
+            "sha256:" + digest.digest().joinToString("") { "%02x".format(it) }
+        } catch (error: Exception) {
+            null
+        }
     }
 }
