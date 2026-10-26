@@ -1,0 +1,1654 @@
+{
+  "extractedAt": "2026-10-26",
+  "authority": {
+    "document": "DA Pam 611-21, chapter 10, section C (Enlisted MOS specifications)",
+    "build": "04 December 2025 (api.army.mil/e2/c/downloads/2025/12/04/20612de5/chapter-10c-enlisted-mos-specifications.pdf)",
+    "retrievedVia": "https://web.archive.org/web/2026id_/ ... (api.army.mil returns HTTP 403 to non-browser clients)",
+    "distinctSectionHeadings": 194,
+    "substantiveEnlistedMos": 156,
+    "notAnEnlistmentOption": {
+      "positionReportingAndUnqualifiedCodes": {
+        "00D": "position reporting code or unqualified marker",
+        "00F": "position reporting code or unqualified marker",
+        "00G": "position reporting code or unqualified marker",
+        "00J": "position reporting code or unqualified marker",
+        "00K": "position reporting code or unqualified marker",
+        "00L": "position reporting code or unqualified marker",
+        "00M": "position reporting code or unqualified marker",
+        "00P": "position reporting code or unqualified marker",
+        "00R": "position reporting code or unqualified marker",
+        "00T": "position reporting code or unqualified marker",
+        "00X": "position reporting code or unqualified marker",
+        "00Z": "position reporting code or unqualified marker",
+        "09U": "position reporting code or unqualified marker"
+      },
+      "seniorSergeantAndSupervisoryCodes": {
+        "11Z": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "12A": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "12X": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "12Z": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "13Z": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "14Z": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "15K": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "15L": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "15Z": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "17Z": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "18Z": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "19Z": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "25Z": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "31Z": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "35Z": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "38Z": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "46Y": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "46Z": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "68Z": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "88Z": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "91X": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "91Z": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "92Z": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "94W": "senior sergeant / supervisory MOS, awarded by reclassification",
+        "94Z": "senior sergeant / supervisory MOS, awarded by reclassification"
+      }
+    },
+    "removedSinceThe2024Build": [
+      "14S",
+      "15S",
+      "25X"
+    ],
+    "addedSinceThe2024Build": [
+      "08H",
+      "15X",
+      "40D",
+      "42T"
+    ]
+  },
+  "app": {
+    "enlistedRosterVerifiedAsOf": "26 October 2026",
+    "enlistedCount": 156,
+    "previouslyCarried": 97,
+    "addedInThisDiff": 59,
+    "noAptitudeRequirement": [
+      "18F",
+      "42R",
+      "42S"
+    ],
+    "unverifiedGates": [],
+    "notGuardFielded": [
+      "38B",
+      "38R",
+      "38W",
+      "42T",
+      "79R",
+      "79S",
+      "79V",
+      "88P",
+      "88U"
+    ],
+    "guardFieldedWithARestriction": [
+      "12Q",
+      "79T"
+    ]
+  },
+  "mos": [
+    {
+      "code": "08H",
+      "title": "Army Equestrian",
+      "appGate": "ST 91",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 91 in aptitude area ST. (b) A Minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "11B",
+      "title": "Infantryman",
+      "appGate": "CO 77",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 77 in aptitude area CO.",
+      "guardFielded": true
+    },
+    {
+      "code": "11C",
+      "title": "Indirect Fire Infantryman",
+      "appGate": "CO 77",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "A minimum score of 77 in aptitude area CO.",
+      "guardFielded": true
+    },
+    {
+      "code": "12B",
+      "title": "Combat Engineer",
+      "appGate": "CO 82",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 82 in aptitude area CO, effective 9 October 2023.",
+      "guardFielded": true
+    },
+    {
+      "code": "12C",
+      "title": "Bridge Crewmember",
+      "appGate": "CO 82",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 82 in aptitude area CO, effective 9 October 2023.",
+      "guardFielded": true
+    },
+    {
+      "code": "12D",
+      "title": "Diver",
+      "appGate": "GM 98&GT 107|GM 98&ST 106",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 98 in aptitude area GM and a standard score of 107 or higher in aptitude area GT or 106 in aptitude area ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "12G",
+      "title": "Quarrying Specialist (ARNG only)",
+      "appGate": "GM 93",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 93 in aptitude area GM.",
+      "guardFielded": true
+    },
+    {
+      "code": "12H",
+      "title": "Construction Engineering Supervisor",
+      "appGate": "GM 93",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 93 in aptitude area GM.",
+      "guardFielded": true
+    },
+    {
+      "code": "12K",
+      "title": "Plumber",
+      "appGate": "GM 88",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 88 in aptitude area GM.",
+      "guardFielded": true
+    },
+    {
+      "code": "12M",
+      "title": "Firefighter",
+      "appGate": "GM 88",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 88 in aptitude area GM. (b) A minimum Occupational Physical Assessment Test (",
+      "guardFielded": true
+    },
+    {
+      "code": "12N",
+      "title": "Horizontal Construction Engineer",
+      "appGate": "GM 85",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 85 in aptitude area GM, effective 9 October 2023.",
+      "guardFielded": true
+    },
+    {
+      "code": "12P",
+      "title": "Prime Power Production Specialist",
+      "appGate": "ST 107&EL 107&GT 110",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "(8) A minimum score of 107 in aptitude area ST, 107 in aptitude area EL and 110 in aptitude area GT.",
+      "guardFielded": true
+    },
+    {
+      "code": "12Q",
+      "title": "Powerline Distribution Specialist",
+      "appGate": "EL 93",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": "reserveComponents",
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 93 in aptitude area EL.",
+      "guardFielded": true
+    },
+    {
+      "code": "12R",
+      "title": "Interior Electrician",
+      "appGate": "EL 93",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 93 in aptitude area EL.",
+      "guardFielded": true
+    },
+    {
+      "code": "12T",
+      "title": "Technical Engineer",
+      "appGate": "ST 101",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 101 in aptitude area ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "12W",
+      "title": "Carpentry and Masonry Specialist",
+      "appGate": "GM 88",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 88 in aptitude area GM.",
+      "guardFielded": true
+    },
+    {
+      "code": "12Y",
+      "title": "Geospatial Engineer",
+      "appGate": "ST 100&GT 100",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 100 in aptitude areas ST and GT in Armed Services Vocational Aptitude Battery (ASVAB) tests administered on or after 1 May 2012.",
+      "guardFielded": true
+    },
+    {
+      "code": "13B",
+      "title": "Cannon Crewmember",
+      "appGate": "GT 87",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 87 in aptitude area GT (Effective 202408).",
+      "guardFielded": true
+    },
+    {
+      "code": "13F",
+      "title": "Joint Fire Support Specialist",
+      "appGate": "GT 87",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 87 in aptitude area GT (Effective 202408).",
+      "guardFielded": true
+    },
+    {
+      "code": "13J",
+      "title": "Fire Control Specialist",
+      "appGate": "GT 87",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 87 in aptitude area GT (Effective 202408).",
+      "guardFielded": true
+    },
+    {
+      "code": "13M",
+      "title": "MLRS/HIMARS Crewmember",
+      "appGate": "GT 87",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 87 in aptitude area GT (Effective 202408).",
+      "guardFielded": true
+    },
+    {
+      "code": "13R",
+      "title": "FA Weapons Locating Radar Specialist",
+      "appGate": "GT 87",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 87 in aptitude area GT (Effective 202408).",
+      "guardFielded": true
+    },
+    {
+      "code": "14E",
+      "title": "Patriot Fire Control Enhanced Operator/Maintainer",
+      "appGate": "MM 92",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 92 in aptitude area MM.",
+      "guardFielded": true
+    },
+    {
+      "code": "14G",
+      "title": "Air Defense Battle Management System Operator",
+      "appGate": "MM 91&GT 90",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 91 in aptitude area MM and a minimum score of 90 in aptitude area GT",
+      "guardFielded": true
+    },
+    {
+      "code": "14H",
+      "title": "Air Defense Enhanced Early Warning System Operator",
+      "appGate": "MM 91&GT 90",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 91 in aptitude area MM and a minimum score of 90 in aptitude area GT.",
+      "guardFielded": true
+    },
+    {
+      "code": "14P",
+      "title": "Air and Missile Defense Crewmember",
+      "appGate": "OF 87",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 87 in aptitude area OF (Effective 202406).",
+      "guardFielded": true
+    },
+    {
+      "code": "14T",
+      "title": "Patriot Launching Station Enhanced Operator/Maintainer",
+      "appGate": "OF 87",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 87 in aptitude area OF.",
+      "guardFielded": true
+    },
+    {
+      "code": "15B",
+      "title": "Aircraft Powerplant Repairer",
+      "appGate": "MM 104",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (1) A minimum score of 104 in aptitude area MM. (2) A minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "15C",
+      "title": "MQ-1 Operator",
+      "appGate": "SC 102",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (1) A minimum score of 102 in aptitude area SC. (2) A Minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "15D",
+      "title": "Aircraft Powertrain Repairer",
+      "appGate": "MM 104",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (1) A minimum score of 104 in aptitude area MM. (2) A Minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "15E",
+      "title": "Tactical Unmanned Aircraft System (TUAS) Repairer",
+      "appGate": "EL 93&MM 104",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (1) A minimum score of 93 in aptitude area EL and 104 in aptitude area MM. (2) A Minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "15F",
+      "title": "Aircraft Electrician",
+      "appGate": "MM 104",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (1) A minimum score of 104 in aptitude area MM. (2) A Minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "15G",
+      "title": "Aircraft Structural Repairer",
+      "appGate": "MM 104",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (1) A minimum score of 104 in aptitude area MM. (2) A Minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "15H",
+      "title": "Aircraft Pneudraulics Repairer",
+      "appGate": "MM 104",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (1) A minimum score of 104 in aptitude area MM. (2) A Minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "15M",
+      "title": "MQ-1 Repairer",
+      "appGate": "EL 93&MM 104",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (1) A minimum score of 93 in aptitude area EL and 104 in aptitude area MM. (2) A Minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "15N",
+      "title": "Avionic Mechanic",
+      "appGate": "EL 93",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (1) A minimum score of 93 in aptitude area EL. (2) A Minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "15P",
+      "title": "Aviation Operations Specialist",
+      "appGate": "ST 91",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (1) A minimum score of 91 in aptitude area ST. (2) A Minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "15Q",
+      "title": "Air Traffic Control Operator",
+      "appGate": "ST 101",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (1) A minimum score of 101 in aptitude area ST. (2) A Minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "15R",
+      "title": "AH-64 Attack Helicopter Repairer",
+      "appGate": "MM 99",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (1) A minimum score of 99 in aptitude area MM. (2) A Minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "15T",
+      "title": "UH-60 Helicopter Repairer/Aircrew Member",
+      "appGate": "MM 104",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (1) A minimum score of 104 in aptitude area MM. (2) A Minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "15U",
+      "title": "CH-47 Helicopter Repairer/Aircrew Member",
+      "appGate": "MM 104",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (1) A minimum score of 104 in aptitude area MM. (2) A Minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "15W",
+      "title": "Tactical Unmanned Aircraft System (TUAS) Operator",
+      "appGate": "SC 102",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (1) A minimum score of 102 in aptitude area SC. (2) A Minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "15X",
+      "title": "Tactical Unmanned Aircraft System (TUAS) Specialist",
+      "appGate": "EL 93&MM 99&SC 102",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (1) A minimum score of 93 in aptitude area EL, 99 in aptitude area MM, and 102 in aptitude area SC. (2) A minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "15Y",
+      "title": "AH-64 Armament/Electrical/Avionics Systems Repairer",
+      "appGate": "EL 98&MM 104",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (1) A minimum score of 98 in aptitude area EL and 104 in aptitude area MM. (2) A Minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "17C",
+      "title": "Cyber Operations Specialist",
+      "appGate": "GT 110&ST 112",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 110 in aptitude area GT and a minimum score of 112 in aptitude area ST on Armed Services Vocational Aptitude Battery (ASVAB). (b) A minimum score of 60 on the Information Communication Technology Literacy (ICTL) test (a.k.a. Cyber Test) for IET accessions. (c) A minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "17E",
+      "title": "Electronic Warfare Specialist",
+      "appGate": "SC 105&ST 105&EL 105",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 105 in aptitude area SC, ST and EL .",
+      "guardFielded": true
+    },
+    {
+      "code": "18B",
+      "title": "Special Forces Weapons Sergeant",
+      "appGate": "GT 110&CO 100",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. A minimum score of 110 in aptitude area GT and 100 in aptitude area CO. (4) A security eligibility of SECRET is required for the initial award and to maintain the MOS. (5) Must complete Special Forces Qualification Course to include mandatory completion of Survival, Evasion, Resistance, and Escape (SERE) Level C (High Risk) training (IAW DODI O- 3002.05). (6) Must meet requirements listed in Chapter 10-3 a-d, AR 614-200. (7) A U.S. citizen. c. Additional skill identifiers. (Re",
+      "guardFielded": true
+    },
+    {
+      "code": "18C",
+      "title": "Special Forces Engineer Sergeant",
+      "appGate": "GT 110&CO 100",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying score.. A minimum score of 110 in aptitude area GT and 100 in aptitude area CO. (4) A security eligibility of SECRET is required for the initial award and to maintain the MOS. (5) Must complete Special Forces Qualification Course to include mandatory completion of Survival, Evasion, Resistance, and Escape (SERE) Level C (High Risk) training (IAW DODI O- 3002.05). (6) Must meet requirements listed in Chapter 10-3 a-d, AR 614-200. (7) A U.S. citizen. c. Additional skill identifiers. (Re",
+      "guardFielded": true
+    },
+    {
+      "code": "18D",
+      "title": "Special Forces Medical Sergeant",
+      "appGate": "GT 110&CO 100",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. A minimum score of 110 in aptitude area GT and 100 in aptitude area CO. (4) A security eligibility of SECRET is required for the initial award and to maintain the MOS. (5) Must meet requirements listed in Chapter 10-3 a-d, AR 614-200. (6) Must complete Special Forces Qualification Course to include mandatory completion of Survival, Evasion, Resistance, and Escape (SERE) Level C (High Risk) training (IAW DODI O- 3002.05). (7) A U.S. citizen. c. Additional skill identifiers. (Re",
+      "guardFielded": true
+    },
+    {
+      "code": "18E",
+      "title": "Special Forces Communications Sergeant",
+      "appGate": "GT 110&CO 100",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. A minimum score 110 in aptitude area GT and 100 in aptitude area CO. (4) A security eligibility of SECRET is required for the initial award and to maintain the MOS. (5) Must complete Special Forces Qualification Course to include mandatory completion of Survival, Evasion, Resistance, and Escape (SERE) Level C (High Risk) training (IAW DODI O- 3002.05). (6) Must meet requirements listed in Chapter 10-3 a-d, AR 614-200. (7) A U.S. citizen. c. Additional skill identifiers. (Note:",
+      "guardFielded": true
+    },
+    {
+      "code": "18F",
+      "title": "Special Forces Intelligence Sergeant",
+      "appGate": "",
+      "appGateStatus": "noRequirement",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "",
+      "guardFielded": true
+    },
+    {
+      "code": "19C",
+      "title": "Bradley Crewmember",
+      "appGate": "CO 77",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 77 in aptitude area CO.",
+      "guardFielded": true
+    },
+    {
+      "code": "19D",
+      "title": "Cavalry Scout",
+      "appGate": "CO 77",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 77 in aptitude area CO.",
+      "guardFielded": true
+    },
+    {
+      "code": "19K",
+      "title": "Armor Crewmember",
+      "appGate": "CO 77",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 77 in aptitude area CO on ASVAB.",
+      "guardFielded": true
+    },
+    {
+      "code": "25B",
+      "title": "Information Technology Specialist",
+      "appGate": "ST 95",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 95 in aptitude area ST. (b) A minimum Occupational Physical Assessment Test (",
+      "guardFielded": true
+    },
+    {
+      "code": "25D",
+      "title": "Cyber Network Defender",
+      "appGate": "GT 105&ST 105",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 105 in aptitude area GT and ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "25E",
+      "title": "Electromagnetic Spectrum Manager",
+      "appGate": "GT 105&EL 105",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "(a) A minimum score of 105 in aptitude areas GT and EL.",
+      "guardFielded": true
+    },
+    {
+      "code": "25H",
+      "title": "Network Communication Systems Specialist",
+      "appGate": "EL 100&ST 102",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 100 in aptitude area EL and 102 in aptitude area ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "25S",
+      "title": "Satellite Communication Systems Specialist",
+      "appGate": "EL 107",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 107 in aptitude area EL.",
+      "guardFielded": true
+    },
+    {
+      "code": "25U",
+      "title": "Signal Operations Support Specialist",
+      "appGate": "EL 95&SC 95",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. . (a) A minimum score of 95 in aptitude area EL and 95 in aptitude area SC.",
+      "guardFielded": true
+    },
+    {
+      "code": "27D",
+      "title": "Paralegal Specialist",
+      "appGate": "CL 105",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. A minimum score of 105 in aptitude area CL. (4) Successful display of typing a minimum of 25 words per minute (WPM) or with a typing test administered with industry-standard computer software (e.g. Mavis Beacon). (5) Must have, at a minimum, a General Equivalency Diploma (GED). (6) A security eligibility of SECRET is required for the initial award and to maintain the MOS. (a) Requirements for a SECRET eligibility is effective 1 June 2005 for all new accessions into MOS 27D. (b",
+      "guardFielded": true
+    },
+    {
+      "code": "31B",
+      "title": "Military Police",
+      "appGate": "ST 91",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 91 in aptitude area ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "31D",
+      "title": "CID Special Agent",
+      "appGate": "GT 110",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 110 in aptitude area GT.",
+      "guardFielded": true
+    },
+    {
+      "code": "31E",
+      "title": "Corrections and Detention Specialist",
+      "appGate": "ST 91",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 91 in aptitude area ST, effective 9 October 2023.",
+      "guardFielded": true
+    },
+    {
+      "code": "31K",
+      "title": "Working Dog Handler",
+      "appGate": "ST 91",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 91 in aptitude area ST. (b) A Minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "35F",
+      "title": "Intelligence Analyst",
+      "appGate": "ST 101",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 105 in aptitude area ST in Armed Services Vocational aptitude Battery (ASVAB) tests administered prior to 2 January 2002. (b) A minimum score of 102 in aptitude area ST on ASVAB tests administered on and after 2 January 2002 and prior to 1 July 2004. (c) A minimum score of 101 in aptitude area ST on ASVAB tests administered on and after 1 July 2004. (d) A minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "35G",
+      "title": "Geospatial Intelligence Imagery Analyst",
+      "appGate": "ST 101",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 105 in aptitude area ST on Armed Services Vocational Aptitude Battery (ASVAB) tests administered prior to 2 January 2002. (b) A minimum score of 102 in aptitude area ST on ASVAB tests administered on and after 2 January 2002 and prior to 1 July 2004. (c) A minimum score of 101 in aptitude area ST on ASVAB tests administered on and after 1 July 2004. (d) A minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "35L",
+      "title": "Counterintelligence Agent",
+      "appGate": "ST 101",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores: (a) A minimum score of 101 in aptitude area ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "35M",
+      "title": "Human Intelligence Collector",
+      "appGate": "ST 101",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 101 in aptitude area ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "35N",
+      "title": "Signals Intelligence Analyst",
+      "appGate": "ST 112",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 112 in aptitude area ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "35P",
+      "title": "Signals Intelligence Voice Interceptor",
+      "appGate": "ST 101",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 101 in aptitude area ST. (b) A minimum score of 91 in aptitude area ST for ACASP personnel who meet proficiency requirement in languages identified on the Army Strategic Language List. (c) A minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "35S",
+      "title": "Signals Acquisition/Exploitation Analyst",
+      "appGate": "ST 101",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores: (a) A minimum score of 101 in aptitude area ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "35T",
+      "title": "MI Systems Maintainer/Integrator",
+      "appGate": "ST 112",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 112 in aptitude area ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "36B",
+      "title": "Financial Management Technician",
+      "appGate": "CL 101",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 101 in aptitude area CL.",
+      "guardFielded": true
+    },
+    {
+      "code": "37F",
+      "title": "Psychological Operations Specialist",
+      "appGate": "GT 105",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "(8) A minimum score of 105 in aptitude area GT effective 1 July 2020.",
+      "guardFielded": true
+    },
+    {
+      "code": "38B",
+      "title": "Civil Affairs Specialist",
+      "appGate": "GT 107",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": "usarOnly",
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 107 in aptitude area GT.",
+      "guardFielded": false
+    },
+    {
+      "code": "38R",
+      "title": "Civil Reconnaissance Sergeant",
+      "appGate": "GT 107&CO 100",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": "activeComponentOnly",
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 107 in aptitude area GT. (b) A minimum score of 100 in aptitude area CO. (4) A minimum",
+      "guardFielded": false
+    },
+    {
+      "code": "38W",
+      "title": "Civil Affairs Medical Sergeant",
+      "appGate": "GT 110&ST 101",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": "activeComponentOnly",
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 110 in aptitude area GT. (b) A minimum score of 101 in aptitude area ST. (4) A minimum",
+      "guardFielded": false
+    },
+    {
+      "code": "40D",
+      "title": "Space Operations Specialist",
+      "appGate": "EL 110",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 110 in aptitude area EL in Army Services Vocational Aptitude Battery (ASVAB) tests. (b) A minimum Occupational Physical Assessment Test (",
+      "guardFielded": true
+    },
+    {
+      "code": "42A",
+      "title": "Human Resources Specialist",
+      "appGate": "CL 90",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 90 in aptitude area CL.",
+      "guardFielded": true
+    },
+    {
+      "code": "42R",
+      "title": "Musician",
+      "appGate": "",
+      "appGateStatus": "noRequirement",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. A minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "42S",
+      "title": "Special Band Musician",
+      "appGate": "",
+      "appGateStatus": "noRequirement",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. A minimum",
+      "guardFielded": true
+    },
+    {
+      "code": "42T",
+      "title": "Talent Acquisition Specialist",
+      "appGate": "GT 110",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": "activeComponentAndUsar",
+      "pamphletQualifyingScores": "Qualifying scores. (a). Have a minimum general technical (GT) score of 110 (waiver by CG, USAREC, authorized with GT score of 100 or GT score of 95 with a skilled-technical score of 95).",
+      "guardFielded": false
+    },
+    {
+      "code": "46S",
+      "title": "Public Affairs Mass Communication Specialist",
+      "appGate": "GT 105",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. A minimum score of 105 in aptitude area GT, effective 9 October 2023. (5) Training specifications. MOS training is mandatory for all three service components: AC/ARNG/USAR. Soldiers must graduate the Mass Communication Foundations Course at the Defense Information School (School: 212, Course: DINFOS- MCF), Fort George G. Meade, MD. (6) Miscellaneous qualifications. (a) Be a high school graduate or GED equivalent. (b) Show proof by official transcript of having successfully completed at least 2 years of high school English or a 3-credit hour accredited college English course. (c) A security eligibility of SECRET. (d) No information with the Provost Marshal, intelligence, MPF or medical records that would prevent the granting of a security access under the provisions of AR 380-87. (e) No derogatory or adverse information that would preclude the granting a SECRET security eligibility (provided within the SF 86). (f) No records of conviction by a court-martial. (g) Active Component (Active Duty) accessions into MOS 46S: 1. Initial entry NPS Soldiers do not require a reclassification checklist. 2. Active Component in-service (IS) accession Soldiers who are reclassifying into MOS 46S must be SPC or SGT who have not completed ALC. Soldiers must complete MOS 46S advanced individual training and will attend the Public Affairs Advanced Leaders Course before they are eligible for promotion to SSG. 3. Active Component PS accession Soldiers must be eligible for SPC rank. (h) Reserve Component (ARNG/USAR) accessions into MOS 46S: 1. ARNG/USAR accesses NPS, IS, and PS Soldiers in the ranks PVT through SGT (not eligible for promotion). Soldiers must complete MOS 46S advanced individual training, and if they are a graduate of their prior MOS Advanced Leader Course, must attend the Public Affairs Advanced Leaders Course. 2. ARNG/USAR applicants must be high school graduates, and otherwise meet the general minimum requirements for MOS 46S. For applicants who hold only a General Equivalency Diploma without proof by official transcript of having successfully completing a 3- credit hour accredited college English course, career counselors should submit waiver requests to the Director, Army Public Affairs Center. (i) Requests for exceptions to policy for training or reclassification must be sent to the following email address no later than 45 days prior to course start date for approval: usarmy.meade.hqda-ocpa.mesg.apac-policy-doctrine@army.mil. c. Additional skill identifiers. 2R— Studio Broadcaster. d. Physical requirements and standards of grade. Physical requirements and SG relating to each skill level are listed in the following tables: (1) Table 10-46S-1. Physical requirements. (2) Table 10-46S-2. Standards of grade TOE/MTOE. (3) Table 10-46S-3. Standards of grade TDA. 10-46T. Mass Communications Systems Engineer (Mass Comm Sys Eng) (Effective 202610) CMF 46 (Army Civilian Acquired Skills Program (ACASP) designated MOS) a. Major duties. Installs, operates, maintains, and performs unit and higher levels of maintenance on mass communications equipment and systems in support of Army, Joint, and multinational operations; maintains forms, records, prescribed load lists (PLL) special tools. and test equipment; performs preventive maintenance checks and services (PMCS) on assigned vehicles and generators. Duties for MOS 46T at each skill level are: (1) MOSC 46T1O. Operates and performs unit and higher levels of maintenance on visual acquisition systems and cameras; studio accessories consisting of computer controlled video switchers and audio mixers/consoles, synchronous generators, distribution equipment, and amplifying equipment; motion/still photo imaging equipment; closed circuit systems; visual imagery satellite, microwave, RF transmission and cable distribution systems associated with visual information (VI) operations; operates and performs PMCS on assigned vehicles and power generators. (2) MOSC 46T2O. Provides technical guidance on complex operations and maintenance tasks; adjusts and maintains mass communications to prescribed standards; ensures that proper techniques and procedures to diagnose malfunctions of VI and associated equipment are employed; supervises receipt, storage, and issue of VI supplies. (3) MOSC 46T3O. Prepares work schedules and assigns tasks based on requirements; plans technical aspects to satisfy on-air maintenance requirements; develops and advises commanders on mass communications and VI production engineering requirements; establishes and applies quality control measures in mass communications and VI productions; serves as team leader on mass communications equipment repair teams. b. Physical demands rating and qualifications for initial award of MOS. The mass communications systems engineer must possess the following qualifications: (1) A physical demands rating of Moderate. (2) A physical profile of 212221. (3) Normal color vision. (4) Qualifying scores. (a) A minimum score of 93 in aptitude area EL, 91 in aptitude areas ST and 97 in aptitude area GT, effective 9 October 2023.",
+      "guardFielded": true
+    },
+    {
+      "code": "46T",
+      "title": "Visual Information Equipment Operator-Maintainer",
+      "appGate": "EL 93&ST 91&GT 97",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 93 in aptitude area EL, 91 in aptitude areas ST and 97 in aptitude area GT, effective 9 October 2023.",
+      "guardFielded": true
+    },
+    {
+      "code": "46V",
+      "title": "Visual Information Specialist",
+      "appGate": "EL 93&ST 91",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 93 in aptitude area EL and 91 in aptitude area ST .",
+      "guardFielded": true
+    },
+    {
+      "code": "51C",
+      "title": "Contracting NCO",
+      "appGate": "GT 110",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 110 in aptitude area GT (not waiverable).",
+      "guardFielded": true
+    },
+    {
+      "code": "56M",
+      "title": "Religious Affairs Specialist",
+      "appGate": "CL 90",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. A minimum score of 90 in aptitude area CL. (4) Credit for successful completion of 1 year or two courses in computer or keyboarding. Waiverable by the 56M Chief, Career Management (Proponent SGM) with a minimum typing speed of 25 net words-per-minute. (Proponent POC: usarmy.jackson.usachcs.mbx.56m- ppo@mail.mil) (5) A security eligibility of SECRET. Initial entry accessions must initiate a request for secret security eligibility before arrival to first unit. (6) Must provide r",
+      "guardFielded": true
+    },
+    {
+      "code": "68A",
+      "title": "Biomedical Equipment Specialist",
+      "appGate": "EL 107",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 107 in aptitude area EL.",
+      "guardFielded": true
+    },
+    {
+      "code": "68B",
+      "title": "Orthopedic Specialist",
+      "appGate": "ST 101",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 101 in aptitude area ST, effective 9 October 2023.",
+      "guardFielded": true
+    },
+    {
+      "code": "68C",
+      "title": "Practical Nursing Specialist",
+      "appGate": "ST 101",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 101 in aptitude area ST, effective 9 October 2023.",
+      "guardFielded": true
+    },
+    {
+      "code": "68D",
+      "title": "Operating Room Specialist",
+      "appGate": "ST 101",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 101 in aptitude area ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "68E",
+      "title": "Dental Specialist",
+      "appGate": "ST 91",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 91 in aptitude area ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "68F",
+      "title": "Physical Therapy Specialist",
+      "appGate": "ST 101",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 101 in aptitude area ST, effective 9 October 2023.",
+      "guardFielded": true
+    },
+    {
+      "code": "68G",
+      "title": "Patient Administration Specialist",
+      "appGate": "CL 90",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 90 in aptitude area CL.",
+      "guardFielded": true
+    },
+    {
+      "code": "68H",
+      "title": "Optical Laboratory Specialist",
+      "appGate": "GM 98",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 98 in aptitude area GM.",
+      "guardFielded": true
+    },
+    {
+      "code": "68J",
+      "title": "Medical Logistics Specialist",
+      "appGate": "CL 90",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 90 in aptitude area CL.",
+      "guardFielded": true
+    },
+    {
+      "code": "68K",
+      "title": "Medical Laboratory Specialist",
+      "appGate": "ST 106",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 106 in aptitude area ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "68L",
+      "title": "Occupational Therapy Specialist",
+      "appGate": "ST 101",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 101 in aptitude area ST, effective 9 October 2023.",
+      "guardFielded": true
+    },
+    {
+      "code": "68M",
+      "title": "Nutrition Care Specialist",
+      "appGate": "OF 95",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 95 in aptitude area OF.",
+      "guardFielded": true
+    },
+    {
+      "code": "68P",
+      "title": "Radiology Specialist",
+      "appGate": "ST 101",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 101 in aptitude area ST, effective 9 October 2023.",
+      "guardFielded": true
+    },
+    {
+      "code": "68Q",
+      "title": "Pharmacy Specialist",
+      "appGate": "ST 95",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 95 in aptitude area ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "68R",
+      "title": "Veterinary Food Inspection Specialist",
+      "appGate": "ST 95",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. A minimum score of 95 in aptitude area ST. (7) Must have a high school diploma with credit for general science or mathematics with a “C” grade or higher or numerical grade of 74% or higher. (8) A security eligibility of SECRET is required for the initial award and to maintain the MOS. (a) Requirements for an eligibility of SECRET clearance is effective 1 October 2015 for all new accessions and reclassifications into MOS 68R. (b) Requirement for an eligibility of SECRET clearan",
+      "guardFielded": true
+    },
+    {
+      "code": "68S",
+      "title": "Preventive Medicine Specialist",
+      "appGate": "ST 98",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 98 in aptitude area ST, effective 9 October 2023.",
+      "guardFielded": true
+    },
+    {
+      "code": "68T",
+      "title": "Animal Care Specialist",
+      "appGate": "ST 91",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 91 in aptitude area ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "68V",
+      "title": "Respiratory Specialist",
+      "appGate": "ST 102",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 102 in aptitude area ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "68W",
+      "title": "Combat Medic Specialist",
+      "appGate": "ST 101",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 101 in aptitude area ST, effective 9 October 2023.",
+      "guardFielded": true
+    },
+    {
+      "code": "68X",
+      "title": "Behavioral Health Specialist",
+      "appGate": "ST 101",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 101 in aptitude area ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "68Y",
+      "title": "Eye Specialist",
+      "appGate": "ST 101",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 101 in aptitude area ST, effective 9 October 2023.",
+      "guardFielded": true
+    },
+    {
+      "code": "74D",
+      "title": "CBRN Specialist",
+      "appGate": "ST 100",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 100 in aptitude area ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "79R",
+      "title": "Recruiter",
+      "appGate": "GT 110",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": "activeComponentAndUsar",
+      "pamphletQualifyingScores": "Qualifying scores. (a). Have a minimum general technical (GT) score of 110 (waiver by CG, USAREC, authorized with GT score of 100 or GT score of 95 with a skilled-technical score of 95).",
+      "guardFielded": false
+    },
+    {
+      "code": "79S",
+      "title": "Career Counselor",
+      "appGate": "GT 100&ST 96",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": "activeComponentOnly",
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 100 in aptitude area GT and 96 in aptitude area ST.",
+      "guardFielded": false
+    },
+    {
+      "code": "79T",
+      "title": "Recruiting and Retention NCO",
+      "appGate": "GT 110",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": "armyNationalGuard",
+      "pamphletQualifyingScores": "Qualifying scores. (a). Have a minimum general technical (GT) score of 110 (waivable to GT score of 100 or GT score of 95 with a skilled-technical score of 95).",
+      "guardFielded": true
+    },
+    {
+      "code": "79V",
+      "title": "Army Reserve Career Counselor",
+      "appGate": "GT 100",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": "usarOnly",
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 100 in aptitude area GT (Non-waiverable).",
+      "guardFielded": false
+    },
+    {
+      "code": "88H",
+      "title": "Cargo Specialist",
+      "appGate": "GM 88",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 88 in aptitude area GM.",
+      "guardFielded": true
+    },
+    {
+      "code": "88K",
+      "title": "Watercraft Operator",
+      "appGate": "MM 99",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 99 in aptitude area MM.",
+      "guardFielded": true
+    },
+    {
+      "code": "88L",
+      "title": "Watercraft Engineer",
+      "appGate": "MM 99",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 99 in aptitude area MM.",
+      "guardFielded": true
+    },
+    {
+      "code": "88M",
+      "title": "Motor Transport Operator",
+      "appGate": "OF 85",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 85 in aptitude area OF.",
+      "guardFielded": true
+    },
+    {
+      "code": "88N",
+      "title": "Transportation Management Coordinator",
+      "appGate": "CL 95",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 95 in aptitude area CL.",
+      "guardFielded": true
+    },
+    {
+      "code": "88P",
+      "title": "Railway Equipment Repairer",
+      "appGate": "MM 97",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": "usarOnly",
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 100 in aptitude area MM in Armed Services Vocational aptitude Battery (ASVAB) tests administered prior to 2 January 2002. (b) A minimum score of 97 in aptitude area MM on ASVAB tests administered on and after 2 January 2002. (5) Formal training (completion of MOS 88P course conducted under the auspices of the Transportation School) mandatory or meet the Army Civilian Acquired Skills Program (ACASP) criteria per paragraph 9-5b(5)(b) of this pamphlet and p",
+      "guardFielded": false
+    },
+    {
+      "code": "88U",
+      "title": "Railway Specialist",
+      "appGate": "MM 92",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": "usarOnly",
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 92 in aptitude area MM..",
+      "guardFielded": false
+    },
+    {
+      "code": "89A",
+      "title": "Ammunition Stock Control and Accounting Specialist",
+      "appGate": "ST 91",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 91 in aptitude area ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "89B",
+      "title": "Ammunition Specialist",
+      "appGate": "ST 91|ST 86&GT 85",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum ASVAB score of 91 ST or a combination of 86 ST and 85 GT.",
+      "guardFielded": true
+    },
+    {
+      "code": "89D",
+      "title": "Explosive Ordnance Disposal Specialist",
+      "appGate": "GM 105",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores: (a) A minimum score of 105 in aptitude area GM.",
+      "guardFielded": true
+    },
+    {
+      "code": "91A",
+      "title": "M1 Abrams Tank System Maintainer",
+      "appGate": "MM 99|MM 88&GT 90",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 99 MM or a combination of 88 MM and 90 GT.",
+      "guardFielded": true
+    },
+    {
+      "code": "91B",
+      "title": "Wheeled Vehicle Mechanic",
+      "appGate": "MM 92|MM 87&GT 85",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 92 MM or a combination of 87 MM and 85 GT.",
+      "guardFielded": true
+    },
+    {
+      "code": "91C",
+      "title": "Utilities Equipment Repairer",
+      "appGate": "GM 93|GM 88&GT 85",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 93 GM or a combination of 88 GM and 85 GT.",
+      "guardFielded": true
+    },
+    {
+      "code": "91D",
+      "title": "Tactical Power Generation Specialist",
+      "appGate": "GM 93|GM 88&GT 85",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 93 GM or a combination of 88 GM and 85 GT.",
+      "guardFielded": true
+    },
+    {
+      "code": "91E",
+      "title": "Allied Trades Specialist",
+      "appGate": "GM 88&GT 95|GM 98",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of (88 in aptitude area GM and 95 in aptitude area GT) or a minimum score of 98 in aptitude area GM.",
+      "guardFielded": true
+    },
+    {
+      "code": "91F",
+      "title": "Small Arms/Towed Artillery Repairer",
+      "appGate": "GM 93|GM 87&GT 85",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 93 GM or a combination of 87 GM and 85 GT.",
+      "guardFielded": true
+    },
+    {
+      "code": "91H",
+      "title": "Tracked Vehicle Repairer",
+      "appGate": "MM 90|MM 85&GT 85",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 90 MM or a combination of 85 MM and 85 GT.",
+      "guardFielded": true
+    },
+    {
+      "code": "91J",
+      "title": "Quartermaster and Chemical Equipment Repairer",
+      "appGate": "MM 87|MM 82&GT 85",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 87 MM or a combination of 82 MM and 85 GT.",
+      "guardFielded": true
+    },
+    {
+      "code": "91L",
+      "title": "Construction Equipment Repairer",
+      "appGate": "MM 87|MM 82&GT 85",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 87 MM or a combination of 82 MM and 85 GT.",
+      "guardFielded": true
+    },
+    {
+      "code": "91M",
+      "title": "Bradley Fighting Vehicle System Maintainer",
+      "appGate": "MM 99|MM 88&GT 90",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 99 MM or a combination of 88 MM and 90 GT.",
+      "guardFielded": true
+    },
+    {
+      "code": "91P",
+      "title": "Self-Propelled Artillery Systems Mechanic",
+      "appGate": "MM 99|MM 88&GT 90",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 99 MM or a combination of 88 MM and 90 GT.",
+      "guardFielded": true
+    },
+    {
+      "code": "91S",
+      "title": "Stryker Systems Maintainer",
+      "appGate": "MM 87&GT 85|MM 92",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 87 in aptitude area MM and 85 in aptitude area GT or a minimum score of 92 in aptitude area MM.",
+      "guardFielded": true
+    },
+    {
+      "code": "92A",
+      "title": "Automated Logistical Specialist",
+      "appGate": "CL 90",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 90 in aptitude area CL.",
+      "guardFielded": true
+    },
+    {
+      "code": "92F",
+      "title": "Petroleum Supply Specialist",
+      "appGate": "CL 86&OF 85",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 86 in aptitude area CL and 85 in aptitude area OF.",
+      "guardFielded": true
+    },
+    {
+      "code": "92G",
+      "title": "Culinary Specialist",
+      "appGate": "OF 85",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 85 in aptitude area OF.",
+      "guardFielded": true
+    },
+    {
+      "code": "92L",
+      "title": "Petroleum Laboratory Specialist",
+      "appGate": "ST 91",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 91 in aptitude area ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "92M",
+      "title": "Fatality Management Specialist",
+      "appGate": "GM 84",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 84 in aptitude area GM, effective 9 October 2023.",
+      "guardFielded": true
+    },
+    {
+      "code": "92R",
+      "title": "Parachute Rigger",
+      "appGate": "GM 78&CO 77",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 78 in aptitude area GM and 77 in aptitude area CO.",
+      "guardFielded": true
+    },
+    {
+      "code": "92S",
+      "title": "Shower and Laundry Specialist",
+      "appGate": "GM 84",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 84 in aptitude area GM.",
+      "guardFielded": true
+    },
+    {
+      "code": "92W",
+      "title": "Water Treatment Specialist",
+      "appGate": "GM 88",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 88 in aptitude area GM.",
+      "guardFielded": true
+    },
+    {
+      "code": "92Y",
+      "title": "Unit Supply Specialist",
+      "appGate": "CL 90",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 90 in aptitude area CL.",
+      "guardFielded": true
+    },
+    {
+      "code": "94A",
+      "title": "Land Combat Electronic Missile System Repairer",
+      "appGate": "EL 102|EL 97&ST 90",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 102 EL or a combination of 97 EL and 90 ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "94D",
+      "title": "Air Traffic Control Equipment Repairer",
+      "appGate": "EL 102|EL 97&ST 90",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. A minimum score of 102 EL or a combination of 97 EL and 90 ST. (4) A security eligibility of SECRET. (5) A U. S. citizen. (6) Formal training by completion of the MOS 94D Course conducted under the auspices of the U. S. Army Ordnance School is mandatory unless a waiver is granted by Commandant, U. S. Army Ordnance School, Ft Gregg-Adams, VA 23801-2102. (7) ACASP qualification criteria must have 2 years of experience or combination of formal training and experience totaling 2 y",
+      "guardFielded": true
+    },
+    {
+      "code": "94E",
+      "title": "Radio Equipment Repairer",
+      "appGate": "EL 102|EL 97&ST 90",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "(a) A minimum score of 102 EL or a combination of 97 EL and 90 ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "94F",
+      "title": "Computer/Detection Systems Repairer",
+      "appGate": "EL 102|EL 97&ST 90",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 102 EL or a combination of 97 EL and 90 ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "94H",
+      "title": "TMDE Maintenance Support Specialist",
+      "appGate": "EL 107|EL 102&ST 90",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 107 EL or a combination of 102 EL and 90 ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "94M",
+      "title": "Radar Repairer",
+      "appGate": "EL 107|EL 102&ST 90",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 107 EL or a combination of 102 EL and 90 ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "94P",
+      "title": "Multiple Launch Rocket System Repairer",
+      "appGate": "EL 93|EL 88&ST 85",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 93 EL or a combination of 88 EL and 85 ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "94R",
+      "title": "Avionics and Survivability Equipment Repairer",
+      "appGate": "EL 98",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores (a) A minimum score of 98 in aptitude area EL.",
+      "guardFielded": true
+    },
+    {
+      "code": "94S",
+      "title": "Patriot System Repairer",
+      "appGate": "EL 107|EL 102&ST 90",
+      "appGateStatus": "published",
+      "appSecurityClearance": true,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 107 EL or a combination of 102 EL and 90 ST.",
+      "guardFielded": true
+    },
+    {
+      "code": "94T",
+      "title": "Short Range Air Defense System Repairer",
+      "appGate": "EL 98",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 98 EL or a combination of 93 EL and 85 ET.",
+      "guardFielded": true
+    },
+    {
+      "code": "94Y",
+      "title": "Automatic Test Systems Operator/Maintainer",
+      "appGate": "EL 107|EL 102&ST 90",
+      "appGateStatus": "published",
+      "appSecurityClearance": false,
+      "appComponentLimit": null,
+      "pamphletQualifyingScores": "Qualifying scores. (a) A minimum score of 107 EL or a combination 102 EL and 90 ST.",
+      "guardFielded": true
+    }
+  ]
+}

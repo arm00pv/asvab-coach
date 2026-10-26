@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../core/theme/tokens.dart';
 import '../data/models/catalog.dart';
+import '../data/repos/mos_repository.dart';
 import '../widgets/primitives.dart';
 
 /// One entry: the term as it is printed, and what it actually means.
@@ -114,7 +115,11 @@ abstract final class Glossary {
           detail:
               'Jobs are gated on these, not on your AFQT. That is why a '
               'candidate can clear a job gate while their overall percentile '
-              'looks unremarkable.',
+              'looks unremarkable. The gates in this app were last checked '
+              'against DA Pam 611-21 on '
+              '${MosRepository.rosterVerifiedAsOf}, and that pamphlet is '
+              'revised, so treat the number on a job as the one to confirm with '
+              'a recruiter rather than the one to plan your life around.',
         ),
         GlossaryEntry(
           'Correct / total',
@@ -137,12 +142,18 @@ abstract final class Glossary {
         ),
         GlossaryEntry(
           'Aptitude gate',
-          'The minimum line scores or AFQT a job requires. Every MOS in this '
-              'app has its gate recorded, with the paragraph it came from.',
+          'The minimum line scores a job requires. Every MOS in this app says '
+              'either its gate or that it has none, with the paragraph it came '
+              'from.',
           detail:
-              'Gates come from DA Pam 611-21 chapter 10 and change; a recruiter '
-              'has the current list, and this app is a guide to it, not a '
-              'substitute for it.',
+              'Gates come from DA Pam 611-21 chapter 10 section C, last verified '
+              'on ${MosRepository.rosterVerifiedAsOf}, and they change. A few '
+              'jobs publish no line-score gate at all - the musician jobs '
+              'qualify by audition - and the app says so instead of showing an '
+              'empty gate you might read as a pass. Some jobs are also '
+              'restricted by that pamphlet to another component, which the app '
+              'marks, because the Guard cannot give you a job it does not '
+              'field.',
         ),
         GlossaryEntry(
           'Qualified / short by N',
