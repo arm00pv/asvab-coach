@@ -1,0 +1,1782 @@
+{
+ "source": {
+  "name": "O*NET Military Occupational Classification (MOC) crosswalk",
+  "version": "milx0724 (updated August 2024)",
+  "page": "https://www.onetcenter.org/crosswalks.html",
+  "file": "milx0724.xlsx",
+  "zipSha256": "ee7381411644fd39adaf93e7f3a8814773b28f4e8a5b2c00c7ad6b775b01d747",
+  "retrievedOn": "2026-10-26",
+  "licence": "CC BY 4.0",
+  "attribution": "Includes information from O*NET Resource Center by the U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). Used under the CC BY 4.0 license (https://creativecommons.org/licenses/by/4.0/). O*NET® is a trademark of USDOL/ETA. ASVAB Coach has modified all or some of this information: the O*NET Military Occupational Classification (MOC) crosswalk (milx0724, updated August 2024) was joined to the MOS codes this app carries and reformatted as Dart constants. USDOL/ETA has not approved, endorsed, or tested these modifications."
+ },
+ "selection": {
+  "SVC": "A",
+  "MPC": "E",
+  "STATUS": "A"
+ },
+ "counts": {
+  "carried": 156,
+  "mapped": 150,
+  "omitted": 6
+ },
+ "mapped": {
+  "11B": {
+   "mocTitle": "Infantryman",
+   "occupations": [
+    {
+     "onetSocCode": "55-3016.00",
+     "title": "Infantry",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Infantry (O*NET-SOC 55-3016.00; military occupation)"
+  },
+  "11C": {
+   "mocTitle": "Indirect Fire Infantryman",
+   "occupations": [
+    {
+     "onetSocCode": "55-3016.00",
+     "title": "Infantry",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Infantry (O*NET-SOC 55-3016.00; military occupation)"
+  },
+  "12B": {
+   "mocTitle": "Combat Engineer",
+   "occupations": [
+    {
+     "onetSocCode": "47-4099.00",
+     "title": "Construction and Related Workers, All Other",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Construction and Related Workers, All Other"
+  },
+  "13B": {
+   "mocTitle": "Cannon Crewmember",
+   "occupations": [
+    {
+     "onetSocCode": "55-3014.00",
+     "title": "Artillery and Missile Crew Members",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Artillery and Missile Crew Members (O*NET-SOC 55-3014.00; military occupation)"
+  },
+  "13F": {
+   "mocTitle": "Joint Fire Support Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "55-3014.00",
+     "title": "Artillery and Missile Crew Members",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Artillery and Missile Crew Members (O*NET-SOC 55-3014.00; military occupation)"
+  },
+  "13J": {
+   "mocTitle": "Fire Control Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "55-3014.00",
+     "title": "Artillery and Missile Crew Members",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Artillery and Missile Crew Members (O*NET-SOC 55-3014.00; military occupation)"
+  },
+  "13M": {
+   "mocTitle": "Multiple Launch Rocket System (MLRS)/High Mobility Artillery Rocket System (HIMARS) Crewmember",
+   "occupations": [
+    {
+     "onetSocCode": "55-3014.00",
+     "title": "Artillery and Missile Crew Members",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Artillery and Missile Crew Members (O*NET-SOC 55-3014.00; military occupation)"
+  },
+  "13R": {
+   "mocTitle": "Field Artillery (FA) Weapons Locating Radar (WLR) Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "17-3029.00",
+     "title": "Engineering Technologists and Technicians, Except Drafters, All Other",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Engineering Technologists and Technicians, Except Drafters, All Other"
+  },
+  "19D": {
+   "mocTitle": "Cavalry Scout",
+   "occupations": [
+    {
+     "onetSocCode": "55-3013.00",
+     "title": "Armored Assault Vehicle Crew Members",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Armored Assault Vehicle Crew Members (O*NET-SOC 55-3013.00; military occupation)"
+  },
+  "19K": {
+   "mocTitle": "M1 Armor Crewman",
+   "occupations": [
+    {
+     "onetSocCode": "55-3013.00",
+     "title": "Armored Assault Vehicle Crew Members",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Armored Assault Vehicle Crew Members (O*NET-SOC 55-3013.00; military occupation)"
+  },
+  "18B": {
+   "mocTitle": "Special Forces Weapons Sergeant",
+   "occupations": [
+    {
+     "onetSocCode": "55-3018.00",
+     "title": "Special Forces",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Special Forces (O*NET-SOC 55-3018.00; military occupation)"
+  },
+  "18C": {
+   "mocTitle": "Special Forces Engineer Sergeant",
+   "occupations": [
+    {
+     "onetSocCode": "55-3018.00",
+     "title": "Special Forces",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Special Forces (O*NET-SOC 55-3018.00; military occupation)"
+  },
+  "18D": {
+   "mocTitle": "Special Forces Medical Sergeant",
+   "occupations": [
+    {
+     "onetSocCode": "55-3018.00",
+     "title": "Special Forces",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Special Forces (O*NET-SOC 55-3018.00; military occupation)"
+  },
+  "12D": {
+   "mocTitle": "Diver",
+   "occupations": [
+    {
+     "onetSocCode": "49-9092.00",
+     "title": "Commercial Divers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Commercial Divers"
+  },
+  "12G": {
+   "mocTitle": "Quarrying Specialist (RC)",
+   "occupations": [
+    {
+     "onetSocCode": "47-5051.00",
+     "title": "Rock Splitters, Quarry",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Rock Splitters, Quarry"
+  },
+  "12K": {
+   "mocTitle": "Plumber",
+   "occupations": [
+    {
+     "onetSocCode": "47-2152.00",
+     "title": "Plumbers, Pipefitters, and Steamfitters",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Plumbers, Pipefitters, and Steamfitters"
+  },
+  "12M": {
+   "mocTitle": "Firefighter",
+   "occupations": [
+    {
+     "onetSocCode": "33-2011.00",
+     "title": "Firefighters",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Firefighters"
+  },
+  "12N": {
+   "mocTitle": "Horizontal Construction Engineer",
+   "occupations": [
+    {
+     "onetSocCode": "47-1011.00",
+     "title": "First-Line Supervisors of Construction Trades and Extraction Workers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "First-Line Supervisors of Construction Trades and Extraction Workers"
+  },
+  "12P": {
+   "mocTitle": "Prime Power Production Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "51-8021.00",
+     "title": "Stationary Engineers and Boiler Operators",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Stationary Engineers and Boiler Operators"
+  },
+  "12R": {
+   "mocTitle": "Interior Electrician",
+   "occupations": [
+    {
+     "onetSocCode": "47-2111.00",
+     "title": "Electricians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Electricians"
+  },
+  "12T": {
+   "mocTitle": "Technical Engineer",
+   "occupations": [
+    {
+     "onetSocCode": "17-3022.00",
+     "title": "Civil Engineering Technologists and Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Civil Engineering Technologists and Technicians"
+  },
+  "12W": {
+   "mocTitle": "Carpentry and Masonry Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "47-2031.00",
+     "title": "Carpenters",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Carpenters"
+  },
+  "12Y": {
+   "mocTitle": "Geospatial Engineer",
+   "occupations": [
+    {
+     "onetSocCode": "17-1021.00",
+     "title": "Cartographers and Photogrammetrists",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Cartographers and Photogrammetrists"
+  },
+  "88H": {
+   "mocTitle": "Cargo Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "53-7199.00",
+     "title": "Material Moving Workers, All Other",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Material Moving Workers, All Other"
+  },
+  "88K": {
+   "mocTitle": "Watercraft Operator",
+   "occupations": [
+    {
+     "onetSocCode": "53-5021.00",
+     "title": "Captains, Mates, and Pilots of Water Vessels",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Captains, Mates, and Pilots of Water Vessels"
+  },
+  "88L": {
+   "mocTitle": "Watercraft Engineer",
+   "occupations": [
+    {
+     "onetSocCode": "53-5031.00",
+     "title": "Ship Engineers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Ship Engineers"
+  },
+  "88M": {
+   "mocTitle": "Motor Transport Operator",
+   "occupations": [
+    {
+     "onetSocCode": "53-3032.00",
+     "title": "Heavy and Tractor-Trailer Truck Drivers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Heavy and Tractor-Trailer Truck Drivers"
+  },
+  "88N": {
+   "mocTitle": "Transportation Management Coordinator",
+   "occupations": [
+    {
+     "onetSocCode": "43-5011.00",
+     "title": "Cargo and Freight Agents",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Cargo and Freight Agents"
+  },
+  "89B": {
+   "mocTitle": "Ammunition Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "47-5032.00",
+     "title": "Explosives Workers, Ordnance Handling Experts, and Blasters",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Explosives Workers, Ordnance Handling Experts, and Blasters"
+  },
+  "89D": {
+   "mocTitle": "Explosive Ordnance Disposal (EOD) Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "47-5032.00",
+     "title": "Explosives Workers, Ordnance Handling Experts, and Blasters",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Explosives Workers, Ordnance Handling Experts, and Blasters"
+  },
+  "92A": {
+   "mocTitle": "Automated Logistical Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "53-7065.00",
+     "title": "Stockers and Order Fillers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Stockers and Order Fillers"
+  },
+  "92F": {
+   "mocTitle": "Petroleum Supply Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "53-7072.00",
+     "title": "Pump Operators, Except Wellhead Pumpers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Pump Operators, Except Wellhead Pumpers"
+  },
+  "92G": {
+   "mocTitle": "Culinary Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "35-2012.00",
+     "title": "Cooks, Institution and Cafeteria",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "35-2021.00",
+     "title": "Food Preparation Workers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Cooks, Institution and Cafeteria; Food Preparation Workers"
+  },
+  "92L": {
+   "mocTitle": "Petroleum Laboratory Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "19-4043.00",
+     "title": "Geological Technicians, Except Hydrologic Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Geological Technicians, Except Hydrologic Technicians"
+  },
+  "92M": {
+   "mocTitle": "Mortuary Affairs Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "39-9099.00",
+     "title": "Personal Care and Service Workers, All Other",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Personal Care and Service Workers, All Other"
+  },
+  "92R": {
+   "mocTitle": "Parachute Rigger",
+   "occupations": [
+    {
+     "onetSocCode": "49-9099.00",
+     "title": "Installation, Maintenance, and Repair Workers, All Other",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Installation, Maintenance, and Repair Workers, All Other"
+  },
+  "92S": {
+   "mocTitle": "Shower and Laundry Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "51-6011.00",
+     "title": "Laundry and Dry-Cleaning Workers",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "49-9099.00",
+     "title": "Installation, Maintenance, and Repair Workers, All Other",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Laundry and Dry-Cleaning Workers; Installation, Maintenance, and Repair Workers, All Other"
+  },
+  "92W": {
+   "mocTitle": "Water Treatment Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "51-8031.00",
+     "title": "Water and Wastewater Treatment Plant and System Operators",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Water and Wastewater Treatment Plant and System Operators"
+  },
+  "92Y": {
+   "mocTitle": "Unit Supply Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "53-7065.00",
+     "title": "Stockers and Order Fillers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Stockers and Order Fillers"
+  },
+  "74D": {
+   "mocTitle": "Chemical, Biological, Radiological, and Nuclear (CBRN) Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "47-4041.00",
+     "title": "Hazardous Materials Removal Workers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Hazardous Materials Removal Workers"
+  },
+  "36B": {
+   "mocTitle": "Financial Management Technician",
+   "occupations": [
+    {
+     "onetSocCode": "43-3031.00",
+     "title": "Bookkeeping, Accounting, and Auditing Clerks",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Bookkeeping, Accounting, and Auditing Clerks"
+  },
+  "42A": {
+   "mocTitle": "Human Resources Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "43-4161.00",
+     "title": "Human Resources Assistants, Except Payroll and Timekeeping",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Human Resources Assistants, Except Payroll and Timekeeping"
+  },
+  "51C": {
+   "mocTitle": "Contracting Noncommissioned Officer (NCO)",
+   "occupations": [
+    {
+     "onetSocCode": "43-3061.00",
+     "title": "Procurement Clerks",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Procurement Clerks"
+  },
+  "91B": {
+   "mocTitle": "Wheeled Vehicle Mechanic",
+   "occupations": [
+    {
+     "onetSocCode": "49-3023.00",
+     "title": "Automotive Service Technicians and Mechanics",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "49-3031.00",
+     "title": "Bus and Truck Mechanics and Diesel Engine Specialists",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Automotive Service Technicians and Mechanics; Bus and Truck Mechanics and Diesel Engine Specialists"
+  },
+  "91E": {
+   "mocTitle": "Allied Trades Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "51-4041.00",
+     "title": "Machinists",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Machinists"
+  },
+  "91S": {
+   "mocTitle": "STRYKER Systems Maintainer",
+   "occupations": [
+    {
+     "onetSocCode": "49-3031.00",
+     "title": "Bus and Truck Mechanics and Diesel Engine Specialists",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "49-3042.00",
+     "title": "Mobile Heavy Equipment Mechanics, Except Engines",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "49-3023.00",
+     "title": "Automotive Service Technicians and Mechanics",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Bus and Truck Mechanics and Diesel Engine Specialists; Mobile Heavy Equipment Mechanics, Except Engines; Automotive Service Technicians and Mechanics"
+  },
+  "94E": {
+   "mocTitle": "Radio Equipment Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-2021.00",
+     "title": "Radio, Cellular, and Tower Equipment Installers and Repairers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Radio, Cellular, and Tower Equipment Installers and Repairers"
+  },
+  "68A": {
+   "mocTitle": "Biomedical Equipment Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "49-9062.00",
+     "title": "Medical Equipment Repairers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Medical Equipment Repairers"
+  },
+  "68C": {
+   "mocTitle": "Practical Nursing Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "29-2061.00",
+     "title": "Licensed Practical and Licensed Vocational Nurses",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Licensed Practical and Licensed Vocational Nurses"
+  },
+  "68E": {
+   "mocTitle": "Dental Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "31-9091.00",
+     "title": "Dental Assistants",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "29-1292.00",
+     "title": "Dental Hygienists",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Dental Assistants; Dental Hygienists"
+  },
+  "68G": {
+   "mocTitle": "Patient Administration Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "29-2072.00",
+     "title": "Medical Records Specialists",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Medical Records Specialists"
+  },
+  "68J": {
+   "mocTitle": "Medical Logistics Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "43-5071.00",
+     "title": "Shipping, Receiving, and Inventory Clerks",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Shipping, Receiving, and Inventory Clerks"
+  },
+  "68K": {
+   "mocTitle": "Medical Laboratory Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "29-2011.00",
+     "title": "Medical and Clinical Laboratory Technologists",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Medical and Clinical Laboratory Technologists"
+  },
+  "68P": {
+   "mocTitle": "Radiology Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "29-2034.00",
+     "title": "Radiologic Technologists and Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Radiologic Technologists and Technicians"
+  },
+  "68S": {
+   "mocTitle": "Preventive Medicine Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "19-5012.00",
+     "title": "Occupational Health and Safety Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Occupational Health and Safety Technicians"
+  },
+  "68T": {
+   "mocTitle": "Animal Care Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "31-9096.00",
+     "title": "Veterinary Assistants and Laboratory Animal Caretakers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Veterinary Assistants and Laboratory Animal Caretakers"
+  },
+  "68V": {
+   "mocTitle": "Respiratory Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "29-2099.00",
+     "title": "Health Technologists and Technicians, All Other",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Health Technologists and Technicians, All Other"
+  },
+  "68W": {
+   "mocTitle": "Combat Medic Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "29-2043.00",
+     "title": "Paramedics",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Paramedics"
+  },
+  "68X": {
+   "mocTitle": "Behavioral Health Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "29-2053.00",
+     "title": "Psychiatric Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Psychiatric Technicians"
+  },
+  "17C": {
+   "mocTitle": "Cyber Operations Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "15-1212.00",
+     "title": "Information Security Analysts",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Information Security Analysts"
+  },
+  "17E": {
+   "mocTitle": "Electronic Warfare Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "15-1212.00",
+     "title": "Information Security Analysts",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Information Security Analysts"
+  },
+  "25B": {
+   "mocTitle": "Information Technology Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "15-1299.00",
+     "title": "Computer Occupations, All Other",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Computer Occupations, All Other"
+  },
+  "25D": {
+   "mocTitle": "Cyber Network Defender",
+   "occupations": [
+    {
+     "onetSocCode": "15-1212.00",
+     "title": "Information Security Analysts",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "15-1244.00",
+     "title": "Network and Computer Systems Administrators",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Information Security Analysts; Network and Computer Systems Administrators"
+  },
+  "25E": {
+   "mocTitle": "Electromagnetic Spectrum Manager",
+   "occupations": [
+    {
+     "onetSocCode": "43-2099.00",
+     "title": "Communications Equipment Operators, All Other",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Communications Equipment Operators, All Other"
+  },
+  "25H": {
+   "mocTitle": "Network Communication Systems Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "15-1244.00",
+     "title": "Network and Computer Systems Administrators",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Network and Computer Systems Administrators"
+  },
+  "25U": {
+   "mocTitle": "Signal Operations Support Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "43-2099.00",
+     "title": "Communications Equipment Operators, All Other",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "27-4012.00",
+     "title": "Broadcast Technicians",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "49-2021.00",
+     "title": "Radio, Cellular, and Tower Equipment Installers and Repairers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Communications Equipment Operators, All Other; Broadcast Technicians; Radio, Cellular, and Tower Equipment Installers and Repairers"
+  },
+  "35F": {
+   "mocTitle": "Intelligence Analyst",
+   "occupations": [
+    {
+     "onetSocCode": "55-3019.00",
+     "title": "Military Enlisted Tactical Operations and Air/Weapons Specialists and Crew Members, All Other",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Military Enlisted Tactical Operations and Air/Weapons Specialists and Crew Members, All Other (O*NET-SOC 55-3019.00; military occupation)"
+  },
+  "35G": {
+   "mocTitle": "Geospatial Intelligence Imagery Analyst",
+   "occupations": [
+    {
+     "onetSocCode": "17-1021.00",
+     "title": "Cartographers and Photogrammetrists",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "17-3031.00",
+     "title": "Surveying and Mapping Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Cartographers and Photogrammetrists; Surveying and Mapping Technicians"
+  },
+  "35L": {
+   "mocTitle": "Counter Intelligence Agent",
+   "occupations": [
+    {
+     "onetSocCode": "55-3019.00",
+     "title": "Military Enlisted Tactical Operations and Air/Weapons Specialists and Crew Members, All Other",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Military Enlisted Tactical Operations and Air/Weapons Specialists and Crew Members, All Other (O*NET-SOC 55-3019.00; military occupation)"
+  },
+  "35M": {
+   "mocTitle": "Human Intelligence Collector",
+   "occupations": [
+    {
+     "onetSocCode": "27-3091.00",
+     "title": "Interpreters and Translators",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Interpreters and Translators"
+  },
+  "35N": {
+   "mocTitle": "Signals Intelligence Analyst",
+   "occupations": [
+    {
+     "onetSocCode": "43-2099.00",
+     "title": "Communications Equipment Operators, All Other",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Communications Equipment Operators, All Other"
+  },
+  "35P": {
+   "mocTitle": "Signals Intelligence (SIGINT) Voice Interceptor",
+   "occupations": [
+    {
+     "onetSocCode": "43-2099.00",
+     "title": "Communications Equipment Operators, All Other",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "27-3091.00",
+     "title": "Interpreters and Translators",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Communications Equipment Operators, All Other; Interpreters and Translators"
+  },
+  "35S": {
+   "mocTitle": "Signals Acquisition/Exploitation Analyst",
+   "occupations": [
+    {
+     "onetSocCode": "55-3019.00",
+     "title": "Military Enlisted Tactical Operations and Air/Weapons Specialists and Crew Members, All Other",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Military Enlisted Tactical Operations and Air/Weapons Specialists and Crew Members, All Other (O*NET-SOC 55-3019.00; military occupation)"
+  },
+  "35T": {
+   "mocTitle": "Military Intelligence (MI) Systems Maintainer/Integrator",
+   "occupations": [
+    {
+     "onetSocCode": "49-2094.00",
+     "title": "Electrical and Electronics Repairers, Commercial and Industrial Equipment",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Electrical and Electronics Repairers, Commercial and Industrial Equipment"
+  },
+  "15B": {
+   "mocTitle": "Aircraft Powerplant Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-3011.00",
+     "title": "Aircraft Mechanics and Service Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Aircraft Mechanics and Service Technicians"
+  },
+  "15E": {
+   "mocTitle": "RQ-7 Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-3011.00",
+     "title": "Aircraft Mechanics and Service Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Aircraft Mechanics and Service Technicians"
+  },
+  "15F": {
+   "mocTitle": "Aircraft Electrician",
+   "occupations": [
+    {
+     "onetSocCode": "49-2091.00",
+     "title": "Avionics Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Avionics Technicians"
+  },
+  "15N": {
+   "mocTitle": "Avionic Mechanic",
+   "occupations": [
+    {
+     "onetSocCode": "49-2091.00",
+     "title": "Avionics Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Avionics Technicians"
+  },
+  "15P": {
+   "mocTitle": "Aviation Operations Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "53-2022.00",
+     "title": "Airfield Operations Specialists",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Airfield Operations Specialists"
+  },
+  "15Q": {
+   "mocTitle": "Air Traffic Control (ATC) Operator",
+   "occupations": [
+    {
+     "onetSocCode": "53-2021.00",
+     "title": "Air Traffic Controllers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Air Traffic Controllers"
+  },
+  "15R": {
+   "mocTitle": "AH-64 Attack Helicopter Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-3011.00",
+     "title": "Aircraft Mechanics and Service Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Aircraft Mechanics and Service Technicians"
+  },
+  "15T": {
+   "mocTitle": "UH-60 Helicopter Repairer /Aircrew Member",
+   "occupations": [
+    {
+     "onetSocCode": "49-3011.00",
+     "title": "Aircraft Mechanics and Service Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Aircraft Mechanics and Service Technicians"
+  },
+  "15U": {
+   "mocTitle": "CH-47 Helicopter Repairer /Aircrew Member",
+   "occupations": [
+    {
+     "onetSocCode": "49-3011.00",
+     "title": "Aircraft Mechanics and Service Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Aircraft Mechanics and Service Technicians"
+  },
+  "15W": {
+   "mocTitle": "RQ-7 Operator",
+   "occupations": [
+    {
+     "onetSocCode": "17-3024.00",
+     "title": "Electro-Mechanical and Mechatronics Technologists and Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Electro-Mechanical and Mechatronics Technologists and Technicians"
+  },
+  "27D": {
+   "mocTitle": "Paralegal Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "23-2011.00",
+     "title": "Paralegals and Legal Assistants",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Paralegals and Legal Assistants"
+  },
+  "31B": {
+   "mocTitle": "Military Police",
+   "occupations": [
+    {
+     "onetSocCode": "33-3051.00",
+     "title": "Police and Sheriff's Patrol Officers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Police and Sheriff's Patrol Officers"
+  },
+  "31D": {
+   "mocTitle": "CID Special Agent",
+   "occupations": [
+    {
+     "onetSocCode": "33-3021.00",
+     "title": "Detectives and Criminal Investigators",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Detectives and Criminal Investigators"
+  },
+  "31E": {
+   "mocTitle": "Corrections and Detention Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "33-3012.00",
+     "title": "Correctional Officers and Jailers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Correctional Officers and Jailers"
+  },
+  "37F": {
+   "mocTitle": "Psychological Operations Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "55-3019.00",
+     "title": "Military Enlisted Tactical Operations and Air/Weapons Specialists and Crew Members, All Other",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Military Enlisted Tactical Operations and Air/Weapons Specialists and Crew Members, All Other (O*NET-SOC 55-3019.00; military occupation)"
+  },
+  "38B": {
+   "mocTitle": "Civil Affairs Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "13-1199.04",
+     "title": "Business Continuity Planners",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Business Continuity Planners"
+  },
+  "42R": {
+   "mocTitle": "Musician",
+   "occupations": [
+    {
+     "onetSocCode": "27-2042.00",
+     "title": "Musicians and Singers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Musicians and Singers"
+  },
+  "42S": {
+   "mocTitle": "Special Band Musician",
+   "occupations": [
+    {
+     "onetSocCode": "27-2042.00",
+     "title": "Musicians and Singers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Musicians and Singers"
+  },
+  "46S": {
+   "mocTitle": "Public Affairs Mass Communication Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "27-3031.00",
+     "title": "Public Relations Specialists",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Public Relations Specialists"
+  },
+  "46V": {
+   "mocTitle": "Visual Information Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "27-4031.00",
+     "title": "Camera Operators, Television, Video, and Film",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "27-4012.00",
+     "title": "Broadcast Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Camera Operators, Television, Video, and Film; Broadcast Technicians"
+  },
+  "56M": {
+   "mocTitle": "Religious Affairs Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "21-2099.00",
+     "title": "Religious Workers, All Other",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Religious Workers, All Other"
+  },
+  "79R": {
+   "mocTitle": "Recruiter",
+   "occupations": [
+    {
+     "onetSocCode": "13-1071.00",
+     "title": "Human Resources Specialists",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Human Resources Specialists"
+  },
+  "12C": {
+   "mocTitle": "Bridge Crewmember",
+   "occupations": [
+    {
+     "onetSocCode": "47-4099.00",
+     "title": "Construction and Related Workers, All Other",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Construction and Related Workers, All Other"
+  },
+  "12H": {
+   "mocTitle": "Construction Engineering Supervisor",
+   "occupations": [
+    {
+     "onetSocCode": "47-1011.00",
+     "title": "First-Line Supervisors of Construction Trades and Extraction Workers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "First-Line Supervisors of Construction Trades and Extraction Workers"
+  },
+  "12Q": {
+   "mocTitle": "Powerline Distribution Specialist (RC)",
+   "occupations": [
+    {
+     "onetSocCode": "49-9051.00",
+     "title": "Electrical Power-Line Installers and Repairers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Electrical Power-Line Installers and Repairers"
+  },
+  "14E": {
+   "mocTitle": "PATRIOT Fire Control Enhanced Operator/Maintainer",
+   "occupations": [
+    {
+     "onetSocCode": "55-3014.00",
+     "title": "Artillery and Missile Crew Members",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Artillery and Missile Crew Members (O*NET-SOC 55-3014.00; military occupation)"
+  },
+  "14G": {
+   "mocTitle": "Air Defense (AD) Battle Management System Operator",
+   "occupations": [
+    {
+     "onetSocCode": "55-3014.00",
+     "title": "Artillery and Missile Crew Members",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Artillery and Missile Crew Members (O*NET-SOC 55-3014.00; military occupation)"
+  },
+  "14H": {
+   "mocTitle": "Air Defense (AD) Enhanced Early Warning System Operator",
+   "occupations": [
+    {
+     "onetSocCode": "55-3014.00",
+     "title": "Artillery and Missile Crew Members",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Artillery and Missile Crew Members (O*NET-SOC 55-3014.00; military occupation)"
+  },
+  "14P": {
+   "mocTitle": "Air and Missile Defense (AMD) Crewmember",
+   "occupations": [
+    {
+     "onetSocCode": "55-3014.00",
+     "title": "Artillery and Missile Crew Members",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Artillery and Missile Crew Members (O*NET-SOC 55-3014.00; military occupation)"
+  },
+  "14T": {
+   "mocTitle": "PATRIOT Launching Station Enhanced Operator/Maintainer",
+   "occupations": [
+    {
+     "onetSocCode": "55-3014.00",
+     "title": "Artillery and Missile Crew Members",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Artillery and Missile Crew Members (O*NET-SOC 55-3014.00; military occupation)"
+  },
+  "15C": {
+   "mocTitle": "MQ-1 Operator",
+   "occupations": [
+    {
+     "onetSocCode": "17-3024.00",
+     "title": "Electro-Mechanical and Mechatronics Technologists and Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Electro-Mechanical and Mechatronics Technologists and Technicians"
+  },
+  "15D": {
+   "mocTitle": "Aircraft Powertrain Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-3011.00",
+     "title": "Aircraft Mechanics and Service Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Aircraft Mechanics and Service Technicians"
+  },
+  "15G": {
+   "mocTitle": "Aircraft Structural Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-3011.00",
+     "title": "Aircraft Mechanics and Service Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Aircraft Mechanics and Service Technicians"
+  },
+  "15H": {
+   "mocTitle": "Aircraft Pneudraulics Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-3011.00",
+     "title": "Aircraft Mechanics and Service Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Aircraft Mechanics and Service Technicians"
+  },
+  "15M": {
+   "mocTitle": "MQ-1 Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-3011.00",
+     "title": "Aircraft Mechanics and Service Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Aircraft Mechanics and Service Technicians"
+  },
+  "15Y": {
+   "mocTitle": "AH-64 Armament/Electrical/Avionics Systems Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-2091.00",
+     "title": "Avionics Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Avionics Technicians"
+  },
+  "18E": {
+   "mocTitle": "Special Forces Communications Sergeant",
+   "occupations": [
+    {
+     "onetSocCode": "55-3018.00",
+     "title": "Special Forces",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Special Forces (O*NET-SOC 55-3018.00; military occupation)"
+  },
+  "18F": {
+   "mocTitle": "Special Forces Intelligence Sergeant",
+   "occupations": [
+    {
+     "onetSocCode": "55-3018.00",
+     "title": "Special Forces",
+     "militaryOnly": true
+    }
+   ],
+   "note": "Special Forces (O*NET-SOC 55-3018.00; military occupation)"
+  },
+  "25S": {
+   "mocTitle": "Satellite Communications Systems Operator-Maintainer",
+   "occupations": [
+    {
+     "onetSocCode": "49-2021.00",
+     "title": "Radio, Cellular, and Tower Equipment Installers and Repairers",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "49-2094.00",
+     "title": "Electrical and Electronics Repairers, Commercial and Industrial Equipment",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "43-2099.00",
+     "title": "Communications Equipment Operators, All Other",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Radio, Cellular, and Tower Equipment Installers and Repairers; Electrical and Electronics Repairers, Commercial and Industrial Equipment; Communications Equipment Operators, All Other"
+  },
+  "31K": {
+   "mocTitle": "Working Dog Handler",
+   "occupations": [
+    {
+     "onetSocCode": "33-3051.00",
+     "title": "Police and Sheriff's Patrol Officers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Police and Sheriff's Patrol Officers"
+  },
+  "38R": {
+   "mocTitle": "Civil Reconnaissance Sergeant (CR SGT)",
+   "occupations": [
+    {
+     "onetSocCode": "13-1199.04",
+     "title": "Business Continuity Planners",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Business Continuity Planners"
+  },
+  "38W": {
+   "mocTitle": "Civil Affairs Medical Sergeant (CA Medical SGT)",
+   "occupations": [
+    {
+     "onetSocCode": "13-1199.04",
+     "title": "Business Continuity Planners",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Business Continuity Planners"
+  },
+  "46T": {
+   "mocTitle": "Visual Information Equipment Operator-Maintainer",
+   "occupations": [
+    {
+     "onetSocCode": "27-4011.00",
+     "title": "Audio and Video Technicians",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "49-2097.00",
+     "title": "Audiovisual Equipment Installers and Repairers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Audio and Video Technicians; Audiovisual Equipment Installers and Repairers"
+  },
+  "68B": {
+   "mocTitle": "Orthopedic Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "29-2099.00",
+     "title": "Health Technologists and Technicians, All Other",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Health Technologists and Technicians, All Other"
+  },
+  "68D": {
+   "mocTitle": "Operating Room Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "29-2055.00",
+     "title": "Surgical Technologists",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Surgical Technologists"
+  },
+  "68F": {
+   "mocTitle": "Physical Therapy Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "31-2021.00",
+     "title": "Physical Therapist Assistants",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Physical Therapist Assistants"
+  },
+  "68H": {
+   "mocTitle": "Optical Laboratory Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "51-9083.00",
+     "title": "Ophthalmic Laboratory Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Ophthalmic Laboratory Technicians"
+  },
+  "68L": {
+   "mocTitle": "Occupational Therapy Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "31-2011.00",
+     "title": "Occupational Therapy Assistants",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Occupational Therapy Assistants"
+  },
+  "68M": {
+   "mocTitle": "Nutrition Care Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "35-2012.00",
+     "title": "Cooks, Institution and Cafeteria",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Cooks, Institution and Cafeteria"
+  },
+  "68Q": {
+   "mocTitle": "Pharmacy Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "29-2052.00",
+     "title": "Pharmacy Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Pharmacy Technicians"
+  },
+  "68R": {
+   "mocTitle": "Veterinary Food Inspection Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "45-2011.00",
+     "title": "Agricultural Inspectors",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Agricultural Inspectors"
+  },
+  "68Y": {
+   "mocTitle": "Eye Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "29-2099.05",
+     "title": "Ophthalmic Medical Technologists",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Ophthalmic Medical Technologists"
+  },
+  "79S": {
+   "mocTitle": "Career Counselor",
+   "occupations": [
+    {
+     "onetSocCode": "13-1071.00",
+     "title": "Human Resources Specialists",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Human Resources Specialists"
+  },
+  "79T": {
+   "mocTitle": "Recruiting and Retention NCO (Army National Guard of the United States)",
+   "occupations": [
+    {
+     "onetSocCode": "13-1071.00",
+     "title": "Human Resources Specialists",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Human Resources Specialists"
+  },
+  "79V": {
+   "mocTitle": "Army Reserve Career Counselor (Army Reserve)",
+   "occupations": [
+    {
+     "onetSocCode": "13-1071.00",
+     "title": "Human Resources Specialists",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Human Resources Specialists"
+  },
+  "88U": {
+   "mocTitle": "Railway Specialist (USAR only)",
+   "occupations": [
+    {
+     "onetSocCode": "53-4011.00",
+     "title": "Locomotive Engineers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Locomotive Engineers"
+  },
+  "89A": {
+   "mocTitle": "Ammunition Stock Control and Accounting Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "47-5032.00",
+     "title": "Explosives Workers, Ordnance Handling Experts, and Blasters",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Explosives Workers, Ordnance Handling Experts, and Blasters"
+  },
+  "91A": {
+   "mocTitle": "M1 Abrams Tank System Maintainer",
+   "occupations": [
+    {
+     "onetSocCode": "49-3042.00",
+     "title": "Mobile Heavy Equipment Mechanics, Except Engines",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "49-3031.00",
+     "title": "Bus and Truck Mechanics and Diesel Engine Specialists",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Mobile Heavy Equipment Mechanics, Except Engines; Bus and Truck Mechanics and Diesel Engine Specialists"
+  },
+  "91C": {
+   "mocTitle": "Utilities Equipment Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-9021.00",
+     "title": "Heating, Air Conditioning, and Refrigeration Mechanics and Installers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Heating, Air Conditioning, and Refrigeration Mechanics and Installers"
+  },
+  "91D": {
+   "mocTitle": "Tactical Power Generation Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "49-3031.00",
+     "title": "Bus and Truck Mechanics and Diesel Engine Specialists",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Bus and Truck Mechanics and Diesel Engine Specialists"
+  },
+  "91F": {
+   "mocTitle": "Small Arms/Towed Artillery Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-9099.00",
+     "title": "Installation, Maintenance, and Repair Workers, All Other",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Installation, Maintenance, and Repair Workers, All Other"
+  },
+  "91H": {
+   "mocTitle": "Tracked Vehicle Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-3042.00",
+     "title": "Mobile Heavy Equipment Mechanics, Except Engines",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "49-3031.00",
+     "title": "Bus and Truck Mechanics and Diesel Engine Specialists",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Mobile Heavy Equipment Mechanics, Except Engines; Bus and Truck Mechanics and Diesel Engine Specialists"
+  },
+  "91J": {
+   "mocTitle": "Quartermaster and Chemical Equipment Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-9041.00",
+     "title": "Industrial Machinery Mechanics",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Industrial Machinery Mechanics"
+  },
+  "91L": {
+   "mocTitle": "Construction Equipment Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-3042.00",
+     "title": "Mobile Heavy Equipment Mechanics, Except Engines",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Mobile Heavy Equipment Mechanics, Except Engines"
+  },
+  "91M": {
+   "mocTitle": "BRADLEY Fighting Vehicle System Maintainer",
+   "occupations": [
+    {
+     "onetSocCode": "49-3042.00",
+     "title": "Mobile Heavy Equipment Mechanics, Except Engines",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "49-3031.00",
+     "title": "Bus and Truck Mechanics and Diesel Engine Specialists",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Mobile Heavy Equipment Mechanics, Except Engines; Bus and Truck Mechanics and Diesel Engine Specialists"
+  },
+  "91P": {
+   "mocTitle": "Self Propelled Artillery Systems Mechanic",
+   "occupations": [
+    {
+     "onetSocCode": "49-3042.00",
+     "title": "Mobile Heavy Equipment Mechanics, Except Engines",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "49-2094.00",
+     "title": "Electrical and Electronics Repairers, Commercial and Industrial Equipment",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Mobile Heavy Equipment Mechanics, Except Engines; Electrical and Electronics Repairers, Commercial and Industrial Equipment"
+  },
+  "94A": {
+   "mocTitle": "Land Combat Electronic Missile System Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-2094.00",
+     "title": "Electrical and Electronics Repairers, Commercial and Industrial Equipment",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Electrical and Electronics Repairers, Commercial and Industrial Equipment"
+  },
+  "94D": {
+   "mocTitle": "Air Traffic Control Equipment Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-2094.00",
+     "title": "Electrical and Electronics Repairers, Commercial and Industrial Equipment",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Electrical and Electronics Repairers, Commercial and Industrial Equipment"
+  },
+  "94F": {
+   "mocTitle": "Computer/Detection Systems Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-2011.00",
+     "title": "Computer, Automated Teller, and Office Machine Repairers",
+     "militaryOnly": false
+    },
+    {
+     "onetSocCode": "49-2098.00",
+     "title": "Security and Fire Alarm Systems Installers",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Computer, Automated Teller, and Office Machine Repairers; Security and Fire Alarm Systems Installers"
+  },
+  "94H": {
+   "mocTitle": "Test, Measurement, and Diagnostic Equipment (TMDE) Maintenance Support Specialist",
+   "occupations": [
+    {
+     "onetSocCode": "49-9069.00",
+     "title": "Precision Instrument and Equipment Repairers, All Other",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Precision Instrument and Equipment Repairers, All Other"
+  },
+  "94M": {
+   "mocTitle": "Radar Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-2094.00",
+     "title": "Electrical and Electronics Repairers, Commercial and Industrial Equipment",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Electrical and Electronics Repairers, Commercial and Industrial Equipment"
+  },
+  "94P": {
+   "mocTitle": "Multiple Launch Rocket System (MLRS) Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-2094.00",
+     "title": "Electrical and Electronics Repairers, Commercial and Industrial Equipment",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Electrical and Electronics Repairers, Commercial and Industrial Equipment"
+  },
+  "94R": {
+   "mocTitle": "Avionic and Survivability Equipment Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-2091.00",
+     "title": "Avionics Technicians",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Avionics Technicians"
+  },
+  "94S": {
+   "mocTitle": "PATRIOT System Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-2094.00",
+     "title": "Electrical and Electronics Repairers, Commercial and Industrial Equipment",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Electrical and Electronics Repairers, Commercial and Industrial Equipment"
+  },
+  "94T": {
+   "mocTitle": "Short Range Air Defense System Repairer",
+   "occupations": [
+    {
+     "onetSocCode": "49-2094.00",
+     "title": "Electrical and Electronics Repairers, Commercial and Industrial Equipment",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Electrical and Electronics Repairers, Commercial and Industrial Equipment"
+  },
+  "94Y": {
+   "mocTitle": "Automatic Test Systems Operator/Maintainer",
+   "occupations": [
+    {
+     "onetSocCode": "49-2094.00",
+     "title": "Electrical and Electronics Repairers, Commercial and Industrial Equipment",
+     "militaryOnly": false
+    }
+   ],
+   "note": "Electrical and Electronics Repairers, Commercial and Industrial Equipment"
+  }
+ },
+ "omitted": {
+  "19C": "the crosswalk has only obsolete officer records for this code; the newest ended 2016-10",
+  "08H": "the crosswalk carries no record for this code at all",
+  "15X": "the crosswalk has only obsolete enlisted records for this code; the newest ended 2015-10",
+  "40D": "the crosswalk carries no record for this code at all",
+  "42T": "the crosswalk carries no record for this code at all",
+  "88P": "the crosswalk has only obsolete enlisted records for this code; the newest ended 2016-10"
+ }
+}
