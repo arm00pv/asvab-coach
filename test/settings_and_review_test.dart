@@ -118,7 +118,7 @@ void main() {
     );
 
     await pumpSettings(tester, state);
-    await tester.tap(find.text('Copy history as JSON'));
+    await tester.tap(find.text('Copy my history'));
     await settle(tester);
 
     expect(copied, isNotNull, reason: 'nothing reached the clipboard');

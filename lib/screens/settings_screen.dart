@@ -135,7 +135,11 @@ class SettingsScreen extends StatelessWidget {
                         }
                       },
                       icon: const Icon(Icons.copy_rounded, size: 15),
-                      label: const Text('Copy history as JSON'),
+                      // This is the one way to take the history off the
+                      // device, so it should not read like a developer
+                      // command sitting above the erase button. It copies a
+                      // pasteable copy; nothing is uploaded anywhere.
+                      label: const Text('Copy my history'),
                     ),
                   ],
                 ),
