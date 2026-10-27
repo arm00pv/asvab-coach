@@ -262,8 +262,11 @@ class _ReviewCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: Space.sm),
+              // A bare "15s" beside a badge reads like a score. It is time
+              // spent on the item, which is the number that tells a candidate
+              // whether they lost marks to speed or to knowledge.
               Text(
-                '${item.response?.secondsSpent ?? 0}s',
+                '${item.response?.secondsSpent ?? 0}s spent',
                 style: context.text.labelSmall?.copyWith(color: c.textMuted),
               ),
             ],
