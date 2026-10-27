@@ -91,13 +91,13 @@ class SettingsScreen extends StatelessWidget {
                   _kv(
                     context,
                     'Officer track',
-                    goal.officerTrack ? 'yes' : 'no',
+                    goal.officerTrack ? 'Yes' : 'No',
                   ),
                   _kv(
                     context,
                     'Tracked jobs',
                     goal.targetMosCodes.isEmpty
-                        ? 'none'
+                        ? 'None yet'
                         : goal.targetMosCodes
                               .map((c) => MosRepository.byCode(c)?.code ?? c)
                               .join(', '),
