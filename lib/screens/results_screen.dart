@@ -74,6 +74,21 @@ class ResultsScreen extends StatelessWidget {
             ),
             const SizedBox(height: Space.lg),
             const _SectionTitle('Line scores', explain: true),
+            const SizedBox(height: Space.xs),
+            // Two scales sit side by side in this table and the bars gave no
+            // hint of it: the ten area scores average 100, Verbal Expression
+            // averages 50. Without this line a VE of 50 read as a disaster
+            // next to a GT of 100, and the bar colours had no key at all.
+            Text(
+              'The ten area scores average 100. Verbal Expression is on a '
+              'different scale and averages 50, so 50 is ordinary rather '
+              'than low. Bar colour compares each score with your own target, '
+              'not with other candidates.',
+              style: context.text.bodySmall?.copyWith(
+                color: context.colors.textSecondary,
+                height: 1.45,
+              ),
+            ),
             const SizedBox(height: Space.sm),
             _LineScoreTable(report: report, goal: app.goal),
             const SizedBox(height: Space.xl),
