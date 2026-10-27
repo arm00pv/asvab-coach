@@ -348,13 +348,13 @@ class _Hero extends StatelessWidget {
                   StatTile(
                     label: 'GT',
                     value: '${report.gt}',
-                    caption: 'officer gate 110',
+                    caption: 'Officer gate 110',
                     compact: true,
                   ),
                   StatTile(
                     label: 'Verbal',
                     value: '${report.ve}',
-                    caption: 'VE composite',
+                    caption: 'Verbal composite',
                     compact: true,
                   ),
                   StatTile(
