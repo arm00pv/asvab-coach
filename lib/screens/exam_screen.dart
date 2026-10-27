@@ -165,7 +165,7 @@ class _ExamScreenState extends State<ExamScreen> with WidgetsBindingObserver {
     showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Leave this attempt?'),
+        title: const Text('Abandon this attempt?'),
         content: const Text(
           'Progress in this attempt will not be scored. Your earlier results are '
           'untouched.',

@@ -412,7 +412,7 @@ void main() {
       (_) {},
     );
     await settle(tester);
-    expect(find.text('Leave this attempt?'), findsOneWidget);
+    expect(find.text('Abandon this attempt?'), findsOneWidget);
     await tester.tap(find.text('Discard attempt'));
     await settle(tester, pumps: 8);
 
