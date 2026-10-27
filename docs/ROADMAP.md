@@ -166,3 +166,25 @@ and the L1-L15 polish items.
 
 Lesson recorded: seven screens in three parallel workers does not compose.
 One screen, one worker, verified before the next.
+
+## Phase 5 scoreboard (after round 42)
+
+Closed, with the guard that pins each: browser copy and its test; the dead
+Submit control; the Settings privacy stutter and a test that fails on any
+repeated sentence; the results 18 px overflow, diagnosed by measurement;
+blank-versus-wrong review badges; the enlistment requirements table at
+411 dp, stacked below 480 dp with geometry assertions; the MOS row word
+breaks, which uncovered 38 truncated paragraphs; M5, the claim of
+qualification on two answered items, gated on a documented evidence rule
+with three tests including one per required AFQT subtest; M2, the dead back
+arrow; M7, the line-score scale collision, fixed with a legend that states
+both means.
+
+Open: M4 (one action still wears four names - renaming it touches the
+journey, resume and flow tests, which is a coordinated change, not a
+rename), M3 (roughly 38% of each item screen is empty), and the L1-L15
+polish items, of which none is a correctness defect.
+
+Verified on a quiet tree with no other process running: flutter test 611
+passing, flutter analyze clean, dart run tool/audit.dart --strict clean at
+447 of 447 items explained.
