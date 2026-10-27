@@ -603,15 +603,25 @@ class _QuestionView extends StatelessWidget {
                                   ),
                                 ),
                               if (displaySelected != null)
+                                // This sits in the option column, so it must
+                                // share that column left edge; a button with
+                                // its own padding looked inset from the very
+                                // cards it is about.
                                 Align(
                                   alignment: Alignment.centerLeft,
-                                  child: TextButton.icon(
-                                    onPressed: () => session.answer(null),
-                                    icon: const Icon(
-                                      Icons.close_rounded,
-                                      size: 15,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: Space.xs,
+                                      top: Space.xs,
                                     ),
-                                    label: const Text('Clear answer'),
+                                    child: TextButton.icon(
+                                      onPressed: () => session.answer(null),
+                                      icon: const Icon(
+                                        Icons.close_rounded,
+                                        size: 15,
+                                      ),
+                                      label: const Text('Clear answer'),
+                                    ),
                                   ),
                                 ),
                             ],
