@@ -1094,7 +1094,34 @@ class _OfficerSection extends StatelessWidget {
   }
 }
 
+/// What the requirements table asks of a card, in dp at 1x text: enough for
+/// "Retest spacing" and "30 / 30 / 180 days" to sit on at most two lines, and an
+/// explanation column wide enough to read a sentence in rather than a word per
+/// line.
+const double _requirementLabelWidth = 118;
+const double _requirementValueWidth = 108;
+const double _requirementExplanationFloor = 230;
+
+/// How much larger than designed the system font setting is drawing text.
+///
+/// Sampled at the size of an explanation paragraph, because that is the line
+/// this block is measured in; a non-linear scaler reports a different factor at
+/// other sizes.
+double _textScaleOf(BuildContext context) {
+  const sample = 12.5;
+  return MediaQuery.textScalerOf(context).scale(sample) / sample;
+}
+
 /// The numbers a candidate actually needs before any MOS even matters.
+///
+/// Three columns only where three columns fit. At 411 dp the old fixed widths
+/// (118 dp label, 108 dp value) left the explanation ~40% of a 340 dp card, so
+/// every sentence wrapped to four or five lines while the label column idled -
+/// and on the *Computer test* row the value "Answer everything" filled its
+/// column exactly, putting the next sentence in the very next pixel and
+/// reading as "Answer everything On the CAT-ASVAB a blank item...". A phone gets
+/// one block per requirement instead: label, value, then the sentence that
+/// explains that value, and no column for a value to run out of.
 class _EnlistmentFacts extends StatelessWidget {
   const _EnlistmentFacts();
 
@@ -1153,43 +1180,28 @@ class _EnlistmentFacts extends StatelessWidget {
             ],
           ),
           const SizedBox(height: Space.md),
-          for (final fact in facts)
-            Padding(
-              padding: const EdgeInsets.only(bottom: Space.sm),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(
-                    width: 118,
-                    child: Text(
-                      fact.$1,
-                      style: context.text.bodySmall?.copyWith(
-                        color: c.textMuted,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 108,
-                    child: Text(
-                      fact.$2,
-                      style: context.text.labelMedium?.copyWith(
-                        color: c.primary,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      fact.$3,
-                      style: context.text.bodySmall?.copyWith(
-                        color: c.textSecondary,
-                        fontSize: 11,
-                        height: 1.4,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              // The table is measured in the text size the phone is actually
+              // drawing. A floor that ignored the system font size is exactly
+              // how a 340 dp card ended up giving the explanation column 40% of
+              // itself while the label column idled.
+              final scale = _textScaleOf(context);
+              final needed =
+                  (_requirementLabelWidth +
+                          _requirementValueWidth +
+                          _requirementExplanationFloor) *
+                      scale +
+                  Space.md * 2;
+              // A table is a promise that each column can be read as its own
+              // thing. Where the card cannot keep that promise the same facts
+              // are stacked rather than squeezed into slivers.
+              return constraints.maxWidth < needed
+                  ? _StackedRequirements(facts: facts)
+                  : _RequirementTable(facts: facts, scale: scale);
+            },
+          ),
+          const SizedBox(height: Space.sm),
           Text(
             'Sources: AR 601-210 (20 Mar 2026) paragraphs 2-8 and 9-10, '
             'goarmy.com eligibility, and the official ASVAB fact sheet. '
@@ -1202,6 +1214,115 @@ class _EnlistmentFacts extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// One requirement per block: the label, its value, then the sentence that
+/// explains the value.
+///
+/// This is the phone shape. The explanation is directly under the value it
+/// belongs to, so there is no column boundary for a short value to fill and no
+/// way for "Answer everything" to be read as the beginning of the next
+/// sentence. The rule between blocks is what carries the separation at 2x text,
+/// where a block is six or seven lines tall and a bare gap stops being enough.
+class _StackedRequirements extends StatelessWidget {
+  const _StackedRequirements({required this.facts});
+
+  final List<(String, String, String)> facts;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        for (var i = 0; i < facts.length; i++) ...<Widget>[
+          if (i > 0)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: Space.md),
+              child: Divider(height: 1, color: c.border),
+            ),
+          Text(
+            facts[i].$1,
+            style: context.text.labelMedium?.copyWith(color: c.textMuted),
+          ),
+          const SizedBox(height: Space.xxs),
+          Text(
+            facts[i].$2,
+            style: context.text.titleMedium?.copyWith(color: c.primary),
+          ),
+          const SizedBox(height: Space.xs),
+          Text(
+            facts[i].$3,
+            style: context.text.bodySmall?.copyWith(
+              color: c.textSecondary,
+              height: 1.45,
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+/// The same facts as a three-column table, for a card wide enough that each
+/// column is a column rather than a sliver.
+class _RequirementTable extends StatelessWidget {
+  const _RequirementTable({required this.facts, required this.scale});
+
+  final List<(String, String, String)> facts;
+
+  /// The system text scale the fixed columns are sized against, so the table
+  /// keeps its proportions when the phone enlarges text instead of collapsing
+  /// them into the collision this table used to ship.
+  final double scale;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        for (final fact in facts)
+          Padding(
+            padding: const EdgeInsets.only(bottom: Space.sm),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  width: _requirementLabelWidth * scale,
+                  child: Text(
+                    fact.$1,
+                    style: context.text.bodySmall?.copyWith(color: c.textMuted),
+                  ),
+                ),
+                // A real gutter either side of the value. Without one a value
+                // that fills its column and the explanation after it read as a
+                // single run-on string.
+                const SizedBox(width: Space.md),
+                SizedBox(
+                  width: _requirementValueWidth * scale,
+                  child: Text(
+                    fact.$2,
+                    style: context.text.labelMedium?.copyWith(color: c.primary),
+                  ),
+                ),
+                const SizedBox(width: Space.md),
+                Expanded(
+                  child: Text(
+                    fact.$3,
+                    style: context.text.bodySmall?.copyWith(
+                      color: c.textSecondary,
+                      fontSize: 11,
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+      ],
     );
   }
 }
