@@ -90,11 +90,11 @@ abstract final class AdaptiveEngine {
     final pct = (p.mastery * 100).round();
     final noun = p.attempts == 1 ? 'question' : 'questions';
     if (p.attempts <= 2) {
-      return 'Only $p.attempts $noun seen here so far, and you answered '
+      return 'Only ${p.attempts} $noun seen here so far, and you answered '
           '$pct percent. A short lesson will settle it.';
     }
     if (p.mastery < 0.4) {
-      return '$pct percent mastery across $p.attempts questions. This is a real gap.';
+      return '$pct percent mastery across ${p.attempts} questions. This is a real gap.';
     }
     if (p.mastery < 0.75) {
       return '$pct percent mastery. Close, but these are the cheapest points on the board.';

@@ -7,8 +7,10 @@ import '../data/bank/lessons_index.dart';
 import '../data/bank/question_bank.dart';
 import '../data/models/catalog.dart';
 import '../data/models/lesson.dart';
+import '../data/models/mos.dart';
 import '../engines/adaptive_engine.dart';
 import '../engines/study_planner.dart';
+import '../engines/study_schedule.dart';
 import '../state/app_state.dart';
 import '../widgets/primitives.dart';
 import '../widgets/puzzle_view.dart';
@@ -56,6 +58,10 @@ class PlanScreen extends StatelessWidget {
               else
                 Column(
                   children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: Space.md),
+                      child: _TodayCard(plan: plan, goal: app.goal),
+                    ),
                     for (final step in plan)
                       Padding(
                         padding: const EdgeInsets.only(bottom: Space.sm),
@@ -434,6 +440,157 @@ class _ScheduleCard extends StatelessWidget {
                 ],
               ),
             ),
+        ],
+      ),
+    );
+  }
+}
+
+String _minutes(int n) => '$n minute${n == 1 ? '' : 's'}';
+
+String _days(int n) => '$n day${n == 1 ? '' : 's'}';
+
+/// The plain reading of where the plan stands against the date and the budget.
+String _contextLine(StudySchedule schedule) {
+  switch (schedule.status) {
+    case ScheduleStatus.nothingPlanned:
+      return 'No steps outstanding.';
+    case ScheduleStatus.noTargetDate:
+      return 'No target date set, so there is nothing to divide the work over. '
+          'This is one step at a time until there is a date to pace against.';
+    case ScheduleStatus.datePassed:
+      return 'The target date has passed. What is left is '
+          '${_minutes(schedule.neededMinutes)} of work.';
+    case ScheduleStatus.noBudget:
+      return 'No daily minutes set. The work left needs '
+          '${_minutes(schedule.requiredDailyMinutes ?? 0)} a day.';
+    case ScheduleStatus.fits:
+    case ScheduleStatus.needsMoreTime:
+      return '${_days(schedule.daysRemaining ?? 0)} left at '
+          '${_minutes(schedule.dailyMinutes)} a day is '
+          '${_minutes(schedule.availableMinutes ?? 0)}. The plan needs '
+          '${_minutes(schedule.neededMinutes)}.';
+  }
+}
+
+/// What to do today, how far through the plan that puts the candidate, and -
+/// when the stated minutes a day cannot cover the work - the pace it needs
+/// instead.
+///
+/// The plan below is ordered by what each step is worth and says nothing about
+/// when to do it. This card is the answer to "when", computed once from the
+/// steps, the target date and the daily budget.
+class _TodayCard extends StatelessWidget {
+  const _TodayCard({required this.plan, required this.goal});
+
+  final List<PlanStep> plan;
+  final GoalProfile? goal;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final schedule = StudyScheduler.forPlan(
+      plan: plan,
+      goal: goal,
+      today: DateTime.now(),
+    );
+    final percent = (schedule.progressAfterToday * 100).round();
+    final tomorrow = schedule.tomorrowSteps;
+
+    return AppCard(
+      padding: const EdgeInsets.all(Space.lg),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Icon(Icons.today_outlined, size: 17, color: c.primary),
+              const SizedBox(width: Space.sm),
+              Expanded(
+                child: Text(
+                  'Today',
+                  style: context.text.titleSmall?.copyWith(
+                    color: c.textPrimary,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: Space.sm),
+          Text(
+            _contextLine(schedule),
+            style: context.text.bodySmall?.copyWith(
+              color: c.textMuted,
+              height: 1.4,
+            ),
+          ),
+          if (schedule.status == ScheduleStatus.needsMoreTime) ...<Widget>[
+            const SizedBox(height: Space.xs),
+            Text(
+              'It needs ${_minutes(schedule.requiredDailyMinutes ?? 0)} a day '
+              'instead of ${schedule.dailyMinutes}.',
+              style: context.text.bodySmall?.copyWith(
+                color: c.warning,
+                height: 1.4,
+              ),
+            ),
+          ],
+          if (schedule.todaySteps.isNotEmpty) ...<Widget>[
+            const SizedBox(height: Space.md),
+            for (final step in schedule.todaySteps)
+              Padding(
+                padding: const EdgeInsets.only(bottom: Space.xs),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      '\u00b7',
+                      style: context.text.bodySmall?.copyWith(color: c.primary),
+                    ),
+                    const SizedBox(width: Space.sm),
+                    Expanded(
+                      child: Text(
+                        '${step.label} - ${_minutes(step.minutes)}',
+                        style: context.text.bodySmall?.copyWith(
+                          color: c.textPrimary,
+                          height: 1.4,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+          if (schedule.stepCount > 0) ...<Widget>[
+            const SizedBox(height: Space.sm),
+            MeterBar(
+              value: schedule.progressAfterToday,
+              height: 6,
+              color: c.primary,
+            ),
+            const SizedBox(height: Space.xs),
+            Text(
+              '${schedule.stepsThroughToday} of ${schedule.stepCount} steps - '
+              '$percent percent of the plan.',
+              style: context.text.bodySmall?.copyWith(
+                color: c.textMuted,
+                height: 1.4,
+              ),
+            ),
+          ],
+          if (tomorrow.isNotEmpty) ...<Widget>[
+            const SizedBox(height: Space.xs),
+            Text(
+              tomorrow.length == 1
+                  ? 'Tomorrow: ${tomorrow.single.label}.'
+                  : 'Tomorrow: ${tomorrow.first.label} and '
+                        '${tomorrow.length - 1} more.',
+              style: context.text.bodySmall?.copyWith(
+                color: c.textMuted,
+                height: 1.4,
+              ),
+            ),
+          ],
         ],
       ),
     );
