@@ -1,4 +1,4 @@
-# ASVAB Coach - Army National Guard
+﻿# ASVAB Coach - Army National Guard
 
 A Flutter Web study application that places you with a diagnostic, runs practice
 and full-length mock ASVABs under official timing, scores you the way the Army
@@ -31,7 +31,7 @@ starts a practice set drawn from the subtests that feed that score.
 scores and every job you meet, generated on the device, headed with the
 statement that it is an estimate and not an official ASVAB record.
 
-Current release: [v1.3.0](https://github.com/arm00pv/asvab-coach/releases/tag/v1.3.0).
+Current release: [v1.4.0](https://github.com/arm00pv/asvab-coach/releases/tag/v1.4.0).
 The Android build updates itself from GitHub releases and verifies the
 published SHA-256 before offering the installer.
 **Places you before it teaches you.** A 27-question diagnostic across all nine
