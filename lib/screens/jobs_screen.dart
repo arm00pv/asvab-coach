@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../core/routes.dart';
 import '../core/theme/tokens.dart';
 import '../data/models/career_field.dart';
 import '../data/models/line_score.dart';
@@ -10,6 +11,7 @@ import '../data/repos/mos_civilian.dart';
 import '../data/repos/mos_descriptions.dart';
 import '../data/repos/mos_repository.dart';
 import '../engines/eligibility_engine.dart';
+import '../engines/line_score_drill.dart';
 import '../engines/unlock_path.dart';
 import '../state/app_state.dart';
 import '../widgets/mos_sourced_blocks.dart';
@@ -635,7 +637,9 @@ class _MosDetail extends StatelessWidget {
         ? null
         : (report == null
               ? (mos.hasGate ? const _ScoredAttemptNeeded() : null)
-              : (path!.qualified ? null : _UnlockPathCard(path: path)));
+              : (path!.qualified
+                    ? null
+                    : _UnlockPathCard(path: path, report: report!)));
     return DraggableScrollableSheet(
       expand: false,
       initialChildSize: 0.72,
@@ -852,14 +856,36 @@ class _MosDetail extends StatelessWidget {
 /// time, cheapest first, each with the points needed and what it leaves short.
 /// Nothing here computes a figure of its own - the sheet shows the engine's
 /// working or it shows nothing.
+///
+/// Each route also carries the practice aimed at it, which is the one thing the
+/// route could not do for itself: a candidate told "raise GT by 2" can tap
+/// straight into the subtests that compose GT. That set comes from
+/// [LineScoreDrillEngine], which reads the composition off [LineScore] and the
+/// candidate's weakest skills off [AdaptiveEngine], so there is no second
+/// mapping of line score to subject anywhere in the app.
 class _UnlockPathCard extends StatelessWidget {
-  const _UnlockPathCard({required this.path});
+  const _UnlockPathCard({required this.path, required this.report});
 
   final UnlockPath path;
+
+  /// The attempt the routes were computed from. It is only ever read for its
+  /// skill mastery, which is what turns "raise GT by 2" into a set of questions.
+  final ScoreReport report;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
+    // One seed per card, offset by the area, so two routes never serve the same
+    // option order while the same card rebuilt keeps its identity.
+    final seed = DateTime.now().millisecondsSinceEpoch % 100000;
+    final drills = <LineScoreDrill?>[
+      for (final route in path.routes)
+        LineScoreDrillEngine.forScore(
+          score: route.score,
+          report: report,
+          seed: seed + route.score.index,
+        ),
+    ];
     return AppCard(
       accent: path.hasRoute ? c.warning : c.borderStrong,
       child: Column(
@@ -881,9 +907,26 @@ class _UnlockPathCard extends StatelessWidget {
               ),
             ),
           ],
-          for (final route in path.routes) ...<Widget>[
+          for (var i = 0; i < path.routes.length; i++) ...<Widget>[
             const SizedBox(height: Space.md),
-            _UnlockRouteRow(route: route, mosCode: path.mosCode),
+            _UnlockRouteRow(
+              route: path.routes[i],
+              mosCode: path.mosCode,
+              drill: drills[i],
+            ),
+          ],
+          // Said once for the card rather than once per route: every set below
+          // is aimed, and none of them promises a number.
+          if (drills.any((drill) => drill != null)) ...<Widget>[
+            const SizedBox(height: Space.md),
+            Text(
+              LineScoreDrillEngine.estimateCaveat,
+              style: context.text.bodySmall?.copyWith(
+                color: c.textMuted,
+                fontSize: 11,
+                height: 1.45,
+              ),
+            ),
           ],
           if (path.caveats.isNotEmpty) ...<Widget>[
             const SizedBox(height: Space.md),
@@ -917,21 +960,36 @@ class _UnlockPathCard extends StatelessWidget {
   }
 }
 
-/// One route: the badge for scanning, the raise as a sentence, and what the
-/// raise leaves behind.
+/// One route: the badge for scanning, the raise as a sentence, what the raise
+/// leaves behind, and - the last piece - the practice that would do it.
+///
+/// The action is the point of the row. A candidate who is told "raise GT by 2"
+/// and left to work out which subjects that means has been given a verdict, not
+/// a next step; this button starts a set built from the subtests that compose
+/// the route's line score, labelled with its own size and that line score.
 ///
 /// A column rather than a row of badge and text: at 2x system text a badge and
 /// a full sentence will not sit side by side on a 360 dp phone, and the sentence
 /// is the part that must not be cut.
 class _UnlockRouteRow extends StatelessWidget {
-  const _UnlockRouteRow({required this.route, required this.mosCode});
+  const _UnlockRouteRow({
+    required this.route,
+    required this.mosCode,
+    required this.drill,
+  });
 
   final UnlockRoute route;
   final String mosCode;
 
+  /// The set aimed at this route's line score, or null when the bank cannot
+  /// build one - in which case the row states the raise and offers nothing,
+  /// because a button that opens an empty exam is worse than no button.
+  final LineScoreDrill? drill;
+
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
+    final practice = drill;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -947,6 +1005,28 @@ class _UnlockRouteRow extends StatelessWidget {
           _outcome,
           style: context.text.bodySmall?.copyWith(color: c.textMuted),
         ),
+        if (practice != null) ...<Widget>[
+          const SizedBox(height: Space.sm),
+          // The action says what the set is for before it is tapped, so the
+          // candidate knows why these questions and not others. Full width and
+          // free to wrap: at 2x text this label needs three lines on a 360 dp
+          // phone, and an ellipsis here would hide the line score it names.
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton.tonal(
+              onPressed: () => AppRoutes.exam(context, practice.exam),
+              child: Text(practice.label, textAlign: TextAlign.center),
+            ),
+          ),
+          const SizedBox(height: Space.xs),
+          Text(
+            practice.composition,
+            style: context.text.bodySmall?.copyWith(
+              color: c.textMuted,
+              height: 1.45,
+            ),
+          ),
+        ],
       ],
     );
   }

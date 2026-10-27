@@ -170,6 +170,25 @@ enum LineScore {
     return (sum + constant).round().clamp(1, 220);
   }
 
+  /// Every subtest whose standard score moves this area, read straight off the
+  /// terms [compute] applies: the weighted rows of a regression composite, the
+  /// VE composite where this area carries a verbal weight, and Arithmetic
+  /// Reasoning for GT, whose published definition is the literal VE + AR sum.
+  ///
+  /// This is the composition itself, not a second copy of it. Anything that
+  /// needs to send a candidate to practise what feeds one line score reads the
+  /// list here, so changing a weight changes the practice set with it. VE is
+  /// listed as the two subtests it is built from, because those are the sections
+  /// a candidate can actually sit, and the one literal sum in the model - GT,
+  /// whose published definition is VE + AR - contributes both VE's halves and
+  /// AR. Assembling Objects appears in no area and so appears in no list here.
+  Set<Subtest> get feedingSubtests => <Subtest>{
+    if (isVe) ...Subtest.veSubtests,
+    if (isLiteralSum) ...<Subtest>[Subtest.ar, ...Subtest.veSubtests],
+    ...weights.keys,
+    if (veWeight != 0) ...Subtest.veSubtests,
+  };
+
   /// Builds the verbal composite from WK and PC standard scores.
   static int verbalComposite(int wk, int pc) {
     final wWk = 1 / (1 + pcToWkWeight);
