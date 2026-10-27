@@ -1,10 +1,10 @@
-# Roadmap: from a good coach to a trustworthy one
+﻿# Roadmap: from a good coach to a trustworthy one
 
 Each phase is a goal with an acceptance test, not a wish. A phase ships only
 when `flutter test`, `dart run tool/audit.dart --strict` and
 `flutter analyze --no-fatal-infos` are all green and the commit is pushed.
 
-## Phase 1 — The roster must not lie (MOS completeness)
+## Phase 1 â€” The roster must not lie (MOS completeness)
 
 **Goal.** Every enlisted MOS and officer/warrant route the Army National Guard
 fields is in the app, carries its line-score gates, and says when those gates
@@ -38,7 +38,7 @@ HTTP 403), State-level slot availability, and warrant officer MOS as first-class
 entries, which needs a schema that can state "service prerequisite, not a score"
 before it can be added honestly.
 
-## Phase 2 — Explain the wrong answers (per-distractor reasoning)
+## Phase 2 â€” Explain the wrong answers (per-distractor reasoning)
 
 **Goal.** Every practice item says why each *wrong* option is wrong, not only
 why the right one is right.
@@ -51,7 +51,7 @@ coordinates; the review screen renders them; the audit fails an item whose
 reasons do not line up with its options; the whole bank is populated and the
 audit is clean.
 
-## Phase 3 — Tell them the way out (what-if unlock path)
+## Phase 3 â€” Tell them the way out (what-if unlock path)
 
 **Goal.** From any job they currently miss, the app names the cheapest concrete
 route: which line score, how many points, roughly how many questions, and a
@@ -63,7 +63,7 @@ drill aimed at exactly that.
 eligible line-score formulas, orders it by points, and starts a targeted drill
 in one tap. The maths is unit-tested, including the case where no path exists.
 
-## Phase 4 — Walk into the office prepared (recruiter export)
+## Phase 4 â€” Walk into the office prepared (recruiter export)
 
 **Goal.** A single on-device page: scores, line scores, AFQT percentile, and
 every job currently qualified for, ready to hand over.
@@ -71,7 +71,7 @@ every job currently qualified for, ready to hand over.
 **Acceptance.** Generated locally with no upload, readable, dated, and honest
 about being an estimate rather than an official ASVAB record.
 
-## Phase 5 — Fix what the hardware found
+## Phase 5 â€” Fix what the hardware found
 
 **Goal.** Every defect the phone and tablet audits reported is fixed and the
 fix is covered by a test that would have caught it.
@@ -216,9 +216,10 @@ plus M3 (the empty item screen) and the low list in full. Verified on a real
 emulator: the Android journey passed on 81ac134 (24m) and again on 7e48630
 (19m) after the device workflow was taught to wait for a boot instead of
 dying at a timeout. flutter test 620 passed, flutter analyze clean,
-dart run tool/audit.dart --strict cleean at 447 of 447 items explained.
+dart run tool/audit.dart --strict clean at 447 of 447 items explained.
 
 Two CI defects were found and fixed on the way, both mine: device.yml had
 cancel-in-progress true on a workflow that triggers on every push, so the
 emulator job was killed by the next commit every time; and a multi-line shell
 loop in that workflow dies because the runner hands each line to sh -c.
+
