@@ -10,9 +10,15 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# Do NOT cancel in progress. The emulator journey takes about fifteen minutes
+# and this workflow triggers on every push, so cancel-in-progress meant that a
+# normal run of commits killed the check over and over: five consecutive
+# rounds showed it pending, and one cancelled while it was already inside the
+# test. The check is expensive but it is the only one that exercises the real
+# Android storage plugin, so it must be allowed to finish.
 concurrency:
   group: device-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   android-journey:
