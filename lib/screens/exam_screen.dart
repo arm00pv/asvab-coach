@@ -554,7 +554,11 @@ class _QuestionView extends StatelessWidget {
                             height: 1.4,
                           ),
                         ),
-                        const SizedBox(height: Space.lg),
+                        // The gap the options get from the stem is one of the
+                        // places the item spends a tall phone's height: it is
+                        // the item's own breathing room, so it belongs to the
+                        // question rather than to the band above the pinned bar.
+                        const SizedBox(height: Space.xl),
                         if (q.puzzle != null)
                           GridView.count(
                             crossAxisCount: isWide ? 4 : 2,
@@ -585,45 +589,35 @@ class _QuestionView extends StatelessWidget {
                           )
                         else
                           Column(
+                            // Stretched, so an option is as wide as the column
+                            // and a two-line option uses that width instead of
+                            // wrapping into a narrower column than the question
+                            // above it. The spacing is even: the gap before the
+                            // first tile and between tiles is the same, which is
+                            // what makes four options read as one set.
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            spacing: Space.md,
                             children: <Widget>[
                               for (
                                 var i = 0;
                                 i < served.displayChoices.length;
                                 i++
                               )
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    bottom: Space.sm,
-                                  ),
-                                  child: _OptionTile(
-                                    index: i,
-                                    text: served.displayChoices[i],
-                                    selected: displaySelected == i,
-                                    onTap: () => session.answer(i),
-                                  ),
+                                _OptionTile(
+                                  index: i,
+                                  text: served.displayChoices[i],
+                                  selected: displaySelected == i,
+                                  onTap: () => session.answer(i),
                                 ),
-                              if (displaySelected != null)
-                                // This sits in the option column, so it must
-                                // share that column left edge; a button with
-                                // its own padding looked inset from the very
-                                // cards it is about.
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: Space.xs,
-                                      top: Space.xs,
-                                    ),
-                                    child: TextButton.icon(
-                                      onPressed: () => session.answer(null),
-                                      icon: const Icon(
-                                        Icons.close_rounded,
-                                        size: 15,
-                                      ),
-                                      label: const Text('Clear answer'),
-                                    ),
-                                  ),
-                                ),
+                              // Clear answer belongs here, in the item's own
+                              // flow, rather than floating in the band above
+                              // the pinned bar. Its own column edge, because a
+                              // button with its own padding looked inset from
+                              // the very cards it is about.
+                              _AnswerTray(
+                                enabled: displaySelected != null,
+                                onClear: () => session.answer(null),
+                              ),
                             ],
                           ),
                       ],
@@ -666,6 +660,15 @@ class _PassageCard extends StatelessWidget {
   }
 }
 
+/// How tall an answer target is at minimum.
+///
+/// A tile sized from its text came out 52 dp tall, which is a legal tap target
+/// and a cramped reading target; four of them plus their gaps also left the
+/// bottom two-fifths of a tall phone empty. This is a floor, not a stretch: a
+/// one-word option and a three-line option keep the same 76 dp target and the
+/// text centres inside it, so a short option is never inflated to fill a void.
+const double _optionMinHeight = 76;
+
 class _OptionTile extends StatelessWidget {
   const _OptionTile({
     required this.index,
@@ -689,6 +692,7 @@ class _OptionTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(Radii.md),
         child: AnimatedContainer(
           duration: Motion.fast,
+          constraints: const BoxConstraints(minHeight: _optionMinHeight),
           padding: const EdgeInsets.symmetric(
             horizontal: Space.md,
             vertical: Space.md,
@@ -731,6 +735,35 @@ class _OptionTile extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The one control that acts on the answer rather than on the section.
+///
+/// It sits in the item's own column, under the options, so the first thing below
+/// the answers is a control that belongs to them. It is shown disabled, not
+/// hidden, when nothing is selected: a control that does nothing should look
+/// like it does nothing, and a button that appears only on answer moves
+/// everything under it.
+class _AnswerTray extends StatelessWidget {
+  const _AnswerTray({required this.enabled, required this.onClear});
+
+  final bool enabled;
+  final VoidCallback onClear;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(left: Space.xs),
+        child: TextButton.icon(
+          onPressed: enabled ? onClear : null,
+          icon: const Icon(Icons.close_rounded, size: 15),
+          label: const Text('Clear answer'),
         ),
       ),
     );
@@ -872,26 +905,38 @@ class _ExamFooter extends StatelessWidget {
                 ),
                 label: const Text('Flag'),
               ),
-            const Spacer(),
-            if (session.questionIndex == session.sectionQuestionCount - 1)
-              FilledButton.icon(
-                onPressed: onFinishSection,
-                icon: const Icon(Icons.check_rounded, size: 17),
-                // On a phone the full label plus the back and flag buttons run
-                // past the edge of the screen, and the header already names the
-                // action, so the footer keeps the short form.
-                label: Text(
-                  session.isLastSection
-                      ? 'Submit exam'
-                      : (context.isCompact ? 'Finish' : 'Finish section'),
-                ),
-              )
-            else
-              FilledButton.icon(
-                onPressed: session.next,
-                icon: const Icon(Icons.arrow_forward_rounded, size: 17),
-                label: const Text('Next'),
+            // Pushed right by an Expanded rather than a Spacer: at 2x text on
+            // a 360 dp phone the two control buttons and the primary action
+            // together are wider than the row, and a Spacer hands the primary
+            // action its natural width regardless, which painted an overflow
+            // stripe over the last thing on the screen. Constraining it lets
+            // the label wrap instead of escaping the row.
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: session.questionIndex == session.sectionQuestionCount - 1
+                    ? FilledButton.icon(
+                        onPressed: onFinishSection,
+                        icon: const Icon(Icons.check_rounded, size: 17),
+                        // On a phone the full label plus the back and flag
+                        // buttons run past the edge of the screen, and the
+                        // header already names the action, so the footer keeps
+                        // the short form.
+                        label: Text(
+                          session.isLastSection
+                              ? 'Submit exam'
+                              : (context.isCompact
+                                    ? 'Finish'
+                                    : 'Finish section'),
+                        ),
+                      )
+                    : FilledButton.icon(
+                        onPressed: session.next,
+                        icon: const Icon(Icons.arrow_forward_rounded, size: 17),
+                        label: const Text('Next'),
+                      ),
               ),
+            ),
           ],
         ),
       ],
