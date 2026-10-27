@@ -188,3 +188,23 @@ polish items, of which none is a correctness defect.
 Verified on a quiet tree with no other process running: flutter test 611
 passing, flutter analyze clean, dart run tool/audit.dart --strict clean at
 447 of 447 items explained.
+
+## Where this stands at round 61
+
+Closed in Phase 5, each with a guard or a verified suite: browser copy;
+dead Submit; Settings stutter; results 18 px overflow; blank-vs-wrong
+badges; requirements table at 411 dp; MOS row word breaks (38 truncated
+paragraphs uncovered); M5 false qualification claim with three tests
+including one per required AFQT subtest; M2 dead back arrow; M7 scale
+collision with a legend; M4 abandon-vs-submit naming in button and dialog;
+L7 unlabelled per-item time; L6 clipped review chip row; L13 goal value
+casing; L14 dev-jargon export label; L5 grey-on-grey difficulty pill;
+L4 clear-answer alignment.
+
+Open: M3 (about 38% of each item screen is empty), L1, L2, L3, L8, L10,
+L11, L12, L15.
+
+CI note, fixed this stretch: device.yml had cancel-in-progress true on a
+workflow that triggers on every push, so the fifteen-minute emulator
+journey was cancelled by the next commit every time. Five rounds of pending
+were self-inflicted. It is now cancel-in-progress false.
