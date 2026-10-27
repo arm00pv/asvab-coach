@@ -515,7 +515,11 @@ class _QuestionView extends StatelessWidget {
                                     ? PillTone.danger
                                     : (q.difficulty == Difficulty.easy
                                           ? PillTone.success
-                                          : PillTone.neutral),
+                                          // Medium was neutral, which on a
+                                          // light card is grey on grey: the
+                                          // weakest of the three readings sat
+                                          // on the most common difficulty.
+                                          : PillTone.accent),
                                 dense: true,
                               ),
                           ],
