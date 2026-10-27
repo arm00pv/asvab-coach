@@ -216,6 +216,33 @@ class _SectionTitle extends StatelessWidget {
   }
 }
 
+/// Whether this attempt can support an AFQT percentile and a qualification
+/// claim at all.
+///
+/// The AFQT is composed from four subtests, so a percentile from one subtest
+/// is not a percentile - it is a guess wearing a number. A candidate took a
+/// fifteen-item General Science set, answered two and left thirteen blank,
+/// and this screen told them "QUALIFIES - You clear the Army National Guard
+/// floor". The rule below is deliberately conservative: every AFQT subtest
+/// must have been sat, and at least half of the items answered. Below that
+/// the screen says it cannot estimate rather than flattering the candidate.
+bool attemptSupportsAggregate(ScoreReport report) {
+  const afqtSubtests = <Subtest>{
+    Subtest.ar,
+    Subtest.mk,
+    Subtest.wk,
+    Subtest.pc,
+  };
+  final sat = report.subtestScores.keys.toSet();
+  if (!sat.containsAll(afqtSubtests)) return false;
+  var served = 0;
+  for (final score in report.subtestScores.values) {
+    served += score.total;
+  }
+  if (served == 0) return false;
+  return report.totalAnswered * 2 >= served;
+}
+
 class _Hero extends StatelessWidget {
   const _Hero({required this.report, required this.previous});
 
@@ -234,24 +261,33 @@ class _Hero extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final compact = constraints.maxWidth < 520;
+          final supported = attemptSupportsAggregate(report);
           final gauge = ReadinessGauge(
-            value: report.afqtPercentile,
+            value: supported ? report.afqtPercentile : 0,
             max: 99,
-            label: 'AFQT percentile',
-            sublabel: 'Category ${report.category}',
-            color: report.meetsArmyFloor ? c.primary : c.danger,
+            label: supported ? 'AFQT percentile' : 'Too few answers',
+            sublabel: supported ? 'Category ${report.category}' : '',
+            color: supported
+                ? (report.meetsArmyFloor ? c.primary : c.danger)
+                : c.textSecondary,
             size: compact ? 148 : 164,
-            bandLabel: report.meetsArmyFloor ? 'QUALIFIES' : 'BELOW FLOOR',
+            bandLabel: supported
+                ? (report.meetsArmyFloor ? 'QUALIFIES' : 'BELOW FLOOR')
+                : 'ESTIMATE',
           );
           final details = Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                report.meetsArmyFloor
+                !supported
+                    ? 'Not enough of this test to estimate your AFQT'
+                    : report.meetsArmyFloor
                     ? 'You clear the Army National Guard floor'
                     : 'Below the AFQT 31 enlistment floor',
                 style: context.text.headlineSmall?.copyWith(
-                  color: report.meetsArmyFloor ? c.textPrimary : c.danger,
+                  color: !supported
+                      ? c.textSecondary
+                      : (report.meetsArmyFloor ? c.textPrimary : c.danger),
                 ),
               ),
               const SizedBox(height: Space.sm),
