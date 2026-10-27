@@ -11,6 +11,29 @@ Guard.
 
 ## What it does
 
+**Say what the job is, and what it becomes.** Every one of the 156 enlisted MOS
+carries a two-sentence description paraphrased from its own DA Pam 611-21
+section, with the sentence it came from recorded and dated, and a civilian
+transfer drawn from the O*NET military crosswalk under CC BY 4.0. Where the
+crosswalk has no civilian occupation for a code, the app says "military
+occupation" rather than inventing a trade.
+
+**Explain the wrong answers, not just the right one.** All 447 items name the
+mistake that produces each wrong option - written for the 390 prose items and
+computed from the geometry for the 57 Assembling Objects puzzles, where the
+reason a figure fails is that pieces overlap or the body falls apart.
+
+**Answer "what would it take".** A job you miss names the cheapest line score
+to raise, from what to what, and whether that raise alone opens it - then
+starts a practice set drawn from the subtests that feed that score.
+
+**Hand it to a recruiter.** A copyable one-page sheet with your scores, line
+scores and every job you meet, generated on the device, headed with the
+statement that it is an estimate and not an official ASVAB record.
+
+Current release: [v1.3.0](https://github.com/arm00pv/asvab-coach/releases/tag/v1.3.0).
+The Android build updates itself from GitHub releases and verifies the
+published SHA-256 before offering the installer.
 **Places you before it teaches you.** A 27-question diagnostic across all nine
 subtests produces a subtest profile, an AFQT percentile and all ten line scores.
 Everything after that is chosen from your results rather than from a generic
