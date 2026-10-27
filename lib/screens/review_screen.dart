@@ -77,38 +77,45 @@ class _ReviewScreenState extends State<ReviewScreen> {
               horizontal: Space.lg,
               vertical: Space.sm,
             ),
-            child: Row(
-              children: <Widget>[
-                for (final f in _Filter.values) ...<Widget>[
-                  _FilterChip(
-                    label: switch (f) {
-                      _Filter.all => 'All (${items.length})',
-                      _Filter.missed =>
-                        'Missed (${items.where((i) => !i.correct).length})',
-                      _Filter.flagged =>
-                        'Flagged (${items.where((i) => i.response?.flagged ?? false).length})',
-                    },
-                    selected: _filter == f,
-                    onTap: () => setState(() => _filter = f),
-                  ),
+            // The chip row was a plain Row, so on a narrow phone the last
+            // chip was sliced in half at the screen edge with no fade and no
+            // scroll affordance - it looked like a rendering bug rather than
+            // a row with more in it.
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: <Widget>[
+                  for (final f in _Filter.values) ...<Widget>[
+                    _FilterChip(
+                      label: switch (f) {
+                        _Filter.all => 'All (${items.length})',
+                        _Filter.missed =>
+                          'Missed (${items.where((i) => !i.correct).length})',
+                        _Filter.flagged =>
+                          'Flagged (${items.where((i) => i.response?.flagged ?? false).length})',
+                      },
+                      selected: _filter == f,
+                      onTap: () => setState(() => _filter = f),
+                    ),
+                    const SizedBox(width: Space.sm),
+                  ],
+                  Container(width: 1, height: 20, color: context.colors.border),
                   const SizedBox(width: Space.sm),
-                ],
-                Container(width: 1, height: 20, color: context.colors.border),
-                const SizedBox(width: Space.sm),
-                _FilterChip(
-                  label: 'All subtests',
-                  selected: _subtest == null,
-                  onTap: () => setState(() => _subtest = null),
-                ),
-                for (final s in present) ...<Widget>[
-                  const SizedBox(width: Space.sm),
                   _FilterChip(
-                    label: s.abbr,
-                    selected: _subtest == s,
-                    onTap: () => setState(() => _subtest = s),
+                    label: 'All subtests',
+                    selected: _subtest == null,
+                    onTap: () => setState(() => _subtest = null),
                   ),
+                  for (final s in present) ...<Widget>[
+                    const SizedBox(width: Space.sm),
+                    _FilterChip(
+                      label: s.abbr,
+                      selected: _subtest == s,
+                      onTap: () => setState(() => _subtest = s),
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         ),
