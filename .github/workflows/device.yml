@@ -65,19 +65,14 @@ jobs:
           script: |
             adb wait-for-device
             adb shell 'until pm list packages > /dev/null 2>&1; do sleep 2; done'
-            # A bare `timeout` exit reads like a failing test, and a slow boot
-            # here has already been mistaken for one: the journey was killed at
-            # the 900 s ceiling after six minutes of booting, and exit code 124
-            # says nothing about the app. Wait for a completed boot explicitly
-            # and say so if it never comes, then give the test a ceiling that
-            # fits the job 40-minute budget.
-            for i in $(seq 1 60); do
-              boot=$(adb shell getprop sys.boot_completed | tr -d "\r")
-              [ "$boot" = "1" ] && break
-              sleep 5
-            done
-            if [ "$boot" != "1" ]; then
-              echo "::error::emulator never finished booting (sys.boot_completed=$boot) - infrastructure, not the journey"
-              exit 1
-            fi
+            # A bare `timeout` exit reads like a failing test: a slow boot once
+            # ate six minutes, the journey was killed at the 900 s ceiling, and
+            # exit code 124 looked like a red test when it was infrastructure.
+            # Wait for a completed boot, then give the test a ceiling that fits
+            # the job 40-minute budget.
+            #
+            # This must stay ONE line. The emulator runner hands each line of
+            # `script:` to `sh -c` separately, so a multi-line loop or function
+            # fails with "end of file unexpected" before the test ever starts.
+            adb shell 'until getprop sys.boot_completed | grep -q 1; do sleep 5; done'
             timeout 1500 flutter test integration_test/journey_test.dart -d emulator-5554
