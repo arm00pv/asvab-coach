@@ -807,10 +807,22 @@ class _ExamFooter extends StatelessWidget {
         const SizedBox(height: Space.md),
         Row(
           children: <Widget>[
+            // A control that does nothing must look like it does nothing:
+            // on the first item there is nowhere to go back to, and the
+            // outline button alone was not enough to tell the two states
+            // apart - the arrow looked identical and simply did nothing.
             IconButton.outlined(
               onPressed: session.questionIndex > 0 ? session.previous : null,
-              icon: const Icon(Icons.arrow_back_rounded, size: 18),
-              tooltip: 'Previous (left arrow)',
+              icon: Icon(
+                Icons.arrow_back_rounded,
+                size: 18,
+                color: session.questionIndex > 0
+                    ? null
+                    : context.colors.textSecondary.withValues(alpha: 0.35),
+              ),
+              tooltip: session.questionIndex > 0
+                  ? 'Previous question'
+                  : 'Already at the first question',
             ),
             const SizedBox(width: Space.sm),
             // The label goes away on a phone so the primary action keeps its
