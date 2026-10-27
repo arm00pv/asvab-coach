@@ -389,7 +389,10 @@ class _SectionIntro extends StatelessWidget {
                 onPressed: onBegin,
                 child: const Text('Begin section'),
               ),
-              TextButton(onPressed: onQuit, child: const Text('Leave exam')),
+              TextButton(
+                onPressed: onQuit,
+                child: const Text('Abandon attempt'),
+              ),
             ],
           ),
         ],
