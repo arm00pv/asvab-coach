@@ -294,15 +294,20 @@ class _ScheduleCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
+          // The verdict pill was pushed to the right by a Spacer, so a long
+          // label ("Not enough time", "No time budget") overflowed the header
+          // by 102 px on a small phone at 2x text. Wrapping means the pill
+          // drops to its own line instead of painting a hazard stripe.
+          Wrap(
+            spacing: Space.sm,
+            runSpacing: Space.xs,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: <Widget>[
               Icon(Icons.calendar_month_outlined, size: 17, color: c.primary),
-              const SizedBox(width: Space.sm),
               Text(
                 'Your schedule',
                 style: context.text.titleSmall?.copyWith(color: c.textPrimary),
               ),
-              const Spacer(),
               Pill(plan.verdictLabel, tone: tone, dense: true),
             ],
           ),
