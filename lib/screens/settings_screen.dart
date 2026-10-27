@@ -29,20 +29,44 @@ class SettingsScreen extends StatelessWidget {
             _Group(
               title: 'Appearance',
               children: <Widget>[
-                // The tile has to own a Material: its group is a DecoratedBox
-                // with a background colour, and a ListTile paints its ink on
-                // the nearest Material ancestor, so without this the ripple is
-                // invisible and debug builds assert.
+                // A row, not a SwitchListTile. A two-line ListTile reserves the
+                // Material height of 72 dp whatever its text needs, so on a card
+                // that holds nothing else the label floated in a band of empty
+                // space that no neighbouring card had - the other cards hold rows
+                // tall enough to fill that minimum. The row below is the text at
+                // its own height beside the switch, and the switch keeps its own
+                // 48 dp tap target.
+                //
+                // It still has to own a Material: the group is a DecoratedBox with
+                // a background colour, and ink paints on the nearest Material
+                // ancestor, so without this the ripple is invisible and debug
+                // builds assert. Tapping the label toggles the switch, which is
+                // what the ListTile did.
                 Material(
                   type: MaterialType.transparency,
-                  child: SwitchListTile.adaptive(
-                    contentPadding: EdgeInsets.zero,
-                    value: app.darkMode,
-                    onChanged: app.setDarkMode,
-                    title: Text('Dark mode', style: context.text.titleSmall),
-                    subtitle: Text(
-                      'Easier on the eyes for long evening sessions.',
-                      style: context.text.bodySmall,
+                  child: InkWell(
+                    onTap: () => app.setDarkMode(!app.darkMode),
+                    borderRadius: BorderRadius.circular(Radii.sm),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text('Dark mode', style: context.text.titleSmall),
+                              Text(
+                                'Easier on the eyes for long evening sessions.',
+                                style: context.text.bodySmall,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: Space.md),
+                        Switch.adaptive(
+                          value: app.darkMode,
+                          onChanged: app.setDarkMode,
+                        ),
+                      ],
                     ),
                   ),
                 ),

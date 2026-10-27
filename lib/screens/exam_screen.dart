@@ -332,8 +332,13 @@ class _SectionIntro extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Eyebrow('Section ${index + 1} of $total'),
-                    const SizedBox(height: 2),
+                    // "Section 1 of 1" tells a candidate nothing and reads
+                    // like a glitch; a single-section practice is not part of
+                    // a series, so it gets no series label.
+                    if (total > 1) ...<Widget>[
+                      Eyebrow('Section ${index + 1} of $total'),
+                      const SizedBox(height: 2),
+                    ],
                     Text(
                       section.displayLabel,
                       style: context.text.headlineMedium,

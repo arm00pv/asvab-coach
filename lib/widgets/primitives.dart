@@ -175,44 +175,43 @@ class StatTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
+    final numberStyle =
+        (compact ? context.text.headlineMedium : context.text.displaySmall)
+            ?.copyWith(color: tone ?? c.textPrimary);
+    // One paragraph, not a Wrap of two Texts. The unit is part of the number -
+    // "/135" and "day" read as the figure's own scale - so the two have to
+    // share a baseline and nothing may be cut between them. A Wrap of separate
+    // Text boxes bottom-aligned the smaller box against the larger one's
+    // descent, which lifted "/15" a third of a line off the "1"; a single span
+    // keeps the baseline exact and carries the space between them. It is still
+    // text rather than a Row, so the unit drops to its own line instead of
+    // overflowing when the pair cannot fit on one.
+    final figure = suffix == null
+        ? Text(
+            value,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: numberStyle,
+          )
+        : Text.rich(
+            TextSpan(
+              text: value,
+              children: <InlineSpan>[
+                TextSpan(
+                  text: ' $suffix',
+                  style: context.text.titleMedium?.copyWith(color: c.textMuted),
+                ),
+              ],
+            ),
+            style: numberStyle,
+          );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Eyebrow(label),
         const SizedBox(height: Space.xs),
-        LayoutBuilder(
-          builder: (context, constraints) {
-            final number = Text(
-              value,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style:
-                  (compact
-                          ? context.text.headlineMedium
-                          : context.text.displaySmall)
-                      ?.copyWith(color: tone ?? c.textPrimary),
-            );
-            // A Wrap, not a Row: "/135" and "day" are part of the number, and
-            // cutting them off leaves "96" looking like the whole score.
-            // Wrapping puts the unit under the figure when it cannot sit beside
-            // it, and the figure itself is never ellipsised.
-            return Wrap(
-              crossAxisAlignment: WrapCrossAlignment.end,
-              spacing: 2,
-              children: <Widget>[
-                number,
-                if (suffix != null)
-                  Text(
-                    suffix!,
-                    style: context.text.titleMedium?.copyWith(
-                      color: c.textMuted,
-                    ),
-                  ),
-              ],
-            );
-          },
-        ),
+        figure,
         if (caption != null) ...<Widget>[
           const SizedBox(height: 2),
           Text(

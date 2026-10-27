@@ -167,16 +167,24 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
+  /// The one line under the greeting.
+  ///
+  /// It used to chain three clauses with hyphens - "Officer track - GT 110
+  /// target - 59 days to your target date" - which is wide enough that on a
+  /// phone the last word, "date", was pushed onto a line of its own, and it
+  /// repeated a target date the goal card in Settings already carries. Two
+  /// short clauses: who the plan is for, and how long is left. The officer GT
+  /// gate is not lost with the clause, it is captioned on the GT figure in the
+  /// readiness card below.
   String _subtitle(AppState app) {
     final goal = app.goal;
     if (goal == null) return 'Army National Guard';
     final days = goal.targetDate?.difference(DateTime.now()).inDays;
-    final base = goal.officerTrack
-        ? 'Officer track - GT 110 target'
-        : 'Army National Guard';
+    final base = goal.officerTrack ? 'Officer track' : 'Army National Guard';
     if (days == null) return base;
-    if (days <= 0) return '$base - test date has arrived';
-    return '$base - $days days to your target date';
+    if (days <= 0) return '$base - test date is today';
+    if (days == 1) return '$base - test in 1 day';
+    return '$base - test in $days days';
   }
 
   void _startDiagnostic(BuildContext context) {

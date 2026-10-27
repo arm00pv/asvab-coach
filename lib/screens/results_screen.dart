@@ -360,7 +360,7 @@ class _Hero extends StatelessWidget {
                   StatTile(
                     label: 'Correct',
                     value: '${report.totalCorrect}',
-                    suffix: '/${report.totalAnswered}',
+                    suffix: '/ ${report.totalAnswered}',
                     compact: true,
                   ),
                 ],
@@ -412,7 +412,12 @@ class _LineScoreTable extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: Space.sm),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                // Centred, not top-aligned: a row whose label or formula needs
+                // a second line used to leave its bar and its number hanging
+                // against the first line, so three such rows in a row broke the
+                // column's rhythm. Centred, the score still belongs to the row
+                // however many lines the text takes.
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
                     width: 40,
@@ -435,7 +440,7 @@ class _LineScoreTable extends StatelessWidget {
                         ),
                         const SizedBox(height: 1),
                         Text(
-                          rows[i].nominalFormula,
+                          _formulaFor(rows[i]),
                           style: context.text.bodySmall?.copyWith(
                             color: c.textMuted,
                             fontSize: 10.5,
@@ -475,9 +480,47 @@ class _LineScoreTable extends StatelessWidget {
               ),
             ),
           ],
+          // The removal note belongs to the battery, not to three separate
+          // rows. Printed inside them it doubled their sublabel to two lines
+          // and made Field Artillery, Mechanical Maintenance and Operators and
+          // Food stand out of the list as three-line rows; said once here, every
+          // row in the table is a name over a formula.
+          if (rows.any(
+            (LineScore r) => r.nominalFormula != _formulaFor(r),
+          )) ...<Widget>[
+            Divider(height: 1, color: c.border),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: Space.sm),
+              child: Text(
+                'CS and NO were removed from the battery in 2002, so the areas '
+                'whose published formulas name them are scored with the '
+                'operational weights above, not with those sums.',
+                style: context.text.bodySmall?.copyWith(
+                  color: c.textMuted,
+                  fontSize: 10.5,
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
+  }
+
+  /// The textbook formula without its trailing note about a subtest the
+  /// battery no longer carries: the note is the same sentence on three rows and
+  /// is printed once under the table instead.
+  String _formulaFor(LineScore row) {
+    final String formula = row.nominalFormula;
+    final int note = formula.indexOf(' (');
+    if (note < 0) return formula;
+    // Only the note about a subtest the battery no longer carries is lifted out
+    // of the row. Verbal Expression's parenthetical is part of its definition,
+    // not a caveat, and stays where it is.
+    if (!formula.substring(note).contains('removed from the battery')) {
+      return formula;
+    }
+    return formula.substring(0, note);
   }
 }
 

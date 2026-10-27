@@ -99,8 +99,6 @@ class _JobsScreenState extends State<JobsScreen> {
               const SizedBox(height: Space.lg),
               if (summary != null) _SummaryStrip(summary: summary),
               const SizedBox(height: Space.lg),
-              const _EnlistmentFacts(),
-              const SizedBox(height: Space.lg),
               TextField(
                 decoration: const InputDecoration(
                   // Short enough to survive a narrow phone without being cut off.
@@ -266,6 +264,15 @@ class _JobsScreenState extends State<JobsScreen> {
                     'stand today and carry a rescission date already printed. '
                     'Treat this screen as a planning tool, not an authority.',
               ),
+              const SizedBox(height: Space.lg),
+              // The reference table sits at the foot, beside the callout that
+              // cites the same pamphlet, rather than between the candidate's own
+              // summary and the search box. It is generic - the same six rows for
+              // everyone - and at phone width it is a tall block; standing where
+              // it did, it pushed the search box and the three filter rows onto
+              // the bottom edge of the viewport, where the mode chips were cut
+              // off flush against the navigation bar with no gap at all.
+              const _EnlistmentFacts(),
               const SizedBox(height: Space.xxl),
             ],
           ),
@@ -385,10 +392,17 @@ class _SummaryStrip extends StatelessWidget {
                   maxLines: 2,
                 ),
                 const SizedBox(height: Space.xs),
-                Text(
+                // The same pill as the count above it. As a bare muted line it
+                // read as a caption to "within reach" rather than as the second
+                // of two counts, so the two numbers that split the catalogue
+                // looked like one figure and one footnote. Same component, the
+                // tone carrying the difference in meaning: amber is the work
+                // worth chasing, grey is what is out of reach for now.
+                Pill(
                   '${summary.outOfReach.length} further out',
-                  textAlign: TextAlign.end,
-                  style: context.text.bodySmall?.copyWith(color: c.textMuted),
+                  tone: PillTone.neutral,
+                  dense: true,
+                  maxLines: 2,
                 ),
               ],
             ),
