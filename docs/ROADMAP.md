@@ -141,3 +141,28 @@ unbuilt rather than half-filled.
 Verified at the end of the phase: `flutter test` 460 passing,
 `flutter analyze` clean, `dart run tool/audit.dart --strict` clean with
 447 of 447 items explained.
+
+## Phase 5 status after the reversion (round 33)
+
+The remaining audit fixes were attempted by three workers in parallel across
+seven screens. One quiet full-suite run showed they did not compose: two
+RenderFlex overflows of 1174 px and 1692 px in the results/practice screens,
+and the recruiter-sheet entry control had been dropped from the report. Those
+in-flight edits were reverted rather than repaired blind, their orphaned
+tests removed, and the tree re-verified at 608 passing tests.
+
+CLOSED in Phase 5: browser copy, dead Submit, Settings stutter, the results
+18 px overflow, blank-versus-wrong review badges, the enlistment requirements
+table at 411 dp, the MOS row word-breaks, and every mid-word or clipped
+string the row and requirements work uncovered (38 truncated paragraphs went
+with it).
+
+OPEN in Phase 5, each needing its own focused pass rather than a shared one:
+M5 - results still states a qualification and a percentile from a thin
+attempt; M7 - line-score bars have no legend and VE is drawn on the 100-mean
+scale; M2 - the previous arrow looks identical enabled and disabled; M4 - one
+action still wears four names; M3 - roughly 38% of each item screen is empty;
+and the L1-L15 polish items.
+
+Lesson recorded: seven screens in three parallel workers does not compose.
+One screen, one worker, verified before the next.
