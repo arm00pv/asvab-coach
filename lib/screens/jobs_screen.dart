@@ -397,6 +397,26 @@ class _SummaryStrip extends StatelessWidget {
   }
 }
 
+/// A job row, designed at 1x text: the code column, the title column, and the
+/// verdict pill beside it.
+///
+/// These three widths are the row's promise, and each one is a measured figure
+/// rather than a preference. The code column holds any three-character code the
+/// roster prints: the widest is 27 dp at 1x and 55 dp at 2x. The title column
+/// holds the longest single word in any job title - "Counterintelligence"
+/// measures 122 dp at 1x, so 128 dp is that word plus a margin - and a title may
+/// then wrap between its words and never inside one. The pill column holds the
+/// longest gate label the pamphlet prints: "GM 98 + GT 107  or  GM 98 + ST 106"
+/// is 187 dp of text at 1x, which needs 124 dp of room to sit on two lines, so
+/// 140 dp leaves it two lines with neither of them cut.
+const double _rowCodeColumn = 46;
+const double _rowTitleFloor = 128;
+const double _rowPillColumn = 140;
+
+/// The size the title is drawn at (bodyMedium), which is the size the row
+/// measures its own shape in.
+const double _titleFontSize = 14;
+
 class _MosRow extends StatelessWidget {
   const _MosRow({
     required this.mos,
@@ -447,86 +467,136 @@ class _MosRow extends StatelessWidget {
       label = '${evaluation.bestShortfall} pts short';
       tone = evaluation.nearMiss ? PillTone.warning : PillTone.danger;
     }
+    final title = Text(
+      mos.title,
+      style: context.text.bodyMedium?.copyWith(
+        color: c.textPrimary,
+        fontWeight: FontWeight.w500,
+      ),
+    );
+    final code = Text(
+      mos.code,
+      style: context.text.titleSmall?.copyWith(color: c.primary),
+    );
+    // Dated, spelled out and coloured like a warning rather than a grey
+    // footnote: a candidate scanning the list has to be able to tell this row
+    // from an open job without opening anything.
+    final rescind = rescindLine == null
+        ? null
+        : Text(
+            rescindLine,
+            style: context.text.bodySmall?.copyWith(
+              color: retired ? c.danger : c.warning,
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              height: 1.3,
+            ),
+          );
+    // The gate, then the two flags that change how to read it. Flexible text in
+    // a shrinking Row, so the same widget can sit in a title column or beside
+    // the pill in a Wrap.
+    Widget gateLine(MainAxisSize mainAxisSize) => Row(
+      mainAxisSize: mainAxisSize,
+      children: <Widget>[
+        Flexible(
+          child: Text(
+            mos.hasGate ? mos.gate.label : mos.gateSummary,
+            style: context.text.bodySmall?.copyWith(
+              color: c.textMuted,
+              fontSize: 11,
+            ),
+          ),
+        ),
+        if (mos.securityClearance) ...<Widget>[
+          const SizedBox(width: Space.sm),
+          Icon(Icons.lock_outline_rounded, size: 11, color: c.textMuted),
+        ],
+        if (mos.extraTest != null) ...<Widget>[
+          const SizedBox(width: Space.sm),
+          Icon(Icons.assignment_outlined, size: 11, color: c.textMuted),
+        ],
+      ],
+    );
+    // A gate label can be long enough to run the card off a phone, so the pill
+    // is allowed to shrink - but it wraps onto a second line rather than cutting
+    // the verdict off, because "Qualified" and "Short by 8" are the whole reason
+    // the row exists.
+    final pill = Pill(label, tone: tone, dense: true, maxLines: 2);
+
     return AppCard(
       onTap: onTap,
       padding: const EdgeInsets.symmetric(
         horizontal: Space.lg,
         vertical: Space.md,
       ),
-      child: Row(
-        children: <Widget>[
-          SizedBox(
-            width: 46,
-            child: Text(
-              mos.code,
-              style: context.text.titleSmall?.copyWith(color: c.primary),
-            ),
-          ),
-          Expanded(
-            child: Column(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Measured in the size the phone is actually drawing the title in. A
+          // row of three columns is a promise that the code is a whole code and
+          // the title is whole words; where the card cannot keep that promise -
+          // the cheapest handset at the largest font Android offers is exactly
+          // that case - the same facts stack rather than being squeezed into
+          // slivers, which is what used to break "11B" into "11 / B" and
+          // "Infantryman" into "Infan / tryman".
+          final scale = _textScaleOf(context, sample: _titleFontSize);
+          final needed =
+              (_rowCodeColumn + _rowTitleFloor + _rowPillColumn) * scale +
+              Space.sm;
+          if (constraints.maxWidth < needed) {
+            return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  mos.title,
-                  style: context.text.bodyMedium?.copyWith(
-                    color: c.textPrimary,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                // Dated, spelled out and coloured like a warning rather than a
-                // grey footnote: a candidate scanning the list has to be able to
-                // tell this row from an open job without opening anything.
-                if (rescindLine != null) ...<Widget>[
+                code,
+                const SizedBox(height: Space.xxs),
+                title,
+                if (rescind != null) ...<Widget>[
                   const SizedBox(height: 2),
-                  Text(
-                    rescindLine,
-                    style: context.text.bodySmall?.copyWith(
-                      color: retired ? c.danger : c.warning,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      height: 1.3,
-                    ),
-                  ),
+                  rescind,
                 ],
-                Row(
-                  children: <Widget>[
-                    Flexible(
-                      child: Text(
-                        mos.hasGate ? mos.gate.label : mos.gateSummary,
-                        style: context.text.bodySmall?.copyWith(
-                          color: c.textMuted,
-                          fontSize: 11,
-                        ),
-                      ),
-                    ),
-                    if (mos.securityClearance) ...<Widget>[
-                      const SizedBox(width: Space.sm),
-                      Icon(
-                        Icons.lock_outline_rounded,
-                        size: 11,
-                        color: c.textMuted,
-                      ),
-                    ],
-                    if (mos.extraTest != null) ...<Widget>[
-                      const SizedBox(width: Space.sm),
-                      Icon(
-                        Icons.assignment_outlined,
-                        size: 11,
-                        color: c.textMuted,
-                      ),
-                    ],
-                  ],
+                const SizedBox(height: Space.xs),
+                // Beside the gate where the pill genuinely fits on that line,
+                // under it where it does not: a Wrap asks the question per row
+                // instead of answering it for every phone at once.
+                Wrap(
+                  spacing: Space.sm,
+                  runSpacing: Space.xs,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: <Widget>[gateLine(MainAxisSize.min), pill],
                 ),
               ],
-            ),
-          ),
-          const SizedBox(width: Space.sm),
-          // A gate label can be long enough to run the card off a phone, so the
-          // pill is allowed to shrink - but it wraps onto a second line rather
-          // than cutting the verdict off, because "Qualified" and "Short by 8"
-          // are the whole reason the row exists.
-          Flexible(child: Pill(label, tone: tone, dense: true, maxLines: 2)),
-        ],
+            );
+          }
+          return Row(
+            children: <Widget>[
+              // Scaled with the text, because the column holds a code at the
+              // size the code is drawn at - a fixed 46 dp column is 48 dp of
+              // glyphs at 2x text, which is how "11B" became "11 / B".
+              SizedBox(width: _rowCodeColumn * scale, child: code),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    title,
+                    if (rescind != null) ...<Widget>[
+                      const SizedBox(height: 2),
+                      rescind,
+                    ],
+                    gateLine(MainAxisSize.max),
+                  ],
+                ),
+              ),
+              const SizedBox(width: Space.sm),
+              // The pill takes only what its own label needs, capped at the
+              // column reserved for it, so a long gate label wraps inside the
+              // pill instead of eating the width the title needs to stay whole
+              // words.
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: _rowPillColumn * scale),
+                child: pill,
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -1104,11 +1174,11 @@ const double _requirementExplanationFloor = 230;
 
 /// How much larger than designed the system font setting is drawing text.
 ///
-/// Sampled at the size of an explanation paragraph, because that is the line
-/// this block is measured in; a non-linear scaler reports a different factor at
-/// other sizes.
-double _textScaleOf(BuildContext context) {
-  const sample = 12.5;
+/// Sampled at [sample] points, in the size of the text whose block is being
+/// measured: a non-linear scaler reports a different factor at other sizes, so
+/// the requirements table samples its explanation paragraph (12.5) and a job row
+/// samples its title (14).
+double _textScaleOf(BuildContext context, {double sample = 12.5}) {
   return MediaQuery.textScalerOf(context).scale(sample) / sample;
 }
 
