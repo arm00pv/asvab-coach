@@ -208,3 +208,17 @@ CI note, fixed this stretch: device.yml had cancel-in-progress true on a
 workflow that triggers on every push, so the fifteen-minute emulator
 journey was cancelled by the next commit every time. Five rounds of pending
 were self-inflicted. It is now cancel-in-progress false.
+
+## Closed (7e48630)
+
+Every finding in docs/PHONE_AUDIT.md is closed: 3 high, 7 medium and 15 low,
+plus M3 (the empty item screen) and the low list in full. Verified on a real
+emulator: the Android journey passed on 81ac134 (24m) and again on 7e48630
+(19m) after the device workflow was taught to wait for a boot instead of
+dying at a timeout. flutter test 620 passed, flutter analyze clean,
+dart run tool/audit.dart --strict cleean at 447 of 447 items explained.
+
+Two CI defects were found and fixed on the way, both mine: device.yml had
+cancel-in-progress true on a workflow that triggers on every push, so the
+emulator job was killed by the next commit every time; and a multi-line shell
+loop in that workflow dies because the runner hands each line to sh -c.
