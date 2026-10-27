@@ -3,6 +3,7 @@ import '../models/catalog.dart';
 import '../models/line_score.dart';
 import '../models/mos.dart';
 import 'mos_data.dart';
+import 'warrant_mos_data.dart';
 
 /// Access to the MOS catalogue and the officer pathways.
 abstract final class MosRepository {
@@ -25,6 +26,42 @@ abstract final class MosRepository {
   /// [enlistableCountAsOf] whenever the number is a denominator a candidate
   /// reads as "jobs I could take".
   static int get enlistedCount => allMos.length;
+
+  /// Warrant officer occupations, which are *appointed* into from the ranks.
+  ///
+  /// A separate list from [all] on purpose, and not a filter over it. A warrant
+  /// occupation is not an enlisted MOS: it cannot be enlisted into, its
+  /// published requirement is a list of prerequisites - grade band, feeder MOS,
+  /// board, often a flight physical - rather than a line score, and a candidate
+  /// who has not served cannot apply at all. Keeping it out of [all] is what
+  /// makes every count in the app ("156 enlisted MOS", "N of 153 jobs open to
+  /// enlistment today") true without any screen having to remember to subtract
+  /// it, and it is the reason a warrant entry cannot leak into an eligibility
+  /// verdict. See [MosAppointment].
+  static List<Mos> get warrant => warrantMosData;
+
+  /// How many warrant officer occupations the catalogue carries.
+  static int get warrantCount => warrantMosData.length;
+
+  /// What the warrant roster was transcribed from - a different chapter of the
+  /// same pamphlet, and named separately because it is.
+  static String get warrantAuthority => mosWarrantAuthority;
+
+  /// When the warrant roster was worked through against that chapter.
+  static String get warrantVerifiedAsOf => mosWarrantVerifiedAsOf;
+
+  /// The caveat that travels with a warrant prerequisite list.
+  static String get warrantCaveat => mosWarrantCaveat;
+
+  /// A warrant occupation by code, for a screen that was handed one - case and
+  /// surrounding whitespace forgiven, because codes arrive from stored state.
+  static Mos? warrantByCode(String code) {
+    final wanted = code.trim().toUpperCase();
+    for (final m in warrantMosData) {
+      if (m.code.toUpperCase() == wanted) return m;
+    }
+    return null;
+  }
 
   /// The catalogue that can actually be enlisted into on [now]: every entry
   /// except the ones the pamphlet has already retired.

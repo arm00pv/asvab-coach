@@ -57,6 +57,34 @@ abstract final class MosComponent {
   ];
 }
 
+/// Which accession route an entry belongs to.
+///
+/// The catalogue now carries two kinds of thing that both print as a short
+/// alphanumeric code, and confusing them is the most expensive mistake this app
+/// can make:
+///
+///  * [enlisted] - a military occupational specialty a candidate is *enlisted*
+///    into, from civilian life, before they have served a day. The requirement
+///    the pamphlet publishes is an aptitude gate, and a candidate reads it as
+///    "can I have this job".
+///  * [warrantOfficer] - a warrant officer military occupation, which is
+///    *appointed* into from the ranks. Warrant appointment requires prior
+///    service, the authority's prerequisites are a grade band, a feeder MOS, a
+///    board and often a flight physical, and a line score is at most one line of
+///    them. A candidate who has not served cannot start here at all.
+///
+/// Keeping the distinction in the model, rather than in a screen or a comment,
+/// is what lets [Mos.requiresPriorService] be true only where it is true and lets
+/// every count of "jobs open to enlistment" exclude these entries without
+/// remembering to.
+enum MosAppointment {
+  /// Enlisted into from civilian life.
+  enlisted,
+
+  /// Appointed into from the ranks: prior service is the precondition.
+  warrantOfficer,
+}
+
 /// Where a plain-language sentence about an MOS was read from.
 ///
 /// The kind is recorded separately from the URL because the five answers carry
@@ -131,6 +159,8 @@ class Mos {
     this.description,
     this.civilianNote,
     this.rescindOn,
+    this.appointment = MosAppointment.enlisted,
+    this.prerequisites = const <String>[],
   });
 
   final String code;
@@ -177,6 +207,23 @@ class Mos {
   /// rule as [description]: nothing is invented to fill it.
   final SourcedText? civilianNote;
 
+  /// How this entry is entered: enlisted from civilian life, or appointed as a
+  /// warrant officer from the ranks. Defaults to [MosAppointment.enlisted] so an
+  /// entry cannot arrive claiming to be a warrant occupation it is not, and so
+  /// the 156 enlisted entries needed no edit when the field was added.
+  final MosAppointment appointment;
+
+  /// The prerequisites the authority publishes for a warrant officer
+  /// occupation, transcribed in this app's own words: grade band, feeder MOS,
+  /// aviation service, flight physical, board selection.
+  ///
+  /// Empty for every enlisted entry, whose whole requirement is [gate]. For a
+  /// warrant entry this list - not a line score - is the requirement, which is
+  /// why it exists rather than being squeezed into [gate]: a GT 110 that is one
+  /// line of a five-line prerequisite list, rendered as though it were the gate,
+  /// would tell a candidate they qualify for an appointment they cannot hold.
+  final List<String> prerequisites;
+
   /// The month the authority retires this MOS, or null while it stands.
   ///
   /// DA Pam 611-21 chapter 10 section C marks a rescinded section in its own
@@ -193,6 +240,24 @@ class Mos {
   final DateTime? rescindOn;
 
   String get id => code;
+
+  /// True when this entry is a warrant officer occupation rather than an
+  /// enlisted specialty. Read [appointment] through this rather than comparing
+  /// the enum at a call site, so the question is asked the same way everywhere.
+  bool get isWarrantOfficer => appointment == MosAppointment.warrantOfficer;
+
+  /// True when this entry is a specialty a candidate can be enlisted into.
+  bool get isEnlisted => appointment == MosAppointment.enlisted;
+
+  /// True when the entry cannot be taken by someone who has not served.
+  ///
+  /// Warrant appointment is made from the ranks: the authority's prerequisites
+  /// are a grade band, a feeder MOS, a board and often a flight physical, so a
+  /// candidate with no service is not *short* of the requirement - they are
+  /// outside its premise. Every screen that lists an entry has to ask this,
+  /// because it is the one fact about 153A that a candidate planning a first job
+  /// would otherwise get wrong.
+  bool get requiresPriorService => isWarrantOfficer;
 
   /// True when the entry carries at least one gate alternative.
   bool get hasGate => gate.alternatives.isNotEmpty;
@@ -274,10 +339,19 @@ class Mos {
       MosComponent.guardFielded.contains(componentLimit);
 
   /// How the gate reads in a sentence, including the honest cases.
+  ///
+  /// A warrant occupation with no published gate is not the same silence as an
+  /// enlisted MOS with none: the authority publishes prerequisites for it, and
+  /// they are a different *kind* of requirement. Saying "no aptitude gate
+  /// published" there would leave a candidate thinking the job has no bar at
+  /// all, so the warrant case names what does stand in its place.
   String get gateSummary => switch (gateStatus) {
     MosGateStatus.published =>
       hasGate ? gate.label : 'Gate missing - data defect',
-    MosGateStatus.noRequirement => 'No aptitude gate published',
+    MosGateStatus.noRequirement =>
+      isWarrantOfficer
+          ? 'No line-score gate - appointed against prerequisites, not a score'
+          : 'No aptitude gate published',
     MosGateStatus.unverified => 'Gate not verified',
   };
 }

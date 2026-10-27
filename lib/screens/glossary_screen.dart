@@ -156,6 +156,23 @@ abstract final class Glossary {
               'field.',
         ),
         GlossaryEntry(
+          'Warrant officer occupation',
+          'A job code a soldier is appointed into from the ranks, such as 153A '
+              'for a rotary-wing aviator. Not an enlistment option.',
+          detail:
+              'You cannot enlist into one: warrant officers are appointed from '
+              'serving soldiers, and the requirements are a grade band, the '
+              'feeder MOS you already hold, a course, a clearance and often a '
+              'flight physical. The app carries '
+              '${MosRepository.warrantCount} of them from DA Pam 611-21 chapter '
+              '8 section B, verified ${MosRepository.warrantVerifiedAsOf}, '
+              'listed apart from the enlisted jobs and never counted as a job a '
+              'candidate can take today. The pamphlet prints an ASVAB score for '
+              'exactly two of them - 280A and 490B require GT 110, no waivers - '
+              'and the rest publish prerequisites instead, which is what the app '
+              'shows.',
+        ),
+        GlossaryEntry(
           'Qualified / short by N',
           '"Qualified" means you clear every score requirement for that job '
               'already. "Short by 9" means you are nine points under on the one '

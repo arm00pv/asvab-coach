@@ -56,6 +56,24 @@ class _JobsScreenState extends State<JobsScreen> {
     final routes = MosRepository.officerPathways
         .where((p) => _track == null || OfficerTrack.of(p)?.id == _track!.id)
         .toList(growable: false);
+    // Warrant occupations are not enlisted MOS and are not in [all], so they are
+    // filtered here rather than falling out of the list above. The same search
+    // box and field chips reach them, because a candidate who types "153" means
+    // the code, whichever list it lives in.
+    final warrant = <Mos>[
+      for (final m in MosRepository.warrant)
+        if ((_fieldPrefix == null || m.code.startsWith(_fieldPrefix!)) &&
+            (_query.trim().isEmpty ||
+                m.code.toLowerCase().contains(_query.trim().toLowerCase()) ||
+                m.title.toLowerCase().contains(_query.trim().toLowerCase())))
+          m,
+    ];
+    // The warrant list belongs to the officer-and-warrant view, and inside it to
+    // the warrant track when one is chosen: an occupation filed under aviation is
+    // still a warrant occupation.
+    final showWarrant =
+        _type != _Type.enlisted &&
+        (_track == null || _track!.id == OfficerTrack.warrant.id);
     final summary = report == null
         ? null
         : EligibilityEngine.summarise(report, now: now);
@@ -94,6 +112,19 @@ class _JobsScreenState extends State<JobsScreen> {
                 '${MosRepository.enlistedCount} enlisted MOS transcribed from '
                 'DA Pam 611-21 chapter 10 section C, verified '
                 '${MosRepository.rosterVerifiedAsOf}.',
+                style: context.text.bodySmall?.copyWith(color: c.textMuted),
+              ),
+              const SizedBox(height: 2),
+              // Two documents and two different kinds of requirement, so the
+              // warrant count is named with its own authority instead of being
+              // folded into the enlisted line above. A candidate reading "153A"
+              // in the same breath as "11B" would be reading one list where the
+              // app holds two.
+              Text(
+                '${MosRepository.warrantCount} warrant officer occupations from '
+                'DA Pam 611-21 chapter 8 section B, verified '
+                '${MosRepository.warrantVerifiedAsOf} - appointed from the '
+                'ranks, never enlisted into.',
                 style: context.text.bodySmall?.copyWith(color: c.textMuted),
               ),
               const SizedBox(height: Space.lg),
@@ -240,6 +271,10 @@ class _JobsScreenState extends State<JobsScreen> {
               if (_type != _Type.enlisted) ...<Widget>[
                 const SizedBox(height: Space.xl),
                 _OfficerSection(report: report, routes: routes),
+                if (showWarrant) ...<Widget>[
+                  const SizedBox(height: Space.xl),
+                  _WarrantSection(entries: warrant),
+                ],
               ],
               const SizedBox(height: Space.lg),
               Callout(
@@ -1254,6 +1289,216 @@ class _OfficerSection extends StatelessWidget {
             ),
           ),
       ],
+    );
+  }
+}
+
+/// Warrant officer occupations: a third kind of entry, listed apart from the
+/// enlistment jobs and from the commissioning routes because it is neither.
+///
+/// The failure this section exists to prevent is the one the app came closest to
+/// committing: reading a warrant occupation in a list of enlistment targets and
+/// concluding it is a job you can pick. Every warrant officer in the Army was a
+/// soldier first - appointment is made from the ranks - so for a candidate who
+/// has not served, the prerequisite list is not something to aim at, it is the
+/// description of a later stage of a career that has to start somewhere else.
+///
+/// Which is why nothing here prints a verdict. The eligibility engine is never
+/// asked a question about a warrant occupation: it was built to evaluate a line
+/// score, and a line score is at most one line of what a warrant board weighs.
+class _WarrantSection extends StatelessWidget {
+  const _WarrantSection({required this.entries});
+
+  /// Already filtered by the search box and the field chips, so a candidate who
+  /// typed a code sees the entry they meant.
+  final List<Mos> entries;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text('Warrant officer occupations', style: context.text.titleMedium),
+        const SizedBox(height: 2),
+        Text(
+          'Appointed from the ranks. Not an enlistment option, and a line score '
+          'alone does not open one.',
+          style: context.text.bodySmall?.copyWith(color: c.textMuted),
+        ),
+        const SizedBox(height: Space.md),
+        const Callout(
+          tone: PillTone.warning,
+          icon: Icons.military_tech_outlined,
+          title: 'You cannot enlist into a warrant officer occupation',
+          text:
+              'Warrant officers are appointed from the ranks: the Army looks at '
+              'your grade, the feeder MOS you already hold, your evaluations, a '
+              'board and, for the aviation occupations, a flight physical. Two '
+              'of the sections this list is built from print an ASVAB score at '
+              'all, and even there it is one line of a longer requirement. If '
+              'you have not served yet, treat this as a place a career can reach '
+              'later - the job you choose now is on the enlisted list above, and '
+              'the feeder MOS you would need is printed with each entry here.',
+        ),
+        const SizedBox(height: Space.md),
+        if (entries.isEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: Space.lg),
+            child: EmptyState(
+              icon: Icons.workspaces_outline,
+              title: 'No warrant occupation matches',
+              body: 'Try a different search or field.',
+            ),
+          )
+        else
+          for (final m in entries)
+            Padding(
+              padding: const EdgeInsets.only(bottom: Space.sm),
+              child: _WarrantCard(mos: m),
+            ),
+      ],
+    );
+  }
+}
+
+/// One warrant officer occupation: the code, the title, what the authority
+/// requires of an applicant, and what the work is.
+///
+/// A column from top to bottom, never a row of columns: at 360 dp and 2x system
+/// text the code, the title and a prerequisite sentence cannot share a line, and
+/// a prerequisite that is cut off is the one thing a candidate would plan around.
+/// The card is not tappable and opens no sheet - there is no verdict to show and
+/// nothing to raise, and a sheet exists in this screen to answer exactly those
+/// two questions.
+class _WarrantCard extends StatelessWidget {
+  const _WarrantCard({required this.mos});
+
+  final Mos mos;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final description = MosDescriptions.forMos(mos);
+    return AppCard(
+      padding: const EdgeInsets.symmetric(
+        horizontal: Space.lg,
+        vertical: Space.md,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            mos.code,
+            style: context.text.titleSmall?.copyWith(color: c.primary),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            mos.title,
+            style: context.text.bodyMedium?.copyWith(
+              color: c.textPrimary,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            mos.category,
+            style: context.text.bodySmall?.copyWith(
+              color: c.textMuted,
+              fontSize: 11,
+            ),
+          ),
+          if (description != null) ...<Widget>[
+            const SizedBox(height: Space.sm),
+            Text(
+              description.text,
+              style: context.text.bodySmall?.copyWith(height: 1.5),
+            ),
+            const SizedBox(height: Space.xs),
+            Text(
+              mosProvenanceLine(description),
+              style: context.text.bodySmall?.copyWith(
+                color: c.textMuted,
+                fontSize: 11,
+                height: 1.45,
+              ),
+            ),
+          ],
+          const SizedBox(height: Space.md),
+          // The requirement, under the name the authority gives it. A warrant
+          // occupation's bar is a list of prerequisites, so it is printed as a
+          // list rather than reduced to the one number in it that looks like an
+          // enlisted gate.
+          Eyebrow(
+            mos.hasGate
+                ? 'Prerequisites and aptitude'
+                : 'Prerequisites (no aptitude gate published)',
+          ),
+          const SizedBox(height: Space.xs),
+          if (mos.hasGate)
+            Padding(
+              padding: const EdgeInsets.only(bottom: Space.xs),
+              child: Text(
+                'Aptitude area: ${mos.gate.label}',
+                style: context.text.bodySmall?.copyWith(
+                  color: c.textSecondary,
+                  height: 1.45,
+                ),
+              ),
+            ),
+          for (final requirement in mos.prerequisites)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 6, right: 6),
+                    child: Container(
+                      width: 4,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: c.border,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      requirement,
+                      style: context.text.bodySmall?.copyWith(
+                        color: c.textSecondary,
+                        height: 1.45,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          if (mos.note != null) ...<Widget>[
+            const SizedBox(height: Space.xs),
+            Text(
+              mos.note!,
+              style: context.text.bodySmall?.copyWith(
+                color: c.textMuted,
+                fontSize: 11,
+                height: 1.45,
+              ),
+            ),
+          ],
+          if (mos.source != null) ...<Widget>[
+            const SizedBox(height: Space.xs),
+            Text(
+              mos.source!,
+              style: context.text.bodySmall?.copyWith(
+                color: c.textMuted,
+                fontSize: 11,
+                height: 1.45,
+              ),
+            ),
+          ],
+        ],
+      ),
     );
   }
 }

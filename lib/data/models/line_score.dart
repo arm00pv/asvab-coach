@@ -306,6 +306,17 @@ class LineScoreRequirement {
 class AptitudeGate {
   const AptitudeGate(this.alternatives);
 
+  /// A gate with nothing in it, for an entry whose requirement is not an
+  /// aptitude line score at all.
+  ///
+  /// A warrant officer occupation is the case: the authority publishes a grade
+  /// band, a feeder MOS, a course, a clearance and a physical, and prints a line
+  /// score for exactly two of them. Written down rather than left to
+  /// `const AptitudeGate(<List<LineScoreRequirement>>[])` at each call site,
+  /// because an empty gate is a claim ("nothing to clear") and a claim with a
+  /// name beside it is easier to audit than an empty list literal.
+  static const AptitudeGate none = AptitudeGate(<List<LineScoreRequirement>>[]);
+
   /// Outer list = OR, inner list = AND.
   final List<List<LineScoreRequirement>> alternatives;
 

@@ -376,6 +376,20 @@ class SettingsScreen extends StatelessWidget {
                   'Not Guard jobs',
                   '${MosRepository.notGuardFielded.length}',
                 ),
+                _kv(
+                  context,
+                  'Warrant occupations carried',
+                  '${MosRepository.warrantCount}',
+                ),
+                const SizedBox(height: Space.md),
+                Text(
+                  'The warrant officer occupations are transcribed from DA Pam '
+                  '611-21 chapter 8 section B and verified on '
+                  '${MosRepository.warrantVerifiedAsOf}. They are appointed '
+                  'from the ranks, so they are listed separately from the '
+                  'enlistment jobs and are never counted among them.',
+                  style: context.text.bodySmall?.copyWith(height: 1.6),
+                ),
               ],
             ),
             const SizedBox(height: Space.xxl),

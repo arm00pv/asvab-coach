@@ -23,10 +23,23 @@ reviewed by eye.
 | Entries marked as not an Army National Guard job | **9** |
 | Entries the pamphlet marks rescinded | **3** (12M 202510; 15E and 15W 202610) |
 
+And the half this report used to leave out (section 5):
+
+| Warrant officer occupations (chapter 8 section B) | Count |
+|---|---|
+| Occupation codes specified in the chapter | **76** |
+| Carried by the app | **71** |
+| Recorded as deliberately excluded, with the reason | **5** |
+| Printing an ASVAB line-score gate | **2** (280A and 490B: GT 110, no waivers) |
+| Printing prerequisites instead of a gate | **69** |
+| Described in plain language | **70** |
+| Left undescribed because the chapter prints no duties | **1** (351Y) |
+
 Verified as of **26 October 2026** against the **04 December 2025 build** of DA
-Pam 611-21, chapter 10, section C. The app carries that date as
-`mosRosterVerifiedAsOf` and shows it in the jobs screen, in Settings and in the
-glossary entry for line scores.
+Pam 611-21: chapter 10 section C for the enlisted roster, chapter 8 section B for
+the warrant occupations. The app carries that date as `mosRosterVerifiedAsOf`
+and `mosWarrantVerifiedAsOf` and shows both in the jobs screen, in Settings and
+in the glossary.
 
 ---
 
@@ -307,32 +320,123 @@ Two of these need a word of warning:
   that date. The app carries MM 97 (the rule for anyone testing now) and records
   the older tier in the note.
 
-## 5. Warrant officer MOS: deferred, deliberately
+## 5. Warrant officer MOS: closed on 26 October 2026
 
 The app carries nine officer and warrant **routes** (OCS, ARNG OCS, ROTC, West
 Point, direct commission, WOCS, WOFT, Green to Gold, 09S/09W) with their GT 110
-gate. It does **not** carry the individual warrant officer MOS (153A, 155A, 170A,
-180A, 255A, 350F and the rest).
+gate. Until this pass it carried **no** individual warrant officer occupation
+(153A, 155A, 170A, 180A, 255A, 350F and the rest), and the earlier edition of
+this section said so and said why. That gap is now closed, on the terms this
+section used to set out.
 
-That is a decision, not an oversight. The warrant MOS prerequisites do not live
-in chapter 10 section C; they are a different document (chapter 8 / DA Pam 601-6
-and the proponent prerequisites), and they are not line-score gates. A warrant
-MOS is awarded to a serving soldier who already holds a feeder MOS, is within a
-grade band, and meets technical and often flight-physical requirements. The
-`Mos` schema cannot carry that honestly: put 153A in the same list as 11B and
+### 5a. The authority, and which build of it
 
-- it lands inside the "Enlisted (n)" chip and the career-field filters, which is
-  wrong about what it is;
-- the eligibility engine would answer "you qualify" from a GT 110 that is
-  necessary but nowhere near sufficient;
-- a candidate would read a route they cannot take at enlistment as a job they
-  can pick.
+| Build | URL | Use |
+|---|---|---|
+| 04 Dec 2025 | `api.army.mil/e2/c/downloads/2025/12/04/eed6f526/chapter-8-wo-base-chapter.pdf` | chapter 8 front matter (8-1 to 8-4), 1 page |
+| 04 Dec 2025 | `api.army.mil/e2/c/downloads/2025/12/04/720183c2/chapter-8b-wo-specifications.pdf` | **the authority for this diff** - chapter 8 section B, 161 pages |
 
-**What closing it would need:** a separate model (code, title, feeder MOS list,
-grade band, component availability, proponent prerequisites, and the source
-section), a separate section of the jobs screen, and an explicit statement that
-the prerequisite is service, not a score. That is a Phase-1 follow-on, not a
-data-entry job, and it is better absent than wrong.
+Both are the same build the enlisted roster was verified from (04 December
+2025), so the two halves of the catalogue cite one edition of one pamphlet. The
+files were read from the Internet Archive snapshot of those exact URLs
+- and the `/web/20260510211025/` playback shape of the capture is the one that
+served the bytes: the same capture addressed as `/web/20260510211025id_/` answered
+HTTP 429 on every attempt, which is a rate limit and not a missing document.
+`docs/research/extract_ch8b.py` fetches and extracts it; the extracted text lands
+in `docs/research/_raw/wo/`, which is gitignored because it is 430 KB.
+
+`recruiting.army.mil/ISO/AWOR/153A/` and the AWOR MOS index answer HTTP 403 to
+anything that is not a browser, and the `army.mil` chapter files do too. As with
+chapter 10 section C, the archive is the only route.
+
+### 5b. The arithmetic
+
+| | Count |
+|---|---|
+| `8-XXXX` section headings in chapter 8 section B | **65** (62 distinct section numbers - 8-155, 8-280A and 8-420T are each printed twice) |
+| Warrant officer occupation codes in those headings (aviation headings list several each) | **76** |
+| Carried by the app | **71** |
+| Recorded as deliberately excluded, with the reason | **5** |
+| Of the 71, printing a line-score gate | **2** (280A, 490B) |
+| Of the 71, printing prerequisites instead | **69** |
+| Described in plain language | **70** |
+| Left with no description | **1** (351Y) |
+
+Verified on **26 October 2026** against that build. The app carries the date as
+`mosWarrantVerifiedAsOf` beside the enlisted roster's own, and shows both in the
+jobs screen.
+
+### 5c. Does a warrant occupation carry the same gate as an enlisted MOS? No.
+
+This was the question the earlier edition of this section refused to answer by
+guessing, and chapter 8 section B answers it plainly. A section prints, in order:
+licensing and certification requirements, prerequisites, accession status and
+feeder MOSs, associated SQI/ASI codes, the qualifications for each grade (course,
+clearance, physical, security), the duties, the physical demands category, and
+finally `Qualifying scores` - which are **OPAT physical benchmarks**, standing
+long jump, seated power throw, strength deadlift and interval aerobic run.
+
+There is no aptitude-area paragraph and no ASVAB line score anywhere in the
+chapter **except in two sections**: 280A (Software Operations Technician) and
+490B (Artificial Intelligence and Machine Learning Operations Technician) each
+require "ASVAB GT Score of 110 (No waivers)". That is the whole of it.
+
+So the model carries two things rather than forcing one into the other:
+
+- `Mos.gate` - an aptitude gate, filled for 280A and 490B and empty for the other
+  69, whose `gateStatus` is `MosGateStatus.noRequirement`;
+- `Mos.prerequisites` - the authority's own prerequisite list: feeder MOS,
+  accession status, course, clearance, physical, board. This is what stands in
+  place of a gate, and the jobs screen prints it under the heading the pamphlet
+  gives it, never as a number.
+
+`Mos.gateSummary` says the difference out loud: an enlisted MOS with no gate
+reads "No aptitude gate published", a warrant occupation with no gate reads "No
+line-score gate - appointed against prerequisites, not a score".
+
+### 5d. What was excluded, and why (the 5)
+
+- **011A and 011M** are branch- and MOS-immaterial **duty positions**, not
+  occupations: their sections describe where such positions sit ("Chief, Leader
+  Development Branch, WO Division, HRC"; "positions serving in the Army Software
+  Factory"). They are the warrant analogue of the 00-series position reporting
+  codes excluded from the enlisted roster.
+- **255Z, 915E and 948E** are CW5 capstone codes - the warrant counterpart of the
+  E7-E9 supervisory codes the enlisted roster also excludes. Each is
+  non-accession and each defers its warrant-officer duties to its feeders: 255Z
+  prints "WO1/CW2/CW3/CW4 does not apply", 915E is marked "(CW5 only)" and says
+  "see feeder MOS qualifications", 948E says "see MOS 948B or MOS 948D".
+
+They are recorded in `mosWarrantExcluded` with those reasons rather than
+dropped, and `test/warrant_mos_test.dart` reads the chapter back and fails if any
+section-B code is neither carried nor recorded there.
+
+### 5e. What could still mislead someone, and what the app does about it
+
+**A warrant occupation is not an enlistment option.** This is the one that could
+actively mislead a candidate, so it is enforced in the data rather than in a
+sentence: `Mos.appointment` is `MosAppointment.warrantOfficer`, `Mos
+.requiresPriorService` is true for every one of the 71, the list lives in
+`MosRepository.warrant` and **not** in `MosRepository.all`, and every count in
+the app - "156 enlisted MOS", "N of 153 jobs open to enlistment today" - is
+computed from `all` and therefore cannot see them. The eligibility engine is
+never asked about one: no bucket of an `EligibilitySummary` can hold a warrant
+entry, and the jobs screen renders them in their own section, under a callout
+that says you cannot enlist into one, with no "Qualified" verdict and no line
+score to raise.
+
+**One section contradicts itself.** 153E is listed as an accession MOS and, in
+the next sentence, as a non-accession MOS. The app records the contradiction in
+the entry's note rather than picking the reading it prefers.
+
+**One section prints no duties.** 351Y's duties paragraph says "see AR 614-115".
+That regulation was not fetched here, so 351Y carries prerequisites and **no
+description** - the only one of the 71 without one. An invented sentence about
+the work was the alternative, and it is worse.
+
+**Two sections are superseded inside the same chapter.** 420T is printed twice
+(effective 202508 and 202710); the app carries the current one and says the other
+exists. 280A is printed twice as well and the two are the same specification.
 
 ## 6. National Guard availability: what is verified and what is not
 
@@ -373,7 +477,17 @@ Verified on 26 October 2026:
 - every rescission the pamphlet marks in a section heading is carried, with the
   month it takes effect, and is shown as retired or retiring rather than as a job
   to aim at;
-- the 97 legacy ids are stable, tested, and still resolve.
+- the 97 legacy ids are stable, tested, and still resolve;
+- every warrant officer occupation the chapter specifies is either carried (71)
+  or recorded with a reason (5), with its title, its feeder MOS, its accession
+  status and the prerequisites the section prints;
+- the two warrant occupations that publish an ASVAB score carry it (GT 110, no
+  waivers), and no other warrant entry claims a gate it does not have;
+- 70 of the 71 warrant occupations carry a pamphlet-cited description of the
+  work, and 351Y carries none;
+- no warrant occupation is reachable from an enlisted count, an enlisted filter,
+  an enlistment search or an eligibility verdict, and every one of them states
+  that appointment requires prior service.
 
 **Not** claimed, and not verifiable from this repo:
 
@@ -386,6 +500,11 @@ Verified on 26 October 2026:
   demands rating, a PULHES profile and an OPAT benchmark. The app carries none of
   those numbers; a qualifying line score alone does not qualify anyone and the
   jobs screen says so.
+- warrant officer selection. The prerequisite lists are the pamphlet's own and
+  a board applies them: a soldier who meets every printed line is a candidate,
+  not an appointment. The app models no board, no evaluation file and no
+  proponent waiver. The ASVAB part is complete for the two occupations that
+  publish one and absent for the rest, which is exactly what the authority says;
 - clearance adjudication. `securityClearance: true` records that the pamphlet
   requires eligibility for SECRET or TS/SCI; it is not a prediction that a
   candidate will get one.
@@ -399,9 +518,19 @@ python docs/research/extract_ch10c.py
 # 2. compare with the extract committed here
 #    docs/research/mos-roster-2025-12.json holds, per code, the pamphlet's own
 #    qualifying-score sentence next to the gate the app carries
-# 3. the tests enforce the invariants
-flutter test test/mos_roster_test.dart
+# 3. pull chapter 8 section B (the warrant occupations) the same way
+python docs/research/extract_ch8b.py
+#    -> writes docs/research/_raw/wo/chapter-8b-wo-specifications.txt
+#    -> prints the code count, what is carried, what is excluded and what is gated
+# 4. the tests enforce the invariants
+flutter test test/mos_roster_test.dart test/warrant_mos_test.dart
 ```
+
+`test/warrant_mos_test.dart` reads the chapter-8 extract back when it is on
+disk, extracts every `8-XXXX` heading, and fails if a code the chapter specifies
+is neither carried nor recorded as excluded - or if the app carries or excludes a
+code the chapter does not print. It also re-derives which sections print an ASVAB
+score and fails if that set is anything other than 280A and 490B.
 
 `docs/research/mos-roster-2025-12.json` is the machine-readable companion to this
 report: the authority's counts, the exclusion lists, and for each of the 156
@@ -431,3 +560,12 @@ What a recruiter could still tell a candidate that this app gets wrong:
 6. **Physical, medical and clearance gates** are not modelled at all. This is the
    largest class of "but you are not qualified" a recruiter can say to a
    candidate the app called eligible.
+7. **The warrant prerequisites move faster than the chapter.** Proponents change
+   feeder MOS lists, grade bands and certification requirements between pamphlet
+   revisions, and two of the sections in this build were superseded inside the
+   same chapter. The date beside them is the mitigation, not a guarantee.
+8. **A candidate can still read a warrant occupation as a destination and stop
+   planning the enlistment that would get them there.** The app says, on the card
+   and in the section heading, that you cannot enlist into one and that the feeder
+   MOS is printed with each entry - but the honest summary is that the app can
+   only remove the ambiguity, not the wishful reading.
