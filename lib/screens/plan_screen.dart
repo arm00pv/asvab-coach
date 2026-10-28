@@ -545,25 +545,7 @@ class _TodayCard extends StatelessWidget {
             for (final step in schedule.todaySteps)
               Padding(
                 padding: const EdgeInsets.only(bottom: Space.xs),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      '\u00b7',
-                      style: context.text.bodySmall?.copyWith(color: c.primary),
-                    ),
-                    const SizedBox(width: Space.sm),
-                    Expanded(
-                      child: Text(
-                        '${step.label} - ${_minutes(step.minutes)}',
-                        style: context.text.bodySmall?.copyWith(
-                          color: c.textPrimary,
-                          height: 1.4,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                child: _TodayStepRow(step: step),
               ),
           ],
           if (schedule.stepCount > 0) ...<Widget>[
@@ -597,6 +579,71 @@ class _TodayCard extends StatelessWidget {
             ),
           ],
         ],
+      ),
+    );
+  }
+}
+
+/// One thing to do today, as a way to start it rather than a note about it.
+///
+/// The card used to list the day's work and stop there, so a candidate reading
+/// "Numbers & order of operations - 13 minutes" had to scroll to the plan, find
+/// that same skill in the list and tap it there. Telling someone what to do and
+/// then not letting them start it is the gap between a plan and a suggestion.
+///
+/// The row goes where the plan step below it goes: [AppRoutes.lesson] on the
+/// same skill id, because the schedule carries the plan step's id through
+/// unchanged. The whole row is the target, not just the label, and it never gets
+/// shorter than [minimumTapTarget] however small the text is. The chevron is the
+/// affordance, so the card reads as a list of things to open rather than a wall
+/// of buttons.
+class _TodayStepRow extends StatelessWidget {
+  const _TodayStepRow({required this.step});
+
+  final ScheduleStep step;
+
+  /// A row shorter than this is a text line with a gesture attached, not a
+  /// thumb target.
+  static const double minimumTapTarget = 48;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final radius = BorderRadius.circular(Radii.sm);
+    return Material(
+      color: Colors.transparent,
+      borderRadius: radius,
+      child: InkWell(
+        onTap: () => AppRoutes.lesson(context, step.id),
+        borderRadius: radius,
+        splashColor: c.primary.withValues(alpha: 0.06),
+        highlightColor: c.primary.withValues(alpha: 0.04),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: minimumTapTarget),
+          child: Row(
+            children: <Widget>[
+              Text(
+                '\u00b7',
+                style: context.text.bodySmall?.copyWith(color: c.primary),
+              ),
+              const SizedBox(width: Space.sm),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: Space.xs),
+                  child: Text(
+                    '${step.label} - ${_minutes(step.minutes)}',
+                    style: context.text.bodySmall?.copyWith(
+                      color: c.textPrimary,
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: Space.sm),
+              Icon(Icons.chevron_right_rounded, size: 18, color: c.textMuted),
+            ],
+          ),
+        ),
       ),
     );
   }
