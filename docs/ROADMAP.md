@@ -223,3 +223,29 @@ cancel-in-progress true on a workflow that triggers on every push, so the
 emulator job was killed by the next commit every time; and a multi-line shell
 loop in that workflow dies because the runner hands each line to sh -c.
 
+
+## Warrant officer branch (closed 26 October 2026)
+
+The roster limitation named in the gap report is closed. DA Pam 611-21
+chapter 8 section B, the same 04 December 2025 build as the enlisted
+chapter, specifies 76 occupations; 71 are carried and 5 are recorded as
+deliberately excluded with reasons (011A/011M duty positions, 255Z/915E/948E
+CW5 capstones).
+
+The finding that shaped the model: a warrant occupation carries no
+line-score gate. Chapter 8 prints its qualifying scores as OPAT physical
+benchmarks, and across 161 pages only 280A and 490B name an aptitude area
+(GT 110, no waivers). So 2 entries carry a gate, 69 carry the printed
+prerequisites with copy saying there is no score to raise, and 70 of 71 have
+a cited description - 351Y does not, because its duties paragraph says only
+"see AR 614-115".
+
+They are a separate branch at every level: MosRepository.all still returns
+156 enlisted entries, the count still reads 153 of 156 open to enlistment,
+no warrant code enters a met or close list, all 71 require prior service,
+and the section opens by saying you cannot enlist into one.
+
+Released as v1.5.0 (d4ff195), installed over 1.4.0 with the package manager
+confirming versionCode 104. Visual confirmation on the phone was not
+obtained: the device was locked and screencap returns black, so the render
+is covered by widget tests at 360 dp and 2x text only.
