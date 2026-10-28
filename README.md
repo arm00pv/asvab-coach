@@ -16,7 +16,10 @@ carries a two-sentence description paraphrased from its own DA Pam 611-21
 section, with the sentence it came from recorded and dated, and a civilian
 transfer drawn from the O*NET military crosswalk under CC BY 4.0. Where the
 crosswalk has no civilian occupation for a code, the app says "military
-occupation" rather than inventing a trade.
+occupation" rather than inventing a trade. The 71 warrant officer occupations are
+described from chapter 8 section B in the same way: 70 carry a description cited
+to their own section, and 351Y carries none, because its duties paragraph points
+at a different publication instead of printing the work.
 
 **Explain the wrong answers, not just the right one.** All 447 items name the
 mistake that produces each wrong option - written for the 390 prose items and
@@ -31,7 +34,7 @@ starts a practice set drawn from the subtests that feed that score.
 scores and every job you meet, generated on the device, headed with the
 statement that it is an estimate and not an official ASVAB record.
 
-Current release: [v1.4.0](https://github.com/arm00pv/asvab-coach/releases/tag/v1.4.0).
+Current release: [v1.5.0](https://github.com/arm00pv/asvab-coach/releases/tag/v1.5.0).
 The Android build updates itself from GitHub releases and verifies the
 published SHA-256 before offering the installer.
 **Places you before it teaches you.** A 27-question diagnostic across all nine
@@ -58,10 +61,17 @@ gate (including every either/or alternative the pamphlet prints), a per-MOS
 source reference, and a note when the pamphlet publishes no aptitude requirement
 at all. Nine officer and warrant officer pathways carry the GT 110 requirement
 behind them. Eligibility is computed against your real score, with a near-miss
-list and the arithmetic for closing each gap. The roster was diffed against the
-whole of section C on 26 October 2026: the diff, the counts and everything the
-app deliberately does not claim are in [docs/MOS_GAP.md](docs/MOS_GAP.md), and
-that date is shown on the jobs screen, in Settings and in the glossary.
+list and the arithmetic for closing each gap. A separate branch of the catalogue
+carries the **71 warrant officer occupations** from chapter 8 section B, which do
+not carry line-score gates at all: the chapter's qualifying scores are OPAT
+physical benchmarks, and only 280A and 490B name an aptitude area (GT 110, no
+waivers), so the other 69 carry the pamphlet's own prerequisites instead. They
+are listed in their own section with no enlistment verdict, because you cannot
+enlist into one. Both rosters were diffed on 26 October 2026: 194 section
+headings in chapter 10 section C and 76 occupation codes in chapter 8 section B.
+The working, the counts and everything the app deliberately does not claim are in
+[docs/MOS_GAP.md](docs/MOS_GAP.md), and both check dates are shown on the jobs
+screen, in Settings and in the glossary.
 
 **Revisits what you missed.** Every question you miss or flag enters a spaced-repetition queue and comes back after one day, then three, then seven, then twenty-one, and graduates after four clean retrievals. A backlog outranks every other recommendation on the dashboard, because coming back to a missed question is worth more than new material.
 
@@ -216,8 +226,8 @@ whole pipeline can be spot-checked without sitting a two-hour mock. See
 Nothing here invents a number, and where sources disagree the app says so rather
 than quietly picking one. The research trail is committed under
 `docs/research/`, including the reports, the machine-readable extracts and the
-flagged discrepancies. `docs/research/mos-roster-2025-12.json` is the roster
-extract: for each of the 156 enlisted codes, the pamphlet's own qualifying-score
+flagged discrepancies. `docs/research/mos-roster-2025-12.json` is the enlisted
+roster extract: for each of the 156 enlisted codes, the pamphlet's own qualifying-score
 sentence beside the gate the app carries, plus the codes deliberately left out
 and the reason.
 
@@ -232,6 +242,8 @@ and the reason.
   api.army.mil refuses non-browser clients), with the exact per-MOS section
   recorded on every entry. The roster was last diffed against it on **26 October
   2026**: 194 section headings, 156 substantive enlisted MOS, all 156 carried.
+  Chapter 8 section B of the same build supplies the warrant occupations: 76
+  codes, 71 carried and 5 recorded as deliberately excluded with their reasons.
   The working is in [docs/MOS_GAP.md](docs/MOS_GAP.md).
 - **Commissioning requirements** - AR 601-210 (20 Mar 2026) paragraph 9-10.
 - **Test-day mechanics** - PiCAT rules, retest intervals and the Vtest
