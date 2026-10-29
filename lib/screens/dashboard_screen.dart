@@ -179,7 +179,20 @@ class DashboardScreen extends StatelessWidget {
   String _subtitle(AppState app) {
     final goal = app.goal;
     if (goal == null) return 'Army National Guard';
-    final days = goal.targetDate?.difference(DateTime.now()).inDays;
+    // Compare whole calendar days. Subtracting a clock reading that carries a
+    // time of day from a midnight target truncates the part day away, which
+    // put this subtitle one day behind the plan screen for the whole of any
+    // evening - the same off-by-one the plan screen had.
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final target = goal.targetDate;
+    final days = target == null
+        ? null
+        : DateTime(
+            target.year,
+            target.month,
+            target.day,
+          ).difference(today).inDays;
     final base = goal.officerTrack ? 'Officer track' : 'Army National Guard';
     if (days == null) return base;
     if (days <= 0) return '$base - test date is today';
