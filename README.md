@@ -34,7 +34,7 @@ starts a practice set drawn from the subtests that feed that score.
 scores and every job you meet, generated on the device, headed with the
 statement that it is an estimate and not an official ASVAB record.
 
-Current release: [v1.6.0](https://github.com/arm00pv/asvab-coach/releases/tag/v1.6.0).
+Current release: [v1.6.1](https://github.com/arm00pv/asvab-coach/releases/tag/v1.6.1).
 The Android build updates itself from GitHub releases and verifies the
 published SHA-256 before offering the installer.
 **Places you before it teaches you.** A 27-question diagnostic across all nine
