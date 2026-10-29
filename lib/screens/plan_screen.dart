@@ -60,7 +60,11 @@ class PlanScreen extends StatelessWidget {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.only(bottom: Space.md),
-                      child: _TodayCard(plan: plan, goal: app.goal),
+                      child: _TodayCard(
+                        plan: plan,
+                        goal: app.goal,
+                        lastActiveDay: app.lastActiveDay,
+                      ),
                     ),
                     for (final step in plan)
                       Padding(
@@ -486,10 +490,19 @@ String _contextLine(StudySchedule schedule) {
 /// when to do it. This card is the answer to "when", computed once from the
 /// steps, the target date and the daily budget.
 class _TodayCard extends StatelessWidget {
-  const _TodayCard({required this.plan, required this.goal});
+  const _TodayCard({
+    required this.plan,
+    required this.goal,
+    required this.lastActiveDay,
+  });
 
   final List<PlanStep> plan;
   final GoalProfile? goal;
+
+  /// The day of the last finished attempt, read off the stored history. Null
+  /// when there is none, which is not the same as "started today": the schedule
+  /// is told nothing rather than something invented.
+  final DateTime? lastActiveDay;
 
   @override
   Widget build(BuildContext context) {
@@ -498,9 +511,13 @@ class _TodayCard extends StatelessWidget {
       plan: plan,
       goal: goal,
       today: DateTime.now(),
+      lastActiveDay: lastActiveDay,
     );
     final percent = (schedule.progressAfterToday * 100).round();
     final tomorrow = schedule.tomorrowSteps;
+    // The recalculation, if there is one to make. It replaces the bare pace
+    // line below rather than joining it: one number, said once.
+    final note = schedule.reflowNote;
 
     return AppCard(
       padding: const EdgeInsets.all(Space.lg),
@@ -529,7 +546,17 @@ class _TodayCard extends StatelessWidget {
               height: 1.4,
             ),
           ),
-          if (schedule.status == ScheduleStatus.needsMoreTime) ...<Widget>[
+          if (note != null) ...<Widget>[
+            const SizedBox(height: Space.xs),
+            Text(
+              note,
+              style: context.text.bodySmall?.copyWith(
+                color: c.textPrimary,
+                height: 1.4,
+              ),
+            ),
+          ] else if (schedule.status ==
+              ScheduleStatus.needsMoreTime) ...<Widget>[
             const SizedBox(height: Space.xs),
             Text(
               'It needs ${_minutes(schedule.requiredDailyMinutes ?? 0)} a day '

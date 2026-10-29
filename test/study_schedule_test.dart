@@ -11,6 +11,11 @@ import 'package:asvab_guard_coach/engines/study_schedule.dart';
 /// below is a fixed sum: 58 days at 20 minutes is 1160 minutes, six steps of
 /// 13, 13, 12, 12, 12 and 12 minutes are 74, and two days at 20 minutes is 40 -
 /// which needs 37 minutes a day and not one minute more.
+///
+/// The gap cases add one more sum. A day that went by unworked still owed the
+/// minutes the cadence gave it, and today is not a missed day yet - it is the
+/// one in hand - so 25 minutes of work two days out at 20 a day, with one day
+/// missed, owes 45 minutes in two days: 23 a day, not 20.
 
 /// A fixed day to count from. 1 January 2026 plus 58 days is 28 February 2026.
 final DateTime _today = DateTime(2026, 1, 1);
@@ -24,7 +29,11 @@ List<String> _ids(List<ScheduleStep> steps) =>
 
 /// The plan the app actually builds for a real candidate, mapped for the
 /// scheduler: jenna's weakest six skills after the placement diagnostic.
-StudySchedule _realPlan({required DateTime? targetDate, required int daily}) {
+StudySchedule _realPlan({
+  required DateTime? targetDate,
+  required int daily,
+  DateTime? lastActiveDay,
+}) {
   final report = PersonaRunner.run(Personas.byId('jenna')).report;
   final plan = AdaptiveEngine.buildPlan(
     report,
@@ -51,8 +60,21 @@ StudySchedule _realPlan({required DateTime? targetDate, required int daily}) {
       dailyMinutes: daily,
     ),
     today: _today,
+    lastActiveDay: lastActiveDay,
   );
 }
+
+/// Two steps worth 25 minutes, two days to run at 20 minutes a day.
+///
+/// The tightest plan the app builds: 40 minutes of runway against 25 minutes of
+/// work, so a missed day has nowhere to hide and every number moves.
+StudySchedule _tightPlan({DateTime? lastActiveDay}) => StudyScheduler.build(
+  steps: <ScheduleStep>[_step('a', 13, 3), _step('b', 12, 2)],
+  targetDate: DateTime(2026, 1, 3),
+  dailyMinutes: 20,
+  today: _today,
+  lastActiveDay: lastActiveDay,
+);
 
 void main() {
   group('the real plan with 58 days and 20 minutes a day', () {
@@ -388,6 +410,327 @@ void main() {
         'mk.exponents',
       ]);
       expect(_ids(mixed.todaySteps), _ids(straight.todaySteps));
+    });
+  });
+
+  group('a gap in the record', () {
+    test('no attempt at all is not behind, and invents no date', () {
+      final schedule = _tightPlan();
+
+      expect(schedule.lastActiveDay, isNull);
+      expect(schedule.daysSinceStudy, isNull);
+      expect(schedule.isBehind, isFalse);
+      expect(schedule.missedDays, 0);
+      expect(schedule.missedMinutes, 0);
+      expect(schedule.reflowNote, isNull);
+      // Nothing changes about the numbers either: 25 minutes over 2 days.
+      expect(schedule.outstandingMinutes, 25);
+      expect(schedule.requiredDailyMinutes, 13);
+      expect(schedule.status, ScheduleStatus.fits);
+    });
+
+    test('a plan too tight to fit is still not behind without a history', () {
+      // One day left, 25 minutes of work, 20 minutes a day. The plan does not
+      // fit, and that is the whole of what is said: nobody is behind a cadence
+      // they never started.
+      final schedule = StudyScheduler.build(
+        steps: <ScheduleStep>[_step('a', 13, 3), _step('b', 12, 2)],
+        targetDate: DateTime(2026, 1, 2),
+        dailyMinutes: 20,
+        today: _today,
+      );
+
+      expect(schedule.status, ScheduleStatus.needsMoreTime);
+      expect(schedule.isBehind, isFalse);
+      expect(schedule.lastActiveDay, isNull);
+      expect(schedule.daysSinceStudy, isNull);
+      expect(schedule.missedMinutes, 0);
+      expect(schedule.requiredDailyMinutes, 25);
+      expect(schedule.reflowNote, isNull);
+    });
+
+    test('activity today is not behind and changes no number', () {
+      final withActivity = _tightPlan(lastActiveDay: _today);
+      final without = _tightPlan();
+
+      expect(withActivity.daysSinceStudy, 0);
+      expect(withActivity.isBehind, isFalse);
+      expect(withActivity.missedDays, 0);
+      expect(withActivity.missedMinutes, 0);
+      expect(withActivity.reflowNote, isNull);
+      // Every number the schedule had before the date was passed in.
+      expect(withActivity.outstandingMinutes, without.outstandingMinutes);
+      expect(withActivity.requiredDailyMinutes, without.requiredDailyMinutes);
+      expect(withActivity.status, without.status);
+      expect(withActivity.stepsPerDay, without.stepsPerDay);
+      expect(_ids(withActivity.todaySteps), _ids(without.todaySteps));
+    });
+
+    test('studying yesterday is on cadence: today is the day in hand', () {
+      final schedule = _tightPlan(lastActiveDay: DateTime(2025, 12, 31));
+
+      expect(schedule.daysSinceStudy, 1);
+      // A whole day has not gone by unworked, so nothing is owed.
+      expect(schedule.isBehind, isFalse);
+      expect(schedule.missedDays, 0);
+      expect(schedule.missedMinutes, 0);
+      expect(schedule.outstandingMinutes, 25);
+      expect(schedule.requiredDailyMinutes, 13);
+      expect(schedule.reflowNote, isNull);
+    });
+
+    test(
+      'one missed day raises the pace from 20 to 23 a day, and is said once',
+      () {
+        // Last studied two days ago: yesterday went by unworked, so its 20
+        // minutes are owed on top of the 25 already outstanding.
+        final schedule = _tightPlan(lastActiveDay: DateTime(2025, 12, 30));
+
+        expect(schedule.daysSinceStudy, 2);
+        expect(schedule.isBehind, isTrue);
+        expect(schedule.missedDays, 1);
+        expect(schedule.missedMinutes, 20);
+        expect(schedule.outstandingMinutes, 45);
+        expect(schedule.daysRemaining, 2);
+        expect(schedule.availableMinutes, 40);
+        // 45 minutes of work in two days is 23 a day, and it no longer fits in
+        // the 40 minutes the runway holds.
+        expect(schedule.requiredDailyMinutes, 23);
+        expect(schedule.status, ScheduleStatus.needsMoreTime);
+        expect(schedule.fits, isFalse);
+        expect(schedule.spareMinutes, 0);
+        expect(schedule.fitsAtRealisticPace, isTrue);
+        expect(schedule.stepsToDrop, 0);
+        expect(schedule.minutesAfterDropping, isNull);
+        expect(
+          schedule.reflowNote,
+          'You have not studied for 2 days, so the plan now needs 23 minutes a '
+          'day instead of 20.',
+        );
+      },
+    );
+
+    test('several missed days: 85 minutes in two days is 43 a day', () {
+      // Four days without study is three days that went by unworked: 60
+      // minutes owed on top of the 25 outstanding.
+      final schedule = _tightPlan(lastActiveDay: DateTime(2025, 12, 28));
+
+      expect(schedule.daysSinceStudy, 4);
+      expect(schedule.missedDays, 3);
+      expect(schedule.missedMinutes, 60);
+      expect(schedule.outstandingMinutes, 85);
+      expect(schedule.requiredDailyMinutes, 43);
+      expect(schedule.status, ScheduleStatus.needsMoreTime);
+      expect(schedule.fitsAtRealisticPace, isTrue);
+      expect(schedule.stepsToDrop, 0);
+      expect(
+        schedule.reflowNote,
+        'You have not studied for 4 days, so the plan now needs 43 minutes a '
+        'day instead of 20.',
+      );
+    });
+
+    test('the hour of the last activity does not matter', () {
+      final late = _tightPlan(lastActiveDay: DateTime(2025, 12, 30, 23, 45));
+      final midnight = _tightPlan(lastActiveDay: DateTime(2025, 12, 30));
+
+      expect(late.daysSinceStudy, 2);
+      expect(late.daysSinceStudy, midnight.daysSinceStudy);
+      expect(late.requiredDailyMinutes, midnight.requiredDailyMinutes);
+      expect(late.reflowNote, midnight.reflowNote);
+      expect(late.lastActiveDay, DateTime.utc(2025, 12, 30));
+    });
+
+    test('activity dated in the future cannot make the plan behind', () {
+      final schedule = _tightPlan(lastActiveDay: DateTime(2026, 1, 5));
+
+      expect(schedule.daysSinceStudy, 0);
+      expect(schedule.isBehind, isFalse);
+      expect(schedule.requiredDailyMinutes, 13);
+      expect(schedule.reflowNote, isNull);
+    });
+  });
+
+  group('the real plan with a gap in the record', () {
+    test('three days without study: the honest pace is still 2 a day', () {
+      // 74 minutes of work, 58 days of runway at 20 a day. Two days went by
+      // unworked, so the plan owes their 40 minutes too - and 114 minutes over
+      // 58 days is still 2 minutes a day, inside the 20 that were set.
+      final schedule = _realPlan(
+        targetDate: _fiftyEightDaysOut,
+        daily: 20,
+        lastActiveDay: DateTime(2025, 12, 29),
+      );
+
+      expect(schedule.daysSinceStudy, 3);
+      expect(schedule.isBehind, isTrue);
+      expect(schedule.missedDays, 2);
+      expect(schedule.missedMinutes, 40);
+      expect(schedule.outstandingMinutes, 114);
+      expect(schedule.daysRemaining, 58);
+      expect(schedule.availableMinutes, 1160);
+      expect(schedule.requiredDailyMinutes, 2);
+      expect(schedule.status, ScheduleStatus.fits);
+      expect(schedule.fitsAtRealisticPace, isTrue);
+      expect(schedule.spareMinutes, 1046);
+      expect(schedule.stepsToDrop, 0);
+      expect(
+        schedule.reflowNote,
+        'You have not studied for 3 days, so the plan now needs 2 minutes a '
+        'day, and the 20 you set still covers it.',
+      );
+    });
+
+    test('one missed day on the real plan is said once, at 2 a day', () {
+      final schedule = _realPlan(
+        targetDate: _fiftyEightDaysOut,
+        daily: 20,
+        lastActiveDay: DateTime(2025, 12, 30),
+      );
+
+      expect(schedule.daysSinceStudy, 2);
+      expect(schedule.missedDays, 1);
+      expect(schedule.missedMinutes, 20);
+      expect(schedule.outstandingMinutes, 94);
+      expect(schedule.requiredDailyMinutes, 2);
+      expect(
+        schedule.reflowNote,
+        'You have not studied for 2 days, so the plan now needs 2 minutes a '
+        'day, and the 20 you set still covers it.',
+      );
+    });
+
+    test('a gap that outruns any realistic pace says what would fit', () {
+      // Two days to the target and 16 days without study: 15 days owed at 20
+      // minutes is 300 minutes, so 374 minutes in two days is 187 a day - past
+      // the 180 a candidate could keep. Drop the two least valuable steps (the
+      // two twelve-minute drills) and 50 minutes of plan plus the 300 owed is
+      // 175 a day.
+      final schedule = _realPlan(
+        targetDate: DateTime(2026, 1, 3),
+        daily: 20,
+        lastActiveDay: DateTime(2025, 12, 16),
+      );
+
+      expect(schedule.daysSinceStudy, 16);
+      expect(schedule.isBehind, isTrue);
+      expect(schedule.missedDays, 15);
+      expect(schedule.missedMinutes, 300);
+      expect(schedule.outstandingMinutes, 374);
+      expect(schedule.daysRemaining, 2);
+      expect(schedule.requiredDailyMinutes, 187);
+      expect(schedule.status, ScheduleStatus.needsMoreTime);
+      expect(schedule.fitsAtRealisticPace, isFalse);
+      expect(StudyScheduler.realisticDailyCeilingMinutes, 180);
+      expect(schedule.stepsToDrop, 2);
+      expect(schedule.stepCount, 6);
+      expect(schedule.minutesAfterDropping, 175);
+      expect(
+        schedule.reflowNote,
+        'You have not studied for 16 days, so the plan needs 187 minutes a day '
+        'and no longer fits at any realistic pace; dropping the 2 least '
+        'valuable steps brings it to 175 minutes a day.',
+      );
+    });
+
+    test('when nothing fits, it says that instead of naming a pace', () {
+      // Twenty days without study in a two-day runway owes 380 minutes, more
+      // than two 180-minute days hold, so no step at all survives the fit.
+      final schedule = _realPlan(
+        targetDate: DateTime(2026, 1, 3),
+        daily: 20,
+        lastActiveDay: DateTime(2025, 12, 12),
+      );
+
+      expect(schedule.daysSinceStudy, 20);
+      expect(schedule.missedDays, 19);
+      expect(schedule.missedMinutes, 380);
+      expect(schedule.outstandingMinutes, 454);
+      expect(schedule.requiredDailyMinutes, 227);
+      expect(schedule.fitsAtRealisticPace, isFalse);
+      expect(schedule.stepsToDrop, 6);
+      expect(schedule.minutesAfterDropping, 190);
+      expect(
+        schedule.reflowNote,
+        'You have not studied for 20 days, so the plan needs 227 minutes a day, '
+        'and none of the 6 steps fit at 180 minutes a day.',
+      );
+    });
+  });
+
+  group('a gap against no runway, no budget or no plan', () {
+    test('no target date: the gap is a fact, the note is not', () {
+      final schedule = StudyScheduler.build(
+        steps: <ScheduleStep>[_step('a', 13, 3), _step('b', 12, 2)],
+        targetDate: null,
+        dailyMinutes: 20,
+        today: _today,
+        lastActiveDay: DateTime(2025, 12, 28),
+      );
+
+      expect(schedule.status, ScheduleStatus.noTargetDate);
+      expect(schedule.daysSinceStudy, 4);
+      expect(schedule.isBehind, isTrue);
+      // Nothing to divide by, so no pace is claimed and nothing is said.
+      expect(schedule.requiredDailyMinutes, isNull);
+      expect(schedule.reflowNote, isNull);
+      expect(schedule.stepsToDrop, 0);
+    });
+
+    test(
+      'a passed target date owes everything today, and says nothing new',
+      () {
+        final schedule = StudyScheduler.build(
+          steps: <ScheduleStep>[_step('a', 13, 3), _step('b', 12, 2)],
+          targetDate: DateTime(2025, 12, 29),
+          dailyMinutes: 20,
+          today: _today,
+          lastActiveDay: DateTime(2025, 12, 28),
+        );
+
+        expect(schedule.status, ScheduleStatus.datePassed);
+        expect(schedule.isBehind, isTrue);
+        expect(schedule.missedDays, 3);
+        // Everything left, catch-up included, is due today.
+        expect(schedule.outstandingMinutes, 85);
+        expect(schedule.requiredDailyMinutes, 85);
+        expect(schedule.reflowNote, isNull);
+      },
+    );
+
+    test('no budget: there is no cadence to raise', () {
+      final schedule = StudyScheduler.build(
+        steps: <ScheduleStep>[_step('a', 13, 3), _step('b', 12, 2)],
+        targetDate: DateTime(2026, 1, 11),
+        dailyMinutes: 0,
+        today: _today,
+        lastActiveDay: DateTime(2025, 12, 28),
+      );
+
+      expect(schedule.status, ScheduleStatus.noBudget);
+      expect(schedule.daysSinceStudy, 4);
+      // Zero minutes a day were promised, so zero minutes are owed.
+      expect(schedule.missedMinutes, 0);
+      expect(schedule.outstandingMinutes, 25);
+      expect(schedule.requiredDailyMinutes, 3);
+      expect(schedule.reflowNote, isNull);
+    });
+
+    test('an empty plan owes nothing, whatever the history says', () {
+      final schedule = StudyScheduler.build(
+        steps: const <ScheduleStep>[],
+        targetDate: _fiftyEightDaysOut,
+        dailyMinutes: 20,
+        today: _today,
+        lastActiveDay: DateTime(2025, 12, 28),
+      );
+
+      expect(schedule.status, ScheduleStatus.nothingPlanned);
+      expect(schedule.missedDays, 0);
+      expect(schedule.missedMinutes, 0);
+      expect(schedule.outstandingMinutes, 0);
+      expect(schedule.requiredDailyMinutes, 0);
+      expect(schedule.reflowNote, isNull);
     });
   });
 }

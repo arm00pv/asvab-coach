@@ -103,6 +103,25 @@ class AppState extends ChangeNotifier {
 
   ScoreReport? get lastReport => lastAttempt?.report;
 
+  /// The calendar day of the most recent finished attempt, or null when the
+  /// candidate has not sat one.
+  ///
+  /// This is the only thing the schedule paces from, and it comes out of the
+  /// stored history rather than the clock, so a candidate with no attempts gets
+  /// no invented start date and cannot be told they are behind a cadence they
+  /// never entered. Late rather than early: the newest finish wins whatever
+  /// order the records arrived in.
+  DateTime? get lastActiveDay {
+    DateTime? latest;
+    for (final attempt in _attempts) {
+      final finished = attempt.finishedAt;
+      if (latest == null || finished.isAfter(latest)) latest = finished;
+    }
+    return latest == null
+        ? null
+        : DateTime(latest.year, latest.month, latest.day);
+  }
+
   /// History newest first, for the progress screen.
   List<Attempt> get history => _attempts.reversed.toList(growable: false);
 

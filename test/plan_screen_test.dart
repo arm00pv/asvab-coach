@@ -9,6 +9,7 @@ import 'package:asvab_guard_coach/screens/plan_screen.dart';
 import 'package:asvab_guard_coach/state/app_state.dart';
 import 'package:asvab_guard_coach/widgets/primitives.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +23,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// card for that skill opens, so a step has one destination and not two.
 const Size phone = Size(390, 844);
 
-Future<AppState> seeded() async {
+/// A candidate with one scored attempt, [lastActiveDaysAgo] days ago.
+///
+/// The attempt's finish date is the only record the plan paces from, so it is
+/// the one knob that makes a candidate "behind" or not.
+Future<AppState> seeded({int lastActiveDaysAgo = 0}) async {
   SharedPreferences.setMockInitialValues(<String, Object>{});
   final state = AppState();
   await state.init();
@@ -44,8 +49,10 @@ Future<AppState> seeded() async {
     Attempt(
       id: 'plan-row-attempt',
       kind: ExamKind.fullMock,
-      startedAt: DateTime.now().subtract(const Duration(minutes: 150)),
-      finishedAt: DateTime.now(),
+      startedAt: DateTime.now().subtract(
+        Duration(minutes: 150, days: lastActiveDaysAgo),
+      ),
+      finishedAt: DateTime.now().subtract(Duration(days: lastActiveDaysAgo)),
       report: result.report,
       responses: const [],
       questionIds: const <String>[],
@@ -129,6 +136,15 @@ TodayStepFixture firstTodayStep(AppState state) {
   );
 }
 
+/// The one sentence the card renders about a gap, read off the same engine the
+/// screen reads.
+String? _reflowNote(AppState state) => StudyScheduler.forPlan(
+  plan: AdaptiveEngine.buildPlan(state.lastReport!, goal: state.goal, limit: 6),
+  goal: state.goal,
+  today: DateTime.now(),
+  lastActiveDay: state.lastActiveDay,
+).reflowNote;
+
 void main() {
   testWidgets('a Today row starts the lesson the step card for it starts', (
     tester,
@@ -203,6 +219,47 @@ void main() {
     expect(rowText, findsOneWidget);
     final row = find.ancestor(of: rowText, matching: find.byType(InkWell));
     expect(tester.getSize(row).height, greaterThanOrEqualTo(48.0));
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('a candidate who studied today is told nothing about a gap', (
+    tester,
+  ) async {
+    final state = await seeded();
+    expect(_reflowNote(state), isNull);
+    await pumpPlan(tester, state);
+
+    expect(find.textContaining('You have not studied for'), findsNothing);
+  });
+
+  testWidgets('a gap in the history is stated once, at 360dp with 2x text', (
+    tester,
+  ) async {
+    final state = await seeded(lastActiveDaysAgo: 3);
+    final note = _reflowNote(state);
+    // 74 minutes of work over the 30 days left is 5 minutes a day with the gap
+    // folded in, and the 30 minutes a day that were set still cover it.
+    expect(
+      note,
+      'You have not studied for 3 days, so the plan now needs 5 minutes a day, '
+      'and the 30 you set still covers it.',
+    );
+
+    await pumpPlan(tester, state, size: const Size(360, 800), textScale: 2);
+    expect(tester.takeException(), isNull);
+
+    // Said exactly once, and the bare pace line it replaces is not also there.
+    expect(find.textContaining('You have not studied for'), findsOneWidget);
+    expect(find.textContaining('It needs'), findsNothing);
+
+    // It wraps rather than being cut off at the width it has to fit.
+    final paragraph = tester.renderObject<RenderParagraph>(
+      find.descendant(
+        of: find.textContaining('You have not studied for'),
+        matching: find.byType(RichText),
+      ),
+    );
+    expect(paragraph.didExceedMaxLines, isFalse);
     expect(tester.takeException(), isNull);
   });
 }
