@@ -20,14 +20,27 @@ abstract final class StudyPlanner {
   /// A full mock is 197 minutes plus a review sitting.
   static const int mockMinutes = 260;
 
+  /// [daysUntilTest] is the runway to pace against, when the caller already
+  /// knows it.
+  ///
+  /// The plan screen asks the study scheduler how many days are left and hands
+  /// that count in here. Two counts of the same runway is one too many: this
+  /// method's own subtraction truncates a part-day remainder, so a date 58 days
+  /// and a few hours out counted 57 days whenever [now] carried a time of day,
+  /// while the scheduler - which counts whole calendar days at midnight - kept
+  /// 58. The same screen then printed both. Left null, the count is derived
+  /// from [goal] and [now] as it always was, for callers that have no schedule.
   static StudyPlan build({
     required ScoreReport? report,
     required GoalProfile goal,
     required DateTime now,
+    int? daysUntilTest,
   }) {
-    final days = goal.targetDate == null
-        ? 30
-        : math.max(0, goal.targetDate!.difference(now).inDays);
+    final days =
+        daysUntilTest ??
+        (goal.targetDate == null
+            ? 30
+            : math.max(0, goal.targetDate!.difference(now).inDays));
     final daily = goal.dailyMinutes.clamp(10, 240);
     final availableMinutes = days * daily;
 

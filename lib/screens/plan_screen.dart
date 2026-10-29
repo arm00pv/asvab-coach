@@ -8,6 +8,7 @@ import '../data/bank/question_bank.dart';
 import '../data/models/catalog.dart';
 import '../data/models/lesson.dart';
 import '../data/models/mos.dart';
+import '../data/models/score.dart';
 import '../engines/adaptive_engine.dart';
 import '../engines/study_planner.dart';
 import '../engines/study_schedule.dart';
@@ -19,16 +20,37 @@ import '../widgets/puzzle_view.dart';
 /// report says will move the needle; the library is there for when you already
 /// know what you want to work on.
 class PlanScreen extends StatelessWidget {
-  const PlanScreen({super.key});
+  const PlanScreen({super.key, this.today});
+
+  /// The day the screen is drawn for, or null for the clock, which is what the
+  /// app uses.
+  ///
+  /// It exists so a test can pin the screen to a fixed day: every number on
+  /// this screen is counted from it, and a test that asserts 58 days is worth
+  /// nothing if the day it counts from moves. This is the screen's only reading
+  /// of the date.
+  final DateTime? today;
 
   @override
   Widget build(BuildContext context) {
     final app = context.watch<AppState>();
     final report = app.lastReport;
     final c = context.colors;
+    final day = today ?? DateTime.now();
     final plan = report == null
         ? <PlanStep>[]
         : AdaptiveEngine.buildPlan(report, goal: app.goal, limit: 6);
+    // The screen's one account of the runway, built once and handed to both
+    // cards. The schedule card used to build its own plan with its own clock,
+    // and the planner truncated a part-day remainder the scheduler kept, so the
+    // header said 57 days left over a Today card that said 58. One schedule,
+    // one day count, and the two cannot disagree.
+    final schedule = StudyScheduler.forPlan(
+      plan: plan,
+      goal: app.goal,
+      today: day,
+      lastActiveDay: app.lastActiveDay,
+    );
 
     return Scaffold(
       body: SafeArea(
@@ -45,7 +67,12 @@ class PlanScreen extends StatelessWidget {
                 style: context.text.bodySmall?.copyWith(color: c.textMuted),
               ),
               const SizedBox(height: Space.lg),
-              const _ScheduleCard(),
+              _ScheduleCard(
+                schedule: schedule,
+                report: report,
+                goal: app.goal,
+                today: day,
+              ),
               const SizedBox(height: Space.xl),
               if (report == null)
                 const Callout(
@@ -60,11 +87,7 @@ class PlanScreen extends StatelessWidget {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.only(bottom: Space.md),
-                      child: _TodayCard(
-                        plan: plan,
-                        goal: app.goal,
-                        lastActiveDay: app.lastActiveDay,
-                      ),
+                      child: _TodayCard(schedule: schedule),
                     ),
                     for (final step in plan)
                       Padding(
@@ -271,27 +294,74 @@ class _SkillLessonChip extends StatelessWidget {
 }
 
 /// Week-by-week pacing against the target date, with the arithmetic shown.
+///
+/// Every figure in the header row is the [StudySchedule] the screen built: the
+/// days left, the minutes those days hold, the minutes of work outstanding and
+/// the verdict are the scheduler's own answers, and the meter and the sentence
+/// under it are drawn from the same three numbers. None of them is counted
+/// here, because a second count can disagree with the first - this card used to
+/// subtract its own days inside [StudyPlanner] and print 57 above a Today card
+/// that printed 58.
+///
+/// The week strip and the notes are the part of the card only the planner
+/// knows how to draw - which skills, in what order, how many mocks fit - so the
+/// plan is still built here, handed the schedule's day count so it paces the
+/// strip against the same runway the header prints.
 class _ScheduleCard extends StatelessWidget {
-  const _ScheduleCard();
+  const _ScheduleCard({
+    required this.schedule,
+    required this.report,
+    required this.goal,
+    required this.today,
+  });
+
+  final StudySchedule schedule;
+  final ScoreReport? report;
+  final GoalProfile? goal;
+
+  /// The day the schedule was built for.
+  final DateTime today;
+
+  /// The pill's word for what the schedule says. One status, said once: a
+  /// verdict computed separately from these figures could call a runway
+  /// "comfortable" that the schedule calls short.
+  String get _statusLabel => switch (schedule.status) {
+    ScheduleStatus.fits => 'On track',
+    ScheduleStatus.needsMoreTime => 'Not enough time',
+    ScheduleStatus.noBudget => 'No time budget',
+    ScheduleStatus.datePassed => 'Date passed',
+    ScheduleStatus.noTargetDate => 'No target date',
+    ScheduleStatus.nothingPlanned => 'Nothing planned',
+  };
 
   @override
   Widget build(BuildContext context) {
-    final app = context.watch<AppState>();
     final c = context.colors;
-    final goal = app.goal;
-    final report = app.lastReport;
+    final goal = this.goal;
     if (goal == null) return const SizedBox.shrink();
 
     final plan = StudyPlanner.build(
       report: report,
       goal: goal,
-      now: DateTime.now(),
+      now: today,
+      daysUntilTest: schedule.daysRemaining,
     );
-    final tone = switch (plan.verdict) {
-      PlanVerdict.comfortable || PlanVerdict.sufficient => PillTone.success,
-      PlanVerdict.tight => PillTone.warning,
-      _ => PillTone.danger,
+    final tone = switch (schedule.status) {
+      ScheduleStatus.fits => PillTone.success,
+      // Short of the budget as it was set. Still inside a pace a candidate
+      // could keep, or past it entirely.
+      ScheduleStatus.needsMoreTime =>
+        schedule.fitsAtRealisticPace ? PillTone.warning : PillTone.danger,
+      ScheduleStatus.noBudget || ScheduleStatus.datePassed => PillTone.danger,
+      ScheduleStatus.noTargetDate ||
+      ScheduleStatus.nothingPlanned => PillTone.neutral,
     };
+    final daysLeft = schedule.daysRemaining;
+    final available = schedule.availableMinutes;
+    final mocks = plan.mocksPlanned;
+    // How far short the runway is, as the schedule counts it. Negative when
+    // the work fits, which is the case the sentence below reports instead.
+    final shortMinutes = schedule.outstandingMinutes - (available ?? 0);
 
     return AppCard(
       padding: const EdgeInsets.all(Space.lg),
@@ -312,31 +382,35 @@ class _ScheduleCard extends StatelessWidget {
                 'Your schedule',
                 style: context.text.titleSmall?.copyWith(color: c.textPrimary),
               ),
-              Pill(plan.verdictLabel, tone: tone, dense: true),
+              Pill(_statusLabel, tone: tone, dense: true),
             ],
           ),
           const SizedBox(height: Space.md),
+          // The three figures, from the schedule: a dash rather than an
+          // invented number when there is no target date to count to.
           Row(
             children: <Widget>[
               Expanded(
                 child: StatTile(
                   label: 'Days left',
-                  value: '${plan.daysUntilTest}',
+                  value: daysLeft == null ? '\u2014' : '$daysLeft',
                   compact: true,
                 ),
               ),
               Expanded(
                 child: StatTile(
                   label: 'Time available',
-                  value: '${(plan.availableMinutes / 60).round()}',
-                  suffix: 'h',
+                  value: available == null
+                      ? '\u2014'
+                      : '${(available / 60).round()}',
+                  suffix: available == null ? null : 'h',
                   compact: true,
                 ),
               ),
               Expanded(
                 child: StatTile(
                   label: 'Work outstanding',
-                  value: '${(plan.neededMinutes / 60).round()}',
+                  value: '${(schedule.outstandingMinutes / 60).round()}',
                   suffix: 'h',
                   compact: true,
                 ),
@@ -345,19 +419,22 @@ class _ScheduleCard extends StatelessWidget {
           ),
           const SizedBox(height: Space.md),
           MeterBar(
-            value: plan.neededMinutes == 0
+            value: schedule.outstandingMinutes == 0
                 ? 1
-                : (plan.availableMinutes / plan.neededMinutes).clamp(0.0, 1.0),
+                : ((available ?? 0) / schedule.outstandingMinutes).clamp(
+                    0.0,
+                    1.0,
+                  ),
             height: 6,
             color: tone == PillTone.success ? c.success : c.warning,
           ),
           const SizedBox(height: Space.xs),
           Text(
-            plan.availableMinutes >= plan.neededMinutes
-                ? 'You have enough time for ${plan.focus.length} skill cycles '
-                      'and ${plan.mocksPlanned} full mock${plan.mocksPlanned == 1 ? '' : 's'}.'
-                : 'The outstanding work needs about ${plan.neededMinutes - plan.availableMinutes} '
-                      'more minutes than you have.',
+            shortMinutes > 0
+                ? 'The outstanding work needs about $shortMinutes '
+                      'more minutes than you have.'
+                : 'You have enough time for ${plan.focus.length} skill cycles '
+                      'and $mocks full mock${mocks == 1 ? '' : 's'}.',
             style: context.text.bodySmall?.copyWith(color: c.textMuted),
           ),
           if (plan.weeks.isNotEmpty) ...<Widget>[
@@ -490,29 +567,20 @@ String _contextLine(StudySchedule schedule) {
 /// when to do it. This card is the answer to "when", computed once from the
 /// steps, the target date and the daily budget.
 class _TodayCard extends StatelessWidget {
-  const _TodayCard({
-    required this.plan,
-    required this.goal,
-    required this.lastActiveDay,
-  });
+  const _TodayCard({required this.schedule});
 
-  final List<PlanStep> plan;
-  final GoalProfile? goal;
-
-  /// The day of the last finished attempt, read off the stored history. Null
-  /// when there is none, which is not the same as "started today": the schedule
-  /// is told nothing rather than something invented.
-  final DateTime? lastActiveDay;
+  /// The screen's one schedule.
+  ///
+  /// Built from the plan, the goal, the day and the last active day by
+  /// [PlanScreen], and handed in rather than built here: the day count in this
+  /// card's first line and the one in the schedule card above it are the same
+  /// number because they are the same object, not because two subtractions
+  /// happened to agree.
+  final StudySchedule schedule;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    final schedule = StudyScheduler.forPlan(
-      plan: plan,
-      goal: goal,
-      today: DateTime.now(),
-      lastActiveDay: lastActiveDay,
-    );
     final percent = (schedule.progressAfterToday * 100).round();
     final tomorrow = schedule.tomorrowSteps;
     // The recalculation, if there is one to make. It replaces the bare pace

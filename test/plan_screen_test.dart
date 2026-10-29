@@ -67,6 +67,7 @@ Future<void> pumpPlan(
   AppState state, {
   Size size = phone,
   double textScale = 1,
+  DateTime? today,
 }) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1.0;
@@ -77,12 +78,12 @@ Future<void> pumpPlan(
       child: MaterialApp(
         theme: AppTheme.build(Brightness.light),
         home: textScale == 1
-            ? const PlanScreen()
+            ? PlanScreen(today: today)
             : Builder(
                 builder: (context) => MediaQuery(
                   data: MediaQuery.of(context)
                       .copyWith(textScaler: TextScaler.linear(textScale)),
-                  child: const PlanScreen(),
+                  child: PlanScreen(today: today),
                 ),
               ),
       ),
@@ -90,6 +91,94 @@ Future<void> pumpPlan(
   );
   await tester.pump();
   await tester.pump(const Duration(milliseconds: 250));
+}
+
+// The two cards on the plan screen count from the same two dates, so a day
+// pinned to the wall calendar is what makes their answers comparable. The
+// defect was seen on a real phone: "Your schedule" printed 57 days left over a
+// Today card that printed 58, because the schedule card subtracted its own days
+// inside the planner - which truncates a part-day remainder - while the Today
+// card asked the scheduler, which counts whole days at midnight.
+//
+// 1 January 2026 plus 58 days is 28 February 2026, the pair the scheduler's own
+// tests are pinned to, and the candidate studied earlier that same day, so no
+// missed day moves any figure.
+//
+// The time of day is part of the fixture, not decoration. A planner left to
+// subtract its own days only loses one when the clock it subtracts from has a
+// time on it: 28 February at midnight less 1 January at 21:47 is 57 days and a
+// remainder, which truncates to 57, while the scheduler counts 58 whole days
+// whichever hour it is handed. Pinning the screen to midnight would let a
+// second calculation pass this test and fail on the phone.
+final DateTime fixedDay = DateTime(2026, 1, 1, 21, 47);
+
+/// The morning of the same day, so [AppState.lastActiveDay] is [fixedDay].
+final DateTime fixedDayMorning = DateTime(2026, 1, 1, 9);
+final DateTime fiftyEightDaysOut = DateTime(2026, 2, 28);
+
+GoalProfile fixedGoal({DateTime? targetDate, int dailyMinutes = 20}) =>
+    GoalProfile(
+      displayName: 'Alex Rivera',
+      targetAfqt: 65,
+      targetGt: 110,
+      targetMosCodes: const <String>['68W'],
+      targetDate: targetDate ?? fiftyEightDaysOut,
+      officerTrack: false,
+      dailyMinutes: dailyMinutes,
+    );
+
+/// A candidate with one scored attempt, finished on [fixedDay].
+Future<AppState> seededOnFixedDay({
+  DateTime? targetDate,
+  int dailyMinutes = 20,
+}) async {
+  SharedPreferences.setMockInitialValues(<String, Object>{});
+  final state = AppState();
+  await state.init();
+  await state.setGoal(
+    fixedGoal(targetDate: targetDate, dailyMinutes: dailyMinutes),
+  );
+  final result = PersonaRunner.run(Personas.byId('jenna'));
+  await state.addAttempt(
+    Attempt(
+      id: 'fixed-day-attempt',
+      kind: ExamKind.fullMock,
+      startedAt: fixedDayMorning.subtract(const Duration(minutes: 150)),
+      finishedAt: fixedDayMorning,
+      report: result.report,
+      responses: const [],
+      questionIds: const <String>[],
+    ),
+    const <String, List<int>>{},
+  );
+  return state;
+}
+
+/// The schedule the screen is supposed to be reading, from the same inputs.
+StudySchedule fixedSchedule(AppState state) => StudyScheduler.forPlan(
+  plan: AdaptiveEngine.buildPlan(state.lastReport!, goal: state.goal, limit: 6),
+  goal: state.goal,
+  today: fixedDay,
+  lastActiveDay: state.lastActiveDay,
+);
+
+/// What one figure in the schedule card says.
+StatTile scheduleTile(WidgetTester tester, String label) =>
+    tester.widget<StatTile>(
+      find.byWidgetPredicate((w) => w is StatTile && w.label == label),
+    );
+
+/// The day count the Today card prints in its first line: "58 days left at 20
+/// minutes a day is 1160 minutes."
+int todayCardDays(WidgetTester tester) {
+  final line = tester.widget<Text>(find.textContaining('days left at')).data!;
+  final match = RegExp(r'^(\d+) days? left at ').firstMatch(line);
+  expect(
+    match,
+    isNotNull,
+    reason: 'the Today card no longer states a day count: $line',
+  );
+  return int.parse(match!.group(1)!);
 }
 
 /// The first thing the plan says to do today, read off the same engines the
@@ -260,6 +349,101 @@ void main() {
       ),
     );
     expect(paragraph.didExceedMaxLines, isFalse);
+    expect(tester.takeException(), isNull);
+  });
+
+  // One screen, one day count.
+  //
+  // "Your schedule" said 57 days left while "Today" said 58 on the same screen,
+  // because the schedule card counted its own days from a DateTime.now() and the
+  // Today card asked the scheduler. These tests pin the two cards to the
+  // scheduler's answer, so a second calculation of the runway cannot come back
+  // without turning them red.
+  testWidgets('both cards print the day count the scheduler counts', (
+    tester,
+  ) async {
+    final state = await seededOnFixedDay();
+    final schedule = fixedSchedule(state);
+    // 1 January to 28 February is 58 whole days, not 57 and a remainder: the
+    // planner's own subtraction gave 57 whenever "now" carried a time of day.
+    expect(schedule.daysRemaining, 58);
+
+    await pumpPlan(tester, state, today: fixedDay);
+
+    final onScheduleCard = scheduleTile(tester, 'Days left').value;
+    final onTodayCard = todayCardDays(tester);
+
+    expect(
+      onScheduleCard,
+      '${schedule.daysRemaining}',
+      reason: 'the schedule card must print the scheduler\'s days remaining',
+    );
+    expect(onTodayCard, schedule.daysRemaining);
+    expect(
+      onScheduleCard,
+      '$onTodayCard',
+      reason:
+          'one screen cannot print two day counts: the schedule card said '
+          '$onScheduleCard and the Today card said $onTodayCard',
+    );
+  });
+
+  testWidgets('the schedule card figures and verdict are the scheduler\'s', (
+    tester,
+  ) async {
+    final state = await seededOnFixedDay();
+    final schedule = fixedSchedule(state);
+    expect(schedule.status, ScheduleStatus.fits);
+
+    await pumpPlan(tester, state, today: fixedDay);
+
+    // Days left, the minutes those days hold and the minutes of work
+    // outstanding are one schedule's answers, not a second set of sums.
+    expect(
+      scheduleTile(tester, 'Time available').value,
+      '${(schedule.availableMinutes! / 60).round()}',
+    );
+    expect(scheduleTile(tester, 'Time available').suffix, 'h');
+    expect(
+      scheduleTile(tester, 'Work outstanding').value,
+      '${(schedule.outstandingMinutes / 60).round()}',
+    );
+    expect(scheduleTile(tester, 'Work outstanding').suffix, 'h');
+
+    // The pill is the scheduler's verdict: the work fits the runway it counted.
+    expect(find.text('On track'), findsOneWidget);
+    // And the sentence under the meter is drawn from the same pair of numbers.
+    expect(find.textContaining('You have enough time for'), findsOneWidget);
+    expect(find.textContaining('more minutes than you have'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('a target date that has gone reads as the schedule says', (
+    tester,
+  ) async {
+    // Two days past the date the plan was drawn against. The scheduler calls
+    // that a passed date with everything left due today; the planner, dividing
+    // by a runway of zero, called the same state "No time budget". The card now
+    // says what the schedule says.
+    final state = await seededOnFixedDay(
+      targetDate: fixedDay.subtract(const Duration(days: 2)),
+    );
+    final schedule = fixedSchedule(state);
+    expect(schedule.status, ScheduleStatus.datePassed);
+    expect(schedule.daysRemaining, 0);
+
+    await pumpPlan(tester, state, today: fixedDay);
+
+    expect(scheduleTile(tester, 'Days left').value, '0');
+    expect(find.text('Date passed'), findsOneWidget);
+    expect(find.text('No time budget'), findsNothing);
+    // Nothing is available, so the whole outstanding work is the shortfall.
+    expect(
+      find.textContaining(
+        'needs about ${schedule.outstandingMinutes} more minutes than you have',
+      ),
+      findsOneWidget,
+    );
     expect(tester.takeException(), isNull);
   });
 }
