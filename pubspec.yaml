@@ -1,7 +1,7 @@
 name: asvab_guard_coach
 description: "ASVAB Coach & Instructor for the Army National Guard: diagnostic testing, adaptive reinforcement lessons, and job score matching."
 publish_to: 'none'
-version: 1.5.0+104
+version: 1.6.0+105
 
 environment:
   sdk: ^3.13.1

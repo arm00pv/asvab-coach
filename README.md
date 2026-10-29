@@ -34,7 +34,7 @@ starts a practice set drawn from the subtests that feed that score.
 scores and every job you meet, generated on the device, headed with the
 statement that it is an estimate and not an official ASVAB record.
 
-Current release: [v1.5.0](https://github.com/arm00pv/asvab-coach/releases/tag/v1.5.0).
+Current release: [v1.6.0](https://github.com/arm00pv/asvab-coach/releases/tag/v1.6.0).
 The Android build updates itself from GitHub releases and verifies the
 published SHA-256 before offering the installer.
 **Places you before it teaches you.** A 27-question diagnostic across all nine
@@ -81,7 +81,13 @@ worked explanation that is reused inside the lesson flow.
 
 **Paces you.** The target date and daily minutes you set at onboarding become a
 week-by-week schedule: how many skill cycles fit, how many full mocks fit, and a
-straight answer on whether the budget is enough.
+straight answer on whether the budget is enough. Miss a few days and the schedule
+reflows rather than still assuming you never stopped: it reads the date of your
+last attempt from the history already stored, adds the minutes those days were
+meant to hold to the work that is left, divides by the days that remain, and
+states the new pace in one sentence - with the number in it, and with nothing
+said at all when you have kept up. Each row on today's card starts that step in
+one tap, on the same route the step below it uses.
 
 **Survives an interruption.** A three-hour mock on a phone can be interrupted by
 a call, a dead battery or the operating system reclaiming memory. The attempt in
