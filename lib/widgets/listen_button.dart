@@ -49,10 +49,34 @@ class ListenButton extends StatefulWidget {
 }
 
 class _ListenButtonState extends State<ListenButton> {
+  /// Held so [dispose] can reach the guide: a State may not read the tree once
+  /// it is being torn down.
+  SpeechService? _speech;
+
   @override
   void initState() {
     super.initState();
     _maybeReadAloud();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _speech = speechOf(context);
+  }
+
+  @override
+  void dispose() {
+    final speech = _speech;
+    // Leaving a screen must stop its script. Without this, walking out of a
+    // lesson while it is being read leaves the voice explaining a screen the
+    // candidate is no longer looking at.
+    if (speech != null &&
+        speech.speaking &&
+        speech.speakingScreen == widget.doc.screenId) {
+      speech.stop();
+    }
+    super.dispose();
   }
 
   @override

@@ -274,6 +274,32 @@ void main() {
       expect(backend.spoken, isEmpty);
     });
 
+    testWidgets('leaving a screen stops the voice explaining it', (
+      tester,
+    ) async {
+      final backend = FakeBackend();
+      final speech = SpeechService(backend: backend, persist: false);
+      await speech.initialise();
+      await tester.pumpWidget(host(speech));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.volume_up_outlined));
+      await tester.pumpAndSettle();
+      expect(speech.speaking, isTrue);
+
+      // The candidate walks away from the screen mid-sentence.
+      await tester.pumpWidget(
+        MaterialApp(theme: AppTheme.build(Brightness.light), home: Container()),
+      );
+      await tester.pumpAndSettle();
+      expect(
+        backend.stops,
+        1,
+        reason: 'the guide kept talking about a screen no longer on show',
+      );
+      expect(speech.speaking, isFalse);
+    });
+
     testWidgets('explains itself when the device has no voice', (tester) async {
       final backend = FakeBackend(voices: const <SpeechVoice>[]);
       final speech = SpeechService(backend: backend, persist: false);
