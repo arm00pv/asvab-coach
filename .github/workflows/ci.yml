@@ -74,7 +74,10 @@ jobs:
       - name: Install the NDK the tutor links against
         run: |
           set -euo pipefail
-          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;28.2.13676358" > /dev/null
+          # No "yes |" in front of it: sdkmanager exits cleanly and the pipe
+          # leaves yes with a broken stdout, which pipefail turns into a red
+          # build. The runner's licences are already accepted.
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "ndk;28.2.13676358" > /dev/null
 
       # The release keystore is not in the repository and must not be: a
       # committed signing key lets anyone publish an update to this app. Without
