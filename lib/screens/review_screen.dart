@@ -12,6 +12,7 @@ import '../engines/narration.dart';
 import '../state/app_state.dart';
 import '../widgets/listen_button.dart';
 import '../widgets/primitives.dart';
+import '../widgets/tutor_sheet.dart';
 import '../widgets/sketch_view.dart';
 import '../widgets/puzzle_view.dart';
 
@@ -410,6 +411,38 @@ class _ReviewCard extends StatelessWidget {
             ),
           ),
           _DistractorNotes(served: item.served, picked: item.displaySelected),
+          // The tutor only appears once a model is on the device, and only
+          // here: a written explanation has been checked, and this is the
+          // second voice a candidate can ask for when the first did not land.
+          ListenableBuilder(
+            listenable: tutorOf(context),
+            builder: (context, _) {
+              final tutor = tutorOf(context);
+              if (!tutor.usable) return const SizedBox.shrink();
+              final picked = item.displaySelected;
+              final order = item.served.order;
+              final said =
+                  picked != null && picked >= 0 && picked < order.length
+                  ? q.choices[order[picked]]
+                  : null;
+              return Padding(
+                padding: const EdgeInsets.only(top: Space.sm),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextButton.icon(
+                    onPressed: () => showTutorSheet(
+                      context,
+                      question: q,
+                      order: order,
+                      candidateAnswer: said,
+                    ),
+                    icon: const Icon(Icons.psychology_alt_outlined, size: 16),
+                    label: const Text('Explain another way'),
+                  ),
+                ),
+              );
+            },
+          ),
           const SizedBox(height: Space.md),
           Wrap(
             spacing: Space.sm,

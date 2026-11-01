@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:asvab_guard_coach/data/bank/question_bank.dart';
 import 'package:asvab_guard_coach/data/models/catalog.dart';
-import 'package:asvab_guard_coach/data/models/question.dart';
 
 /// Writes a fixed set of real bank items to JSON, for testing an outside model
 /// against the app's own answers and explanations.
@@ -13,9 +12,7 @@ import 'package:asvab_guard_coach/data/models/question.dart';
 /// per wrong option. A model's answer can be marked against that, and its
 /// reasoning can be read against a human's.
 void main(List<String> args) {
-  final target = args.isEmpty
-      ? 'build/eval_items.json'
-      : args.first;
+  final target = args.isEmpty ? 'build/eval_items.json' : args.first;
 
   // Two items per subtest, text only: a figure or a polyomino cannot be put in
   // a prompt, and marking a model down for not seeing a picture would be a

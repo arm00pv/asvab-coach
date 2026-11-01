@@ -10,6 +10,8 @@ import android.view.WindowManager
 import androidx.core.content.FileProvider
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
+import com.arm00pv.asvabcoach.llm.LlmTutor
+import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import org.json.JSONObject
@@ -33,7 +35,11 @@ import java.util.Locale
 class MainActivity : FlutterActivity() {
     private val main = Handler(Looper.getMainLooper())
 
-    /// The system text of speech engine, created on first use.
+    /// The on-device tutor, and the model it runs. Created with the activity so
+    /// a download in progress survives a trip to another screen.
+    private var tutor: LlmTutor? = null
+
+    /// The system text to speech engine, created on first use.
     private var speech: TextToSpeech? = null
     private var speechReady = false
     private var speechChannel: MethodChannel? = null
@@ -67,6 +73,25 @@ class MainActivity : FlutterActivity() {
         speechChannel = MethodChannel(messenger, "asvabcoach/speech")
         speechChannel?.setMethodCallHandler { call, result -> handleSpeech(call, result) }
 
+        // The on-device tutor: a downloaded GGUF, llama.cpp, and nothing else
+        // involved. No server, no key, no network once the file is here.
+        val tutor = LlmTutor(this)
+        this.tutor = tutor
+        MethodChannel(messenger, "asvabcoach/llm").setMethodCallHandler { call, result ->
+            tutor.onMethodCall(call, result)
+        }
+        EventChannel(messenger, "asvabcoach/llm_events").setStreamHandler(
+            object : EventChannel.StreamHandler {
+                override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+                    tutor.setSink(events)
+                }
+
+                override fun onCancel(arguments: Any?) {
+                    tutor.setSink(null)
+                }
+            },
+        )
+
         MethodChannel(messenger, "asvabcoach/update").setMethodCallHandler { call, result ->
             when (call.method) {
                 "version" -> result.success(versionName())
@@ -97,6 +122,8 @@ class MainActivity : FlutterActivity() {
         speech?.shutdown()
         speech = null
         speechReady = false
+        tutor?.dispose()
+        tutor = null
         super.onDestroy()
     }
 

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'app.dart';
 import 'core/speech.dart';
+import 'core/tutor.dart';
 import 'state/app_state.dart';
 
 void main() {
@@ -16,6 +17,10 @@ void main() {
         // the same object, so they cannot disagree about the language.
         ChangeNotifierProvider<SpeechService>(
           create: (_) => SpeechService()..initialise(),
+        ),
+        // The on-device tutor: a downloaded model, running on this phone.
+        ChangeNotifierProvider<TutorService>(
+          create: (_) => TutorService()..initialise(),
         ),
       ],
       child: const AsvabCoachApp(),

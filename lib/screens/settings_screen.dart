@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../core/routes.dart';
 import '../core/speech.dart';
+import '../core/tutor.dart';
 import '../core/theme/tokens.dart';
 import '../data/bank/question_bank.dart';
 import '../data/repos/mos_repository.dart';
@@ -11,6 +12,7 @@ import '../engines/narration.dart';
 import '../state/app_state.dart';
 import '../widgets/listen_button.dart';
 import '../widgets/primitives.dart';
+import '../widgets/tutor_sheet.dart';
 import 'qa_lab_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -820,69 +822,205 @@ class _SpokenGuideSection extends StatelessWidget {
   }
 }
 
-/// What the tutor will and will not be.
+/// The tutor: what it is, whether this device can run it, and the one download.
 ///
-/// It is here, switched off and named, rather than absent or shown as a button
-/// that does nothing. A candidate who was told an AI would help them study can
-/// see exactly where it stands and what it will cost them to have it.
+/// The download is the only time this app touches the network for anything
+/// other than its own update, and the model is checked against a published
+/// size and SHA-256 before it is allowed to load: a truncated model does not
+/// fail loudly, it answers nonsense with confidence.
 class _TutorSection extends StatelessWidget {
   const _TutorSection();
 
   @override
   Widget build(BuildContext context) {
-    final c = context.colors;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const Eyebrow('AI tutor'),
-        const SizedBox(height: Space.sm),
-        AppCard(
-          padding: const EdgeInsets.all(Space.lg),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
+    final tutor = tutorOf(context);
+    return ListenableBuilder(
+      listenable: tutor,
+      builder: (context, _) {
+        final c = context.colors;
+        final status = tutor.status;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Eyebrow('AI tutor'),
+            const SizedBox(height: Space.sm),
+            AppCard(
+              padding: const EdgeInsets.all(Space.lg),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Icon(
-                    Icons.auto_awesome_outlined,
-                    size: 18,
-                    color: c.textMuted,
-                  ),
-                  const SizedBox(width: Space.sm),
-                  Expanded(
-                    child: Text(
-                      'Not in this build',
-                      style: context.text.titleSmall?.copyWith(
-                        color: c.textMuted,
+                  Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.auto_awesome_outlined,
+                        size: 18,
+                        color: status.installed ? c.primary : c.textMuted,
                       ),
-                    ),
+                      const SizedBox(width: Space.sm),
+                      Expanded(
+                        child: Text(
+                          status.installed ? 'On this device' : 'Not installed',
+                          style: context.text.titleSmall,
+                        ),
+                      ),
+                      Pill(
+                        status.installed ? 'Ready' : 'Optional',
+                        tone: status.installed
+                            ? PillTone.primary
+                            : PillTone.neutral,
+                        dense: true,
+                      ),
+                    ],
                   ),
-                  const Pill('Planned', tone: PillTone.neutral, dense: true),
+                  const SizedBox(height: Space.sm),
+                  if (!status.supported) ...<Widget>[
+                    Text(
+                      'This build cannot run the tutor. It needs an arm64 '
+                      'Android phone: this device reports ${status.abi}, and the '
+                      'engine library is only packaged for arm64.',
+                      style: context.text.bodySmall?.copyWith(height: 1.5),
+                    ),
+                    if (status.error != null) ...<Widget>[
+                      const SizedBox(height: Space.xs),
+                      Text(
+                        status.error!,
+                        style: context.text.bodySmall?.copyWith(
+                          color: c.warning,
+                        ),
+                      ),
+                    ],
+                  ] else ...<Widget>[
+                    Text(
+                      _description(status),
+                      style: context.text.bodySmall?.copyWith(height: 1.5),
+                    ),
+                    const SizedBox(height: Space.md),
+                    _controls(context, tutor),
+                  ],
                 ],
               ),
-              const SizedBox(height: Space.sm),
-              Text(
-                'The plan is an on-device tutor that reads the screen, answers '
-                'questions about it out loud in the language you choose, and can '
-                'translate an explanation you did not follow. The model for that is '
-                'LFM3-Omni, from Liquid AI, which understands text, pictures and '
-                'speech and answers in speech: 2.17 billion parameters, sixteen '
-                'written languages and nineteen spoken ones. On a phone it is a '
-                'separate download of about 1.33 gigabytes, on Android only - the '
-                'web build cannot hold it.',
-                style: context.text.bodySmall?.copyWith(height: 1.5),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  String _description(TutorStatus status) {
+    if (status.installed) {
+      return 'LFM3-Omni runs on this phone: 2.17 billion parameters, kept in '
+          'the app\'s own storage, loaded into memory when you ask a question. '
+          '“Explain another way” appears under every answer in Review. It '
+          'works with the phone in aeroplane mode - nothing is sent anywhere, '
+          'ever.';
+    }
+    return 'A 2.17 billion parameter model that works a question through with '
+        'you, in your own words, on the phone itself. It is a '
+        '${status.sizeLabel} download, done once over Wi-Fi, and after that it '
+        'runs with no connection at all.';
+  }
+
+  Widget _controls(BuildContext context, TutorService tutor) {
+    final c = context.colors;
+    final status = tutor.status;
+    if (status.downloading || tutor.downloading) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(999),
+            child: LinearProgressIndicator(
+              value: tutor.downloadProgress == 0
+                  ? null
+                  : tutor.downloadProgress,
+              minHeight: 4,
+              backgroundColor: c.surfaceSunken,
+              color: c.primary,
+            ),
+          ),
+          const SizedBox(height: Space.sm),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Text(
+                  'Downloading ${_percent(tutor.downloadProgress)} - keep the '
+                  'app open until it finishes.',
+                  style: context.text.bodySmall?.copyWith(color: c.textMuted),
+                ),
               ),
-              const SizedBox(height: Space.md),
-              Text(
-                'Until then, the guide above is the honest half of it: written '
-                'words, the voice the phone already has, no download, nothing sent '
-                'anywhere, and nothing it can invent.',
-                style: context.text.bodySmall?.copyWith(color: c.textMuted),
+              TextButton(
+                onPressed: tutor.cancelInstall,
+                child: const Text('Cancel'),
               ),
             ],
           ),
+        ],
+      );
+    }
+    if (status.installed) {
+      return Wrap(
+        spacing: Space.md,
+        runSpacing: Space.sm,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: <Widget>[
+          OutlinedButton.icon(
+            onPressed: () => _confirmRemove(context, tutor),
+            icon: const Icon(Icons.delete_outline_rounded, size: 16),
+            label: const Text('Remove the model'),
+          ),
+          Text(
+            '${(status.bytes / (1024 * 1024 * 1024)).toStringAsFixed(2)} GB on '
+            'this device',
+            style: context.text.bodySmall?.copyWith(color: c.textMuted),
+          ),
+        ],
+      );
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        FilledButton.tonalIcon(
+          onPressed: tutor.install,
+          icon: const Icon(Icons.download_rounded, size: 16),
+          label: Text('Download the tutor (${status.sizeLabel})'),
         ),
+        if (tutor.error != null) ...<Widget>[
+          const SizedBox(height: Space.sm),
+          Text(
+            tutor.error!,
+            style: context.text.bodySmall?.copyWith(color: c.warning),
+          ),
+        ],
       ],
+    );
+  }
+
+  String _percent(double value) =>
+      '${(value * 100).clamp(0, 100).toStringAsFixed(0)} percent';
+
+  void _confirmRemove(BuildContext context, TutorService tutor) {
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Remove the tutor?'),
+        content: const Text(
+          'The model file is deleted from this device. Your history, your plan '
+          'and the spoken guide are untouched, and you can download it again.',
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: const Text('Keep it'),
+          ),
+          FilledButton(
+            onPressed: () {
+              tutor.remove();
+              Navigator.of(dialogContext).pop();
+            },
+            child: const Text('Remove'),
+          ),
+        ],
+      ),
     );
   }
 }

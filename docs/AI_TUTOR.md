@@ -136,3 +136,48 @@ empty switch.
   device voices, eleven screens, auto-read on screen activation). Deferred
   LFM3-Omni to a separate download because 1.33 GB cannot ship inside an APK and
   cannot run in the browser build.
+
+## The tutor, running on the phone (1 November 2026)
+
+The model is in the app. Not a link, not a server: llama.cpp built for Android
+arm64, LFM3-Omni-2B Q4 downloaded once and loaded into the phone's own memory.
+
+**What ships.** `android/app/src/main/cpp/llm_bridge.cpp` is a JNI bridge over
+the llama.cpp C API with four entry points - load, generate, cancel, free - and
+generation streams: every token is handed back to Kotlin as it is sampled, so
+the first sentence is on screen while the rest is still being computed.
+`LlmTutor.kt` owns the download, the verify and the model file;
+`lib/core/tutor.dart` is the Dart side; `lib/widgets/tutor_sheet.dart` is the
+button a candidate presses under an answer in Review.
+
+**The APK** is 29.2 MB, up from 57 MB of release asset before this work went in,
+because the llama.cpp libraries are 11 MB of it: `libllama.so`, `libggml.so`,
+`libggml-base.so` and six `libggml-cpu-android_*` kernels, stripped from 55 MB.
+The model is not in it. It is a 1.02 GB download, checked against a pinned
+length and SHA-256 before it is allowed to load.
+
+**Four defects found only on hardware**, each fixed:
+
+* *the load found no backends.* This llama.cpp ships its CPU kernels as separate
+  libraries that have to be registered; `ggml_backend_load_all()` searched the
+  app process's paths and found nothing. The bridge now calls
+  `ggml_backend_load_all_from_path()` with the app's native library directory,
+  passed down from Kotlin.
+* *the libraries were not there to load.* Android packs `.so` files inside the
+  APK and maps them from the archive, which the backend loader cannot enumerate.
+  `useLegacyPackaging = true` extracts them at install time.
+* *the loader's own log went nowhere.* llama.cpp writes to stderr, which Android
+  discards, so a failed load said only "failed". It now routes through
+  `llama_log_set` into logcat under `AsvabLlm`, which is how the two defects
+  above were found at all.
+* *llama.h moved under us.* `use_mmap` and `use_mlock` no longer exist on
+  `llama_model_params` in this version, and the ggml headers had to be fetched
+  beside `llama.h`.
+
+**Verified on the Pixel 7 Pro:** the APK installs, the tutor reports itself
+usable, the 1.02 GB download completes and verifies on the device, and the model
+loads - `model loaded, n_ctx=2048 threads=6` in logcat.
+
+**Not yet verified:** a finished answer and the tokens-per-second on the phone.
+The USB connection dropped mid-run and the device has not come back, so the one
+number that decides whether this feels like a tutor or a wait is still owed.

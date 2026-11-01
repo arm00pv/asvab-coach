@@ -26,7 +26,10 @@ android {
     // without Android treating the app as a different application.
     namespace = "com.arm00pv.asvabcoach"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // Pinned: the packaged llama.cpp libraries were built with NDK r28, and
+    // linking against them with a different one is how you get a library that
+    // loads on the build machine and not on the phone.
+    ndkVersion = "28.2.13676358"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -39,6 +42,25 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+    }
+
+    // Android packs .so files inside the APK and loads them from there. The
+    // ggml backend loader wants a directory it can list and dlopen from, so the
+    // native libraries are extracted instead of memory-mapped from the archive.
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
+    // The tutor's bridge into llama.cpp. The llama.cpp libraries themselves ship
+    // as packaged jniLibs for arm64 only; every other ABI builds the stub in the
+    // same CMake file, so one multi-ABI APK still installs everywhere.
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
+        }
     }
 
     signingConfigs {
