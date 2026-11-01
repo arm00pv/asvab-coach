@@ -12,8 +12,10 @@ import '../data/repos/mos_descriptions.dart';
 import '../data/repos/mos_repository.dart';
 import '../engines/eligibility_engine.dart';
 import '../engines/line_score_drill.dart';
+import '../engines/narration.dart';
 import '../engines/unlock_path.dart';
 import '../state/app_state.dart';
+import '../widgets/listen_button.dart';
 import '../widgets/mos_sourced_blocks.dart';
 import '../widgets/primitives.dart';
 
@@ -21,7 +23,10 @@ import '../widgets/primitives.dart';
 /// Guard jobs does this score actually open, and what would it take to open the
 /// rest.
 class JobsScreen extends StatefulWidget {
-  const JobsScreen({super.key, this.now});
+  const JobsScreen({super.key, this.now, this.active = true});
+
+  /// Whether this is the tab on show.
+  final bool active;
 
   /// The day the screen is read against, for the rescission dates the pamphlet
   /// prints. Null means today. A widget cannot own a clock and a test cannot
@@ -96,7 +101,21 @@ class _JobsScreenState extends State<JobsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Jobs', style: context.text.headlineMedium),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text('Jobs', style: context.text.headlineMedium),
+                  ),
+                  ListenButton(
+                    doc: Narration.jobs(
+                      enlistedShown: all.length,
+                      warrantShown: showWarrant ? warrant.length : 0,
+                      hasReport: report != null,
+                    ),
+                    active: widget.active,
+                  ),
+                ],
+              ),
               const SizedBox(height: 2),
               Text(
                 report == null

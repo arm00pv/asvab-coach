@@ -6,7 +6,9 @@ import 'package:flutter/services.dart';
 import '../core/theme/tokens.dart';
 import '../data/models/mos.dart';
 import '../data/models/score.dart';
+import '../engines/narration.dart';
 import '../engines/recruiter_sheet.dart';
+import '../widgets/listen_button.dart';
 import '../widgets/primitives.dart';
 
 /// The recruiter export (ROADMAP Phase 4: "walk into the office prepared").
@@ -67,6 +69,14 @@ class RecruiterSheetScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Recruiter sheet'),
         actions: <Widget>[
+          if (sections != null)
+            ListenButton(
+              doc: Narration.recruiterSheet(
+                candidate: candidateName ?? 'this candidate',
+                generatedOn: generatedOn,
+                sections: sections.length,
+              ),
+            ),
           // Only offered when there is a page to copy: a button that silently
           // copies nothing is worse than no button.
           if (sheetText != null)

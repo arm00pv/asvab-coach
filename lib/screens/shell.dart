@@ -45,11 +45,14 @@ class _RootShellState extends State<RootShell> {
     final c = context.colors;
     final expanded = context.isMediumUp;
     final pages = <Widget>[
-      DashboardScreen(onNavigate: _go),
-      const PlanScreen(),
-      const TestCenterScreen(),
-      const JobsScreen(),
-      const ProgressScreen(),
+      // Every tab carries whether it is the one on show, because the spoken
+      // guide reads a screen when it comes to the front and all five stay
+      // built at once.
+      DashboardScreen(onNavigate: _go, active: _index == 0),
+      PlanScreen(active: _index == 1),
+      TestCenterScreen(active: _index == 2),
+      JobsScreen(active: _index == 3),
+      ProgressScreen(active: _index == 4),
     ];
 
     final body = IndexedStack(index: _index, children: pages);

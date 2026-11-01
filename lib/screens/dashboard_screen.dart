@@ -9,15 +9,28 @@ import '../data/models/score.dart';
 import '../engines/adaptive_engine.dart';
 import '../engines/eligibility_engine.dart';
 import '../engines/exam_builder.dart';
+import '../engines/narration.dart';
 import '../state/app_state.dart';
 import '../widgets/charts.dart';
+import '../widgets/listen_button.dart';
 import '../widgets/primitives.dart';
 import 'settings_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key, required this.onNavigate, this.now});
+  const DashboardScreen({
+    super.key,
+    required this.onNavigate,
+    this.now,
+    this.active = true,
+  });
 
   final ValueChanged<int> onNavigate;
+
+  /// Whether this is the tab on show.
+  ///
+  /// The shell keeps all five tabs built at once, so this is the only thing
+  /// that stops five spoken guides from starting at the same moment.
+  final bool active;
 
   /// The day the eligibility count is read against. Null means today.
   ///
@@ -33,6 +46,16 @@ class DashboardScreen extends StatelessWidget {
     final goal = app.goal;
     final c = context.colors;
     final today = now ?? DateTime.now();
+    // The same numbers the screen shows, handed to the guide: a listener must
+    // never be told something the screen is not saying.
+    final doc = Narration.home(
+      name: goal?.displayName ?? 'Candidate',
+      afqt: report?.afqtPercentile,
+      attempts: app.attempts.length,
+      dueReviews: app.dueReviewCount,
+      daysToTest: daysToGoal(goal, today),
+      hasPendingAttempt: app.hasPendingAttempt,
+    );
 
     return Scaffold(
       body: SafeArea(
@@ -52,7 +75,7 @@ class DashboardScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          _subtitle(app),
+                          _subtitle(app, today),
                           style: context.text.bodySmall?.copyWith(
                             color: c.textMuted,
                           ),
@@ -60,6 +83,7 @@ class DashboardScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+                  ListenButton(doc: doc, active: active),
                   // Beside the settings button at every width: the first
                   // question a new candidate asks is what these numbers mean.
                   IconButton(
@@ -176,23 +200,27 @@ class DashboardScreen extends StatelessWidget {
   /// short clauses: who the plan is for, and how long is left. The officer GT
   /// gate is not lost with the clause, it is captioned on the GT figure in the
   /// readiness card below.
-  String _subtitle(AppState app) {
+  /// Whole calendar days from [today] to the goal's test date, or null.
+  ///
+  /// Compare whole calendar days. Subtracting a clock reading that carries a
+  /// time of day from a midnight target truncates the part day away, which put
+  /// this subtitle one day behind the plan screen for the whole of any evening
+  /// - the same off-by-one the plan screen had. The spoken guide reads this
+  /// same helper, so the number it says is the number on screen.
+  static int? daysToGoal(GoalProfile? goal, DateTime today) {
+    final target = goal?.targetDate;
+    if (target == null) return null;
+    return DateTime(
+      target.year,
+      target.month,
+      target.day,
+    ).difference(DateTime(today.year, today.month, today.day)).inDays;
+  }
+
+  String _subtitle(AppState app, DateTime today) {
     final goal = app.goal;
     if (goal == null) return 'Army National Guard';
-    // Compare whole calendar days. Subtracting a clock reading that carries a
-    // time of day from a midnight target truncates the part day away, which
-    // put this subtitle one day behind the plan screen for the whole of any
-    // evening - the same off-by-one the plan screen had.
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final target = goal.targetDate;
-    final days = target == null
-        ? null
-        : DateTime(
-            target.year,
-            target.month,
-            target.day,
-          ).difference(today).inDays;
+    final days = daysToGoal(goal, today);
     final base = goal.officerTrack ? 'Officer track' : 'Army National Guard';
     if (days == null) return base;
     if (days <= 0) return '$base - test date is today';

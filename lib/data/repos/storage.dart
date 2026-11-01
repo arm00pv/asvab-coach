@@ -68,6 +68,31 @@ class PersistedState {
   );
 }
 
+/// What the spoken guide remembers between launches.
+class SpeechSettings {
+  const SpeechSettings({
+    this.locale = '',
+    this.rate = 1.0,
+    this.autoRead = false,
+  });
+
+  /// The voice's BCP-47 tag, or empty for "whatever the device speaks".
+  final String locale;
+
+  /// Speaking speed. The engine's own pace is 1.0.
+  final double rate;
+
+  /// Whether a screen reads itself when it comes to the front.
+  final bool autoRead;
+
+  SpeechSettings copyWith({String? locale, double? rate, bool? autoRead}) =>
+      SpeechSettings(
+        locale: locale ?? this.locale,
+        rate: rate ?? this.rate,
+        autoRead: autoRead ?? this.autoRead,
+      );
+}
+
 /// A decoded list plus what went wrong on the way through.
 class _Recovered<T> {
   const _Recovered(this.items, this.skipped, this.failed);
@@ -87,6 +112,9 @@ abstract final class Storage {
   static const _kReviews = 'asvab.reviews.v1';
   static const _kPending = 'asvab.pending.v1';
   static const _kAutoUpdate = 'asvab.autoupdate.v1';
+  static const _kSpeechLocale = 'asvab.speech.locale.v1';
+  static const _kSpeechRate = 'asvab.speech.rate.v1';
+  static const _kSpeechAuto = 'asvab.speech.auto.v1';
 
   /// Reads everything that survives a refresh.
   ///
@@ -276,6 +304,30 @@ abstract final class Storage {
   static Future<void> saveAutoCheckUpdates(bool on) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_kAutoUpdate, on);
+  }
+
+  /// The spoken guide's preferences: which voice, how fast, and whether a
+  /// screen reads itself. Kept apart from [saveTheme] and the rest so the
+  /// speech settings have one writer and one reader.
+  static Future<SpeechSettings> loadSpeech() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final rate = prefs.getDouble(_kSpeechRate) ?? 1.0;
+      return SpeechSettings(
+        locale: prefs.getString(_kSpeechLocale) ?? '',
+        rate: rate.clamp(0.7, 1.3),
+        autoRead: prefs.getBool(_kSpeechAuto) ?? false,
+      );
+    } catch (_) {
+      return const SpeechSettings();
+    }
+  }
+
+  static Future<void> saveSpeech(SpeechSettings settings) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_kSpeechLocale, settings.locale);
+    await prefs.setDouble(_kSpeechRate, settings.rate);
+    await prefs.setBool(_kSpeechAuto, settings.autoRead);
   }
 
   static Future<void> saveTheme(bool dark) async {

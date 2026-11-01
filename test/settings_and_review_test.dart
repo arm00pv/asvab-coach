@@ -118,7 +118,14 @@ void main() {
     );
 
     await pumpSettings(tester, state);
-    await tester.tap(find.text('Copy my history'));
+    // The page grew a spoken-guide and a tutor section above this one, so the
+    // export button is below the fold at the test's size. Scroll to it rather
+    // than tapping an offset outside the viewport, which hits nothing and reads
+    // as "the clipboard was never written".
+    final copy = find.text('Copy my history');
+    await tester.ensureVisible(copy);
+    await settle(tester);
+    await tester.tap(copy);
     await settle(tester);
 
     expect(copied, isNotNull, reason: 'nothing reached the clipboard');
@@ -132,7 +139,10 @@ void main() {
     expect(state.attempts, hasLength(1));
 
     await pumpSettings(tester, state);
-    await tester.tap(find.text('Erase all data'));
+    final erase = find.text('Erase all data');
+    await tester.ensureVisible(erase);
+    await settle(tester);
+    await tester.tap(erase);
     await settle(tester);
     expect(find.text('Erase everything?'), findsOneWidget);
     await tester.tap(find.text('Erase'));

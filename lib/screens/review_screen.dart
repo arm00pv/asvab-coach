@@ -8,7 +8,9 @@ import '../data/models/catalog.dart';
 import '../data/models/exam.dart';
 import '../data/models/question.dart';
 import '../data/models/score.dart';
+import '../engines/narration.dart';
 import '../state/app_state.dart';
+import '../widgets/listen_button.dart';
 import '../widgets/primitives.dart';
 import '../widgets/sketch_view.dart';
 import '../widgets/puzzle_view.dart';
@@ -49,6 +51,19 @@ class _ReviewScreenState extends State<ReviewScreen> {
       items.add(_ReviewItem(served: served, response: response));
     }
 
+    // The guide is told what the report will say, counted the same way the
+    // cards are: correct, left blank, and the rest missed.
+    final correct = items.where((it) => it.correct).length;
+    final blank = items
+        .where((it) => it.response?.selectedIndex == null)
+        .length;
+    final doc = Narration.review(
+      total: items.length,
+      correct: correct,
+      blank: blank,
+      missed: items.length - correct - blank,
+    );
+
     final filtered = items.where((it) {
       if (_subtest != null && it.served.base.subtest != _subtest) return false;
       switch (_filter) {
@@ -69,6 +84,10 @@ class _ReviewScreenState extends State<ReviewScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Review'),
+        actions: <Widget>[
+          ListenButton(doc: doc),
+          const SizedBox(width: Space.sm),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(52),
           child: SingleChildScrollView(

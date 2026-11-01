@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../core/routes.dart';
 import '../core/theme/tokens.dart';
+import '../engines/narration.dart';
 import '../data/models/catalog.dart';
 import '../data/models/line_score.dart';
 import '../data/models/score.dart';
@@ -12,6 +13,7 @@ import '../engines/exam_builder.dart';
 import '../state/app_state.dart';
 import '../widgets/charts.dart';
 import '../widgets/puzzle_view.dart';
+import '../widgets/listen_button.dart';
 import '../widgets/primitives.dart';
 
 /// The score report. Everything the candidate needs to understand where they
@@ -36,6 +38,14 @@ class ResultsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(attempt.kind.label),
         actions: <Widget>[
+          ListenButton(
+            doc: Narration.results(
+              afqt: report.afqtPercentile,
+              supported: attemptSupportsAggregate(report),
+              totalCorrect: report.totalCorrect,
+              totalAnswered: report.totalAnswered,
+            ),
+          ),
           // The labelled action and the title together are wider than a phone
           // bar, and the title lost that fight - "Full Mock" came out as "Full
           // M…". The icon carries the same meaning and the tooltip keeps it

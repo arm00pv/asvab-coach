@@ -10,9 +10,11 @@ import '../data/models/lesson.dart';
 import '../data/models/mos.dart';
 import '../data/models/score.dart';
 import '../engines/adaptive_engine.dart';
+import '../engines/narration.dart';
 import '../engines/study_planner.dart';
 import '../engines/study_schedule.dart';
 import '../state/app_state.dart';
+import '../widgets/listen_button.dart';
 import '../widgets/primitives.dart';
 import '../widgets/puzzle_view.dart';
 
@@ -20,7 +22,11 @@ import '../widgets/puzzle_view.dart';
 /// report says will move the needle; the library is there for when you already
 /// know what you want to work on.
 class PlanScreen extends StatelessWidget {
-  const PlanScreen({super.key, this.today});
+  const PlanScreen({super.key, this.today, this.active = true});
+
+  /// Whether this is the tab on show. The shell keeps every tab built at once,
+  /// and only one of them may read itself aloud.
+  final bool active;
 
   /// The day the screen is drawn for, or null for the clock, which is what the
   /// app uses.
@@ -51,6 +57,17 @@ class PlanScreen extends StatelessWidget {
       today: day,
       lastActiveDay: app.lastActiveDay,
     );
+    // The guide is given the one schedule the screen draws, so the day count it
+    // speaks is the day count in the header - the defect this screen already
+    // had once, from two places counting days.
+    final doc = Narration.plan(
+      hasPlan: report != null && plan.isNotEmpty,
+      daysRemaining: schedule.daysRemaining,
+      requiredDailyMinutes: schedule.requiredDailyMinutes,
+      isBehind: schedule.isBehind,
+      missedMinutes: schedule.missedMinutes,
+      reflowNote: schedule.reflowNote,
+    );
 
     return Scaffold(
       body: SafeArea(
@@ -58,7 +75,17 @@ class PlanScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Your plan', style: context.text.headlineMedium),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      'Your plan',
+                      style: context.text.headlineMedium,
+                    ),
+                  ),
+                  ListenButton(doc: doc, active: active),
+                ],
+              ),
               const SizedBox(height: 2),
               Text(
                 report == null

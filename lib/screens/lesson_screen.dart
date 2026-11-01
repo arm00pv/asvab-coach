@@ -7,7 +7,9 @@ import '../data/bank/lessons_index.dart';
 import '../data/bank/question_bank.dart';
 import '../data/models/lesson.dart';
 import '../engines/exam_builder.dart';
+import '../engines/narration.dart';
 import '../state/app_state.dart';
+import '../widgets/listen_button.dart';
 import '../widgets/primitives.dart';
 import '../widgets/puzzle_view.dart';
 
@@ -71,7 +73,22 @@ class LessonScreen extends StatelessWidget {
       // The reading time used to sit in the bar, where it took the width the
       // subtest name needed and cut "Auto & Shop Information" short. It belongs
       // with the content, not with the title.
-      appBar: AppBar(title: Text(lesson.subtest.label)),
+      appBar: AppBar(
+        title: Text(lesson.subtest.label),
+        actions: <Widget>[
+          // The lesson is the screen a candidate most wants read to them: it is
+          // the one screen that is mostly prose.
+          ListenButton(
+            doc: Narration.lesson(
+              title: lesson.title,
+              subtest: lesson.subtest.label,
+              headings: <String>[for (final s in lesson.sections) s.heading],
+              exampleCount: lesson.examples.length,
+            ),
+          ),
+          const SizedBox(width: Space.sm),
+        ],
+      ),
       body: PageBody(
         maxWidth: 720,
         child: Column(

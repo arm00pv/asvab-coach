@@ -7,14 +7,19 @@ import '../data/models/catalog.dart';
 import '../data/bank/question_bank.dart';
 import '../engines/adaptive_engine.dart';
 import '../engines/exam_builder.dart';
+import '../engines/narration.dart';
 import '../state/app_state.dart';
+import '../widgets/listen_button.dart';
 import '../widgets/primitives.dart';
 import '../widgets/puzzle_view.dart';
 
 /// Where you choose what to sit: a full mock, one subtest, or a drill on the
 /// skills currently costing you the most.
 class TestCenterScreen extends StatelessWidget {
-  const TestCenterScreen({super.key});
+  const TestCenterScreen({super.key, this.active = true});
+
+  /// Whether this is the tab on show.
+  final bool active;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +34,23 @@ class TestCenterScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Test centre', style: context.text.headlineMedium),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      'Test centre',
+                      style: context.text.headlineMedium,
+                    ),
+                  ),
+                  ListenButton(
+                    doc: Narration.testCentre(
+                      questionCount: QuestionBank.total,
+                      hasReport: report != null,
+                    ),
+                    active: active,
+                  ),
+                ],
+              ),
               const SizedBox(height: 2),
               Text(
                 'Timing mirrors the CAT-ASVAB: 135 items, 197 minutes, official '

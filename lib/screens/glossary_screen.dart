@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../core/theme/tokens.dart';
 import '../data/models/catalog.dart';
 import '../data/repos/mos_repository.dart';
+import '../engines/narration.dart';
+import '../widgets/listen_button.dart';
 import '../widgets/primitives.dart';
 
 /// One entry: the term as it is printed, and what it actually means.
@@ -232,7 +234,13 @@ class GlossaryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.colors;
     return Scaffold(
-      appBar: AppBar(title: const Text('What the terms mean')),
+      appBar: AppBar(
+        title: const Text('What the terms mean'),
+        actions: <Widget>[
+          ListenButton(doc: Narration.glossary()),
+          const SizedBox(width: Space.sm),
+        ],
+      ),
       body: PageBody(
         maxWidth: 720,
         child: Column(

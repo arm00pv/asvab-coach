@@ -6,14 +6,19 @@ import '../core/theme/tokens.dart';
 import '../data/models/catalog.dart';
 import '../data/models/score.dart';
 import '../engines/adaptive_engine.dart';
+import '../engines/narration.dart';
 import '../state/app_state.dart';
 import '../widgets/charts.dart';
+import '../widgets/listen_button.dart';
 import '../widgets/puzzle_view.dart';
 import '../widgets/primitives.dart';
 
 /// Longitudinal view: is the work actually moving the score?
 class ProgressScreen extends StatelessWidget {
-  const ProgressScreen({super.key});
+  const ProgressScreen({super.key, this.active = true});
+
+  /// Whether this is the tab on show.
+  final bool active;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +32,22 @@ class ProgressScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Progress', style: context.text.headlineMedium),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text('Progress', style: context.text.headlineMedium),
+                  ),
+                  ListenButton(
+                    doc: Narration.progress(
+                      attempts: attempts.length,
+                      bestAfqt: app.bestAfqt,
+                      bestGt: app.bestGt,
+                      streakDays: app.streakDays,
+                    ),
+                    active: active,
+                  ),
+                ],
+              ),
               const SizedBox(height: 2),
               Text(
                 attempts.isEmpty

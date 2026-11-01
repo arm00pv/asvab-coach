@@ -1,4 +1,4 @@
-﻿# Roadmap: from a good coach to a trustworthy one
+# Roadmap: from a good coach to a trustworthy one
 
 Each phase is a goal with an acceptance test, not a wish. A phase ships only
 when `flutter test`, `dart run tool/audit.dart --strict` and
@@ -249,3 +249,36 @@ Released as v1.5.0 (d4ff195), installed over 1.4.0 with the package manager
 confirming versionCode 104. Visual confirmation on the phone was not
 obtained: the device was locked and screencap returns black, so the render
 is covered by widget tests at 360 dp and 2x text only.
+
+## The spoken guide (7 November 2026)
+
+Every screen now has a speaker beside its title. Tap it and the screen explains
+itself out loud, in the language chosen in Settings; switch on auto-read and a
+screen starts talking as soon as it comes to the front.
+
+The design decision that shaped everything: **the words are written, the voice is
+the device's**. Eleven authored scripts live in `lib/engines/narration.dart`,
+each built from the same numbers its screen displays - the same `StudySchedule`,
+the same `attemptSupportsAggregate` verdict, the same whole-day count - so the
+voice cannot contradict the screen. `lib/core/speech.dart` owns the setting;
+Android speaks through `TextToSpeech` over a new `asvabcoach/speech` channel, the
+web build through `window.speechSynthesis`, both behind one interface. No
+download, no network, no new permission, nothing recorded.
+
+The language sheet offers only the languages the app has *written* -
+`writtenLanguages`, English today. A phone that can pronounce Spanish will read an
+English sentence with Spanish sounds; that is noise, not an explanation, and
+offering it would have been a lie dressed as a feature.
+
+LFM3-Omni is the model that would close the gap - it understands text, pictures
+and speech and answers in speech, with 16 written languages and 19 spoken ones -
+and it is deliberately not in this build: the Q4 build is 1.33 GB across two
+files against a 56.9 MB APK, and the web build cannot hold it at all. Settings
+says so in plain words rather than showing a switch that does nothing. The full
+record, with file sizes, licence and llama.cpp merge status, is in
+docs/AI_TUTOR.md.
+
+Two test defects were mine and are fixed: the settings tests tapped a button that
+had moved below the fold (now `ensureVisible`), and the new widget tests pumped a
+bare `MaterialApp` with no theme extension, so the colour lookup every screen
+makes threw.

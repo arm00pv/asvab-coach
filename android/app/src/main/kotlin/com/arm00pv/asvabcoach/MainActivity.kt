@@ -4,27 +4,45 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
+import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
 import android.view.WindowManager
 import androidx.core.content.FileProvider
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import org.json.JSONObject
 import java.io.File
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.Locale
 
-/// The stock Flutter activity plus two small channels: keeping the display on
-/// during a timed section, and getting a newer build onto the phone.
+/// The stock Flutter activity plus three small channels: keeping the display on
+/// during a timed section, getting a newer build onto the phone, and speaking
+/// the on-screen guide with the device's own voice.
 ///
-/// Neither needs a dangerous permission. FLAG_KEEP_SCREEN_ON is a window flag,
-/// not a wakelock, and the updater uses the app's own cache directory through a
-/// FileProvider, so the app still asks for no storage access. It does declare
+/// None of them needs a dangerous permission. FLAG_KEEP_SCREEN_ON is a window
+/// flag, not a wakelock; the updater uses the app's own cache directory through
+/// a FileProvider, so the app still asks for no storage access; and the voice is
+/// the system text-to-speech engine, which the operating system already owns -
+/// nothing is recorded, and nothing spoken is sent anywhere. It does declare
 /// INTERNET - it is the one thing that talks to the network, and only about
 /// itself.
 class MainActivity : FlutterActivity() {
     private val main = Handler(Looper.getMainLooper())
+
+    /// The system text of speech engine, created on first use.
+    private var speech: TextToSpeech? = null
+    private var speechReady = false
+    private var speechChannel: MethodChannel? = null
+    private var utteranceCount = 0
+
+    /// Calls that arrived before the engine finished initialising. The engine
+    /// reports readiness asynchronously, and the first call almost always
+    /// arrives first.
+    private val speechQueue = mutableListOf<() -> Unit>()
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -45,6 +63,9 @@ class MainActivity : FlutterActivity() {
             }
             result.success(true)
         }
+
+        speechChannel = MethodChannel(messenger, "asvabcoach/speech")
+        speechChannel?.setMethodCallHandler { call, result -> handleSpeech(call, result) }
 
         MethodChannel(messenger, "asvabcoach/update").setMethodCallHandler { call, result ->
             when (call.method) {
@@ -71,7 +92,144 @@ class MainActivity : FlutterActivity() {
     override fun onDestroy() {
         // Never leave the flag set behind us.
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        speechQueue.clear()
+        speech?.stop()
+        speech?.shutdown()
+        speech = null
+        speechReady = false
         super.onDestroy()
+    }
+
+    // ---- The spoken study guide ------------------------------------------
+
+    /// Runs [work] now if the engine is ready, and otherwise as soon as it is.
+    private fun withEngine(work: () -> Unit) {
+        ensureEngine()
+        if (speechReady) {
+            work()
+        } else {
+            speechQueue.add(work)
+        }
+    }
+
+    private fun ensureEngine() {
+        if (speech != null) return
+        speech = TextToSpeech(applicationContext) { status ->
+            speechReady = status == TextToSpeech.SUCCESS
+            if (speechReady) {
+                speech?.setOnUtteranceProgressListener(
+                    object : UtteranceProgressListener() {
+                        override fun onStart(utteranceId: String?) = emit("started")
+
+                        override fun onDone(utteranceId: String?) = emit("finished")
+
+                        @Deprecated("Deprecated in Java")
+                        override fun onError(utteranceId: String?) = emit("failed")
+
+                        override fun onError(utteranceId: String?, errorCode: Int) =
+                            emit("failed")
+                    },
+                )
+            }
+            // Whatever was waiting is answered either way: a device with no
+            // engine must hear "no voices", not nothing at all.
+            val waiting = speechQueue.toList()
+            speechQueue.clear()
+            for (call in waiting) call()
+        }
+    }
+
+    private fun emit(event: String) {
+        main.post { speechChannel?.invokeMethod(event, null) }
+    }
+
+    /// Every voice the device has, with the language tag the app speaks it
+    /// with. Network voices are marked, because the guide promises offline.
+    private fun describeVoices(): List<Map<String, Any?>> {
+        val engine = speech ?: return emptyList()
+        if (!speechReady) return emptyList()
+        return try {
+            engine.voices
+                .filter { it.locale != null }
+                .map { voice ->
+                    mapOf(
+                        "name" to voice.name,
+                        "locale" to voice.locale.toLanguageTag(),
+                        "quality" to voice.quality,
+                        "local" to !voice.isNetworkConnectionRequired,
+                    )
+                }
+        } catch (error: Exception) {
+            emptyList()
+        }
+    }
+
+    private fun handleSpeech(call: MethodCall, result: MethodChannel.Result) {
+        when (call.method) {
+            "voices" -> withEngine { result.success(describeVoices()) }
+            "speak" -> {
+                val text = call.argument<String>("text").orEmpty()
+                val tag = call.argument<String>("locale").orEmpty()
+                val rate = (call.argument<Number>("rate") ?: 1.0).toFloat()
+                if (text.isBlank()) {
+                    result.success(null)
+                    return
+                }
+                withEngine {
+                    val engine = speech
+                    if (engine == null || !speechReady) {
+                        result.error("no_engine", "This device has no speech engine.", null)
+                        return@withEngine
+                    }
+                    val requested = if (tag.isBlank()) {
+                        Locale.getDefault()
+                    } else {
+                        Locale.forLanguageTag(tag)
+                    }
+                    var language = engine.setLanguage(requested)
+                    if (
+                        language == TextToSpeech.LANG_MISSING_DATA ||
+                        language == TextToSpeech.LANG_NOT_SUPPORTED
+                    ) {
+                        // The exact tag is not installed. A voice in the same
+                        // language is a better answer than silence.
+                        val fallback = engine.voices.firstOrNull {
+                            it.locale?.language == requested.language
+                        }
+                        if (fallback != null) language = engine.setVoice(fallback)
+                    }
+                    if (
+                        language == TextToSpeech.LANG_MISSING_DATA ||
+                        language == TextToSpeech.LANG_NOT_SUPPORTED
+                    ) {
+                        result.error(
+                            "no_voice",
+                            "No voice is installed for " + tag + ".",
+                            null,
+                        )
+                        return@withEngine
+                    }
+                    engine.setSpeechRate(rate.coerceIn(0.5f, 2.0f))
+                    utteranceCount += 1
+                    val queued = engine.speak(
+                        text,
+                        TextToSpeech.QUEUE_FLUSH,
+                        null,
+                        "asvab-" + utteranceCount,
+                    )
+                    if (queued == TextToSpeech.ERROR) {
+                        result.error("speak_failed", "The voice refused the text.", null)
+                    } else {
+                        result.success(true)
+                    }
+                }
+            }
+            "stop" -> {
+                speech?.stop()
+                result.success(true)
+            }
+            else -> result.notImplemented()
+        }
     }
 
     private fun versionName(): String = try {

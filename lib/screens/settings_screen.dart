@@ -3,10 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../core/routes.dart';
+import '../core/speech.dart';
 import '../core/theme/tokens.dart';
 import '../data/bank/question_bank.dart';
 import '../data/repos/mos_repository.dart';
+import '../engines/narration.dart';
 import '../state/app_state.dart';
+import '../widgets/listen_button.dart';
 import '../widgets/primitives.dart';
 import 'qa_lab_screen.dart';
 
@@ -16,384 +19,413 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final app = context.watch<AppState>();
+    final speech = speechOf(context);
     final c = context.colors;
     final goal = app.goal;
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
-      body: PageBody(
-        maxWidth: 640,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _Group(
-              title: 'Appearance',
-              children: <Widget>[
-                // A row, not a SwitchListTile. A two-line ListTile reserves the
-                // Material height of 72 dp whatever its text needs, so on a card
-                // that holds nothing else the label floated in a band of empty
-                // space that no neighbouring card had - the other cards hold rows
-                // tall enough to fill that minimum. The row below is the text at
-                // its own height beside the switch, and the switch keeps its own
-                // 48 dp tap target.
-                //
-                // It still has to own a Material: the group is a DecoratedBox with
-                // a background colour, and ink paints on the nearest Material
-                // ancestor, so without this the ripple is invisible and debug
-                // builds assert. Tapping the label toggles the switch, which is
-                // what the ListTile did.
-                Material(
-                  type: MaterialType.transparency,
-                  child: InkWell(
-                    onTap: () => app.setDarkMode(!app.darkMode),
-                    borderRadius: BorderRadius.circular(Radii.sm),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text('Dark mode', style: context.text.titleSmall),
-                              Text(
-                                'Easier on the eyes for long evening sessions.',
-                                style: context.text.bodySmall,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: Space.md),
-                        Switch.adaptive(
-                          value: app.darkMode,
-                          onChanged: app.setDarkMode,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+    // One listenable for the page: the language shown in the row below, the
+    // switch beside it and the script the speaker reads are three readings of
+    // the same object and must never be a rebuild apart.
+    return ListenableBuilder(
+      listenable: speech,
+      builder: (context, _) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Settings'),
+          actions: <Widget>[
+            ListenButton(
+              doc: Narration.settings(
+                installedVersion: app.installedVersion,
+                spokenLanguage: speech.localeLabel,
+              ),
             ),
-            const SizedBox(height: Space.lg),
-            _Group(
-              title: 'Understanding the app',
-              children: <Widget>[
-                Material(
-                  type: MaterialType.transparency,
-                  child: ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    leading: const Icon(Icons.menu_book_outlined),
-                    title: Text(
-                      'What the terms mean',
-                      style: context.text.titleSmall,
-                    ),
-                    subtitle: Text(
-                      'AFQT, VE, standard scores, line scores, MOS gates - every '
-                      'abbreviation in the app, in plain words.',
-                      style: context.text.bodySmall,
-                    ),
-                    trailing: const Icon(Icons.chevron_right_rounded),
-                    onTap: () => AppRoutes.glossary(context),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: Space.lg),
-            _Group(
-              title: 'Your goal',
-              children: <Widget>[
-                if (goal == null)
-                  Text('No goal set.', style: context.text.bodySmall)
-                else ...<Widget>[
-                  _kv(context, 'Name', goal.displayName),
-                  _kv(
-                    context,
-                    'Target date',
-                    goal.targetDate == null
-                        ? 'not set'
-                        : '${goal.targetDate!.difference(DateTime.now()).inDays} days out',
-                  ),
-                  _kv(context, 'Daily minutes', '${goal.dailyMinutes}'),
-                  _kv(
-                    context,
-                    'Officer track',
-                    goal.officerTrack ? 'Yes' : 'No',
-                  ),
-                  _kv(
-                    context,
-                    'Tracked jobs',
-                    goal.targetMosCodes.isEmpty
-                        ? 'None yet'
-                        : goal.targetMosCodes
-                              .map((c) => MosRepository.byCode(c)?.code ?? c)
-                              .join(', '),
-                  ),
-                ],
-              ],
-            ),
-            const SizedBox(height: Space.lg),
-            _Group(
-              title: 'Your data',
-              children: <Widget>[
-                Text(
-                  '${app.attempts.length} '
-                  '${app.attempts.length == 1 ? 'attempt' : 'attempts'} and '
-                  '${QuestionBank.total} practice questions. Everything is stored '
-                  'on this device only - '
-                  'no account, no server, and no attempt or score ever leaves it.',
-                  style: context.text.bodySmall,
-                ),
-                const SizedBox(height: Space.md),
-                Wrap(
-                  spacing: Space.md,
-                  runSpacing: Space.sm,
-                  children: <Widget>[
-                    OutlinedButton.icon(
-                      onPressed: () async {
-                        final json = _export(app);
-                        await Clipboard.setData(ClipboardData(text: json));
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('History copied to the clipboard.'),
-                            ),
-                          );
-                        }
-                      },
-                      icon: const Icon(Icons.copy_rounded, size: 15),
-                      // This is the one way to take the history off the
-                      // device, so it should not read like a developer
-                      // command sitting above the erase button. It copies a
-                      // pasteable copy; nothing is uploaded anywhere.
-                      label: const Text('Copy my history'),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: Space.md),
-                TextButton.icon(
-                  onPressed: () => _confirmReset(context, app),
-                  style: TextButton.styleFrom(foregroundColor: c.danger),
-                  icon: const Icon(Icons.delete_outline_rounded, size: 16),
-                  label: const Text('Erase all data'),
-                ),
-              ],
-            ),
-            const SizedBox(height: Space.lg),
-            _Group(
-              title: 'Updates',
-              children: <Widget>[
-                _kv(
-                  context,
-                  'This build',
-                  app.installedVersion ?? 'not reported on this platform',
-                ),
-                if (app.availableUpdate != null) ...<Widget>[
-                  const SizedBox(height: Space.sm),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(Space.md),
-                    decoration: BoxDecoration(
-                      color: c.primarySoft,
-                      borderRadius: BorderRadius.circular(Radii.md),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Version ${app.availableUpdate!.version} is available',
-                          style: context.text.titleSmall?.copyWith(
-                            color: c.textPrimary,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          'Downloading it and handing it to Android costs about '
-                          '${app.availableUpdate!.sizeLabel}. Android will ask you to '
-                          'allow installs from ASVAB Coach the first time, then '
-                          'confirm the update itself; Play Protect may offer to '
-                          'scan the app on the way through, which is the normal '
-                          'path for anything installed outside the Play Store. '
-                          'Your history is kept.',
-                          style: context.text.bodySmall,
-                        ),
-                        const SizedBox(height: Space.sm),
-                        FilledButton.tonalIcon(
-                          onPressed: () => app.installAvailableUpdate(),
-                          icon: const Icon(
-                            Icons.system_update_alt_rounded,
-                            size: 16,
-                          ),
-                          label: const Text('Download and install'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-                if (app.updateError != null) ...<Widget>[
-                  const SizedBox(height: Space.sm),
-                  Text(
-                    app.updateError!,
-                    style: context.text.bodySmall?.copyWith(color: c.warning),
-                  ),
-                ],
-                const SizedBox(height: Space.sm),
-                Wrap(
-                  spacing: Space.md,
-                  runSpacing: Space.xs,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: <Widget>[
-                    FilledButton.tonalIcon(
-                      onPressed: app.checkingUpdate
-                          ? null
-                          : () => app.checkForUpdates(),
-                      icon: app.checkingUpdate
-                          ? const SizedBox(
-                              width: 14,
-                              height: 14,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : const Icon(Icons.refresh_rounded, size: 16),
-                      label: Text(
-                        app.checkingUpdate
-                            ? 'Checking...'
-                            : 'Check for updates',
-                      ),
-                    ),
-                    if (app.availableUpdate == null &&
-                        !app.checkingUpdate &&
-                        app.updateError == null)
-                      Text(
-                        'You are up to date.',
-                        style: context.text.bodySmall?.copyWith(
-                          color: c.textMuted,
-                        ),
-                      ),
-                  ],
-                ),
-                const SizedBox(height: Space.sm),
-                Material(
-                  type: MaterialType.transparency,
-                  child: SwitchListTile.adaptive(
-                    contentPadding: EdgeInsets.zero,
-                    value: app.autoCheckUpdates,
-                    onChanged: app.setAutoCheckUpdates,
-                    title: Text(
-                      'Check automatically at launch',
-                      style: context.text.titleSmall,
-                    ),
-                    subtitle: Text(
-                      'The update check is the only time the app uses the '
-                      'internet: it asks GitHub for the newest public release and '
-                      'sends nothing about you or your scores.',
-                      style: context.text.bodySmall,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: Space.lg),
-            _Group(
-              title: 'Quality assurance',
-              children: <Widget>[
-                Text(
-                  'The app ships with synthetic learners that run through the real '
-                  'scoring and coaching engines. Useful for spotting a regression in '
-                  'scoring, eligibility or advice ordering.',
-                  style: context.text.bodySmall,
-                ),
-                const SizedBox(height: Space.md),
-                FilledButton.tonalIcon(
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (_) => const QaLabScreen(),
-                    ),
-                  ),
-                  icon: const Icon(Icons.science_outlined, size: 16),
-                  label: const Text('Open QA lab'),
-                ),
-              ],
-            ),
-            const SizedBox(height: Space.lg),
-            _Group(
-              title: 'About',
-              children: <Widget>[
-                Text(
-                  'ASVAB Coach is an independent study tool. It is not affiliated '
-                  'with the Department of Defense, the Army or the Army National '
-                  'Guard, and it does not produce an official score.',
-                  style: context.text.bodySmall,
-                ),
-                const SizedBox(height: Space.md),
-                Text(
-                  'Scoring model sources',
-                  style: context.text.titleSmall?.copyWith(
-                    color: c.textPrimary,
-                  ),
-                ),
-                const SizedBox(height: Space.xs),
-                Text(
-                  'Segall, D. O. (2004), Development and Evaluation of the 1997 ASVAB '
-                  'Score Scale, Defense Manpower Data Center: section 2.2 (standard '
-                  'scores), 2.4 and Table 2.5 (AFQT), 2.5.3 and Table 2.7 (Army '
-                  'composite weights), Table 2.2 (categories). ASVAB Technical '
-                  'Bulletin No. 4, Table C.1. Official ASVAB programme fact sheets '
-                  'for item counts and time limits.',
-                  style: context.text.bodySmall?.copyWith(height: 1.6),
-                ),
-                const SizedBox(height: Space.md),
-                Text(
-                  'Aptitude requirements',
-                  style: context.text.titleSmall?.copyWith(
-                    color: c.textPrimary,
-                  ),
-                ),
-                const SizedBox(height: Space.xs),
-                Text(
-                  'Transcribed from DA Pam 611-21, chapter 10, section C, and '
-                  'last verified against it on '
-                  '${MosRepository.rosterVerifiedAsOf}. That pamphlet is revised '
-                  'regularly, and the Army re-issues single sections between '
-                  'revisions, so confirm every requirement with a recruiter '
-                  'before you sign anything.',
-                  style: context.text.bodySmall?.copyWith(height: 1.6),
-                ),
-                const SizedBox(height: Space.md),
-                _kv(
-                  context,
-                  'MOS roster verified',
-                  MosRepository.rosterVerifiedAsOf,
-                ),
-                _kv(
-                  context,
-                  'Enlisted MOS carried',
-                  '${MosRepository.enlistedCount}',
-                ),
-                _kv(
-                  context,
-                  'No aptitude gate',
-                  '${MosRepository.noAptitudeRequirement.length}',
-                ),
-                _kv(
-                  context,
-                  'Not Guard jobs',
-                  '${MosRepository.notGuardFielded.length}',
-                ),
-                _kv(
-                  context,
-                  'Warrant occupations carried',
-                  '${MosRepository.warrantCount}',
-                ),
-                const SizedBox(height: Space.md),
-                Text(
-                  'The warrant officer occupations are transcribed from DA Pam '
-                  '611-21 chapter 8 section B and verified on '
-                  '${MosRepository.warrantVerifiedAsOf}. They are appointed '
-                  'from the ranks, so they are listed separately from the '
-                  'enlistment jobs and are never counted among them.',
-                  style: context.text.bodySmall?.copyWith(height: 1.6),
-                ),
-              ],
-            ),
-            const SizedBox(height: Space.xxl),
+            const SizedBox(width: Space.sm),
           ],
+        ),
+        body: PageBody(
+          maxWidth: 640,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _Group(
+                title: 'Appearance',
+                children: <Widget>[
+                  // A row, not a SwitchListTile. A two-line ListTile reserves the
+                  // Material height of 72 dp whatever its text needs, so on a card
+                  // that holds nothing else the label floated in a band of empty
+                  // space that no neighbouring card had - the other cards hold rows
+                  // tall enough to fill that minimum. The row below is the text at
+                  // its own height beside the switch, and the switch keeps its own
+                  // 48 dp tap target.
+                  //
+                  // It still has to own a Material: the group is a DecoratedBox with
+                  // a background colour, and ink paints on the nearest Material
+                  // ancestor, so without this the ripple is invisible and debug
+                  // builds assert. Tapping the label toggles the switch, which is
+                  // what the ListTile did.
+                  Material(
+                    type: MaterialType.transparency,
+                    child: InkWell(
+                      onTap: () => app.setDarkMode(!app.darkMode),
+                      borderRadius: BorderRadius.circular(Radii.sm),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Dark mode',
+                                  style: context.text.titleSmall,
+                                ),
+                                Text(
+                                  'Easier on the eyes for long evening sessions.',
+                                  style: context.text.bodySmall,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: Space.md),
+                          Switch.adaptive(
+                            value: app.darkMode,
+                            onChanged: app.setDarkMode,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: Space.lg),
+              _SpokenGuideSection(speech: speech),
+              const SizedBox(height: Space.lg),
+              const _TutorSection(),
+              const SizedBox(height: Space.lg),
+              _Group(
+                title: 'Understanding the app',
+                children: <Widget>[
+                  Material(
+                    type: MaterialType.transparency,
+                    child: ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: const Icon(Icons.menu_book_outlined),
+                      title: Text(
+                        'What the terms mean',
+                        style: context.text.titleSmall,
+                      ),
+                      subtitle: Text(
+                        'AFQT, VE, standard scores, line scores, MOS gates - every '
+                        'abbreviation in the app, in plain words.',
+                        style: context.text.bodySmall,
+                      ),
+                      trailing: const Icon(Icons.chevron_right_rounded),
+                      onTap: () => AppRoutes.glossary(context),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: Space.lg),
+              _Group(
+                title: 'Your goal',
+                children: <Widget>[
+                  if (goal == null)
+                    Text('No goal set.', style: context.text.bodySmall)
+                  else ...<Widget>[
+                    _kv(context, 'Name', goal.displayName),
+                    _kv(
+                      context,
+                      'Target date',
+                      goal.targetDate == null
+                          ? 'not set'
+                          : '${goal.targetDate!.difference(DateTime.now()).inDays} days out',
+                    ),
+                    _kv(context, 'Daily minutes', '${goal.dailyMinutes}'),
+                    _kv(
+                      context,
+                      'Officer track',
+                      goal.officerTrack ? 'Yes' : 'No',
+                    ),
+                    _kv(
+                      context,
+                      'Tracked jobs',
+                      goal.targetMosCodes.isEmpty
+                          ? 'None yet'
+                          : goal.targetMosCodes
+                                .map((c) => MosRepository.byCode(c)?.code ?? c)
+                                .join(', '),
+                    ),
+                  ],
+                ],
+              ),
+              const SizedBox(height: Space.lg),
+              _Group(
+                title: 'Your data',
+                children: <Widget>[
+                  Text(
+                    '${app.attempts.length} '
+                    '${app.attempts.length == 1 ? 'attempt' : 'attempts'} and '
+                    '${QuestionBank.total} practice questions. Everything is stored '
+                    'on this device only - '
+                    'no account, no server, and no attempt or score ever leaves it.',
+                    style: context.text.bodySmall,
+                  ),
+                  const SizedBox(height: Space.md),
+                  Wrap(
+                    spacing: Space.md,
+                    runSpacing: Space.sm,
+                    children: <Widget>[
+                      OutlinedButton.icon(
+                        onPressed: () async {
+                          final json = _export(app);
+                          await Clipboard.setData(ClipboardData(text: json));
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'History copied to the clipboard.',
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        icon: const Icon(Icons.copy_rounded, size: 15),
+                        // This is the one way to take the history off the
+                        // device, so it should not read like a developer
+                        // command sitting above the erase button. It copies a
+                        // pasteable copy; nothing is uploaded anywhere.
+                        label: const Text('Copy my history'),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: Space.md),
+                  TextButton.icon(
+                    onPressed: () => _confirmReset(context, app),
+                    style: TextButton.styleFrom(foregroundColor: c.danger),
+                    icon: const Icon(Icons.delete_outline_rounded, size: 16),
+                    label: const Text('Erase all data'),
+                  ),
+                ],
+              ),
+              const SizedBox(height: Space.lg),
+              _Group(
+                title: 'Updates',
+                children: <Widget>[
+                  _kv(
+                    context,
+                    'This build',
+                    app.installedVersion ?? 'not reported on this platform',
+                  ),
+                  if (app.availableUpdate != null) ...<Widget>[
+                    const SizedBox(height: Space.sm),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(Space.md),
+                      decoration: BoxDecoration(
+                        color: c.primarySoft,
+                        borderRadius: BorderRadius.circular(Radii.md),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Version ${app.availableUpdate!.version} is available',
+                            style: context.text.titleSmall?.copyWith(
+                              color: c.textPrimary,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'Downloading it and handing it to Android costs about '
+                            '${app.availableUpdate!.sizeLabel}. Android will ask you to '
+                            'allow installs from ASVAB Coach the first time, then '
+                            'confirm the update itself; Play Protect may offer to '
+                            'scan the app on the way through, which is the normal '
+                            'path for anything installed outside the Play Store. '
+                            'Your history is kept.',
+                            style: context.text.bodySmall,
+                          ),
+                          const SizedBox(height: Space.sm),
+                          FilledButton.tonalIcon(
+                            onPressed: () => app.installAvailableUpdate(),
+                            icon: const Icon(
+                              Icons.system_update_alt_rounded,
+                              size: 16,
+                            ),
+                            label: const Text('Download and install'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                  if (app.updateError != null) ...<Widget>[
+                    const SizedBox(height: Space.sm),
+                    Text(
+                      app.updateError!,
+                      style: context.text.bodySmall?.copyWith(color: c.warning),
+                    ),
+                  ],
+                  const SizedBox(height: Space.sm),
+                  Wrap(
+                    spacing: Space.md,
+                    runSpacing: Space.xs,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: <Widget>[
+                      FilledButton.tonalIcon(
+                        onPressed: app.checkingUpdate
+                            ? null
+                            : () => app.checkForUpdates(),
+                        icon: app.checkingUpdate
+                            ? const SizedBox(
+                                width: 14,
+                                height: 14,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Icon(Icons.refresh_rounded, size: 16),
+                        label: Text(
+                          app.checkingUpdate
+                              ? 'Checking...'
+                              : 'Check for updates',
+                        ),
+                      ),
+                      if (app.availableUpdate == null &&
+                          !app.checkingUpdate &&
+                          app.updateError == null)
+                        Text(
+                          'You are up to date.',
+                          style: context.text.bodySmall?.copyWith(
+                            color: c.textMuted,
+                          ),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: Space.sm),
+                  Material(
+                    type: MaterialType.transparency,
+                    child: SwitchListTile.adaptive(
+                      contentPadding: EdgeInsets.zero,
+                      value: app.autoCheckUpdates,
+                      onChanged: app.setAutoCheckUpdates,
+                      title: Text(
+                        'Check automatically at launch',
+                        style: context.text.titleSmall,
+                      ),
+                      subtitle: Text(
+                        'The update check is the only time the app uses the '
+                        'internet: it asks GitHub for the newest public release and '
+                        'sends nothing about you or your scores.',
+                        style: context.text.bodySmall,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: Space.lg),
+              _Group(
+                title: 'Quality assurance',
+                children: <Widget>[
+                  Text(
+                    'The app ships with synthetic learners that run through the real '
+                    'scoring and coaching engines. Useful for spotting a regression in '
+                    'scoring, eligibility or advice ordering.',
+                    style: context.text.bodySmall,
+                  ),
+                  const SizedBox(height: Space.md),
+                  FilledButton.tonalIcon(
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const QaLabScreen(),
+                      ),
+                    ),
+                    icon: const Icon(Icons.science_outlined, size: 16),
+                    label: const Text('Open QA lab'),
+                  ),
+                ],
+              ),
+              const SizedBox(height: Space.lg),
+              _Group(
+                title: 'About',
+                children: <Widget>[
+                  Text(
+                    'ASVAB Coach is an independent study tool. It is not affiliated '
+                    'with the Department of Defense, the Army or the Army National '
+                    'Guard, and it does not produce an official score.',
+                    style: context.text.bodySmall,
+                  ),
+                  const SizedBox(height: Space.md),
+                  Text(
+                    'Scoring model sources',
+                    style: context.text.titleSmall?.copyWith(
+                      color: c.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: Space.xs),
+                  Text(
+                    'Segall, D. O. (2004), Development and Evaluation of the 1997 ASVAB '
+                    'Score Scale, Defense Manpower Data Center: section 2.2 (standard '
+                    'scores), 2.4 and Table 2.5 (AFQT), 2.5.3 and Table 2.7 (Army '
+                    'composite weights), Table 2.2 (categories). ASVAB Technical '
+                    'Bulletin No. 4, Table C.1. Official ASVAB programme fact sheets '
+                    'for item counts and time limits.',
+                    style: context.text.bodySmall?.copyWith(height: 1.6),
+                  ),
+                  const SizedBox(height: Space.md),
+                  Text(
+                    'Aptitude requirements',
+                    style: context.text.titleSmall?.copyWith(
+                      color: c.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: Space.xs),
+                  Text(
+                    'Transcribed from DA Pam 611-21, chapter 10, section C, and '
+                    'last verified against it on '
+                    '${MosRepository.rosterVerifiedAsOf}. That pamphlet is revised '
+                    'regularly, and the Army re-issues single sections between '
+                    'revisions, so confirm every requirement with a recruiter '
+                    'before you sign anything.',
+                    style: context.text.bodySmall?.copyWith(height: 1.6),
+                  ),
+                  const SizedBox(height: Space.md),
+                  _kv(
+                    context,
+                    'MOS roster verified',
+                    MosRepository.rosterVerifiedAsOf,
+                  ),
+                  _kv(
+                    context,
+                    'Enlisted MOS carried',
+                    '${MosRepository.enlistedCount}',
+                  ),
+                  _kv(
+                    context,
+                    'No aptitude gate',
+                    '${MosRepository.noAptitudeRequirement.length}',
+                  ),
+                  _kv(
+                    context,
+                    'Not Guard jobs',
+                    '${MosRepository.notGuardFielded.length}',
+                  ),
+                  _kv(
+                    context,
+                    'Warrant occupations carried',
+                    '${MosRepository.warrantCount}',
+                  ),
+                  const SizedBox(height: Space.md),
+                  Text(
+                    'The warrant officer occupations are transcribed from DA Pam '
+                    '611-21 chapter 8 section B and verified on '
+                    '${MosRepository.warrantVerifiedAsOf}. They are appointed '
+                    'from the ranks, so they are listed separately from the '
+                    'enlistment jobs and are never counted among them.',
+                    style: context.text.bodySmall?.copyWith(height: 1.6),
+                  ),
+                ],
+              ),
+              const SizedBox(height: Space.xxl),
+            ],
+          ),
         ),
       ),
     );
@@ -505,6 +537,337 @@ class _Group extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: children,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// The spoken guide: the voice that reads a screen, how fast, and whether it
+/// starts by itself.
+///
+/// Everything on this card is one reading of one object. The row that names the
+/// language, the switch beside it and the script the speaker button reads are
+/// all [SpeechService], so a change here is a change everywhere.
+class _SpokenGuideSection extends StatelessWidget {
+  const _SpokenGuideSection({required this.speech});
+
+  final SpeechService speech;
+
+  static const _speeds = <({double rate, String label})>[
+    (rate: 0.8, label: 'Slower'),
+    (rate: 1.0, label: 'Normal'),
+    (rate: 1.2, label: 'Quicker'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final hasVoice = speech.voices.isNotEmpty;
+    final sameLanguage = speech.voicesFor(writtenLanguages.first);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const Eyebrow('Spoken study guide'),
+        const SizedBox(height: Space.sm),
+        AppCard(
+          padding: const EdgeInsets.all(Space.lg),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                'Every screen has a speaker beside its title. Tap it to hear that '
+                'screen explained in words, in the language you pick here.',
+                style: context.text.bodySmall,
+              ),
+              const SizedBox(height: Space.md),
+              Material(
+                type: MaterialType.transparency,
+                child: InkWell(
+                  onTap: hasVoice ? () => _pickVoice(context) : null,
+                  borderRadius: BorderRadius.circular(Radii.sm),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: Space.sm),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.record_voice_over_outlined,
+                          size: 19,
+                          color: hasVoice ? c.primary : c.textMuted,
+                        ),
+                        const SizedBox(width: Space.md),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'Language and voice',
+                                style: context.text.titleSmall,
+                              ),
+                              Text(
+                                hasVoice
+                                    ? speech.localeLabel
+                                    : 'no voice installed on this device',
+                                style: context.text.bodySmall?.copyWith(
+                                  color: hasVoice ? c.textPrimary : c.warning,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (hasVoice)
+                          const Icon(Icons.chevron_right_rounded, size: 20),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              if (sameLanguage.length > 1) ...<Widget>[
+                const SizedBox(height: Space.xs),
+                Wrap(
+                  spacing: Space.sm,
+                  runSpacing: Space.sm,
+                  children: <Widget>[
+                    for (final voice in sameLanguage)
+                      Pill(
+                        voice.name,
+                        dense: true,
+                        tone:
+                            voice.locale.toLowerCase() ==
+                                speech.locale.toLowerCase()
+                            ? PillTone.primary
+                            : PillTone.neutral,
+                      ),
+                  ],
+                ),
+              ],
+              const Divider(height: Space.xl),
+              // Speed. Three stops, because a person choosing how fast an
+              // explanation is read wants slower, as it is, or quicker - not a
+              // slider to fine-tune.
+              Text('Speaking speed', style: context.text.titleSmall),
+              const SizedBox(height: Space.sm),
+              Wrap(
+                spacing: Space.md,
+                runSpacing: Space.sm,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: <Widget>[
+                  for (final speed in _speeds)
+                    TextButton(
+                      onPressed: hasVoice
+                          ? () => speech.setRate(speed.rate)
+                          : null,
+                      child: Text(speed.label),
+                    ),
+                  OutlinedButton.icon(
+                    onPressed: hasVoice ? () => speech.preview() : null,
+                    icon: const Icon(Icons.play_arrow_rounded, size: 18),
+                    label: const Text('Hear it'),
+                  ),
+                ],
+              ),
+              const Divider(height: Space.xl),
+              Material(
+                type: MaterialType.transparency,
+                child: InkWell(
+                  onTap: hasVoice
+                      ? () => speech.setAutoRead(!speech.autoRead)
+                      : null,
+                  borderRadius: BorderRadius.circular(Radii.sm),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              'Read each screen as it opens',
+                              style: context.text.titleSmall,
+                            ),
+                            Text(
+                              'Switched off, the guide waits for the speaker '
+                              'button. Switched on, a screen starts talking as soon '
+                              'as it is the one in front, hands free.',
+                              style: context.text.bodySmall,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: Space.md),
+                      Switch.adaptive(
+                        value: speech.autoRead,
+                        onChanged: hasVoice ? speech.setAutoRead : null,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: Space.md),
+              Text(
+                'The voice belongs to the phone, not to the app: no download, no '
+                'connection needed, and nothing you listen to is recorded or sent '
+                'anywhere. The words are written into the app itself rather than '
+                'generated, so the guide can only say what the screen already says.',
+                style: context.text.bodySmall?.copyWith(color: c.textMuted),
+              ),
+              if (speech.lastError != null) ...<Widget>[
+                const SizedBox(height: Space.sm),
+                Text(
+                  speech.lastError!,
+                  style: context.text.bodySmall?.copyWith(color: c.warning),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _pickVoice(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (sheetContext) {
+        final written = writtenLanguages;
+        // Only voices for languages the guide is actually written in. A voice
+        // with nothing in its language to say is not a choice, it is a trap.
+        final offered = speech.voices
+            .where((v) => written.contains(v.language))
+            .toList(growable: false);
+        final others = speech.voices
+            .where((v) => !written.contains(v.language))
+            .toList(growable: false);
+        return SafeArea(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.sizeOf(sheetContext).height * 0.7,
+            ),
+            child: ListView(
+              shrinkWrap: true,
+              padding: const EdgeInsets.symmetric(vertical: Space.md),
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    Space.lg,
+                    Space.sm,
+                    Space.lg,
+                    Space.md,
+                  ),
+                  child: Text(
+                    'Which voice reads to you',
+                    style: context.text.titleMedium,
+                  ),
+                ),
+                for (final voice in offered)
+                  ListTile(
+                    title: Text(voice.name),
+                    subtitle: Text(
+                      '${voice.label}'
+                      '${voice.isNetwork ? ' - needs a connection' : ''}',
+                    ),
+                    trailing:
+                        voice.locale.toLowerCase() ==
+                            speech.locale.toLowerCase()
+                        ? const Icon(Icons.check_rounded)
+                        : null,
+                    onTap: () {
+                      speech.setLanguage(voice.locale);
+                      Navigator.of(sheetContext).pop();
+                    },
+                  ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    Space.lg,
+                    Space.md,
+                    Space.lg,
+                    Space.sm,
+                  ),
+                  child: Text(
+                    others.isEmpty
+                        ? 'The guide is written in English. Every language it is '
+                              'written in will appear here, so a voice and the '
+                              'words it reads always match.'
+                        : 'This device also has ${others.length} voices in other '
+                              'languages. They are not offered: reading English '
+                              'words in the sounds of another language produces '
+                              'noise, not an explanation.',
+                    style: context.text.bodySmall?.copyWith(
+                      color: context.colors.textMuted,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// What the tutor will and will not be.
+///
+/// It is here, switched off and named, rather than absent or shown as a button
+/// that does nothing. A candidate who was told an AI would help them study can
+/// see exactly where it stands and what it will cost them to have it.
+class _TutorSection extends StatelessWidget {
+  const _TutorSection();
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const Eyebrow('AI tutor'),
+        const SizedBox(height: Space.sm),
+        AppCard(
+          padding: const EdgeInsets.all(Space.lg),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.auto_awesome_outlined,
+                    size: 18,
+                    color: c.textMuted,
+                  ),
+                  const SizedBox(width: Space.sm),
+                  Expanded(
+                    child: Text(
+                      'Not in this build',
+                      style: context.text.titleSmall?.copyWith(
+                        color: c.textMuted,
+                      ),
+                    ),
+                  ),
+                  const Pill('Planned', tone: PillTone.neutral, dense: true),
+                ],
+              ),
+              const SizedBox(height: Space.sm),
+              Text(
+                'The plan is an on-device tutor that reads the screen, answers '
+                'questions about it out loud in the language you choose, and can '
+                'translate an explanation you did not follow. The model for that is '
+                'LFM3-Omni, from Liquid AI, which understands text, pictures and '
+                'speech and answers in speech: 2.17 billion parameters, sixteen '
+                'written languages and nineteen spoken ones. On a phone it is a '
+                'separate download of about 1.33 gigabytes, on Android only - the '
+                'web build cannot hold it.',
+                style: context.text.bodySmall?.copyWith(height: 1.5),
+              ),
+              const SizedBox(height: Space.md),
+              Text(
+                'Until then, the guide above is the honest half of it: written '
+                'words, the voice the phone already has, no download, nothing sent '
+                'anywhere, and nothing it can invent.',
+                style: context.text.bodySmall?.copyWith(color: c.textMuted),
+              ),
+            ],
           ),
         ),
       ],
