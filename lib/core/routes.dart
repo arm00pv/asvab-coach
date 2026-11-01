@@ -17,6 +17,15 @@ import '../state/app_state.dart';
 /// Thin routing helpers so screens can navigate without hard-coding page
 /// transitions in a dozen places.
 abstract final class AppRoutes {
+  /// Watches pushes and pops so a screen can speak again when the candidate
+  /// comes back to it.
+  ///
+  /// Without this, leaving Settings returns to a Home that has been sitting
+  /// silent the whole time: the tab never re-mounted, so nothing told it it was
+  /// in front again.
+  static final RouteObserver<PageRoute<void>> observer =
+      RouteObserver<PageRoute<void>>();
+
   static Future<T?> _push<T>(BuildContext context, Widget page) {
     return Navigator.of(context).push<T>(
       PageRouteBuilder<T>(

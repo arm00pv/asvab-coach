@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'core/routes.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/tokens.dart';
 import 'screens/onboarding_screen.dart';
@@ -22,6 +23,9 @@ class AsvabCoachApp extends StatelessWidget {
       themeMode: dark ? ThemeMode.dark : ThemeMode.light,
       theme: AppTheme.build(Brightness.light),
       darkTheme: AppTheme.build(Brightness.dark),
+      // The spoken guide listens for a pop so a screen speaks again when the
+      // candidate comes back to it.
+      navigatorObservers: <NavigatorObserver>[AppRoutes.observer],
       home: loading
           ? const _BootScreen()
           : (onboarded ? const RootShell() : const OnboardingScreen()),

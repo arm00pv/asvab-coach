@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 
+import 'package:asvab_guard_coach/core/routes.dart';
 import 'package:asvab_guard_coach/core/speech.dart';
 import 'package:asvab_guard_coach/core/theme/app_theme.dart';
 import 'package:asvab_guard_coach/engines/narration.dart';
@@ -36,8 +37,8 @@ class FakeBackend implements SpeechBackend {
   final bool available;
   final List<SpeechVoice> _voices;
 
-  final List<({String text, String locale, double rate})> spoken =
-      <({String text, String locale, double rate})>[];
+  final List<({String text, String locale, double rate, String voice})> spoken =
+      <({String text, String locale, double rate, String voice})>[];
   int stops = 0;
 
   void Function(SpeechEvent event)? _handler;
@@ -59,8 +60,9 @@ class FakeBackend implements SpeechBackend {
     String text, {
     required String locale,
     required double rate,
+    required String voice,
   }) async {
-    spoken.add((text: text, locale: locale, rate: rate));
+    spoken.add((text: text, locale: locale, rate: rate, voice: voice));
   }
 
   @override
@@ -117,6 +119,18 @@ void main() {
       await speech.stop();
       expect(backend.stops, 1);
       expect(speech.speaking, isFalse);
+    });
+
+    test('the voice the candidate picked is named to the engine', () async {
+      final backend = FakeBackend();
+      final speech = SpeechService(backend: backend, persist: false);
+      await speech.initialise();
+      await speech.setLanguage('en-IN');
+      await speech.speak(_sample);
+      expect(backend.spoken.single.locale, 'en-IN');
+      // A device with a dozen English voices needs to be told which one: the
+      // language alone leaves the engine choosing.
+      expect(backend.spoken.single.voice, 'English India');
     });
 
     test('a speed change reaches the engine on the next utterance', () async {
@@ -272,6 +286,49 @@ void main() {
       await tester.pumpWidget(host(speech));
       await tester.pumpAndSettle();
       expect(backend.spoken, isEmpty);
+    });
+
+    testWidgets('speaks again when the candidate comes back to it', (
+      tester,
+    ) async {
+      final backend = FakeBackend();
+      final speech = SpeechService(backend: backend, persist: false);
+      await speech.initialise();
+      await speech.setAutoRead(true);
+
+      final navigator = GlobalKey<NavigatorState>();
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.build(Brightness.light),
+          navigatorKey: navigator,
+          navigatorObservers: <NavigatorObserver>[AppRoutes.observer],
+          home: ChangeNotifierProvider<SpeechService>.value(
+            value: speech,
+            child: Scaffold(
+              appBar: AppBar(
+                title: const Text('Screen'),
+                actions: <Widget>[ListenButton(doc: _sample)],
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(backend.spoken, hasLength(1), reason: 'reads itself on arrival');
+
+      navigator.currentState!.push(
+        MaterialPageRoute<void>(
+          builder: (_) => const Scaffold(body: Text('somewhere else')),
+        ),
+      );
+      await tester.pumpAndSettle();
+      navigator.currentState!.pop();
+      await tester.pumpAndSettle();
+      expect(
+        backend.spoken,
+        hasLength(2),
+        reason: 'a tab never re-mounts, so coming back has to speak again',
+      );
     });
 
     testWidgets('leaving a screen stops the voice explaining it', (

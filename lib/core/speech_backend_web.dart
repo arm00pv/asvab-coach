@@ -53,7 +53,10 @@ class BrowserSpeechBackend implements SpeechBackend {
     String text, {
     required String locale,
     required double rate,
+    required String voice,
   }) async {
+    // The browser addresses voices by name; `voice` carries the same name the
+    // engine reported, so a chosen voice is honoured here too.
     final synth = _synthesis;
     final ctor = globalContext['SpeechSynthesisUtterance'];
     if (synth == null || ctor == null || !ctor.isA<JSFunction>()) {
@@ -67,7 +70,7 @@ class BrowserSpeechBackend implements SpeechBackend {
     utterance.setProperty('rate'.toJS, rate.toJS);
     // Choosing the voice by name is the only way the browser lets a page pick
     // one; lang alone is a request the engine may ignore.
-    final match = _voiceMatching(locale);
+    final match = _voiceMatching(locale, preferredName: voice);
     if (match != null) utterance.setProperty('voice'.toJS, match);
     utterance.setProperty(
       'onend'.toJS,
@@ -80,7 +83,7 @@ class BrowserSpeechBackend implements SpeechBackend {
     synth.callMethod<JSAny?>('speak'.toJS, utterance);
   }
 
-  JSObject? _voiceMatching(String locale) {
+  JSObject? _voiceMatching(String locale, {String preferredName = ''}) {
     final synth = _synthesis;
     if (synth == null) return null;
     final wanted = locale.toLowerCase().replaceAll('_', '-');
@@ -94,6 +97,8 @@ class BrowserSpeechBackend implements SpeechBackend {
         final tag = (entry.getProperty<JSString?>('lang'.toJS)?.toDart ?? '')
             .toLowerCase()
             .replaceAll('_', '-');
+        final name = entry.getProperty<JSString?>('name'.toJS)?.toDart ?? '';
+        if (preferredName.isNotEmpty && name == preferredName) return entry;
         if (tag == wanted) return entry;
         if (languageMatch == null &&
             tag.split('-').first == wanted.split('-').first) {

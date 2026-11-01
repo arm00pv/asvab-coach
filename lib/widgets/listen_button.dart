@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../core/routes.dart';
 import '../core/speech.dart';
 import '../core/theme/tokens.dart';
 import '../engines/narration.dart';
@@ -48,10 +49,14 @@ class ListenButton extends StatefulWidget {
   State<ListenButton> createState() => _ListenButtonState();
 }
 
-class _ListenButtonState extends State<ListenButton> {
+class _ListenButtonState extends State<ListenButton> with RouteAware {
   /// Held so [dispose] can reach the guide: a State may not read the tree once
   /// it is being torn down.
   SpeechService? _speech;
+
+  /// The route this button is watching, so it can unsubscribe from exactly the
+  /// one it subscribed to.
+  PageRoute<void>? _route;
 
   @override
   void initState() {
@@ -63,10 +68,23 @@ class _ListenButtonState extends State<ListenButton> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _speech = speechOf(context);
+    final route = ModalRoute.of(context);
+    if (route is PageRoute<void> && route != _route) {
+      if (_route != null) AppRoutes.observer.unsubscribe(this);
+      _route = route;
+      AppRoutes.observer.subscribe(this, route);
+    }
   }
+
+  /// The candidate came back to this screen from something pushed on top of it.
+  /// A tab never re-mounts, so without this Home stays silent after a visit to
+  /// Settings even with auto-read switched on.
+  @override
+  void didPopNext() => _maybeReadAloud();
 
   @override
   void dispose() {
+    if (_route != null) AppRoutes.observer.unsubscribe(this);
     final speech = _speech;
     // Leaving a screen must stop its script. Without this, walking out of a
     // lesson while it is being read leaves the voice explaining a screen the

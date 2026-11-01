@@ -170,6 +170,7 @@ class MainActivity : FlutterActivity() {
             "speak" -> {
                 val text = call.argument<String>("text").orEmpty()
                 val tag = call.argument<String>("locale").orEmpty()
+                val wanted = call.argument<String>("voice").orEmpty()
                 val rate = (call.argument<Number>("rate") ?: 1.0).toFloat()
                 if (text.isBlank()) {
                     result.success(null)
@@ -208,6 +209,15 @@ class MainActivity : FlutterActivity() {
                             null,
                         )
                         return@withEngine
+                    }
+                    // The exact voice the candidate picked, applied after the
+                    // language so it is not overwritten by it. A voice that has
+                    // been uninstalled since is not a reason to say nothing:
+                    // the language chosen above still speaks.
+                    if (wanted.isNotBlank()) {
+                        engine.voices
+                            .firstOrNull { it.name == wanted }
+                            ?.let { engine.setVoice(it) }
                     }
                     engine.setSpeechRate(rate.coerceIn(0.5f, 2.0f))
                     utteranceCount += 1

@@ -220,10 +220,15 @@ abstract class SpeechBackend {
 
   /// Speaks [text] with a voice for [locale], replacing anything already
   /// playing.
+  ///
+  /// [voice] is the engine's own name for the voice the candidate picked, or
+  /// empty to let the engine choose for the language. An engine that cannot
+  /// address a voice by name ignores it and honours the language.
   Future<void> speak(
     String text, {
     required String locale,
     required double rate,
+    required String voice,
   });
 
   Future<void> stop();
@@ -253,6 +258,7 @@ class NoSpeechBackend implements SpeechBackend {
     String text, {
     required String locale,
     required double rate,
+    required String voice,
   }) async {}
 
   @override
@@ -289,6 +295,11 @@ class SpeechService extends ChangeNotifier {
   bool _speaking = false;
   String? _speakingScreen;
   String _locale = '';
+
+  /// The engine's name for the chosen voice, or empty to let the engine pick
+  /// for the language. Held beside the locale so a device with twelve English
+  /// voices can be told which one the candidate actually picked.
+  String _voiceName = '';
   double _rate = 1.0;
   bool _autoRead = false;
   String? _lastError;
@@ -408,6 +419,7 @@ class SpeechService extends ChangeNotifier {
       });
     if (_voices.isEmpty) {
       _locale = '';
+      _voiceName = '';
       return;
     }
     // The saved choice wins when it still exists, because a device that gained
@@ -467,7 +479,12 @@ class SpeechService extends ChangeNotifier {
     _speakingScreen = screen;
     notifyListeners();
     try {
-      await _backend.speak(text, locale: _locale, rate: _rate);
+      await _backend.speak(
+        text,
+        locale: _locale,
+        rate: _rate,
+        voice: _voiceName,
+      );
     } catch (error) {
       _speaking = false;
       _speakingScreen = null;
@@ -514,6 +531,7 @@ class SpeechService extends ChangeNotifier {
     if (match == null) return;
     final speakingNow = _speaking;
     _locale = match.locale;
+    _voiceName = match.name;
     notifyListeners();
     await _save();
     // Changing language mid-sentence leaves the old voice reading the old

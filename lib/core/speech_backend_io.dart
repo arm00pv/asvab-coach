@@ -57,12 +57,16 @@ class ChannelSpeechBackend implements SpeechBackend {
     String text, {
     required String locale,
     required double rate,
+    required String voice,
   }) async {
     if (!isSupported) throw StateError('No speech engine on this platform.');
     await _channel.invokeMethod<void>('speak', <String, Object>{
       'text': text,
       'locale': locale,
       'rate': rate,
+      // Google's engine installs dozens of English voices; naming the one the
+      // candidate picked is the difference between a setting and a gesture.
+      'voice': voice,
     });
   }
 

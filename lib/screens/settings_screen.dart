@@ -626,21 +626,15 @@ class _SpokenGuideSection extends StatelessWidget {
               ),
               if (sameLanguage.length > 1) ...<Widget>[
                 const SizedBox(height: Space.xs),
-                Wrap(
-                  spacing: Space.sm,
-                  runSpacing: Space.sm,
-                  children: <Widget>[
-                    for (final voice in sameLanguage)
-                      Pill(
-                        voice.name,
-                        dense: true,
-                        tone:
-                            voice.locale.toLowerCase() ==
-                                speech.locale.toLowerCase()
-                            ? PillTone.primary
-                            : PillTone.neutral,
-                      ),
-                  ],
+                // Counted, not listed. Google's engine installs dozens of
+                // English voices called things like "en-au-x-auc-local";
+                // printing them turned this card into a wall of identifiers and
+                // pushed the switch that matters off the screen. The sheet is
+                // where a voice is chosen, one row per language and region.
+                Text(
+                  '${sameLanguage.length} English voices are installed on this '
+                  'device. Tap the row above to choose which one reads to you.',
+                  style: context.text.bodySmall?.copyWith(color: c.textMuted),
                 ),
               ],
               const Divider(height: Space.xl),
@@ -740,6 +734,14 @@ class _SpokenGuideSection extends StatelessWidget {
         final others = speech.voices
             .where((v) => !written.contains(v.language))
             .toList(growable: false);
+        // One row per language and region, not per engine voice: twelve rows
+        // that all read "English" with a different machine name are not a choice
+        // a person can make, and "English (Australia)" is.
+        final byRegion = <String, List<SpeechVoice>>{};
+        for (final voice in offered) {
+          byRegion.putIfAbsent(voice.label, () => <SpeechVoice>[]).add(voice);
+        }
+        final regions = byRegion.keys.toList()..sort();
         return SafeArea(
           child: ConstrainedBox(
             constraints: BoxConstraints(
@@ -761,21 +763,31 @@ class _SpokenGuideSection extends StatelessWidget {
                     style: context.text.titleMedium,
                   ),
                 ),
-                for (final voice in offered)
-                  ListTile(
-                    title: Text(voice.name),
-                    subtitle: Text(
-                      '${voice.label}'
-                      '${voice.isNetwork ? ' - needs a connection' : ''}',
-                    ),
-                    trailing:
-                        voice.locale.toLowerCase() ==
-                            speech.locale.toLowerCase()
-                        ? const Icon(Icons.check_rounded)
-                        : null,
-                    onTap: () {
-                      speech.setLanguage(voice.locale);
-                      Navigator.of(sheetContext).pop();
+                for (final region in regions)
+                  Builder(
+                    builder: (tileContext) {
+                      final group = byRegion[region]!;
+                      final local = group.where((v) => v.isLocal).toList();
+                      final chosen = group.any(
+                        (v) =>
+                            v.locale.toLowerCase() ==
+                            speech.locale.toLowerCase(),
+                      );
+                      return ListTile(
+                        title: Text(region),
+                        subtitle: Text(
+                          local.isEmpty
+                              ? 'needs a connection'
+                              : 'on this device',
+                        ),
+                        trailing: chosen
+                            ? const Icon(Icons.check_rounded)
+                            : null,
+                        onTap: () {
+                          speech.setLanguage(group.first.locale);
+                          Navigator.of(sheetContext).pop();
+                        },
+                      );
                     },
                   ),
                 Padding(

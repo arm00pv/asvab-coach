@@ -282,3 +282,32 @@ Two test defects were mine and are fixed: the settings tests tapped a button tha
 had moved below the fold (now `ensureVisible`), and the new widget tests pumped a
 bare `MaterialApp` with no theme extension, so the colour lookup every screen
 makes threw.
+
+## The spoken guide, on the phone (1 November 2026)
+
+Rendered and heard on a Pixel 7 Pro, not just asserted in a test:
+
+* the speaker speaks. A player appears at 24 kHz through Google Text-To-Speech
+  as the button is tapped (`dumpsys audio`, uid 10217, CONTENT_TYPE_SPEECH),
+  and the button returns to the speaker glyph when the engine reports it done -
+  which is the finished event coming back up the channel.
+* the settings card is clean, the voice list is five rows - Australia, India,
+  Nigeria, United Kingdom, United States - and the choice persists across an
+  install.
+* auto-read starts the guide on arrival and, after returning from Settings,
+  starts it again.
+
+Two defects were only visible on hardware, and both were mine:
+
+* **fifty-two pills.** The card rendered every installed engine voice as a
+  pill, each named `en-au-x-auc-local`. It buried the auto-read switch under a
+  wall of identifiers. It now counts them and the sheet offers one row per
+  language and region; the engine is told which voice by name, so the pick acts.
+* **silence on return.** A tab stays mounted, so coming back from a pushed
+  screen never re-ran the auto-read and Home sat quiet with the feature on.
+  `AppRoutes.observer` now feeds `RouteAware.didPopNext` to the speaker button,
+  with a test that pushes, pops and counts the utterances.
+
+The number that settled the language question: this phone has **52 English
+voices and 422 voices in other languages**. Offering all 474 as if they were
+languages would have been a lie the app could not have detected on its own.
