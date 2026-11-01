@@ -124,6 +124,40 @@ So: **numbers and procedure translate; vocabulary and idiom do not.** A study ap
 whose whole point is that every explanation has been checked cannot ship the
 second kind.
 
+## The third run: ask for the answer, not for a letter
+
+The first two runs forced a format - "letter and option text, then the working".
+That format is partly what broke it. A third pass asked the model only to work
+the item out and finish with `CHOICE: <the option text>`, and left the mapping to
+the app, which already has the option list:
+
+| Prompt | Recovered the keyed option |
+| --- | --- |
+| LetterFirst ("A) ..." then the working) | 6 / 16 |
+| ReasonFirst ("step by step, then ANSWER: B") | 7 / 16 |
+| **ValueOnly** ("work it out, then CHOICE: <text>") | **12 / 16** |
+
+The same item that opened "A) 12" and finished "the correct answer is 16" now
+reads:
+
+> Let's simplify step by step.
+>
+> First, evaluate the expression inside the parentheses: 5 - 3 = 2.
+>
+> Next, square that result: 2^2 = 4.
+>
+> Now multiply by 2: 2 x 4 = 8.
+>
+> Finally, add 8 to the original number: 8 + 8 = 16.
+>
+> **CHOICE: C**
+
+Right answer, right option, three quarters of the time, at 10.8 s an answer. So
+the honest summary is not "the model cannot do the questions" - it is **"the
+model can do the questions, and asking it for an option letter destroys that
+ability."** Four still failed: one arithmetic item, two shop items (engine
+stroke, gear ratio) and one that ran out of tokens without answering.
+
 ## What this means for the app
 
 1. **The app owns the answer; the model never does.** The bank already knows the
@@ -169,8 +203,13 @@ copy; nothing above needs the network once it is there.
 ## Decision record
 
 **1 November 2026** - LFM3-Omni-2B Q4 is fast enough to feel like a conversation
-on a laptop and explains a method well, including in Spanish and Italian. It is
-not reliable enough to name an answer, and its vocabulary translation is not
-accurate enough to ship. It stays a documented, reserved slot behind the existing
-written guide; when it ships it will re-explain from the app's key, never decide
-it.
+on a laptop and explains a method well, including in Spanish and Italian. Asked
+to reason and then state what it chose, it agrees with the app's key 12 times in
+16; asked to open with an option letter it collapses to 6. Its vocabulary
+translation is not accurate enough to ship, though its translation of numerical
+work is.
+
+It stays a documented, reserved slot behind the existing written guide. When it
+ships, the prompt must ask for the working and a choice in the model's own
+words, the app must do the mapping onto its own options, and nothing it says may
+reach a candidate unchecked against the key.
