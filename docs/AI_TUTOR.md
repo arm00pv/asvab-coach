@@ -126,7 +126,13 @@ empty switch.
 
 ## Decision record
 
-* **7 Nov 2026** - shipped the spoken guide (authored scripts, device voices,
-  eleven screens, auto-read on screen activation). Deferred LFM3-Omni to a
-  separate download because 1.33 GB cannot ship inside an APK and cannot run in
-  the browser build.
+* **1 Nov 2026** - evaluated the model itself: 16 real bank items, three
+  languages, marked against the app's own key. It solved the questions and
+  explained the method well, got the option letter wrong in more than half, and
+  translated numbers faithfully while inventing Spanish vocabulary. Record, with
+  quotes and timings: [AI_EVAL.md](AI_EVAL.md). Consequence: the tutor will
+  re-explain from the app's key and never name the answer.
+* **7 Nov 2026 (earlier decision)** - shipped the spoken guide (authored scripts,
+  device voices, eleven screens, auto-read on screen activation). Deferred
+  LFM3-Omni to a separate download because 1.33 GB cannot ship inside an APK and
+  cannot run in the browser build.
