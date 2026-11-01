@@ -68,6 +68,14 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      # The tutor links against llama.cpp libraries built with NDK r28, and the
+      # build pins that version so the linker and the packaged .so agree. Ask
+      # for it explicitly rather than trusting the image to have it.
+      - name: Install the NDK the tutor links against
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;28.2.13676358" > /dev/null
+
       # The release keystore is not in the repository and must not be: a
       # committed signing key lets anyone publish an update to this app. Without
       # android/key.properties the build falls back to the debug key, which is

@@ -42,6 +42,14 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      # The app's CMake target is pinned to the NDK the packaged llama.cpp
+      # libraries were built with, even on the emulator, where the bridge
+      # compiles to a stub.
+      - name: Install the pinned NDK
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;28.2.13676358" > /dev/null
+
       # The plain AOSP image, not Google APIs: this test needs no Play services,
       # and the leaner image boots sooner and has fewer background processes
       # fighting the emulator for the runner's CPU.
