@@ -474,23 +474,64 @@ class SpeechService extends ChangeNotifier {
       notifyListeners();
       return;
     }
+    await _say(text, locale: _locale, voice: _voiceName, screen: screen);
+  }
+
+  /// Reads [text] in [language] - "es", "it", "en" - rather than in the
+  /// language the guide is set to.
+  ///
+  /// The tutor answers in the language the candidate picked in its sheet, and
+  /// an English voice reading Spanish is not a study aid, it is noise. Returns
+  /// null once it has started speaking, or a sentence to show instead when this
+  /// phone has no voice for that language: it is the candidate's phone, and an
+  /// installed voice is something they can fix.
+  Future<String?> speakIn(
+    String text,
+    String language, {
+    String screen = '',
+  }) async {
+    if (text.trim().isEmpty) return null;
+    if (!_initialised) await initialise();
+    final wanted = language.toLowerCase();
+    final matching = voicesFor(wanted);
+    if (matching.isEmpty) {
+      final name = SpeechLanguages.nameOf(wanted);
+      return _voices.isEmpty
+          ? 'This device has no voice installed for the app to use.'
+          : 'This phone has no $name voice installed, so it cannot read that '
+                'answer aloud. The text above is still the explanation.';
+    }
+    final voice = voiceFor(matching.first.locale) ?? matching.first;
+    final started = await _say(
+      text,
+      locale: voice.locale,
+      voice: voice.name,
+      screen: screen,
+    );
+    return started ? null : 'The voice stopped before it started.';
+  }
+
+  /// Hands one utterance to the engine. Returns false when it could not start.
+  Future<bool> _say(
+    String text, {
+    required String locale,
+    required String voice,
+    required String screen,
+  }) async {
     _lastError = null;
     _speaking = true;
     _speakingScreen = screen;
     notifyListeners();
     try {
-      await _backend.speak(
-        text,
-        locale: _locale,
-        rate: _rate,
-        voice: _voiceName,
-      );
+      await _backend.speak(text, locale: locale, rate: _rate, voice: voice);
+      return true;
     } catch (error) {
       _speaking = false;
       _speakingScreen = null;
       _lastError = 'The voice stopped before it started.';
       debugPrint('ASVAB coach: speech failed: $error');
       notifyListeners();
+      return false;
     }
   }
 

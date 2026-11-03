@@ -9,14 +9,18 @@ import '../data/models/question.dart';
 /// translation of *numerical* work sound (docs/AI_EVAL.md) - which is most of
 /// what an ASVAB explanation is.
 enum TutorLanguage {
-  english('English', 'English'),
-  spanish('Espanol', 'Spanish'),
-  italian('Italiano', 'Italian');
+  english('English', 'English', 'en'),
+  spanish('Espanol', 'Spanish', 'es'),
+  italian('Italiano', 'Italian', 'it');
 
-  const TutorLanguage(this.label, this.englishName);
+  const TutorLanguage(this.label, this.englishName, this.code);
 
   final String label;
   final String englishName;
+
+  /// The language subtag the phone's voices are filed under, so the answer can
+  /// be read out in the language it was written in.
+  final String code;
 }
 
 /// How the app talks to the on-device tutor, kept pure so it can be tested

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../core/speech.dart';
 import '../core/theme/tokens.dart';
 import '../core/tutor.dart';
 import '../data/models/question.dart';
 import '../engines/tutor_prompt.dart';
+import 'listen_button.dart' show speechOf;
 import 'primitives.dart';
 
 /// The tutor service, or a stand-in that reports itself unavailable.
@@ -61,12 +63,63 @@ class _TutorSheet extends StatefulWidget {
 }
 
 class _TutorSheetState extends State<_TutorSheet> {
+  /// The screen id the sheet speaks under, so leaving the sheet can stop it and
+  /// nothing else.
+  static const _speechScreen = 'tutor';
+
   TutorLanguage _language = TutorLanguage.english;
+
+  /// Held for [dispose]: a State may not read the tree once it is being torn
+  /// down, and a tutor still talking after the sheet closes is a bug.
+  SpeechService? _speech;
+
+  /// The answer already read out, so handing the same text to the voice twice
+  /// does not happen on a rebuild.
+  String? _spoken;
+
+  /// Why the answer could not be read aloud, when this phone has no voice for
+  /// the language the tutor answered in.
+  String? _readProblem;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => _run());
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _speech = speechOf(context);
+  }
+
+  @override
+  void dispose() {
+    final speech = _speech;
+    if (speech != null &&
+        speech.speaking &&
+        speech.speakingScreen == _speechScreen) {
+      speech.stop();
+    }
+    super.dispose();
+  }
+
+  /// Reads the answer aloud, or stops it, in the language it was written in.
+  Future<void> _toggleRead() async {
+    final speech = _speech ?? speechOf(context);
+    final body = TutorPrompt.body(context.read<TutorService>().answer);
+    if (body.isEmpty) return;
+    if (speech.speaking && speech.speakingScreen == _speechScreen) {
+      await speech.stop();
+      return;
+    }
+    final problem = await speech.speakIn(
+      body,
+      _language.code,
+      screen: _speechScreen,
+    );
+    if (!mounted) return;
+    setState(() => _readProblem = problem);
   }
 
   Future<void> _run() async {
@@ -86,8 +139,10 @@ class _TutorSheetState extends State<_TutorSheet> {
   @override
   Widget build(BuildContext context) {
     final tutor = context.watch<TutorService>();
+    final speech = speechOf(context);
     final c = context.colors;
     final answer = tutor.answer;
+    _autoReadWhenFinished(tutor, speech);
     final options = <String>[
       for (final index in widget.order)
         if (index >= 0 && index < widget.question.choices.length)
@@ -123,6 +178,26 @@ class _TutorSheetState extends State<_TutorSheet> {
                       style: context.text.titleSmall,
                     ),
                   ),
+                  if (speech.supported)
+                    ListenableBuilder(
+                      listenable: speech,
+                      builder: (BuildContext context, Widget? child) {
+                        final reading =
+                            speech.speaking &&
+                            speech.speakingScreen == _speechScreen;
+                        return IconButton(
+                          tooltip: reading ? 'Stop reading' : 'Read it aloud',
+                          visualDensity: VisualDensity.compact,
+                          iconSize: 20,
+                          onPressed: tutor.generating ? null : _toggleRead,
+                          icon: Icon(
+                            reading
+                                ? Icons.stop_circle_outlined
+                                : Icons.volume_up_outlined,
+                          ),
+                        );
+                      },
+                    ),
                   if (tutor.generating)
                     TextButton(
                       onPressed: () => tutor.cancelGenerate(),
@@ -147,6 +222,10 @@ class _TutorSheetState extends State<_TutorSheet> {
                           color: c.textPrimary,
                         ),
                       ),
+                      if (_readProblem != null) ...<Widget>[
+                        const SizedBox(height: Space.md),
+                        Callout(text: _readProblem!),
+                      ],
                       if (tutor.error != null) ...<Widget>[
                         const SizedBox(height: Space.md),
                         Callout(text: tutor.error!),
@@ -206,6 +285,29 @@ class _TutorSheetState extends State<_TutorSheet> {
         ),
       ),
     );
+  }
+
+  /// Speaks the finished answer by itself when the guide is set to read screens
+  /// as they open.
+  ///
+  /// The tutor is for someone whose eyes are on something else - a steering
+  /// wheel, a walking route, a workout - and the speaker they already turned on
+  /// for the studied screens is the one they expect here too.
+  void _autoReadWhenFinished(TutorService tutor, SpeechService speech) {
+    if (!speech.autoRead || !speech.supported || tutor.generating) return;
+    final body = TutorPrompt.body(tutor.answer);
+    if (body.isEmpty || body == _spoken) return;
+    _spoken = body;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      final problem = await speech.speakIn(
+        body,
+        _language.code,
+        screen: _speechScreen,
+      );
+      if (!mounted) return;
+      setState(() => _readProblem = problem);
+    });
   }
 
   String _keyedText(List<String> options, int slot) =>

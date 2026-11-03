@@ -245,3 +245,28 @@ Three changes, because one would not be enough:
 R8's own `mapping.txt` now shows `void onToken(java.lang.String) -> onToken` under
 a class that keeps its name, which is the evidence that the fix is in the build
 and not just in the source.
+
+## Saying it out loud (3 November 2026)
+
+The tutor was writing in Spanish and reading in English, which is the one thing
+a candidate studying in another language cannot use.
+
+The sheet now carries a speaker beside its title. It reads the answer with the
+phone's own voice for the language the answer was written in - `es-ES` for a
+Spanish answer, `it-IT` for an Italian one - at whatever speed the spoken guide
+is set to, and it stops when the sheet closes. If the phone has no voice for
+that language the sheet says so in a line rather than reading Spanish with an
+English voice: a voice is something the candidate can install, and being told
+that is more useful than hearing the answer butchered.
+
+When the guide is set to read screens as they open, a finished answer is read
+out by itself. That is the point of the feature: the tutor is used with eyes
+busy - driving practice, a walk, a workout - and the speaker the candidate has
+already turned on for the studied screens is the one they expect here.
+
+Under it: `SpeechService.speakIn()`, which is `speakText()` with the language
+argument the guide does not normally have, and `tests/speech_language_test.dart`
+- a fake engine proves the Spanish voice is used for a Spanish answer, that a
+missing voice is reported instead of faked, and that the candidate's reading
+speed carries over. The text the button reads is the same `TutorPrompt.body()`
+the sheet draws, so what is heard and what is on the screen cannot differ.
