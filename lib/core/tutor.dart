@@ -82,6 +82,8 @@ class TutorService extends ChangeNotifier {
   String _answer = '';
   String? _error;
   int? _lastMillis;
+  int? _lastTokens;
+  int? _lastLoadMillis;
   int _received = 0;
   int _total = 0;
   StreamSubscription<dynamic>? _subscription;
@@ -115,6 +117,22 @@ class TutorService extends ChangeNotifier {
 
   /// How long the last answer took, for the sheet's small print.
   int? get lastMillis => _lastMillis;
+
+  /// How many tokens the engine sampled for the last answer.
+  int? get lastTokens => _lastTokens;
+
+  /// How long the model took to read into memory, in milliseconds.
+  int? get lastLoadMillis => _lastLoadMillis;
+
+  /// Sampling speed of the last answer, or null before there is one.
+  double? get tokensPerSecond {
+    final millis = _lastMillis;
+    final tokens = _lastTokens;
+    if (millis == null || tokens == null || millis <= 0 || tokens <= 0) {
+      return null;
+    }
+    return tokens * 1000 / millis;
+  }
 
   String? get error => _error;
 
@@ -237,6 +255,7 @@ class TutorService extends ChangeNotifier {
     _error = null;
     _generating = true;
     _lastMillis = null;
+    _lastTokens = null;
     _touch();
     notifyListeners();
     final completer = Completer<String>();
@@ -289,6 +308,7 @@ class TutorService extends ChangeNotifier {
         notifyListeners();
       case 'loaded':
         _loading = false;
+        _lastLoadMillis = (raw['millis'] as num?)?.toInt();
         _status = TutorStatus(
           supported: _status.supported,
           loaded: true,
@@ -307,6 +327,7 @@ class TutorService extends ChangeNotifier {
       case 'done':
         _generating = false;
         _lastMillis = (raw['millis'] as num?)?.toInt();
+        _lastTokens = (raw['tokens'] as num?)?.toInt();
         final text = (raw['text'] as String?) ?? _answer;
         _answer = text;
         notifyListeners();

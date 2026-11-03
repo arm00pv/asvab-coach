@@ -271,7 +271,12 @@ class _TutorSheetState extends State<_TutorSheet> {
   String _footnote(TutorService tutor) {
     final millis = tutor.lastMillis;
     final seconds = millis == null ? null : (millis / 1000).toStringAsFixed(1);
-    final took = seconds == null ? '' : 'Took $seconds s. ';
+    final speed = tutor.tokensPerSecond;
+    // The measured speed, not an estimate: a candidate deciding whether to tap
+    // this again deserves the number from their own phone.
+    final took = seconds == null
+        ? ''
+        : 'Took $seconds s${speed == null ? '' : ' at ${speed.toStringAsFixed(1)} tokens/s'}. ';
     final language = _language == TutorLanguage.english
         ? ''
         : 'Answering in ${_language.englishName}, from its own working; the '

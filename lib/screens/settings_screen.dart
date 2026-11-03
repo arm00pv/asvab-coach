@@ -963,6 +963,21 @@ class _TutorSection extends StatelessWidget {
         runSpacing: Space.sm,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: <Widget>[
+          // The number that decides whether the tutor feels usable is measured
+          // here, on this phone, rather than quoted from a laptop.
+          FilledButton.tonalIcon(
+            onPressed: tutor.generating
+                ? null
+                : () => _benchmark(context, tutor),
+            icon: tutor.generating
+                ? const SizedBox(
+                    width: 14,
+                    height: 14,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.speed_rounded, size: 16),
+            label: Text(tutor.generating ? 'Measuring...' : 'Benchmark it'),
+          ),
           OutlinedButton.icon(
             onPressed: () => _confirmRemove(context, tutor),
             icon: const Icon(Icons.delete_outline_rounded, size: 16),
@@ -993,6 +1008,32 @@ class _TutorSection extends StatelessWidget {
         ],
       ],
     );
+  }
+
+  /// One fixed question, timed on this device, so the settings page can report
+  /// what the phone actually does instead of what a benchmark from somewhere
+  /// else claims.
+  Future<void> _benchmark(BuildContext context, TutorService tutor) async {
+    await tutor.ask(
+      '<|im_start|>system\nYou are an ASVAB study coach.\n<|im_end|>\n'
+      '<|im_start|>user\nIn two short sentences, explain why multiplying two '
+      'negative numbers gives a positive one.\n<|im_end|>\n'
+      '<|im_start|>assistant',
+      maxTokens: 120,
+    );
+    if (!context.mounted) return;
+    final speed = tutor.tokensPerSecond;
+    final millis = tutor.lastMillis;
+    final tokens = tutor.lastTokens;
+    final load = tutor.lastLoadMillis;
+    final message = speed == null || millis == null
+        ? 'The tutor did not finish. ${tutor.error ?? ''}'
+        : '${tokens ?? 0} tokens in ${(millis / 1000).toStringAsFixed(1)} s '
+              '(${speed.toStringAsFixed(1)} tokens/s)'
+              '${load == null ? '' : ', loaded in ${(load / 1000).toStringAsFixed(1)} s'}';
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   String _percent(double value) =>

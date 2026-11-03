@@ -228,9 +228,14 @@ class LlmTutor(private val context: Context) {
     private fun generate(prompt: String, maxTokens: Int, temp: Float, topK: Int, topP: Float) {
         generateCancel.set(false)
         val started = System.currentTimeMillis()
+        // Counted here rather than guessed from characters: a tokens-per-second
+        // figure that is estimated is not a measurement, and this is the number
+        // that decides whether the tutor feels usable on a phone.
+        var tokens = 0
         val sink = object {
             @Suppress("unused")
             fun onToken(text: String) {
+                tokens += 1
                 if (!generateCancel.get()) emit(mapOf("type" to "token", "text" to text))
             }
         }
@@ -240,6 +245,7 @@ class LlmTutor(private val context: Context) {
                 "type" to "done",
                 "text" to text,
                 "millis" to (System.currentTimeMillis() - started),
+                "tokens" to tokens,
                 "cancelled" to generateCancel.get(),
             ),
         )
