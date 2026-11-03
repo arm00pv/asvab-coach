@@ -21,9 +21,9 @@ TutorService tutorOf(BuildContext context) {
 
 /// Opens the tutor on one question.
 ///
-/// It is deliberately reached from Review and not from the exam runner: a
-/// model that answers the question while the clock runs is not a study aid,
-/// it is a way to score a mock the candidate did not earn.
+/// It is deliberately reached from Review and not from the exam runner: a model
+/// that answers the question while the clock runs is not a study aid, it is a
+/// way to score a mock the candidate did not earn.
 Future<void> showTutorSheet(
   BuildContext context, {
   required Question question,
@@ -61,6 +61,8 @@ class _TutorSheet extends StatefulWidget {
 }
 
 class _TutorSheetState extends State<_TutorSheet> {
+  TutorLanguage _language = TutorLanguage.english;
+
   @override
   void initState() {
     super.initState();
@@ -73,7 +75,10 @@ class _TutorSheetState extends State<_TutorSheet> {
       TutorPrompt.forQuestion(
         widget.question,
         order: widget.order,
+        keyedIndex: widget.question.answerIndex,
+        explanation: widget.question.explanation,
         candidateAnswer: widget.candidateAnswer,
+        language: _language,
       ),
     );
   }
@@ -83,19 +88,20 @@ class _TutorSheetState extends State<_TutorSheet> {
     final tutor = context.watch<TutorService>();
     final c = context.colors;
     final answer = tutor.answer;
-    final finished = !tutor.generating && answer.isNotEmpty;
     final options = <String>[
       for (final index in widget.order)
         if (index >= 0 && index < widget.question.choices.length)
           widget.question.choices[index],
     ];
-    final choice = finished ? TutorPrompt.readChoice(answer, options) : null;
+    final ownAnswer = tutor.generating
+        ? null
+        : TutorPrompt.readOwnAnswer(answer, options);
     final keyedSlot = widget.order.indexOf(widget.question.answerIndex);
 
     return SafeArea(
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxHeight: MediaQuery.sizeOf(context).height * 0.8,
+          maxHeight: MediaQuery.sizeOf(context).height * 0.85,
         ),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(Space.lg, 0, Space.lg, Space.lg),
@@ -125,35 +131,17 @@ class _TutorSheetState extends State<_TutorSheet> {
                 ],
               ),
               const SizedBox(height: Space.sm),
+              _languageRow(context, tutor),
+              const SizedBox(height: Space.sm),
               Flexible(
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       if (answer.isEmpty && tutor.error == null)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: Space.lg,
-                          ),
-                          child: Row(
-                            children: <Widget>[
-                              const SizedBox(
-                                width: 14,
-                                height: 14,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              ),
-                              const SizedBox(width: Space.md),
-                              Text(
-                                'Working it through...',
-                                style: context.text.bodySmall,
-                              ),
-                            ],
-                          ),
-                        ),
+                        _waiting(context, tutor),
                       Text(
-                        _visible(answer),
+                        TutorPrompt.body(answer),
                         style: context.text.bodyMedium?.copyWith(
                           height: 1.6,
                           color: c.textPrimary,
@@ -162,15 +150,43 @@ class _TutorSheetState extends State<_TutorSheet> {
                       if (tutor.error != null) ...<Widget>[
                         const SizedBox(height: Space.md),
                         Callout(text: tutor.error!),
+                        const SizedBox(height: Space.sm),
+                        FilledButton.tonalIcon(
+                          onPressed: _run,
+                          icon: const Icon(Icons.refresh_rounded, size: 16),
+                          label: const Text('Try again'),
+                        ),
                       ],
-                      if (choice != null) ...<Widget>[
+                      if (ownAnswer != null &&
+                          ownAnswer.index != keyedSlot) ...[
                         const SizedBox(height: Space.lg),
-                        _Verdict(
-                          agrees: choice.index == keyedSlot,
-                          named: choice.said,
-                          keyed: keyedSlot >= 0 && keyedSlot < options.length
-                              ? options[keyedSlot]
-                              : '',
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(Space.md),
+                          decoration: BoxDecoration(
+                            color: c.warning.withValues(alpha: 0.12),
+                            borderRadius: BorderRadius.circular(Radii.md),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'Its own working reached a different option',
+                                style: context.text.titleSmall?.copyWith(
+                                  color: c.warning,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                'It says it gets “${ownAnswer.said}”. The app '
+                                'marked this question ${_keyedText(options, keyedSlot)}'
+                                ' and that is the answer to learn. Treat the '
+                                'working above as a second explanation, not as a '
+                                'correction.',
+                                style: context.text.bodySmall,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ],
@@ -192,66 +208,77 @@ class _TutorSheetState extends State<_TutorSheet> {
     );
   }
 
-  String _visible(String answer) {
-    if (answer.isEmpty) return '';
-    final body = TutorPrompt.body(answer);
-    return body.isEmpty ? answer : body;
+  String _keyedText(List<String> options, int slot) =>
+      slot >= 0 && slot < options.length ? '“${options[slot]}”' : 'correct';
+
+  Widget _languageRow(BuildContext context, TutorService tutor) {
+    return Wrap(
+      spacing: Space.sm,
+      children: <Widget>[
+        for (final language in TutorLanguage.values)
+          ChoiceChip(
+            label: Text(language.label),
+            selected: _language == language,
+            onSelected: (_) {
+              if (_language == language) return;
+              setState(() => _language = language);
+              if (tutor.generating) tutor.cancelGenerate();
+              _run();
+            },
+            labelStyle: context.text.labelSmall?.copyWith(fontSize: 11),
+            visualDensity: VisualDensity.compact,
+          ),
+      ],
+    );
+  }
+
+  Widget _waiting(BuildContext context, TutorService tutor) {
+    final c = context.colors;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: Space.lg),
+      child: Row(
+        children: <Widget>[
+          const SizedBox(
+            width: 14,
+            height: 14,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+          const SizedBox(width: Space.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  tutor.loading
+                      ? 'Preparing the tutor...'
+                      : 'Working it through...',
+                  style: context.text.bodySmall,
+                ),
+                if (tutor.loading)
+                  Text(
+                    'The model is being loaded into memory. The first question '
+                    'after opening the app is the slow one.',
+                    style: context.text.bodySmall?.copyWith(color: c.textMuted),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   String _footnote(TutorService tutor) {
     final millis = tutor.lastMillis;
     final seconds = millis == null ? null : (millis / 1000).toStringAsFixed(1);
     final took = seconds == null ? '' : 'Took $seconds s. ';
-    return 'Generated on this phone by LFM3-Omni, with no network. $took'
-        'The written explanation above this sheet is the one that has been '
-        'checked; this is a second voice on the same problem.';
-  }
-}
-
-/// What to do about the option the tutor named.
-class _Verdict extends StatelessWidget {
-  const _Verdict({
-    required this.agrees,
-    required this.named,
-    required this.keyed,
-  });
-
-  final bool agrees;
-  final String named;
-  final String keyed;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(Space.md),
-      decoration: BoxDecoration(
-        color: agrees ? c.primarySoft : c.warning.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(Radii.md),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            agrees
-                ? 'It lands on the same option this app does.'
-                : 'It landed somewhere else.',
-            style: context.text.titleSmall?.copyWith(
-              color: agrees ? c.primary : c.warning,
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            agrees
-                ? '“$named” - matching the keyed answer.'
-                : 'It chose “$named”. This app’s checked answer is '
-                      '“$keyed”. Keep the checked one: the model is a second '
-                      'explanation, not a second opinion you can check.',
-            style: context.text.bodySmall,
-          ),
-        ],
-      ),
-    );
+    final language = _language == TutorLanguage.english
+        ? ''
+        : 'Answering in ${_language.englishName}, from its own working; the '
+              'written explanation above stays in English. ';
+    return '$took$language'
+        'Generated on this phone by LFM3-Omni, with no network. The written '
+        'explanation above this sheet is the one that has been checked and it '
+        'is the answer to learn.';
   }
 }

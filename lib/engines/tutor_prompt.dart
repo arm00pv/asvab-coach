@@ -1,51 +1,84 @@
 import '../data/models/question.dart';
 
+/// The language the tutor answers in.
+///
+/// The written explanation and every number on the screen stay in English; this
+/// only changes the words of the model's own working. It is offered because a
+/// candidate who did not follow an English explanation often follows one in the
+/// language they think in, and because the evaluation found the model's
+/// translation of *numerical* work sound (docs/AI_EVAL.md) - which is most of
+/// what an ASVAB explanation is.
+enum TutorLanguage {
+  english('English', 'English'),
+  spanish('Espanol', 'Spanish'),
+  italian('Italiano', 'Italian');
+
+  const TutorLanguage(this.label, this.englishName);
+
+  final String label;
+  final String englishName;
+}
+
 /// How the app talks to the on-device tutor, kept pure so it can be tested
 /// without a phone, a model or a native library.
 ///
 /// The contract is deliberately narrow, and it comes from what the model was
 /// measured doing (docs/AI_EVAL.md):
 ///
-///   * it is asked to work the question out and then to name the option *text*
-///     it chose, never a letter. Asked for a letter first it opened "A) ..."
-///     and then reasoned its way to a different answer, and it did that on more
-///     than half the items;
-///   * its choice is mapped back onto the app's own options, and compared with
-///     the app's own key. Where they disagree the app says so instead of
-///     passing the disagreement to a candidate who cannot check it;
-///   * the app's own explanation is never replaced by the model's. One is
-///     checked, the other is generated, and the screen keeps them apart.
+///   * it is **grounded**: the app's marked answer and its authored explanation
+///     are put into the prompt, and the model is told to teach *that*. Left to
+///     mark the question itself it named the wrong option on more than half the
+///     items, and a tutor that argues with the key is worse than no tutor;
+///   * it is asked to reason first and to name the option last, never to open
+///     with a letter - that shape alone took it from six of sixteen to twelve;
+///   * if its own working still reaches a different option it says so in one
+///     final line, which the app reads and shows as a warning rather than
+///     passing to the candidate as an answer.
 abstract final class TutorPrompt {
   /// The instruction the model is given. Short on purpose: a long rubric made
   /// this model answer in the rubric's shape rather than in its own words.
   static const system =
-      'You are an ASVAB study coach. Work the question out carefully and '
-      'honestly. Do not guess.';
+      'You are an ASVAB study coach. The app has already marked this question '
+      'and the answer it gives is correct. Teach the student how to reach it.';
+
+  static const _languageLine = <TutorLanguage, String>{
+    TutorLanguage.english: '',
+    TutorLanguage.spanish:
+        ' Answer in Spanish. Keep the option texts exactly as they are.',
+    TutorLanguage.italian:
+        ' Answer in Italian. Keep the option texts exactly as they are.',
+  };
 
   /// Builds the completion prompt for [question].
   ///
-  /// The shape is the one that measured best: reason first, name the option
-  /// last, and finish with a line the app can read.
+  /// [keyedIndex] is the bank index of the answer the app has already checked;
+  /// [explanation] is the app's own authored explanation for it. Both are given
+  /// to the model so it explains a known-good answer instead of guessing.
   static String forQuestion(
     Question question, {
     required List<int> order,
+    required int keyedIndex,
+    String? explanation,
     String? candidateAnswer,
-    bool inSpanish = false,
+    TutorLanguage language = TutorLanguage.english,
   }) {
     final choices = <String>[];
+    final letters = <int, String>{};
     for (var slot = 0; slot < order.length; slot++) {
       final choice = order[slot];
       if (choice < 0 || choice >= question.choices.length) continue;
-      choices.add('${_letter(slot)}) ${question.choices[choice]}');
+      final letter = _letter(slot);
+      letters[choice] = letter;
+      choices.add('$letter) ${question.choices[choice]}');
     }
+    final keyedLetter = letters[keyedIndex] ?? '';
+    final keyedText = keyedIndex >= 0 && keyedIndex < question.choices.length
+        ? question.choices[keyedIndex]
+        : '';
+
     final buffer = StringBuffer()
       ..writeln('<|im_start|>system')
-      ..writeln(
-        inSpanish
-            ? '$system Eres un entrenador de estudio del ASVAB. Responde en '
-                  'espanol. Explica el razonamiento y no inventes datos.'
-            : system,
-      )
+      ..writeln('$system${_languageLine[language] ?? ''}')
       ..writeln('<|im_end|>')
       ..writeln('<|im_start|>user')
       ..writeln('ASVAB question, ${question.subtest.label}:');
@@ -54,7 +87,16 @@ abstract final class TutorPrompt {
     buffer
       ..writeln(question.stem)
       ..write(choices.join('\n'))
-      ..writeln();
+      ..writeln()
+      ..writeln(
+        'The app has marked this question. The correct answer is '
+        '$keyedLetter) $keyedText',
+      );
+    final why = (explanation ?? question.explanation).trim();
+    if (why.isNotEmpty) {
+      buffer.writeln('The explanation this app already gives:');
+      buffer.writeln(why);
+    }
     if (candidateAnswer != null && candidateAnswer.isNotEmpty) {
       buffer.writeln('The student answered: $candidateAnswer');
     }
@@ -62,10 +104,14 @@ abstract final class TutorPrompt {
       ..writeln(
         'Talk the student through it: say what the question is really asking, '
         'show the working step by step, and point out the mistake that leads to '
-        'one of the wrong options. Keep it under 150 words.',
+        'the answer they gave. Keep it under 150 words.',
       )
-      ..writeln('Then finish with one final line of exactly this form:')
-      ..writeln('CHOICE: <the option text copied word for word from the list>')
+      ..writeln(
+        'Teach the marked answer. Do not say it is wrong. If your own working '
+        'reaches a different option, add one final line of exactly this form '
+        'and nothing after it:',
+      )
+      ..writeln('I GET: <that option text>')
       ..writeln('<|im_end|>')
       ..write('<|im_start|>assistant');
     return buffer.toString();
@@ -73,9 +119,8 @@ abstract final class TutorPrompt {
 
   /// The option the model named, if it named one.
   ///
-  /// Matched against the app's own option list, so "the answer is 16" and
-  /// "CHOICE: 16" both resolve to the same option and a paraphrase that names
-  /// no option resolves to nothing.
+  /// Kept for a model that volunteers its own choice; the grounded prompt puts
+  /// the answer in front of it, so this is the exception rather than the rule.
   static TutorChoice? readChoice(String answer, List<String> choices) {
     final marker = RegExp(
       r'CHOICE\s*:\s*(.+)$',
@@ -92,8 +137,23 @@ abstract final class TutorPrompt {
       ).firstMatch(answer);
       said = line?.group(1);
     }
-    if (said == null) return null;
+    return _match(said, choices);
+  }
 
+  /// The option the model's own working reached, when it disagrees with the
+  /// marked one. Shown as a warning, never as an answer.
+  static TutorChoice? readOwnAnswer(String answer, List<String> choices) {
+    final line = RegExp(
+      r'^\s*I\s+GET\s*:\s*(.+)$',
+      multiLine: true,
+      caseSensitive: false,
+    ).allMatches(answer);
+    if (line.isEmpty) return null;
+    return _match(line.last.group(1), choices);
+  }
+
+  static TutorChoice? _match(String? said, List<String> choices) {
+    if (said == null) return null;
     final cleaned = _clean(said);
     if (cleaned.isEmpty) return null;
 
@@ -117,7 +177,7 @@ abstract final class TutorPrompt {
       caseSensitive: false,
     ).firstMatch(said.trim());
     if (letter != null) {
-      final index = letter.group(1)!.codeUnitAt(0) - 65;
+      final index = letter.group(1)!.toUpperCase().codeUnitAt(0) - 65;
       if (index >= 0 && index < choices.length) {
         return TutorChoice(index: index, said: said);
       }
@@ -125,17 +185,18 @@ abstract final class TutorPrompt {
     return null;
   }
 
-  /// The answer with any trailing CHOICE line and stop markers removed, which
-  /// is what the sheet shows above the app's verdict.
+  /// The answer with any trailing marker line and stop tokens removed, which is
+  /// what the sheet shows.
   static String body(String answer) {
     var text = answer;
     final stop = text.indexOf('<|im_end|>');
     if (stop >= 0) text = text.substring(0, stop);
-    final choice = RegExp(
-      r'^\s*CHOICE\s*:.*$',
+    final marker = RegExp(
+      r'^\s*(?:CHOICE|I\s+GET)\s*:.*$',
       multiLine: true,
+      caseSensitive: false,
     ).firstMatch(text);
-    if (choice != null) text = text.substring(0, choice.start);
+    if (marker != null) text = text.substring(0, marker.start);
     return text.trim();
   }
 

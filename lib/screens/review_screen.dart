@@ -34,6 +34,16 @@ class _ReviewScreenState extends State<ReviewScreen> {
   Subtest? _subtest;
 
   @override
+  void initState() {
+    super.initState();
+    // Warm the tutor while the candidate is reading, so the first tap on
+    // "Explain another way" is not the one that waits for a 1 GB model.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) tutorOf(context).warmUp();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final app = context.watch<AppState>();
     final orders = app.ordersFor(widget.attempt.id);

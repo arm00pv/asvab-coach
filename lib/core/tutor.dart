@@ -69,9 +69,16 @@ class TutorService extends ChangeNotifier {
   static const _methods = MethodChannel('asvabcoach/llm');
   static const _events = EventChannel('asvabcoach/llm_events');
 
+  /// How long the model is kept in memory after the last question. Holding
+  /// 1.9 GB on a phone that has gone back to the home screen is how an app gets
+  /// killed by the low-memory killer mid-revision.
+  static const idleUnload = Duration(minutes: 12);
+
   TutorStatus _status = TutorStatus.unknown;
   bool _initialised = false;
   bool _generating = false;
+  bool _loading = false;
+  Timer? _idle;
   String _answer = '';
   String? _error;
   int? _lastMillis;
@@ -97,6 +104,11 @@ class TutorService extends ChangeNotifier {
 
   bool get downloading => _status.downloading;
   bool get generating => _generating;
+
+  /// The model is being read into memory right now. The first question after a
+  /// cold start takes seconds, and the sheet says so instead of pretending to
+  /// think.
+  bool get loading => _loading;
 
   /// The answer being streamed, so a sheet can draw it as it arrives.
   String get answer => _answer;
@@ -176,6 +188,33 @@ class TutorService extends ChangeNotifier {
     }
   }
 
+  /// Starts loading the model before anyone asks, so the first tap on
+  /// "Explain another way" is not the one that pays for it.
+  Future<void> warmUp() async {
+    if (!usable || _status.loaded || _loading) return;
+    await ensureLoaded();
+  }
+
+  /// Gives the memory back. Called on a timer, and when the model is removed.
+  Future<void> unload() async {
+    _idle?.cancel();
+    _idle = null;
+    if (!_status.loaded) return;
+    try {
+      await _methods.invokeMethod<void>('unload');
+    } catch (error) {
+      debugPrint('ASVAB coach: could not unload the tutor: $error');
+    }
+    await refresh();
+  }
+
+  void _touch() {
+    _idle?.cancel();
+    _idle = Timer(idleUnload, () {
+      if (!_generating) unload();
+    });
+  }
+
   /// Loads the model into memory. The first call after a cold start takes a few
   /// seconds and is reported through [loaded].
   Future<void> ensureLoaded() async {
@@ -198,6 +237,7 @@ class TutorService extends ChangeNotifier {
     _error = null;
     _generating = true;
     _lastMillis = null;
+    _touch();
     notifyListeners();
     final completer = Completer<String>();
     _pending = completer;
@@ -245,8 +285,10 @@ class TutorService extends ChangeNotifier {
         _received = 0;
         refresh();
       case 'loading':
+        _loading = true;
         notifyListeners();
       case 'loaded':
+        _loading = false;
         _status = TutorStatus(
           supported: _status.supported,
           loaded: true,
@@ -273,6 +315,7 @@ class TutorService extends ChangeNotifier {
       case 'error':
         _error = (raw['message'] as String?) ?? 'The tutor failed.';
         _generating = false;
+        _loading = false;
         notifyListeners();
         _pending?.completeError(_error!);
         _pending = null;
@@ -281,6 +324,7 @@ class TutorService extends ChangeNotifier {
 
   @override
   void dispose() {
+    _idle?.cancel();
     _subscription?.cancel();
     super.dispose();
   }

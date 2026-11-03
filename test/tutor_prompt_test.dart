@@ -15,128 +15,110 @@ const _question = Question(
   skills: <String>['mk.ops'],
 );
 
-void main() {
-  group('the prompt', () {
-    test(
-      'asks for the working and names the option, never the letter first',
-      () {
-        final prompt = TutorPrompt.forQuestion(
-          _question,
-          order: <int>[0, 1, 2, 3],
-        );
-        // The measurement in docs/AI_EVAL.md: asked to open with a letter, this
-        // model answered the wrong option on more than half the bank items.
-        expect(prompt, contains('CHOICE: <the option text'));
-        expect(prompt, isNot(contains('Answer with the letter')));
-        expect(prompt, startsWith('<|im_start|>system'));
-        expect(prompt, endsWith('<|im_start|>assistant'));
-        expect(prompt, contains('A) 12'));
-        expect(prompt, contains('C) 16'));
-      },
-    );
+String _prompt({
+  List<int> order = const <int>[0, 1, 2, 3],
+  String? candidateAnswer,
+  TutorLanguage language = TutorLanguage.english,
+}) => TutorPrompt.forQuestion(
+  _question,
+  order: order,
+  keyedIndex: _question.answerIndex,
+  explanation: _question.explanation,
+  candidateAnswer: candidateAnswer,
+  language: language,
+);
 
-    test('offers the options in the order the screen draws them', () {
-      final prompt = TutorPrompt.forQuestion(
-        _question,
-        order: <int>[3, 2, 1, 0],
-      );
-      final a = prompt.indexOf('A) 20');
-      final d = prompt.indexOf('D) 12');
-      expect(a, greaterThan(0));
-      expect(d, greaterThan(a));
+void main() {
+  group('the prompt is grounded in the app', () {
+    test('hands the model the marked answer and the app explanation', () {
+      final prompt = _prompt();
+      // Left to mark the question itself the model named the wrong option on
+      // more than half the bank items (docs/AI_EVAL.md); the app has the key,
+      // so the tutor is told it.
+      expect(prompt, contains('The correct answer is C) 16'));
+      expect(prompt, contains('The explanation this app already gives:'));
+      expect(prompt, contains('Square first, then multiply, then add.'));
+      expect(prompt, contains('Do not say it is wrong.'));
+    });
+
+    test('the marked answer follows the order the screen draws', () {
+      // Bank order is 12, 14, 16, 20; drawn reversed, 16 sits in slot B and 12
+      // in slot D. The letter in the prompt has to be the letter on the screen.
+      final prompt = _prompt(order: <int>[3, 2, 1, 0]);
+      expect(prompt, contains('The correct answer is B) 16'));
+      expect(prompt, contains('D) 12'));
+      expect(prompt, contains('A) 20'));
+    });
+
+    test('asks for the working first and one readable line last', () {
+      final prompt = _prompt();
+      expect(prompt, contains('I GET: <that option text>'));
+      expect(prompt, isNot(contains('Answer with the letter')));
+      expect(prompt, startsWith('<|im_start|>system'));
+      expect(prompt, endsWith('<|im_start|>assistant'));
     });
 
     test('says what the candidate put, when they put something', () {
-      final withAnswer = TutorPrompt.forQuestion(
-        _question,
-        order: <int>[0, 1, 2, 3],
-        candidateAnswer: '14',
+      expect(
+        _prompt(candidateAnswer: '14'),
+        contains('The student answered: 14'),
       );
-      expect(withAnswer, contains('The student answered: 14'));
-      final without = TutorPrompt.forQuestion(
-        _question,
-        order: <int>[0, 1, 2, 3],
-      );
-      expect(without, isNot(contains('The student answered')));
+      expect(_prompt(), isNot(contains('The student answered')));
     });
 
-    test('keeps the language when asked to speak Spanish', () {
-      final prompt = TutorPrompt.forQuestion(
-        _question,
-        order: <int>[0, 1, 2, 3],
-        inSpanish: true,
-      );
-      expect(prompt, contains('Responde en espanol'));
-    });
+    test(
+      'keeps the option text in English when answering in another language',
+      () {
+        final spanish = _prompt(language: TutorLanguage.spanish);
+        expect(spanish, contains('Answer in Spanish'));
+        expect(spanish, contains('Keep the option texts exactly as they are'));
+        expect(spanish, contains('C) 16'));
+        final italian = _prompt(language: TutorLanguage.italian);
+        expect(italian, contains('Answer in Italian'));
+        expect(_prompt(), isNot(contains('Answer in ')));
+      },
+    );
   });
 
-  group('reading the choice back', () {
+  group('reading the model back', () {
     const options = <String>['12', '14', '16', '20'];
 
     test('finds the option the model named', () {
-      final choice = TutorPrompt.readChoice(
-        'Step by step... 8 + 8 = 16.\n\nCHOICE: 16',
-        options,
-      );
-      expect(choice, isNotNull);
-      expect(choice!.index, 2);
-    });
-
-    test('survives the quotes and full stops a model adds', () {
-      final choice = TutorPrompt.readChoice('CHOICE: "16".', options);
+      final choice = TutorPrompt.readChoice('...\n\nCHOICE: 16', options);
       expect(choice?.index, 2);
     });
 
-    test('prefers a full option text over a bare number', () {
-      final choice = TutorPrompt.readChoice(
-        'CHOICE: 16 because the squaring is inside the brackets',
-        options,
-      );
-      expect(choice?.index, 2);
+    test('survives quotes and full stops', () {
+      expect(TutorPrompt.readChoice('CHOICE: "16".', options)?.index, 2);
     });
 
     test('falls back to a bare letter', () {
-      final choice = TutorPrompt.readChoice('CHOICE: C', options);
-      expect(choice?.index, 2);
+      expect(TutorPrompt.readChoice('CHOICE: c', options)?.index, 2);
     });
 
-    test('reads the last CHOICE line when the model repeats itself', () {
-      final choice = TutorPrompt.readChoice(
-        'CHOICE: 12\non reflection that was wrong\nCHOICE: 16',
+    test('reads the model own answer when its working disagrees', () {
+      final choice = TutorPrompt.readOwnAnswer(
+        'It is 14 because ...\nI GET: 14',
         options,
-      );
-      expect(choice?.index, 2);
-    });
-
-    test('returns nothing when the model named no option at all', () {
-      final choice = TutorPrompt.readChoice(
-        'Add the two numbers together and see what you get.',
-        options,
-      );
-      expect(choice, isNull);
-    });
-
-    test('an option with two words still matches', () {
-      const words = <String>[
-        'It was carrying more tonnage.',
-        'A bridge had washed out in a way no map showed.',
-        'It started later than planned.',
-      ];
-      final choice = TutorPrompt.readChoice(
-        'CHOICE: A bridge had washed out in a way no map showed.',
-        words,
       );
       expect(choice?.index, 1);
+    });
+
+    test('there is no own answer when it agreed', () {
+      expect(
+        TutorPrompt.readOwnAnswer('All good.\nCHOICE: 16', options),
+        isNull,
+      );
     });
   });
 
   group('the body', () {
-    test('drops the CHOICE line and the stop marker', () {
+    test('drops marker lines and stop tokens', () {
       final body = TutorPrompt.body(
-        'Square, multiply, add. That gives 16.\n\nCHOICE: 16<|im_end|>',
+        'Square, multiply, add. That gives 16.\nI GET: 14<|im_end|>',
       );
       expect(body, 'Square, multiply, add. That gives 16.');
-      expect(body, isNot(contains('CHOICE')));
+      expect(body, isNot(contains('I GET')));
       expect(body, isNot(contains('im_end')));
     });
 
