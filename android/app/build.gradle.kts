@@ -81,6 +81,13 @@ android {
             } else {
                 signingConfigs.getByName("debug")
             }
+            // Shrinking stays on, and the tutor's JNI boundary is declared to
+            // R8 instead of being left to luck: see proguard-rules.pro.
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
         }
     }
 }

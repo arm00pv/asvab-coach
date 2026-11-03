@@ -204,6 +204,18 @@ Java_com_arm00pv_asvabcoach_llm_NativeLlm_generate(
     jmethodID on_token = sink_class == nullptr
             ? nullptr
             : env->GetMethodID(sink_class, "onToken", "(Ljava/lang/String;)V");
+    if (env->ExceptionCheck()) {
+        // A failed GetMethodID leaves a pending exception, and the JVM rethrows
+        // it as soon as this frame returns - the whole app goes down for a
+        // renamed callback. Clear it and answer without streaming: the complete
+        // text is still returned to the caller.
+        env->ExceptionClear();
+        LOGE("token sink has no onToken(String); answering without streaming");
+        on_token = nullptr;
+    }
+    if (on_token == nullptr && sink != nullptr) {
+        LOGE("streaming disabled for this generation");
+    }
 
     std::string out;
     out.reserve(2048);
@@ -225,10 +237,6 @@ Java_com_arm00pv_asvabcoach_llm_NativeLlm_generate(
             size_t cut_at = 0;
             if (has_stop_marker(out, cut_at)) {
                 out.resize(cut_at);
-                if (on_token != nullptr) {
-                    const std::string tail = text.substr(0, text.size() - (out.size() + text.size() - cut_at > text.size() ? 0 : 0));
-                    (void)tail;
-                }
                 break;
             }
 

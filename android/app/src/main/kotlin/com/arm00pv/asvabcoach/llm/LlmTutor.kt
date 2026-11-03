@@ -57,6 +57,22 @@ object NativeLlm {
     external fun free(handle: Long)
 }
 
+/// Where the engine's tokens land while it is writing an answer.
+///
+/// It is a named class for one reason: the native bridge finds `onToken` with
+/// GetMethodID, so the method's name and signature are part of the ABI. R8 sees
+/// no caller and renames it, the lookup fails, and the pending
+/// NoSuchMethodError kills the process when the JNI frame returns - which is
+/// exactly what happened the first time this ran on a phone. proguard-rules.pro
+/// keeps both class and method; test/native_contract_test.dart fails if either
+/// side of that contract drifts.
+class LlmTokenSink(private val onText: (String) -> Unit) {
+    @Suppress("unused")
+    fun onToken(text: String) {
+        onText(text)
+    }
+}
+
 /// The on-device tutor: download, load, generate, forget.
 ///
 /// Everything happens on the phone. There is no server, no key and no network
@@ -80,6 +96,10 @@ class LlmTutor(private val context: Context) {
 
     @Volatile private var handle: Long = 0
     @Volatile private var downloading = false
+
+    /// True while a load is on the worker. The model is 1.1 GB, so a second
+    /// `load` request has to wait for the first rather than queue another copy.
+    @Volatile private var loadingModel = false
     @Volatile private var generateCancel = AtomicBoolean(false)
 
     private fun modelDir(): File = File(context.filesDir, "models").apply { mkdirs() }
@@ -165,10 +185,17 @@ class LlmTutor(private val context: Context) {
                     result.success(status())
                     return
                 }
+                if (loadingModel) {
+                    // Already reading the file. Acknowledging is the whole job:
+                    // the "loaded" event is what the Dart side waits for.
+                    result.success(mapOf("started" to true))
+                    return
+                }
                 if (!isInstalled()) {
                     result.error("missing", "The tutor model is not installed.", null)
                     return
                 }
+                loadingModel = true
                 result.success(mapOf("started" to true))
                 worker.execute { loadModel() }
             }
@@ -203,26 +230,32 @@ class LlmTutor(private val context: Context) {
     }
 
     private fun loadModel() {
-        emit(mapOf("type" to "loading"))
-        if (!NativeLlm.ensureLoaded()) {
-            emitError("The tutor engine could not be opened on this device.")
-            return
+        try {
+            if (handle != 0L) return
+            emit(mapOf("type" to "loading"))
+            if (!NativeLlm.ensureLoaded()) {
+                emitError("The tutor engine could not be opened on this device.")
+                return
+            }
+            val cores = Runtime.getRuntime().availableProcessors().coerceIn(2, 6)
+            val started = System.currentTimeMillis()
+            val loadedHandle = NativeLlm.load(modelFile().absolutePath, 2048, cores)
+            if (loadedHandle == 0L) {
+                emitError("The model could not be loaded into memory.")
+                return
+            }
+            handle = loadedHandle
+            emit(
+                mapOf(
+                    "type" to "loaded",
+                    "millis" to (System.currentTimeMillis() - started),
+                    "cores" to cores,
+                ),
+            )
+        } finally {
+            // Whatever happened, the next tap may ask again.
+            loadingModel = false
         }
-        val cores = Runtime.getRuntime().availableProcessors().coerceIn(2, 6)
-        val started = System.currentTimeMillis()
-        val loadedHandle = NativeLlm.load(modelFile().absolutePath, 2048, cores)
-        if (loadedHandle == 0L) {
-            emitError("The model could not be loaded into memory.")
-            return
-        }
-        handle = loadedHandle
-        emit(
-            mapOf(
-                "type" to "loaded",
-                "millis" to (System.currentTimeMillis() - started),
-                "cores" to cores,
-            ),
-        )
     }
 
     private fun generate(prompt: String, maxTokens: Int, temp: Float, topK: Int, topP: Float) {
@@ -232,12 +265,9 @@ class LlmTutor(private val context: Context) {
         // figure that is estimated is not a measurement, and this is the number
         // that decides whether the tutor feels usable on a phone.
         var tokens = 0
-        val sink = object {
-            @Suppress("unused")
-            fun onToken(text: String) {
-                tokens += 1
-                if (!generateCancel.get()) emit(mapOf("type" to "token", "text" to text))
-            }
+        val sink = LlmTokenSink { text ->
+            tokens += 1
+            if (!generateCancel.get()) emit(mapOf("type" to "token", "text" to text))
         }
         val text = NativeLlm.generate(handle, prompt, maxTokens, temp, topK, topP, sink)
         emit(

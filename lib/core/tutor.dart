@@ -74,6 +74,10 @@ class TutorService extends ChangeNotifier {
   /// killed by the low-memory killer mid-revision.
   static const idleUnload = Duration(minutes: 12);
 
+  /// Long enough for a 300-token answer at four tokens a second, short enough
+  /// that a wedged generation does not leave a spinner on the screen.
+  static const generationTimeout = Duration(minutes: 4);
+
   TutorStatus _status = TutorStatus.unknown;
   bool _initialised = false;
   bool _generating = false;
@@ -88,6 +92,15 @@ class TutorService extends ChangeNotifier {
   int _total = 0;
   StreamSubscription<dynamic>? _subscription;
   Completer<String>? _pending;
+
+  /// Held while the model is being read into memory.
+  ///
+  /// A load is answered by the platform immediately and finished on its own
+  /// thread, so awaiting the method call proves nothing. This is completed by
+  /// the "loaded" (or "error") event, and it is what makes a tap on "Explain
+  /// another way" wait for the warm-up that is already running instead of
+  /// asking an engine that has no model yet.
+  Completer<void>? _loadGate;
 
   TutorStatus get status => _status;
   bool get ready => _initialised;
@@ -147,7 +160,21 @@ class TutorService extends ChangeNotifier {
     _initialised = true;
     if (kIsWeb) return;
     try {
-      _subscription = _events.receiveBroadcastStream().listen(_onEvent);
+      _subscription = _events.receiveBroadcastStream().listen(
+        _onEvent,
+        // A broken channel must not leave a sheet waiting on an event that can
+        // never arrive.
+        onError: (Object error) {
+          debugPrint('ASVAB coach: tutor event channel failed: $error');
+          _generating = false;
+          _loading = false;
+          _error ??= 'The tutor stopped answering. Try again.';
+          _pending?.completeError(_error!);
+          _pending = null;
+          _finishLoad();
+          notifyListeners();
+        },
+      );
     } catch (error) {
       debugPrint('ASVAB coach: no tutor events on this platform: $error');
     }
@@ -235,15 +262,45 @@ class TutorService extends ChangeNotifier {
 
   /// Loads the model into memory. The first call after a cold start takes a few
   /// seconds and is reported through [loaded].
+  ///
+  /// Single flight: whoever asks while a load is already running waits for that
+  /// one instead of starting another. Two overlapping loads meant a second copy
+  /// of a 1.1 GB model on the worker, and asking the engine before the first
+  /// finished meant "The tutor could not start answering" on the very first
+  /// question after opening Review - the commonest way in to the tutor.
   Future<void> ensureLoaded() async {
     if (!usable || _status.loaded) return;
+    final running = _loadGate;
+    if (running != null) return running.future;
+    final gate = Completer<void>();
+    _loadGate = gate;
     try {
       await _methods.invokeMethod<void>('load');
     } catch (error) {
       _error = 'The tutor could not be loaded.';
       debugPrint('ASVAB coach: tutor load failed: $error');
       notifyListeners();
+      _finishLoad();
+      return;
     }
+    await gate.future.timeout(
+      const Duration(seconds: 90),
+      onTimeout: () {
+        debugPrint('ASVAB coach: the tutor load never reported back');
+        _finishLoad();
+      },
+    );
+    if (!_status.loaded && _error == null) {
+      _error = 'The tutor did not finish getting ready.';
+      notifyListeners();
+    }
+  }
+
+  /// Closes the load gate exactly once, however the load ended.
+  void _finishLoad() {
+    final gate = _loadGate;
+    _loadGate = null;
+    if (gate != null && !gate.isCompleted) gate.complete();
   }
 
   /// Asks the tutor, streaming [answer] as tokens arrive and resolving with the
@@ -251,6 +308,13 @@ class TutorService extends ChangeNotifier {
   Future<String> ask(String prompt, {int maxTokens = 320}) async {
     if (!usable) return '';
     await ensureLoaded();
+    if (!_status.loaded) {
+      // Never ask an engine that has no model: the platform answers with an
+      // error, and a sheet cannot do anything useful with it.
+      _error ??= 'The tutor is still getting ready. Try again in a moment.';
+      notifyListeners();
+      return '';
+    }
     _answer = '';
     _error = null;
     _generating = true;
@@ -278,7 +342,20 @@ class TutorService extends ChangeNotifier {
       notifyListeners();
       return '';
     }
-    return completer.future;
+    try {
+      // A generation runs for as long as the phone takes, but not forever. If
+      // no "done" ever arrives - the engine died, the process was rebuilt under
+      // the sheet - the sheet has to stop spinning rather than lie about work
+      // that is no longer happening.
+      return await completer.future.timeout(generationTimeout);
+    } on TimeoutException {
+      _generating = false;
+      _pending = null;
+      _error = 'The tutor stopped answering. Try again.';
+      notifyListeners();
+      await cancelGenerate();
+      return _answer;
+    }
   }
 
   Future<void> cancelGenerate() async {
@@ -319,6 +396,7 @@ class TutorService extends ChangeNotifier {
           expectedBytes: _status.expectedBytes,
         );
         notifyListeners();
+        _finishLoad();
       case 'unloaded':
         refresh();
       case 'token':
@@ -338,6 +416,7 @@ class TutorService extends ChangeNotifier {
         _generating = false;
         _loading = false;
         notifyListeners();
+        _finishLoad();
         _pending?.completeError(_error!);
         _pending = null;
     }
@@ -347,6 +426,7 @@ class TutorService extends ChangeNotifier {
   void dispose() {
     _idle?.cancel();
     _subscription?.cancel();
+    _finishLoad();
     super.dispose();
   }
 }

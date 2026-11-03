@@ -150,11 +150,20 @@ the first sentence is on screen while the rest is still being computed.
 `lib/core/tutor.dart` is the Dart side; `lib/widgets/tutor_sheet.dart` is the
 button a candidate presses under an answer in Review.
 
-**The APK** is 29.2 MB, up from 57 MB of release asset before this work went in,
-because the llama.cpp libraries are 11 MB of it: `libllama.so`, `libggml.so`,
-`libggml-base.so` and six `libggml-cpu-android_*` kernels, stripped from 55 MB.
-The model is not in it. It is a 1.02 GB download, checked against a pinned
-length and SHA-256 before it is allowed to load.
+**The APK** is 29.2 MiB (30,655,560 bytes). Eleven of those megabytes are the
+llama.cpp libraries, stripped from a 75 MB release tarball: `libllama.so`,
+`libggml.so`, `libggml-base.so` and six `libggml-cpu-android_*` kernels, arm64
+only. The model is not in it: that is a 1.02 GB download, checked against a
+pinned length and SHA-256 before it is allowed to load.
+
+It is also smaller than the 54.6 MiB of v1.7.1, which looks like a contradiction
+until you open both archives. v1.7.1 stored its native libraries uncompressed -
+`lib/x86_64/libflutter.so` was 13,051,040 bytes on disk and 13,051,040 bytes in
+the zip - while this build sets `useLegacyPackaging = true`, which stores them
+deflated (2.3 MB) and has Android extract them at install. That flag is not a
+size trick: it is what makes them visible to `ggml_backend_load_all_from_path`,
+which cannot enumerate libraries mapped out of the APK. The size saving is a
+side effect.
 
 **Four defects found only on hardware**, each fixed:
 
@@ -181,3 +190,58 @@ loads - `model loaded, n_ctx=2048 threads=6` in logcat.
 **Not yet verified:** a finished answer and the tokens-per-second on the phone.
 The USB connection dropped mid-run and the device has not come back, so the one
 number that decides whether this feels like a tutor or a wait is still owed.
+
+## Two release-only defects (3 November 2026)
+
+The phone came back on wireless debugging, so the tutor was driven by hand on a
+Pixel 7 Pro, through the real UI, on the real release APK. It did not work. Both
+faults were invisible to the analyzer, to the widget tests and to every debug
+build, and both were fixed and pinned with a test the same day.
+
+**1. A question asked before the model was in memory.** Opening Review warms the
+tutor up. The platform answers a `load` request immediately and reads the 1.1 GB
+file on its own thread, so `await` on the method call proves nothing - and the
+old `ensureLoaded()` treated that answer as "loaded". A candidate who taps
+"Explain another way" during the warm-up - the commonest way in to the tutor -
+sent the question to an engine with no model, and the sheet said *"The tutor
+could not start answering."* The log named it:
+`PlatformException(not_loaded, The tutor has not been loaded.)`.
+
+The fix is single-flight loading. `ensureLoaded()` holds a gate that is completed
+by the `loaded` or `error` event, so a second caller waits for the load that is
+already running instead of starting another one (two loads meant two copies of
+the model on one worker). `ask()` also refuses to call the engine while the model
+is absent, and a generation that never reports back now gives up after four
+minutes instead of spinning forever. Pinned by
+`test/tutor_service_test.dart`, which drives a fake platform channel that
+acknowledges `load` and only later sends `loaded`.
+
+**2. R8 renamed the token callback and killed the app.** The bridge finds the
+sink with `GetMethodID(sink_class, "onToken", "(Ljava/lang/String;)V")`. R8 cannot
+see a caller that lives in C++, so it renamed the anonymous sink class and
+removed the method name. `GetMethodID` then failed, which leaves a *pending*
+`NoSuchMethodError`; the JVM rethrows it when the native frame returns, and the
+process died with
+
+```
+FATAL EXCEPTION: pool-4-thread-1
+java.lang.NoSuchMethodError: no non-static method "Lw0;.onToken(Ljava/lang/String;)V"
+    at com.arm00pv.asvabcoach.llm.NativeLlm.generate(Native Method)
+```
+
+The visible symptom was a sheet stuck on "Working it through..." and then the app
+gone - no tokens, no error, no crash dialog the candidate could act on.
+
+Three changes, because one would not be enough:
+
+* the sink is a named class, `LlmTokenSink`, and `android/app/proguard-rules.pro`
+  keeps it and its `onToken(java.lang.String)` by name, wired in from
+  `build.gradle.kts`;
+* the C++ side clears a failed lookup instead of leaving the exception pending,
+  and answers without streaming rather than taking the process down;
+* `test/native_contract_test.dart` reads the Kotlin, C++ and ProGuard sources and
+  fails if any of the three drifts, because no Dart test can see this at runtime.
+
+R8's own `mapping.txt` now shows `void onToken(java.lang.String) -> onToken` under
+a class that keeps its name, which is the evidence that the fix is in the build
+and not just in the source.
