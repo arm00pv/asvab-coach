@@ -25,7 +25,14 @@ void main() {
         ),
         ChangeNotifierProvider<NeuralVoice>.value(value: neural..initialise()),
         // The on-device tutor: a downloaded model, running on this phone.
+        //
+        // Not lazy: read the phone's status at launch, so the first screen that
+        // offers the tutor already knows whether this phone has the model. A
+        // lazy provider built the tutor at the moment a sheet opened, and the
+        // sheet's first question reached a service that had not read the status
+        // yet - which answered with nothing.
         ChangeNotifierProvider<TutorService>(
+          lazy: false,
           create: (_) => TutorService()..initialise(),
         ),
       ],

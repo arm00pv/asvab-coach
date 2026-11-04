@@ -157,12 +157,20 @@ abstract final class TutorPrompt {
     for (final rule in lesson.quickRules.take(3)) {
       buffer.writeln('Rule: $rule');
     }
+    // The instruction is a task line and then a cue, never a sentence that runs
+    // into the end of the prompt. Asked in Spanish with the brief last, the model
+    // parroted the brief back - "En menos de 120 palabras, como un profesor
+    // hablando con un estudiante: la idea en..." - which is words in an answer
+    // that was supposed to be the explanation.
     buffer
       ..writeln(
-        'In under 120 words, as a teacher talking to one student: the idea in '
-        'plain words, one worked step, and the mistake people make. Start with '
-        'the explanation itself.',
+        'Task: explain the lesson above in your own words, as a teacher talking '
+        'to one student, in under 120 words. Cover the idea in plain words, one '
+        'worked step, and the mistake people make. Write plain prose - no '
+        'markdown, no asterisks, no headings - and never repeat these '
+        'instructions.',
       )
+      ..writeln('Explanation:')
       ..writeln('<|im_end|>')
       ..write('<|im_start|>assistant');
     return buffer.toString();
@@ -257,6 +265,15 @@ abstract final class TutorPrompt {
       caseSensitive: false,
     ).firstMatch(text);
     if (marker != null) text = text.substring(0, marker.start);
+    // A 2 B model reaches for markdown even when it is told not to. The phone
+    // drew "**Idea en palabras sencillas:**" as if the asterisks were words, and
+    // the read-aloud voice then said "asterisk asterisk". Emphasis markers,
+    // heading hashes and backticks are punctuation the reader does not want;
+    // bullet stars are dropped too, because the sheet draws its own lists.
+    text = text
+        .replaceAll(RegExp(r'\*\*|__|`'), '')
+        .replaceAll(RegExp(r'^\s{0,3}#{1,6}\s*', multiLine: true), '')
+        .replaceAll(RegExp(r'^\s{0,3}\*\s+', multiLine: true), '');
     // A stray marker on the same line as prose, which is how a tired model
     // writes it, leaves the sentence that came before it.
     text = text.replaceAll(

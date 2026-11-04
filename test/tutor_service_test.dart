@@ -174,5 +174,100 @@ void main() {
     expect(await tutor.ask('prompt'), '');
     expect(calls, isNot(contains('generate')));
     expect(calls, isNot(contains('load')));
+    expect(tutor.error, contains('cannot run'));
+  });
+
+  test('a question asked before the status is read waits for it', () async {
+    // The bug this pins down: the app's tutor object is built lazily, and its
+    // initialise() was guarded by a bool. A sheet that awaited initialise()
+    // came straight back while the very first status read was still running,
+    // asked a service that did not know the phone had a model, and got an empty
+    // answer with no error and no spinner. On the phone that is a blank sheet.
+    final Completer<void> statusGate = Completer<void>();
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(methodChannel, (MethodCall call) async {
+          calls.add(call.method);
+          switch (call.method) {
+            case 'status':
+              await statusGate.future;
+              return <String, Object?>{
+                'supported': true,
+                'installed': true,
+                'loaded': loaded,
+                'bytes': 1099630080,
+                'expectedBytes': 1099630080,
+                'abi': 'arm64-v8a',
+              };
+            case 'load':
+              return <String, Object?>{'started': true};
+            case 'generate':
+              return true;
+          }
+          return null;
+        });
+
+    final TutorService tutor = TutorService();
+    // Exactly what the app does: start the read, do not wait for it.
+    unawaited(tutor.initialise());
+    final Future<String> pending = tutor.ask('prompt');
+    await settle();
+    expect(calls, isNot(contains('generate')));
+    expect(calls, isNot(contains('load')));
+    expect(tutor.error, isNull);
+
+    statusGate.complete();
+    await settle();
+    expect(calls, contains('load'));
+    expect(
+      calls,
+      isNot(contains('generate')),
+      reason: 'the model is not in memory yet',
+    );
+
+    loaded = true;
+    events!.success(<String, Object?>{'type': 'loaded', 'millis': 1000});
+    await settle();
+    expect(calls, contains('generate'));
+
+    events!.success(<String, Object?>{
+      'type': 'done',
+      'text': 'Right.',
+      'millis': 900,
+      'tokens': 3,
+    });
+    expect(await pending, 'Right.');
+    expect(tutor.error, isNull);
+  });
+
+  test('initialise is one read of the phone, however many ask', () async {
+    final TutorService tutor = TutorService();
+    await Future.wait(<Future<void>>[tutor.initialise(), tutor.initialise()]);
+    await settle();
+    expect(
+      calls.where((String call) => call == 'status'),
+      hasLength(1),
+      reason: 'two status reads would let two sheets disagree about the phone',
+    );
+    expect(tutor.ready, isTrue);
+    expect(tutor.usable, isTrue);
+  });
+
+  test('a phone without the model is told where to get it', () async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(methodChannel, (MethodCall call) async {
+          calls.add(call.method);
+          return <String, Object?>{
+            'supported': true,
+            'installed': false,
+            'expectedBytes': 1099630080,
+          };
+        });
+
+    final TutorService tutor = TutorService();
+    expect(await tutor.ask('prompt'), '');
+    expect(tutor.error, contains('Settings'));
+    expect(tutor.error, contains('1.02 GB'));
+    expect(calls, isNot(contains('load')));
+    expect(calls, isNot(contains('generate')));
   });
 }

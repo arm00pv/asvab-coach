@@ -12,6 +12,7 @@ import '../state/app_state.dart';
 import '../widgets/listen_button.dart';
 import '../widgets/primitives.dart';
 import '../widgets/puzzle_view.dart';
+import '../widgets/tutor_sheet.dart';
 
 /// A single reinforcement lesson, then a mastery check built from the bank.
 class LessonScreen extends StatelessWidget {
@@ -137,6 +138,12 @@ class LessonScreen extends StatelessWidget {
             ),
             const SizedBox(height: Space.md),
             Text(lesson.whyItMatters, style: context.text.bodyMedium),
+            const SizedBox(height: Space.md),
+            FilledButton.tonalIcon(
+              onPressed: () => showLessonTutorSheet(context, lesson: lesson),
+              icon: const Icon(Icons.psychology_alt_outlined, size: 18),
+              label: const Text('Have the tutor explain this lesson'),
+            ),
             const SizedBox(height: Space.md),
             if (mastery != null) ...<Widget>[
               const SizedBox(height: Space.md),

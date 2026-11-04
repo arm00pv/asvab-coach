@@ -17,7 +17,11 @@ import 'primitives.dart';
 TutorService tutorOf(BuildContext context) {
   try {
     return Provider.of<TutorService>(context, listen: false);
-  } catch (_) {
+  } catch (error) {
+    // A stand-in is right for a widget test, but in the app it means the sheet is
+    // about to talk to an engine that has no status and no model - a tutor that
+    // answers nothing. Say so rather than hiding it.
+    debugPrint('ASVAB coach: no TutorService in this context: $error');
     return TutorService();
   }
 }
@@ -65,6 +69,7 @@ Future<void> showLessonTutorSheet(
   BuildContext context, {
   required Lesson lesson,
 }) {
+  debugPrint('ASVAB coach: lesson tutor opened for ${lesson.skillId}');
   return _show(
     context,
     title: 'The tutor, on this lesson',
@@ -179,7 +184,20 @@ class _TutorSheetState extends State<_TutorSheet> {
   }
 
   Future<void> _run() async {
+    // A reading of the previous answer would keep talking over the new one, and
+    // on the phone it kept going after the language had been switched.
+    final speech = _speech;
+    if (speech != null &&
+        speech.speaking &&
+        speech.speakingScreen == _speechScreen) {
+      await speech.stop();
+    }
+    if (!mounted) return;
     final tutor = context.read<TutorService>();
+    // Idempotent, and the difference between a sheet that works the first time
+    // it is opened and one that asks a service which has not read the phone's
+    // status yet.
+    await tutor.initialise();
     await tutor.ask(widget.promptFor(_language));
   }
 

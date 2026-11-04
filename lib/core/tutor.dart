@@ -79,7 +79,15 @@ class TutorService extends ChangeNotifier {
   static const generationTimeout = Duration(minutes: 4);
 
   TutorStatus _status = TutorStatus.unknown;
-  bool _initialised = false;
+
+  /// The one and only startup call, shared by everyone who needs it.
+  ///
+  /// This was a plain bool, and that was a real bug on a real phone: the app's
+  /// tutor object is created lazily, so the sheet's `await initialise()` came
+  /// back at once while the first status read was still in flight. The sheet
+  /// then asked a service that did not yet know the phone had a model, and
+  /// `ask` returned nothing at all - a blank sheet with no error on it.
+  Future<void>? _init;
   bool _generating = false;
   bool _loading = false;
   Timer? _idle;
@@ -104,7 +112,9 @@ class TutorService extends ChangeNotifier {
   Completer<void>? _loadGate;
 
   TutorStatus get status => _status;
-  bool get ready => _initialised;
+
+  /// True once [initialise] has been called, whether or not it has finished.
+  bool get ready => _init != null;
 
   /// The engine can run here at all.
   bool get supported => _status.supported;
@@ -173,15 +183,30 @@ class TutorService extends ChangeNotifier {
 
   String? get error => _error;
 
+  /// What to tell a candidate whose phone cannot run the tutor, in the terms
+  /// that phone actually needs: a download to make, or a phone that cannot do it.
+  String get unavailableMessage {
+    if (!_status.supported) {
+      return 'The tutor cannot run on this phone or in this build. It needs a '
+          '64-bit ARM phone; the web version has no tutor.';
+    }
+    return 'The tutor model - ${_status.sizeLabel} - is not on this phone yet. '
+        'Download it in Settings, under The tutor, then try again.';
+  }
+
   /// Download progress in the range 0..1.
   double get downloadProgress {
     if (_total <= 0) return 0;
     return (_received / _total).clamp(0.0, 1.0);
   }
 
-  Future<void> initialise() async {
-    if (_initialised) return;
-    _initialised = true;
+  /// Reads the phone's status and subscribes to the engine's events.
+  ///
+  /// Safe to call from anywhere, any number of times: everyone gets the same
+  /// future, so a caller that awaits it really has waited for the status read.
+  Future<void> initialise() => _init ??= _initialise();
+
+  Future<void> _initialise() async {
     if (kIsWeb) return;
     try {
       _subscription = _events.receiveBroadcastStream().listen(
@@ -335,8 +360,32 @@ class TutorService extends ChangeNotifier {
   /// Asks the tutor, streaming [answer] as tokens arrive and resolving with the
   /// whole reply.
   Future<String> ask(String prompt, {int maxTokens = 320}) async {
-    if (!usable) return '';
+    // Whatever happens next, the phone's status has to be known first. Asking
+    // before the first status read is what produced an empty answer, no error
+    // and no spinner - a sheet that looked like it had simply given up.
+    await initialise();
+    // A tutor that answers nothing and says nothing is the hardest failure to
+    // diagnose from a phone; this line is what a bug report can be checked
+    // against.
+    debugPrint(
+      'ASVAB coach: ask (usable=$usable supported=${_status.supported} '
+      'installed=${_status.installed} loaded=${_status.loaded} '
+      'error=${_status.error})',
+    );
+    if (!usable) {
+      // The candidate may have downloaded the model in Settings since this
+      // object last looked, so look again before saying no.
+      await refresh();
+      if (!usable) {
+        _error = unavailableMessage;
+        notifyListeners();
+        return '';
+      }
+    }
     await ensureLoaded();
+    debugPrint(
+      'ASVAB coach: after load (loaded=${_status.loaded} error=$_error)',
+    );
     if (!_status.loaded) {
       // Never ask an engine that has no model: the platform answers with an
       // error, and a sheet cannot do anything useful with it.

@@ -130,6 +130,24 @@ void main() {
       expect(prompt, endsWith('<|im_start|>assistant'));
     });
 
+    test('the brief is a task line and a cue, not a sentence to continue', () {
+      final prompt = TutorPrompt.forLesson(
+        _lesson,
+        language: TutorLanguage.spanish,
+      );
+      expect(prompt, contains('never repeat these instructions'));
+      expect(
+        prompt,
+        contains('Explanation:\n<|im_end|>'),
+        reason:
+            'the model parroted a brief that ran into the end of the prompt',
+      );
+      expect(
+        prompt.split('<|im_start|>assistant').first,
+        isNot(contains('120 palabras')),
+      );
+    });
+
     test('switches language like the question prompt does', () {
       expect(
         TutorPrompt.forLesson(_lesson, language: TutorLanguage.italian),
@@ -198,6 +216,25 @@ void main() {
           '<think>add the two hydrogens</think>One calcium, two oxygens, two hydrogens.',
         ),
         'One calcium, two oxygens, two hydrogens.',
+      );
+    });
+
+    test('the asterisks a small model writes are neither drawn nor spoken', () {
+      expect(
+        TutorPrompt.body(
+          '**Idea in plain words:** percent means per hundred.\n'
+          '**One step:** 37 percent is 0.37.',
+        ),
+        'Idea in plain words: percent means per hundred.\n'
+        'One step: 37 percent is 0.37.',
+        reason: 'the phone drew them and the voice said "asterisk asterisk"',
+      );
+    });
+
+    test('heading hashes and bullet stars are stripped', () {
+      expect(
+        TutorPrompt.body('# Percent\n* **Change** divides by the original.'),
+        'Percent\nChange divides by the original.',
       );
     });
 

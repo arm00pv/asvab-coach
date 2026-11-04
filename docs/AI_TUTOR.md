@@ -277,3 +277,45 @@ argument the guide does not normally have, and `tests/speech_language_test.dart`
 missing voice is reported instead of faked, and that the candidate's reading
 speed carries over. The text the button reads is the same `TutorPrompt.body()`
 the sheet draws, so what is heard and what is on the screen cannot differ.
+## Every lesson, and a sheet that says why it is empty (3 November 2026)
+
+The tutor reached a question from Review but not a lesson, so a candidate who
+had just read a theme could ask about the items in it and not about the theme
+itself. Every lesson now carries **Have the tutor explain this lesson**, and the
+prompt is built from the lesson that is on the screen: its title, its hook, why
+it matters, up to three section headings and up to three rules, in under 120
+words, with a standing instruction not to add facts the lesson does not contain.
+There is no key to check on a lesson, so the sheet's "it reached a different
+option" warning is absent by construction rather than by mistake.
+
+Opening that sheet showed the bug the host tests could not see: a sheet with a
+title, language chips and small print, and nothing between them - no spinner, no
+error. Logcat gave the answer in two lines:
+
+```
+ASVAB coach: lesson tutor opened for ar.percent
+ASVAB coach: ask (usable=false supported=false installed=false loaded=false error=null)
+```
+
+and, 30 ms later, the native library loading. The order was the bug:
+
+* `/lib/main.dart` provided the tutor lazily, so the object was built at the
+  moment the sheet opened, not at launch;
+* `TutorService.initialise()` was guarded by a `bool`, so the sheet's
+  `await initialise()` returned immediately while the provider's own call was
+  still awaiting the first `asvabcoach/llm:status` reply;
+* `ask()` then saw the default `TutorStatus.unknown`, decided the tutor was
+  unusable and returned an empty string without setting an error, so the sheet
+  drew nothing at all.
+
+The fixes are in `lib/main.dart` (the provider is not lazy) and
+`lib/core/tutor.dart` (`initialise()` returns one cached future; `ask()` awaits
+it and, before refusing, re-reads the status). A refusal is now a message the
+candidate can act on - `unavailableMessage` distinguishes "this phone cannot run
+it" from "the model is not downloaded yet. Download it in Settings, under The
+tutor" - because a sheet that says nothing is indistinguishable from a sheet
+that is still thinking.
+
+Three tests in `test/tutor_service_test.dart` hold the line: a question asked
+before the first status reply, `initialise()` called twice issuing one status
+read, and the missing-model message naming Settings and the real download size.
