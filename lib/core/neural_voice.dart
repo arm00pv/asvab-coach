@@ -308,7 +308,13 @@ class NeuralVoice extends ChangeNotifier {
       return _error;
     }
     await gate.future;
-    return null;
+    // The engine reports a failure as an event and releases the gate either
+    // way, so the reason has to be read here. Returning null regardless is what
+    // made a phone with the media volume at zero play nothing and say nothing:
+    // the platform had said "The media volume on this phone is at zero", and
+    // this line dropped it. The caller cannot fall back on a reason it is not
+    // given, and the candidate cannot fix a silence nobody named.
+    return _error;
   }
 
   Future<void> stop() async {

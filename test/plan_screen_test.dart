@@ -31,13 +31,22 @@ Future<AppState> seeded({int lastActiveDaysAgo = 0}) async {
   SharedPreferences.setMockInitialValues(<String, Object>{});
   final state = AppState();
   await state.init();
+  // Calendar arithmetic, not 24-hour arithmetic. `Duration(days: 3)` is 72 hours,
+  // and the day a clock goes back is 25 of them, so "three days ago" landed on
+  // the wrong calendar day east of midnight - this test passed all evening and
+  // failed after 23:00 on the day after a daylight-saving change. The scheduler
+  // counts calendar days, so the fixture has to build one.
+  final DateTime now = DateTime.now();
+  final DateTime lastDay = lastActiveDaysAgo == 0
+      ? now
+      : DateTime(now.year, now.month, now.day - lastActiveDaysAgo, 12);
   await state.setGoal(
     GoalProfile(
       displayName: 'Alex Rivera',
       targetAfqt: 65,
       targetGt: 110,
       targetMosCodes: const <String>['68W'],
-      targetDate: DateTime.now().add(const Duration(days: 30)),
+      targetDate: DateTime(now.year, now.month, now.day + 30, 12),
       officerTrack: false,
       dailyMinutes: 30,
     ),
@@ -49,10 +58,8 @@ Future<AppState> seeded({int lastActiveDaysAgo = 0}) async {
     Attempt(
       id: 'plan-row-attempt',
       kind: ExamKind.fullMock,
-      startedAt: DateTime.now().subtract(
-        Duration(minutes: 150, days: lastActiveDaysAgo),
-      ),
-      finishedAt: DateTime.now().subtract(Duration(days: lastActiveDaysAgo)),
+      startedAt: lastDay.subtract(const Duration(minutes: 150)),
+      finishedAt: lastDay,
       report: result.report,
       responses: const [],
       questionIds: const <String>[],

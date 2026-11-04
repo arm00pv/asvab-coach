@@ -166,6 +166,30 @@ void main() {
     expect(neural.error, contains('checksum'));
   });
 
+  test('a voice that fails after taking the utterance says why', () async {
+    statusPacks = <String, Object?>{
+      'en-kokoro': <String, Object?>{'installed': true, 'bytes': 94210357},
+    };
+    final NeuralVoice neural = NeuralVoice();
+    await neural.initialise();
+    await settle();
+
+    final Future<String?> spoken = neural.speak('en', 'Hello there.');
+    await settle();
+    expect(neural.speaking, isTrue);
+    // The platform reports this as an event, not as a channel error.
+    events!.success(<String, Object?>{
+      'type': 'error',
+      'id': 'en-kokoro',
+      'message':
+          'The media volume on this phone is at zero, so the voice '
+          'cannot be heard. Turn it up and try again.',
+    });
+
+    expect(await spoken, contains('media volume'));
+    expect(neural.speaking, isFalse);
+  });
+
   test('speaking waits for the engine to finish', () async {
     statusPacks = <String, Object?>{
       'en-kokoro': <String, Object?>{'installed': true, 'bytes': 94210357},
@@ -211,6 +235,50 @@ void main() {
       reason: 'the system voice must not read the same sentence too',
     );
   });
+
+  test(
+    'a downloaded voice that cannot be heard still reads, and says why',
+    () async {
+      statusPacks = <String, Object?>{
+        'en-kokoro': <String, Object?>{'installed': true, 'bytes': 94210357},
+      };
+      final NeuralVoice neural = NeuralVoice();
+      await neural.initialise();
+      await settle();
+      final _SystemEngine system = _SystemEngine();
+      final SpeechService speech = SpeechService(
+        backend: system,
+        persist: false,
+        neural: neural,
+      );
+      await speech.initialise();
+
+      final Future<String?> reading = speech.speakIn(
+        'Read this, please.',
+        'en',
+      );
+      await settle();
+      events!.success(<String, Object?>{
+        'type': 'error',
+        'id': 'en-kokoro',
+        'message':
+            'The media volume on this phone is at zero, so the voice '
+            'cannot be heard. Turn it up and try again.',
+      });
+      expect(await reading, isNull);
+      expect(
+        system.spoken,
+        hasLength(1),
+        reason: 'the phone voice still reads the words the pack could not',
+      );
+      expect(
+        speech.lastError,
+        contains('media volume'),
+        reason:
+            'a silence the candidate cannot see is a silence they cannot fix',
+      );
+    },
+  );
 
   test(
     'a finished answer is sent as sentences, with the speaker chosen',

@@ -180,7 +180,7 @@ class _TutorSheetState extends State<_TutorSheet> {
       screen: _speechScreen,
     );
     if (!mounted) return;
-    setState(() => _readProblem = problem);
+    setState(() => _readProblem = problem ?? speech.lastError);
   }
 
   Future<void> _run() async {
@@ -379,7 +379,7 @@ class _TutorSheetState extends State<_TutorSheet> {
         screen: _speechScreen,
       );
       if (!mounted) return;
-      setState(() => _readProblem = problem);
+      setState(() => _readProblem = problem ?? speech.lastError);
     });
   }
 
