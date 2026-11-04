@@ -213,3 +213,65 @@ It stays a documented, reserved slot behind the existing written guide. When it
 ships, the prompt must ask for the working and a choice in the model's own
 words, the app must do the mapping onto its own options, and nothing it says may
 reach a candidate unchecked against the key.
+
+## On the phone (3 November 2026)
+
+The laptop numbers above were the reason to build it. These are the reason to
+believe it, taken on a Pixel 7 Pro with the release APK installed: LFM3-Omni-2B
+Q4_K_M, llama.cpp b12032, `n_ctx` 2048, six threads, greedy sampling, aeroplane
+mode.
+
+**The item.** *"How many atoms are in one formula unit of calcium hydroxide,
+Ca(OH)2?"* - A) 5, B) 6, C) 3, D) 4. The app's key is A. The candidate answered
+D. Both the key and the app's authored explanation are in the prompt.
+
+**What it wrote** (156 tokens, unedited):
+
+> The question asks for the total number of atoms in one formula unit of calcium
+> hydroxide, Ca(OH)2. The formula contains one calcium atom, and the subscript 2
+> after the parentheses multiplies the oxygen and hydrogen inside, giving two
+> oxygen atoms and two hydrogen atoms. Adding them together: 1 (calcium) + 2
+> (oxygen) + 2 (hydrogen) = 5 atoms. The subscript 2 applies to the entire group
+> in parentheses, not just oxygen or hydrogen. The student's answer of 4 comes
+> from incorrectly applying the subscript only to oxygen, ignoring the hydrogen,
+> or ignoring the hydrogen entirely. The correct working step is to count all
+> atoms in the formula unit, which yields 5.
+
+Grounded, correct, and it does the thing the sheet promises: it teaches the
+marked answer and names the mistake behind the one the candidate chose, without
+ever calling the key wrong.
+
+**The timing**, measured on the device and shown in the sheet:
+
+| | |
+| --- | --- |
+| Reading the question (prompt processing) | 3.9 s and 4.0 s, two runs |
+| Writing the answer (156 tokens) | 30.8 s and 30.7 s |
+| Writing speed | 4.6 and 5.1 tokens/s |
+| Load into memory, first question after opening Review | about 10 s |
+
+That is **thirty-five seconds** for one explanation: fine for a considered
+re-explanation under a question, too slow to replace the instant written one -
+which is why the sheet streams, and why the authored explanation is on screen
+before the tutor starts.
+
+**Three things only the phone showed.**
+
+* *Marker-first collapse.* The first version of the prompt ended with "finish
+  with I GET: <option>". The model read the last instruction, wrote
+  `<​think​>​<​/think​>I GET: A) 5` and stopped - ten tokens, no
+  teaching at all, reported as "1.7 tokens/s" because the whole call was divided
+  by ten tokens. The demand for the explanation now comes before the marker, and
+  reading and writing are timed apart.
+* *"Could not start answering."* A question asked while the Review warm-up was
+  still loading went to an engine with no model. Loading is single-flight now.
+* *A crash in `generate`.* The shrinker renamed the JNI token callback.
+  `GetMethodID` failed and the pending `NoSuchMethodError` killed the process
+  mid-answer. Both fixes are in [AI_TUTOR.md](AI_TUTOR.md) with the tests that
+  pin them.
+
+**Still not tested:** audio in (the `mmproj` encoder is not packaged, so the
+tutor cannot listen); the model's own speech output, which is not used - answers
+are read by the phone's own voice instead; Spanish and Italian on the device,
+which are exercised by unit tests and by the laptop run above but not yet by ear
+on the phone; and battery or thermal behaviour over a long session.

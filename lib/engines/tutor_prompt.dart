@@ -106,16 +106,17 @@ abstract final class TutorPrompt {
     }
     buffer
       ..writeln(
-        'Talk the student through it: say what the question is really asking, '
-        'show the working step by step, and point out the mistake that leads to '
-        'the answer they gave. Keep it under 150 words.',
+        'Teach the marked answer in under 130 words. Start straight in with the '
+        'explanation: what the question is really asking, then the working '
+        'step by step, then the mistake that leads to the answer the student '
+        'gave. Do not open with the answer letter, and do not write tags or '
+        'headings.',
       )
       ..writeln(
-        'Teach the marked answer. Do not say it is wrong. If your own working '
-        'reaches a different option, add one final line of exactly this form '
-        'and nothing after it:',
+        'Do not say it is wrong. Only if your own working really reaches a '
+        'different option, finish with one line of this form and nothing after '
+        'it: I GET: <that option text>',
       )
-      ..writeln('I GET: <that option text>')
       ..writeln('<|im_end|>')
       ..write('<|im_start|>assistant');
     return buffer.toString();
@@ -191,16 +192,35 @@ abstract final class TutorPrompt {
 
   /// The answer with any trailing marker line and stop tokens removed, which is
   /// what the sheet shows.
+  ///
+  /// A reasoning model opens with a think block. On the phone it wrote an empty
+  /// one - `<think></think>` in front of the answer - and the sheet drew the tags
+  /// as if they were words. The block is the model's working, not the
+  /// explanation the student asked for, so it is dropped whole.
   static String body(String answer) {
-    var text = answer;
-    final stop = text.indexOf('<|im_end|>');
-    if (stop >= 0) text = text.substring(0, stop);
+    var text = answer
+        .replaceAll(
+          RegExp(r'<think>[\s\S]*?</think>', caseSensitive: false),
+          '',
+        )
+        .replaceAll(RegExp(r'</?think>', caseSensitive: false), '')
+        .replaceAll(RegExp(r'<\|[^>]*\|>'), '');
     final marker = RegExp(
       r'^\s*(?:CHOICE|I\s+GET)\s*:.*$',
       multiLine: true,
       caseSensitive: false,
     ).firstMatch(text);
     if (marker != null) text = text.substring(0, marker.start);
+    // A stray marker on the same line as prose, which is how a tired model
+    // writes it, leaves the sentence that came before it.
+    text = text.replaceAll(
+      RegExp(
+        r'\s*(?:CHOICE|I\s+GET)\s*:.*$',
+        multiLine: true,
+        caseSensitive: false,
+      ),
+      '',
+    );
     return text.trim();
   }
 

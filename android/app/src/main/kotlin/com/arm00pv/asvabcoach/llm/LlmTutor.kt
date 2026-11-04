@@ -265,7 +265,13 @@ class LlmTutor(private val context: Context) {
         // figure that is estimated is not a measurement, and this is the number
         // that decides whether the tutor feels usable on a phone.
         var tokens = 0
+        // Reading the question and writing the answer are different speeds by
+        // an order of magnitude on a phone, so they are timed apart. One number
+        // that divides answer tokens by the whole call is a number that says
+        // "1.7 tokens/s" about an engine that writes at eight.
+        var firstTokenAt = 0L
         val sink = LlmTokenSink { text ->
+            if (tokens == 0) firstTokenAt = System.currentTimeMillis()
             tokens += 1
             if (!generateCancel.get()) emit(mapOf("type" to "token", "text" to text))
         }
@@ -276,6 +282,7 @@ class LlmTutor(private val context: Context) {
                 "text" to text,
                 "millis" to (System.currentTimeMillis() - started),
                 "tokens" to tokens,
+                "firstTokenMillis" to (if (firstTokenAt == 0L) 0L else firstTokenAt - started),
                 "cancelled" to generateCancel.get(),
             ),
         )

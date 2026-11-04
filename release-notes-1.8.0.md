@@ -31,8 +31,11 @@ The app now carries a language model of its own.
   exam runner: a model that answers the question while the timer runs is a way
   to score a mock you did not earn.
 * **Measured, on the phone.** Settings has *Benchmark it*, which runs one fixed
-  question and reports tokens per second and how long the model took to load -
-  the numbers from your phone, not from somewhere else's.
+  question and reports the reading and writing speeds separately and how long the
+  model took to load - the numbers from your phone, not from somewhere else's. On
+  a Pixel 7 Pro a General Science explanation took 35 seconds: 3.9 s to read the
+  question, then 156 tokens at 4.6 tokens/s. That is the honest price of a tutor
+  with no network, and the sheet says it before you tap.
 
 **Two faults that only a release build on a real phone showed, both fixed:**
 a question asked while the model was still loading reached an engine with no

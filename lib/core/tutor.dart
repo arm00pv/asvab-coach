@@ -88,6 +88,7 @@ class TutorService extends ChangeNotifier {
   int? _lastMillis;
   int? _lastTokens;
   int? _lastLoadMillis;
+  int? _lastFirstTokenMillis;
   int _received = 0;
   int _total = 0;
   StreamSubscription<dynamic>? _subscription;
@@ -133,6 +134,29 @@ class TutorService extends ChangeNotifier {
 
   /// How many tokens the engine sampled for the last answer.
   int? get lastTokens => _lastTokens;
+
+  /// How long the last answer spent reading the question before it wrote its
+  /// first token. Null when nothing was written.
+  int? get lastReadMillis {
+    final first = _lastFirstTokenMillis;
+    if (first == null || first <= 0) return null;
+    return first;
+  }
+
+  /// Tokens per second while it was writing, with the question excluded.
+  ///
+  /// This is the number that decides whether the tutor feels usable, and it is
+  /// not [tokensPerSecond]: that one divides by the whole call, most of which is
+  /// the model reading a prompt it has not been given before.
+  double? get writeTokensPerSecond {
+    final millis = _lastMillis;
+    final first = _lastFirstTokenMillis;
+    final tokens = _lastTokens;
+    if (millis == null || tokens == null || first == null) return null;
+    final writing = millis - first;
+    if (writing <= 0 || tokens <= 0) return null;
+    return tokens * 1000 / writing;
+  }
 
   /// How long the model took to read into memory, in milliseconds.
   int? get lastLoadMillis => _lastLoadMillis;
@@ -320,6 +344,7 @@ class TutorService extends ChangeNotifier {
     _generating = true;
     _lastMillis = null;
     _lastTokens = null;
+    _lastFirstTokenMillis = null;
     _touch();
     notifyListeners();
     final completer = Completer<String>();
@@ -406,6 +431,7 @@ class TutorService extends ChangeNotifier {
         _generating = false;
         _lastMillis = (raw['millis'] as num?)?.toInt();
         _lastTokens = (raw['tokens'] as num?)?.toInt();
+        _lastFirstTokenMillis = (raw['firstTokenMillis'] as num?)?.toInt();
         final text = (raw['text'] as String?) ?? _answer;
         _answer = text;
         notifyListeners();

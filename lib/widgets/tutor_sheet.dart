@@ -142,6 +142,7 @@ class _TutorSheetState extends State<_TutorSheet> {
     final speech = speechOf(context);
     final c = context.colors;
     final answer = tutor.answer;
+    final body = TutorPrompt.body(answer);
     _autoReadWhenFinished(tutor, speech);
     final options = <String>[
       for (final index in widget.order)
@@ -216,12 +217,23 @@ class _TutorSheetState extends State<_TutorSheet> {
                       if (answer.isEmpty && tutor.error == null)
                         _waiting(context, tutor),
                       Text(
-                        TutorPrompt.body(answer),
+                        body,
                         style: context.text.bodyMedium?.copyWith(
                           height: 1.6,
                           color: c.textPrimary,
                         ),
                       ),
+                      if (body.isEmpty &&
+                          answer.isNotEmpty &&
+                          !tutor.generating &&
+                          tutor.error == null) ...<Widget>[
+                        const SizedBox(height: Space.md),
+                        const Callout(
+                          text:
+                              'The tutor answered without explaining it. Try '
+                              'again, or ask it in another language.',
+                        ),
+                      ],
                       if (_readProblem != null) ...<Widget>[
                         const SizedBox(height: Space.md),
                         Callout(text: _readProblem!),
@@ -373,12 +385,22 @@ class _TutorSheetState extends State<_TutorSheet> {
   String _footnote(TutorService tutor) {
     final millis = tutor.lastMillis;
     final seconds = millis == null ? null : (millis / 1000).toStringAsFixed(1);
-    final speed = tutor.tokensPerSecond;
-    // The measured speed, not an estimate: a candidate deciding whether to tap
-    // this again deserves the number from their own phone.
+    final readMillis = tutor.lastReadMillis;
+    final readSeconds = readMillis == null
+        ? null
+        : (readMillis / 1000).toStringAsFixed(1);
+    final write = tutor.writeTokensPerSecond;
+    final tokens = tutor.lastTokens;
+    // The measured speeds, not an estimate: a candidate deciding whether to tap
+    // this again deserves the numbers from their own phone. Reading the
+    // question and writing the answer are counted apart, because on a phone they
+    // differ by an order of magnitude.
     final took = seconds == null
         ? ''
-        : 'Took $seconds s${speed == null ? '' : ' at ${speed.toStringAsFixed(1)} tokens/s'}. ';
+        : 'Took $seconds s'
+              '${readSeconds == null ? '' : ' ($readSeconds s of it reading the question)'}'
+              '${write == null ? '' : ', then ${tokens ?? 0} tokens at ${write.toStringAsFixed(1)} tokens/s'}'
+              '. ';
     final language = _language == TutorLanguage.english
         ? ''
         : 'Answering in ${_language.englishName}, from its own working; the '

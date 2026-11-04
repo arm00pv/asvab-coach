@@ -56,6 +56,13 @@ void main() {
       expect(prompt, isNot(contains('Answer with the letter')));
       expect(prompt, startsWith('<|im_start|>system'));
       expect(prompt, endsWith('<|im_start|>assistant'));
+      // On the phone the model read the last instruction, wrote the marker line
+      // and stopped: ten tokens of answer and no teaching. The demand for an
+      // explanation now comes before the marker, not after it.
+      expect(
+        prompt.indexOf('Start straight in with the explanation'),
+        lessThan(prompt.indexOf('I GET: <that option text>')),
+      );
     });
 
     test('says what the candidate put, when they put something', () {
@@ -124,6 +131,30 @@ void main() {
 
     test('leaves prose alone when there is no marker', () {
       expect(TutorPrompt.body('Just words.'), 'Just words.');
+    });
+
+    test('drops an empty think block, which is what the phone produced', () {
+      expect(
+        TutorPrompt.body('<think></think>I GET: A) 5'),
+        '',
+        reason: 'the tags were drawn as words on the sheet',
+      );
+    });
+
+    test('drops a think block and keeps the explanation after it', () {
+      expect(
+        TutorPrompt.body(
+          '<think>add the two hydrogens</think>One calcium, two oxygens, two hydrogens.',
+        ),
+        'One calcium, two oxygens, two hydrogens.',
+      );
+    });
+
+    test('a marker on the end of a sentence is removed with it', () {
+      expect(
+        TutorPrompt.body('Five atoms altogether. I GET: A) 5'),
+        'Five atoms altogether.',
+      );
     });
   });
 }

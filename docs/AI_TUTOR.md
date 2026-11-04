@@ -187,9 +187,16 @@ side effect.
 usable, the 1.02 GB download completes and verifies on the device, and the model
 loads - `model loaded, n_ctx=2048 threads=6` in logcat.
 
-**Not yet verified:** a finished answer and the tokens-per-second on the phone.
-The USB connection dropped mid-run and the device has not come back, so the one
-number that decides whether this feels like a tutor or a wait is still owed.
+**Verified on the Pixel 7 Pro, 3 November 2026:** a finished, grounded
+explanation of a General Science item - correct, in the sheet's own words, naming
+the mistake behind the option the candidate chose - at 156 tokens in 35 s: 3.9 s
+reading the question and then 4.6 tokens/s writing it. The model loads in about
+ten seconds. The transcript and the numbers are in [AI_EVAL.md](AI_EVAL.md); the
+two defects the same session found are below.
+
+**Still not verified:** Spanish and Italian by ear on the phone (they are tested
+through the prompt and the voice-selection unit tests, and were exercised on the
+laptop), audio input, and thermals over a long session.
 
 ## Two release-only defects (3 November 2026)
 

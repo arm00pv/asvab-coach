@@ -1022,15 +1022,17 @@ class _TutorSection extends StatelessWidget {
       maxTokens: 120,
     );
     if (!context.mounted) return;
-    final speed = tutor.tokensPerSecond;
+    final write = tutor.writeTokensPerSecond;
     final millis = tutor.lastMillis;
     final tokens = tutor.lastTokens;
     final load = tutor.lastLoadMillis;
-    final message = speed == null || millis == null
+    final read = tutor.lastReadMillis;
+    final message = write == null || millis == null
         ? 'The tutor did not finish. ${tutor.error ?? ''}'
-        : '${tokens ?? 0} tokens in ${(millis / 1000).toStringAsFixed(1)} s '
-              '(${speed.toStringAsFixed(1)} tokens/s)'
-              '${load == null ? '' : ', loaded in ${(load / 1000).toStringAsFixed(1)} s'}';
+        : '${tokens ?? 0} tokens in ${(millis / 1000).toStringAsFixed(1)} s - '
+              '${read == null ? '' : '${(read / 1000).toStringAsFixed(1)} s reading the question, then '}'
+              '${write.toStringAsFixed(1)} tokens/s while writing'
+              '${load == null ? '' : ' (loaded in ${(load / 1000).toStringAsFixed(1)} s)'}';
     if (!context.mounted) return;
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(message)));
