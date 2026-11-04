@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../core/speech.dart';
 import '../core/theme/tokens.dart';
 import '../core/tutor.dart';
+import '../data/models/lesson.dart';
 import '../data/models/question.dart';
 import '../engines/tutor_prompt.dart';
 import 'listen_button.dart' show speechOf;
@@ -32,6 +33,53 @@ Future<void> showTutorSheet(
   required List<int> order,
   String? candidateAnswer,
 }) {
+  final options = <String>[
+    for (final index in order)
+      if (index >= 0 && index < question.choices.length)
+        question.choices[index],
+  ];
+  return _show(
+    context,
+    title: 'The tutor, on this device',
+    promptFor: (TutorLanguage language) => TutorPrompt.forQuestion(
+      question,
+      order: order,
+      keyedIndex: question.answerIndex,
+      explanation: question.explanation,
+      candidateAnswer: candidateAnswer,
+      language: language,
+    ),
+    options: options,
+    keyedSlot: order.indexOf(question.answerIndex),
+  );
+}
+
+/// The tutor on a whole lesson.
+///
+/// Every theme a candidate studies can now be explained: the lesson is the
+/// audited text, and this asks the model to say it another way for the student it
+/// did not land with. There is no key here to check, so the sheet's "it reached a
+/// different option" warning is absent by construction, and the prompt forbids
+/// adding facts the lesson does not contain.
+Future<void> showLessonTutorSheet(
+  BuildContext context, {
+  required Lesson lesson,
+}) {
+  return _show(
+    context,
+    title: 'The tutor, on this lesson',
+    promptFor: (TutorLanguage language) =>
+        TutorPrompt.forLesson(lesson, language: language),
+  );
+}
+
+Future<void> _show(
+  BuildContext context, {
+  required String title,
+  required String Function(TutorLanguage language) promptFor,
+  List<String>? options,
+  int? keyedSlot,
+}) {
   return showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
@@ -39,9 +87,10 @@ Future<void> showTutorSheet(
     builder: (sheetContext) => ChangeNotifierProvider<TutorService>.value(
       value: tutorOf(context),
       child: _TutorSheet(
-        question: question,
-        order: order,
-        candidateAnswer: candidateAnswer,
+        title: title,
+        promptFor: promptFor,
+        options: options,
+        keyedSlot: keyedSlot,
       ),
     ),
   );
@@ -49,14 +98,21 @@ Future<void> showTutorSheet(
 
 class _TutorSheet extends StatefulWidget {
   const _TutorSheet({
-    required this.question,
-    required this.order,
-    this.candidateAnswer,
+    required this.title,
+    required this.promptFor,
+    this.options,
+    this.keyedSlot,
   });
 
-  final Question question;
-  final List<int> order;
-  final String? candidateAnswer;
+  final String title;
+
+  /// Built per language, so changing the chip regenerates in the new one.
+  final String Function(TutorLanguage language) promptFor;
+
+  /// The options as the screen draws them, for the disagreement warning. Null on
+  /// a lesson, where there is nothing to disagree with.
+  final List<String>? options;
+  final int? keyedSlot;
 
   @override
   State<_TutorSheet> createState() => _TutorSheetState();
@@ -124,16 +180,7 @@ class _TutorSheetState extends State<_TutorSheet> {
 
   Future<void> _run() async {
     final tutor = context.read<TutorService>();
-    await tutor.ask(
-      TutorPrompt.forQuestion(
-        widget.question,
-        order: widget.order,
-        keyedIndex: widget.question.answerIndex,
-        explanation: widget.question.explanation,
-        candidateAnswer: widget.candidateAnswer,
-        language: _language,
-      ),
-    );
+    await tutor.ask(widget.promptFor(_language));
   }
 
   @override
@@ -144,15 +191,11 @@ class _TutorSheetState extends State<_TutorSheet> {
     final answer = tutor.answer;
     final body = TutorPrompt.body(answer);
     _autoReadWhenFinished(tutor, speech);
-    final options = <String>[
-      for (final index in widget.order)
-        if (index >= 0 && index < widget.question.choices.length)
-          widget.question.choices[index],
-    ];
-    final ownAnswer = tutor.generating
+    final options = widget.options ?? const <String>[];
+    final keyedSlot = widget.keyedSlot;
+    final ownAnswer = (tutor.generating || options.isEmpty || keyedSlot == null)
         ? null
         : TutorPrompt.readOwnAnswer(answer, options);
-    final keyedSlot = widget.order.indexOf(widget.question.answerIndex);
 
     return SafeArea(
       child: ConstrainedBox(
@@ -174,10 +217,7 @@ class _TutorSheetState extends State<_TutorSheet> {
                   ),
                   const SizedBox(width: Space.sm),
                   Expanded(
-                    child: Text(
-                      'The tutor, on this device',
-                      style: context.text.titleSmall,
-                    ),
+                    child: Text(widget.title, style: context.text.titleSmall),
                   ),
                   if (speech.supported)
                     ListenableBuilder(
@@ -214,7 +254,9 @@ class _TutorSheetState extends State<_TutorSheet> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      if (answer.isEmpty && tutor.error == null)
+                      // Only while work is actually happening: an answer that
+                      // came back empty used to leave this spinning for ever.
+                      if (tutor.generating || tutor.loading)
                         _waiting(context, tutor),
                       Text(
                         body,
@@ -249,6 +291,7 @@ class _TutorSheetState extends State<_TutorSheet> {
                         ),
                       ],
                       if (ownAnswer != null &&
+                          keyedSlot != null &&
                           ownAnswer.index != keyedSlot) ...[
                         const SizedBox(height: Space.lg),
                         Container(

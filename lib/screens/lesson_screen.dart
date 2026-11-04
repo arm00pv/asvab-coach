@@ -137,6 +137,7 @@ class LessonScreen extends StatelessWidget {
             ),
             const SizedBox(height: Space.md),
             Text(lesson.whyItMatters, style: context.text.bodyMedium),
+            const SizedBox(height: Space.md),
             if (mastery != null) ...<Widget>[
               const SizedBox(height: Space.md),
               Row(

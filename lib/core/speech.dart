@@ -319,6 +319,11 @@ class SpeechService extends ChangeNotifier {
   double _rate = 1.0;
   bool _autoRead = false;
   int _speaker = 0;
+
+  /// Why the downloaded voice did not speak, when it did not. Kept apart from
+  /// [lastError] so the system voice can take over and still leave the reason
+  /// on the screen.
+  String? _neuralProblem;
   String? _lastError;
 
   /// The voices this device has, sorted by language then name.
@@ -488,14 +493,18 @@ class SpeechService extends ChangeNotifier {
     if (text.trim().isEmpty) return;
     if (!_initialised) await initialise();
     // A downloaded English voice wins over the system one: the guide is written
-    // in English, and the pack is the reason the candidate spent 94 MB.
+    // in English, and the pack is the reason the candidate spent 90 MB.
+    _neuralProblem = null;
     if (await _speakWithNeural(text, 'en', screen)) return;
     if (_voices.isEmpty) {
-      _lastError = 'This device has no voice installed for the app to use.';
+      _lastError =
+          _neuralProblem ??
+          'This device has no voice installed for the app to use.';
       notifyListeners();
       return;
     }
     await _say(text, locale: _locale, voice: _voiceName, screen: screen);
+    _reportNeuralProblem();
   }
 
   /// Reads [text] in [language] - "es", "it", "en" - rather than in the
@@ -513,6 +522,7 @@ class SpeechService extends ChangeNotifier {
   }) async {
     if (text.trim().isEmpty) return null;
     if (!_initialised) await initialise();
+    _neuralProblem = null;
     if (await _speakWithNeural(text, language, screen)) return null;
     final wanted = language.toLowerCase();
     final matching = voicesFor(wanted);
@@ -530,6 +540,7 @@ class SpeechService extends ChangeNotifier {
       voice: voice.name,
       screen: screen,
     );
+    _reportNeuralProblem();
     return started ? null : 'The voice stopped before it started.';
   }
 
@@ -560,9 +571,24 @@ class SpeechService extends ChangeNotifier {
     );
     _speaking = false;
     _speakingScreen = null;
-    if (problem != null) _lastError = problem;
+    // A downloaded voice that could not speak must not leave the candidate with
+    // silence: the words fall through to the phone's own voice, and this is what
+    // the screen says about why they sound different.
+    _neuralProblem = problem;
+    if (problem != null) {
+      debugPrint('ASVAB coach: the downloaded voice failed: $problem');
+    }
     notifyListeners();
-    return true;
+    return problem == null;
+  }
+
+  /// Puts the reason a downloaded voice fell back on the screen, once the
+  /// system voice has taken over.
+  void _reportNeuralProblem() {
+    final problem = _neuralProblem;
+    if (problem == null) return;
+    _lastError = problem;
+    notifyListeners();
   }
 
   /// Hands one utterance to the engine. Returns false when it could not start.

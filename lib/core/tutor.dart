@@ -298,6 +298,11 @@ class TutorService extends ChangeNotifier {
     if (running != null) return running.future;
     final gate = Completer<void>();
     _loadGate = gate;
+    // Say "preparing" from the moment the request goes out. The platform's own
+    // "loading" event follows, and on a cold start it can be a second late - long
+    // enough for a sheet to look like it did nothing at all.
+    _loading = true;
+    notifyListeners();
     try {
       await _methods.invokeMethod<void>('load');
     } catch (error) {
@@ -372,7 +377,15 @@ class TutorService extends ChangeNotifier {
       // no "done" ever arrives - the engine died, the process was rebuilt under
       // the sheet - the sheet has to stop spinning rather than lie about work
       // that is no longer happening.
-      return await completer.future.timeout(generationTimeout);
+      final String text = await completer.future.timeout(generationTimeout);
+      // The model sometimes ends its turn before writing anything: the prompt
+      // was too long, or it took the last instruction as the whole task. An
+      // empty answer is a failure the sheet can act on, not a quiet success.
+      if (text.trim().isEmpty && _error == null) {
+        _error = 'The tutor had nothing to add. Try again.';
+        notifyListeners();
+      }
+      return text;
     } on TimeoutException {
       _generating = false;
       _pending = null;

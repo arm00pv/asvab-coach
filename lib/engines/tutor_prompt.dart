@@ -1,3 +1,4 @@
+import '../data/models/lesson.dart';
 import '../data/models/question.dart';
 
 /// The language the tutor answers in.
@@ -116,6 +117,51 @@ abstract final class TutorPrompt {
         'Do not say it is wrong. Only if your own working really reaches a '
         'different option, finish with one line of this form and nothing after '
         'it: I GET: <that option text>',
+      )
+      ..writeln('<|im_end|>')
+      ..write('<|im_start|>assistant');
+    return buffer.toString();
+  }
+
+  /// Builds the completion prompt for a whole lesson.
+  ///
+  /// A lesson is a theme rather than an item: there is no key to ground the model
+  /// on, so the prompt hands it the lesson's own hook, headings and rules and asks
+  /// it to say the same thing another way. It is told not to add facts the lesson
+  /// does not contain, because the written lesson is the audited text and the
+  /// model's version is a second voice for it, not a second source.
+  static String forLesson(
+    Lesson lesson, {
+    TutorLanguage language = TutorLanguage.english,
+  }) {
+    // Kept deliberately short. The first version fed the model four full
+    // sections and five rules - well over a thousand tokens - and it answered
+    // with an end-of-turn token and nothing else. On a 2 B model the lesson's
+    // shape is enough to talk from; the whole body is not.
+    final buffer = StringBuffer()
+      ..writeln('<|im_start|>system')
+      ..writeln(
+        'You are an ASVAB study coach. The app has already written the lesson '
+        'below and it is correct. Explain it another way, in plain words, for a '
+        'student who did not follow the written version. Do not contradict it.',
+      )
+      ..writeln(_languageLine[language] ?? '')
+      ..writeln('<|im_end|>')
+      ..writeln('<|im_start|>user')
+      ..writeln('Lesson: ${lesson.title} (${lesson.subtest.label}).')
+      ..writeln('Opening idea: ${lesson.hook}')
+      ..writeln('Why it matters: ${lesson.whyItMatters}');
+    for (final section in lesson.sections.take(3)) {
+      buffer.writeln('Section: ${section.heading}');
+    }
+    for (final rule in lesson.quickRules.take(3)) {
+      buffer.writeln('Rule: $rule');
+    }
+    buffer
+      ..writeln(
+        'In under 120 words, as a teacher talking to one student: the idea in '
+        'plain words, one worked step, and the mistake people make. Start with '
+        'the explanation itself.',
       )
       ..writeln('<|im_end|>')
       ..write('<|im_start|>assistant');

@@ -2,6 +2,7 @@ package com.arm00pv.asvabcoach.voice
 
 import android.content.Context
 import android.media.AudioAttributes
+import android.media.AudioManager
 import android.util.Log
 import android.media.AudioFormat
 import android.media.AudioTrack
@@ -132,13 +133,28 @@ class VoiceTts(private val context: Context) {
         speaker: Int,
         speed: Float,
         onStarted: () -> Unit,
+        onError: (String) -> Unit,
         onDone: () -> Unit,
     ) {
         stopping = false
+        // The most common reason a voice is silent on a phone that just made
+        // sound: the media stream is at zero, and a speech utterance is a media
+        // stream. Saying so beats a button that appears to do nothing.
+        val audio = context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager
+        val volume = audio?.getStreamVolume(AudioManager.STREAM_MUSIC) ?: -1
+        if (volume == 0) {
+            Log.e(TAG, "media volume is zero")
+            onError(
+                "The media volume on this phone is at zero, so the voice cannot " +
+                    "be heard. Turn it up and try again.",
+            )
+            onDone()
+            return
+        }
         worker.execute {
             try {
                 if (!load(id)) {
-                    onDone()
+                    onError("The downloaded voice could not be opened.")
                     return@execute
                 }
                 var heard = false
@@ -154,12 +170,19 @@ class VoiceTts(private val context: Context) {
                         TAG,
                         "chunk ${index + 1}/${chunks.size}: ${samples.size} samples, sid=$speaker",
                     )
-                    play(samples) {
+                    val problem = play(samples) {
                         if (!heard) {
                             heard = true
                             onStarted()
                         }
                     }
+                    if (problem != null) {
+                        onError(problem)
+                        return@execute
+                    }
+                }
+                if (!heard) {
+                    onError("The downloaded voice did not produce any sound.")
                 }
             } finally {
                 playing = false
@@ -169,14 +192,26 @@ class VoiceTts(private val context: Context) {
         }
     }
 
-    private fun play(samples: FloatArray, onStarted: () -> Unit) {
-        if (sampleRate <= 0) return
-        Log.i(TAG, "speaking ${samples.size} samples at $sampleRate Hz")
+    /// Plays one piece of speech. Returns a sentence to show when it could not,
+    /// or null once the samples have finished playing.
+    private fun play(samples: FloatArray, onStarted: () -> Unit): String? {
+        if (sampleRate <= 0) return "The voice engine did not report a sample rate."
+        var peak = 0f
         val shorts = ShortArray(samples.size) { index ->
-            (samples[index].coerceIn(-1f, 1f) * Short.MAX_VALUE).toInt().toShort()
+            val value = samples[index].coerceIn(-1f, 1f)
+            val size = if (value < 0f) -value else value
+            if (size > peak) peak = size
+            (value * Short.MAX_VALUE).toInt().toShort()
         }
         val bytes = shorts.size * 2
-        if (bytes <= 0) return
+        if (bytes <= 0) return "The downloaded voice produced no sound."
+        // A model that returns samples of near-zero amplitude is a broken pack,
+        // not a quiet phone: say so rather than playing nothing and moving on.
+        if (peak < 0.02f) {
+            Log.e(TAG, "the samples are silent (peak=$peak)")
+            return "The downloaded voice produced silence. Remove it and download it again."
+        }
+        Log.i(TAG, "speaking ${samples.size} samples at $sampleRate Hz, peak=$peak")
         val audio = AudioTrack.Builder()
             .setAudioAttributes(
                 AudioAttributes.Builder()
@@ -204,9 +239,31 @@ class VoiceTts(private val context: Context) {
         onStarted()
         var offset = 0
         while (offset < shorts.size && !stopping) {
-            val written = audio.write(shorts, offset, shorts.size - offset)
-            if (written <= 0) break
+            val written = audio.write(
+                shorts,
+                offset,
+                shorts.size - offset,
+                AudioTrack.WRITE_BLOCKING,
+            )
+            if (written < 0) {
+                // A negative return is an error code, not a short write. Saying
+                // "nothing happened" is how a voice button silently lies.
+                Log.e(TAG, "AudioTrack.write failed: $written")
+                break
+            }
             offset += written
+        }
+        // Let the buffer drain before releasing: stop() cuts the queue off, and
+        // the last word of a sentence is the one a candidate most needs to hear.
+        if (!stopping && offset > 0) {
+            val deadline = System.currentTimeMillis() + 5000
+            while (
+                audio.playbackHeadPosition < offset &&
+                System.currentTimeMillis() < deadline &&
+                !stopping
+            ) {
+                Thread.sleep(10)
+            }
         }
         playing = false
         try {
@@ -215,6 +272,7 @@ class VoiceTts(private val context: Context) {
         }
         audio.release()
         track = null
+        return null
     }
 
     fun stop() {

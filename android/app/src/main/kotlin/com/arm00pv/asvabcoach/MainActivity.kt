@@ -426,6 +426,11 @@ class MainActivity : FlutterActivity() {
                     onStarted = {
                         emitVoice(mapOf("type" to "started", "id" to id))
                     },
+                    onError = { message ->
+                        emitVoice(
+                            mapOf("type" to "error", "id" to id, "message" to message),
+                        )
+                    },
                     onDone = {
                         emitVoice(mapOf("type" to "finished", "id" to id))
                     },

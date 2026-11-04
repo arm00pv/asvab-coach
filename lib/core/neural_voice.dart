@@ -293,7 +293,9 @@ class NeuralVoice extends ChangeNotifier {
         // soon as it is made, so the first sentence is heard while the rest is
         // still being synthesised.
         'chunks': chunks,
-        'speaker': speaker,
+        // A single-voice pack has only speaker 0. Sending the Kokoro voice the
+        // candidate picked to a Piper model is how a voice goes silent.
+        'speaker': pack.hasSpeakers ? speaker : 0,
         'speed': speed,
       });
     } catch (error) {
@@ -419,8 +421,14 @@ class NeuralVoice extends ChangeNotifier {
       case 'error':
         _downloading = null;
         _progress.remove(id);
-        _error = (raw['message'] as String?) ?? 'The voice download failed.';
+        _error = (raw['message'] as String?) ?? 'The downloaded voice failed.';
+        // An engine that could not speak still has to release the caller, or the
+        // button spins until the app is closed.
+        _speaking = false;
+        _speakingId = null;
         notifyListeners();
+        _finished?.complete();
+        _finished = null;
       case 'started':
         _speaking = true;
         _speakingId = id;

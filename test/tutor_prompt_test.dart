@@ -1,8 +1,28 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:asvab_guard_coach/data/models/catalog.dart';
+import 'package:asvab_guard_coach/data/models/lesson.dart';
 import 'package:asvab_guard_coach/data/models/question.dart';
 import 'package:asvab_guard_coach/engines/tutor_prompt.dart';
+
+const _lesson = Lesson(
+  skillId: 'ar.percent',
+  title: 'Percents without the panic',
+  hook: 'One multiplication solves almost every percent item.',
+  whyItMatters:
+      'Percent items are the most common word problem on the section.',
+  sections: <LessonSection>[
+    LessonSection(
+      'Translate the words, then compute',
+      'Of means multiply, is means equals, more than means add.',
+      bullets: <String>['Convert the percent to a decimal first.'],
+    ),
+  ],
+  examples: <WorkedExample>[],
+  quickRules: <String>['Percent change divides by the original amount.'],
+  pitfalls: <String>['Dividing by the new amount instead of the old one.'],
+  minutes: 4,
+);
 
 const _question = Question(
   id: 'eval-mk',
@@ -85,6 +105,37 @@ void main() {
         expect(_prompt(), isNot(contains('Answer in ')));
       },
     );
+  });
+
+  group('a lesson is taught the same way', () {
+    test('hands the model the lesson the app already wrote', () {
+      final prompt = TutorPrompt.forLesson(_lesson);
+      expect(prompt, contains('Percents without the panic'));
+      expect(
+        prompt,
+        contains('One multiplication solves almost every percent'),
+      );
+      // The prompt carries the lesson's shape, not its whole body: feeding the
+      // model four full sections made it answer with an end-of-turn token and
+      // nothing else.
+      expect(prompt, contains('Section: Translate the words, then compute'));
+      expect(
+        prompt,
+        contains('Percent change divides by the original amount.'),
+      );
+      // A lesson is a theme, not an item: there is no key to check and no option
+      // to disagree with, so those parts of the question prompt must be absent.
+      expect(prompt, isNot(contains('The correct answer is')));
+      expect(prompt, isNot(contains('I GET:')));
+      expect(prompt, endsWith('<|im_start|>assistant'));
+    });
+
+    test('switches language like the question prompt does', () {
+      expect(
+        TutorPrompt.forLesson(_lesson, language: TutorLanguage.italian),
+        contains('Answer in Italian'),
+      );
+    });
   });
 
   group('reading the model back', () {
