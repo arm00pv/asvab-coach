@@ -702,6 +702,36 @@ class _NeuralVoiceRow extends StatelessWidget {
             const SizedBox(height: Space.xs),
             LinearProgressIndicator(value: neural.progressOf(pack.id)),
           ],
+          // Kokoro has eleven voices inside one model. Picking one is the
+          // difference between "a voice" and "the voice you want to be taught
+          // by", and it costs no download at all.
+          if (installed && pack.hasSpeakers) ...<Widget>[
+            const SizedBox(height: Space.xs),
+            Builder(
+              builder: (BuildContext context) {
+                final SpeechService speech = speechOf(context);
+                return ListenableBuilder(
+                  listenable: speech,
+                  builder: (BuildContext context, Widget? child) => Wrap(
+                    spacing: Space.xs,
+                    runSpacing: Space.xs,
+                    children: <Widget>[
+                      for (int index = 0; index < pack.speakers.length; index++)
+                        ChoiceChip(
+                          label: Text(pack.speakers[index]),
+                          selected: speech.speaker == index,
+                          onSelected: (_) => speech.setSpeaker(index),
+                          labelStyle: context.text.labelSmall?.copyWith(
+                            fontSize: 11,
+                          ),
+                          visualDensity: VisualDensity.compact,
+                        ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
         ],
       ),
     );

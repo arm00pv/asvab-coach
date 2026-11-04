@@ -52,6 +52,7 @@ void main() {
 
   late List<String> calls;
   late Map<String, Object?> statusPacks;
+  late Map<Object?, Object?> lastSpeak;
   MockStreamHandlerEventSink? events;
 
   Future<void> settle() async {
@@ -63,6 +64,7 @@ void main() {
   setUp(() {
     calls = <String>[];
     statusPacks = <String, Object?>{};
+    lastSpeak = <Object?, Object?>{};
     events = null;
 
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
@@ -71,8 +73,12 @@ void main() {
           switch (call.method) {
             case 'status':
               return <String, Object?>{'supported': true, 'packs': statusPacks};
-            case 'install':
             case 'speak':
+              lastSpeak =
+                  (call.arguments as Map<Object?, Object?>?) ??
+                  <Object?, Object?>{};
+              return true;
+            case 'install':
             case 'stop':
             case 'delete':
             case 'cancelInstall':
@@ -204,6 +210,77 @@ void main() {
       isEmpty,
       reason: 'the system voice must not read the same sentence too',
     );
+  });
+
+  test(
+    'a finished answer is sent as sentences, with the speaker chosen',
+    () async {
+      statusPacks = <String, Object?>{
+        'en-kokoro': <String, Object?>{'installed': true, 'bytes': 94210357},
+      };
+      final NeuralVoice neural = NeuralVoice();
+      await neural.initialise();
+      await settle();
+
+      const String answer =
+          'The formula has one calcium atom, and the subscript two multiplies '
+          'everything inside the parentheses, giving two oxygen atoms and two '
+          'hydrogen atoms. Adding them together gives five atoms in the unit.';
+      final Future<String?> spoken = neural.speak('en', answer, speaker: 4);
+      await settle();
+
+      expect(lastSpeak['speaker'], 4);
+      final Object? chunks = lastSpeak['chunks'];
+      expect(chunks, isA<List<Object?>>());
+      expect((chunks! as List<Object?>).length, greaterThan(1));
+
+      events!.success(<String, Object?>{'type': 'finished', 'id': 'en-kokoro'});
+      expect(await spoken, isNull);
+    },
+  );
+
+  test('the chunker keeps every word and respects the length', () {
+    const String paragraph =
+        'The formula has one calcium atom, and the subscript two multiplies '
+        'everything inside the parentheses, giving two oxygen atoms and two '
+        'hydrogen atoms. Adding them together gives five atoms. The subscript '
+        'applies to the whole group in parentheses, not just one atom, which is '
+        'the mistake behind the answer of four.';
+    final List<String> chunks = NeuralVoice.chunksOf(paragraph);
+    expect(chunks.length, greaterThan(1));
+    expect(
+      chunks.join(' ').replaceAll(RegExp(r'\s+'), ' '),
+      paragraph.replaceAll(RegExp(r'\s+'), ' '),
+      reason: 'nothing may be dropped: the voice reads what the screen shows',
+    );
+
+    final String longSentence = List<String>.filled(60, 'calcium').join(' ');
+    for (final String chunk in NeuralVoice.chunksOf(longSentence)) {
+      expect(chunk.length, lessThanOrEqualTo(160));
+    }
+  });
+
+  test(
+    'short sentences are said together, and nothing is said for nothing',
+    () {
+      expect(NeuralVoice.chunksOf('   '), isEmpty);
+      expect(NeuralVoice.chunksOf('Yes. No. Maybe.'), hasLength(1));
+    },
+  );
+
+  test('the chosen speaker is remembered and clamped', () async {
+    final SpeechService speech = SpeechService(
+      backend: _SystemEngine(),
+      persist: false,
+    );
+    await speech.initialise();
+    expect(speech.speaker, 0);
+
+    await speech.setSpeaker(3);
+    expect(speech.speaker, 3);
+
+    await speech.setSpeaker(99);
+    expect(speech.speaker, 15);
   });
 
   test('a phone without the engine is asked for nothing', () async {

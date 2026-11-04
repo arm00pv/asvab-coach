@@ -101,9 +101,26 @@ better voices.
    target, but adding a 30 MB model fetch to the web build is a separate
    decision, and the web build is the one that runs on a phone that just opened a
    link.
-2. **Voice selection per pack.** Kokoro has 11 speakers; the app uses speaker 0.
-   A row of voices is a real feature, not a setting nobody reads, and it is the
-   obvious next step for the English pack.
-3. **Streaming.** The engine generates the whole answer, then it plays - a
-   paragraph takes a second or two before the first sound. Generating sentence by
-   sentence through the C API's callback would start sooner.
+2. **The browser build.** Decided against for now: a 30 MB model fetch in the
+   web build is a different product decision.
+
+## Done since: streaming and voices (v1.10.0)
+
+Both of the open items from v1.9.0 are closed.
+
+**Streaming.** The engine used to synthesise a whole paragraph before playing a
+single word - about four seconds of silence on a Pixel for three and a half
+seconds of speech. The text is now split at sentence boundaries
+(`NeuralVoice.chunksOf`: nothing dropped, long sentences broken at a word
+boundary, short ones said together) and each piece is generated and played in
+turn. Measured on the phone: the Settings script is nine chunks, and chunk 1
+starts in about a second while chunk 2 is still being made - "chunk 1/9: 76638
+samples", "chunk 2/9: 71322 samples" 3.4 s later, exactly as the first finishes.
+
+**Eleven English voices.** Kokoro's `sid` 0-10 are now offered as chips (Heart,
+Bella, Nicole, Sarah, Sky, Adam, Michael, Emma, Isabella, George, Lewis), stored
+in the speech settings beside the reading speed, and passed through to the
+engine - verified on the phone as `chunk 1/1: 89144 samples, sid=1`.
+
+The Italian pack was the one voice not tested on hardware in v1.9.0; it is now:
+`pack it-piper loaded: kind=0, 22050 Hz`, 58,368 samples.

@@ -318,6 +318,7 @@ class SpeechService extends ChangeNotifier {
   String _voiceName = '';
   double _rate = 1.0;
   bool _autoRead = false;
+  int _speaker = 0;
   String? _lastError;
 
   /// The voices this device has, sorted by language then name.
@@ -408,6 +409,7 @@ class SpeechService extends ChangeNotifier {
     }
     _rate = saved.rate;
     _autoRead = saved.autoRead;
+    _speaker = saved.speaker;
     await _loadVoices(preferred: saved.locale);
     _initialised = true;
     notifyListeners();
@@ -550,7 +552,12 @@ class SpeechService extends ChangeNotifier {
     notifyListeners();
     // The speed control is shared: a candidate who slowed the guide down gets
     // the same pace from the downloaded voice.
-    final problem = await neural.speak(language, text, speed: _rate);
+    final problem = await neural.speak(
+      language,
+      text,
+      speed: _rate,
+      speaker: _speaker,
+    );
     _speaking = false;
     _speakingScreen = null;
     if (problem != null) _lastError = problem;
@@ -649,6 +656,19 @@ class SpeechService extends ChangeNotifier {
     await _save();
   }
 
+  /// Which speaker a multi-voice pack uses - Kokoro has eleven. Ignored by
+  /// single-voice packs and by the system engine.
+  int get speaker => _speaker;
+
+  Future<void> setSpeaker(int value) async {
+    if (value == _speaker) return;
+    final speakingNow = _speaking;
+    _speaker = value.clamp(0, 15);
+    notifyListeners();
+    await _save();
+    if (speakingNow) await stop();
+  }
+
   Future<void> setAutoRead(bool value) async {
     _autoRead = value;
     if (!value) await stop();
@@ -660,7 +680,12 @@ class SpeechService extends ChangeNotifier {
     if (!persist) return;
     try {
       await Storage.saveSpeech(
-        SpeechSettings(locale: _locale, rate: _rate, autoRead: _autoRead),
+        SpeechSettings(
+          locale: _locale,
+          rate: _rate,
+          autoRead: _autoRead,
+          speaker: _speaker,
+        ),
       );
     } catch (error) {
       debugPrint('ASVAB coach: could not save speech settings: $error');
@@ -672,6 +697,7 @@ class SpeechService extends ChangeNotifier {
     await stop();
     _rate = 1.0;
     _autoRead = false;
+    _speaker = 0;
     _lastError = null;
     notifyListeners();
     await _save();

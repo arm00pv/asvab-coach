@@ -12,6 +12,7 @@ class VoicePack {
     required this.engine,
     required this.bytes,
     required this.sha256,
+    this.speakers = const <String>[],
   });
 
   /// The archive's name, and the folder the app unpacks it into.
@@ -29,6 +30,12 @@ class VoicePack {
 
   final int bytes;
   final String sha256;
+
+  /// The names of the speakers a multi-speaker model offers, in the order the
+  /// model numbers them. Empty for a single-voice pack.
+  final List<String> speakers;
+
+  bool get hasSpeakers => speakers.length > 1;
 
   /// Where the archive lives. Pinned to one release, so the file behind this
   /// name cannot change without the checksum in this file changing with it.
@@ -52,6 +59,23 @@ abstract final class VoiceCatalogue {
       bytes: 94210357,
       sha256:
           'fa22b6754cfd024b7258461b257e723c6f6eddbb183bde9ec8ea6539517f55fa',
+      // Kokoro's eleven English voices, in the model's own sid order. The
+      // names are the model's; the first letters separate American (a) from
+      // British (b) and female (f) from male (m), which is not something to ask
+      // a candidate to decode, so they are shown as names.
+      speakers: <String>[
+        'Heart',
+        'Bella',
+        'Nicole',
+        'Sarah',
+        'Sky',
+        'Adam',
+        'Michael',
+        'Emma',
+        'Isabella',
+        'George',
+        'Lewis',
+      ],
     ),
     VoicePack(
       id: 'es-piper',
@@ -247,11 +271,14 @@ class NeuralVoice extends ChangeNotifier {
     String language,
     String text, {
     double speed = 1.0,
+    int speaker = 0,
   }) async {
     final pack = VoiceCatalogue.forLanguage(language);
     if (pack == null || !isInstalled(pack.id)) {
       return 'No downloaded voice for that language yet.';
     }
+    final chunks = chunksOf(text);
+    if (chunks.isEmpty) return null;
     if (_speaking) await stop();
     final gate = Completer<void>();
     _finished = gate;
@@ -262,7 +289,11 @@ class NeuralVoice extends ChangeNotifier {
     try {
       await _methods.invokeMethod<void>('speak', <String, Object>{
         'id': pack.id,
-        'text': text,
+        // Sent as pieces, not as one paragraph: the engine speaks each one as
+        // soon as it is made, so the first sentence is heard while the rest is
+        // still being synthesised.
+        'chunks': chunks,
+        'speaker': speaker,
         'speed': speed,
       });
     } catch (error) {
@@ -290,6 +321,81 @@ class NeuralVoice extends ChangeNotifier {
     _finished?.complete();
     _finished = null;
     notifyListeners();
+  }
+
+  /// Splits text into pieces the engine can speak one after another.
+  ///
+  /// A paragraph generated in one call is silent for as long as it takes to
+  /// synthesise all of it - about four seconds for three seconds of speech on a
+  /// Pixel. Sentences are the natural unit: the voice sounds the same on each,
+  /// and the first one can be playing while the rest is still being computed.
+  ///
+  /// Nothing is dropped: joining the pieces gives back the text, and a piece
+  /// longer than [maxChars] is broken at a word boundary so one long sentence
+  /// cannot hold the first sound hostage.
+  static List<String> chunksOf(String text, {int maxChars = 160}) {
+    final trimmed = text.trim();
+    if (trimmed.isEmpty) return const <String>[];
+    final sentences = <String>[];
+    final buffer = StringBuffer();
+    for (var i = 0; i < trimmed.length; i++) {
+      final character = trimmed[i];
+      buffer.write(character);
+      final endsSentence =
+          character == '.' ||
+          character == '!' ||
+          character == '?' ||
+          character == ';' ||
+          character == '\n';
+      final followedBySpace =
+          i + 1 >= trimmed.length || trimmed[i + 1].trim().isEmpty;
+      // Four words is enough for a voice to settle into a rhythm; splitting
+      // after "Yes." sounds worse than saying both halves together.
+      if (endsSentence && followedBySpace && buffer.length >= 40) {
+        sentences.add(buffer.toString().trim());
+        buffer.clear();
+      }
+    }
+    if (buffer.isNotEmpty) sentences.add(buffer.toString().trim());
+
+    // Merge the short ones forward so a run of small sentences is not a run of
+    // small gaps between the audio.
+    final merged = <String>[];
+    var pending = '';
+    for (final sentence in sentences) {
+      pending = pending.isEmpty ? sentence : '$pending $sentence';
+      if (pending.length >= 40) {
+        merged.add(pending);
+        pending = '';
+      }
+    }
+    if (pending.isNotEmpty) {
+      if (merged.isEmpty) {
+        merged.add(pending);
+      } else {
+        merged[merged.length - 1] = '${merged.last} $pending';
+      }
+    }
+
+    final out = <String>[];
+    for (final piece in merged) {
+      out.addAll(_splitLong(piece, maxChars));
+    }
+    return out.where((String piece) => piece.trim().isNotEmpty).toList();
+  }
+
+  static List<String> _splitLong(String piece, int maxChars) {
+    if (piece.length <= maxChars) return <String>[piece];
+    final out = <String>[];
+    var rest = piece;
+    while (rest.length > maxChars) {
+      var cut = rest.lastIndexOf(' ', maxChars);
+      if (cut <= 0) cut = maxChars;
+      out.add(rest.substring(0, cut).trim());
+      rest = rest.substring(cut).trim();
+    }
+    if (rest.isNotEmpty) out.add(rest);
+    return out;
   }
 
   void _onEvent(dynamic raw) {

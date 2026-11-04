@@ -119,11 +119,17 @@ class VoiceTts(private val context: Context) {
         if (current != 0L) NativeVoice.free(current)
     }
 
-    /// Generates and plays [text]. [onStarted] fires when sound begins, and the
-    /// runnable [done] when it ends, so the caller can show the right state.
+    /// Generates and plays [chunks] one after another.
+    ///
+    /// A paragraph synthesised in one call is silent until all of it is ready,
+    /// which on a phone is several seconds. The pieces arrive here already split
+    /// at sentence boundaries, so the first sentence is heard while the rest is
+    /// still being made - and [onStarted] fires on the first sound rather than on
+    /// the first sample generated.
     fun speak(
         id: String,
-        text: String,
+        chunks: List<String>,
+        speaker: Int,
         speed: Float,
         onStarted: () -> Unit,
         onDone: () -> Unit,
@@ -135,19 +141,29 @@ class VoiceTts(private val context: Context) {
                     onDone()
                     return@execute
                 }
-                val samples = NativeVoice.generate(handle, text, 0, speed) ?: run {
-                    Log.e(TAG, "the engine produced no samples")
-                    onDone()
-                    return@execute
+                var heard = false
+                for ((index, chunk) in chunks.withIndex()) {
+                    if (stopping) break
+                    val samples = NativeVoice.generate(handle, chunk, speaker, speed)
+                    if (samples == null || samples.isEmpty()) {
+                        Log.e(TAG, "chunk ${index + 1}/${chunks.size} produced no samples")
+                        continue
+                    }
+                    if (stopping) break
+                    Log.i(
+                        TAG,
+                        "chunk ${index + 1}/${chunks.size}: ${samples.size} samples, sid=$speaker",
+                    )
+                    play(samples) {
+                        if (!heard) {
+                            heard = true
+                            onStarted()
+                        }
+                    }
                 }
-                if (stopping) {
-                    onDone()
-                    return@execute
-                }
-                play(samples, onStarted)
             } finally {
                 playing = false
-                if (!stopping) stopping = false
+                stopping = false
                 onDone()
             }
         }

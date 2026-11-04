@@ -74,6 +74,7 @@ class SpeechSettings {
     this.locale = '',
     this.rate = 1.0,
     this.autoRead = false,
+    this.speaker = 0,
   });
 
   /// The voice's BCP-47 tag, or empty for "whatever the device speaks".
@@ -85,12 +86,21 @@ class SpeechSettings {
   /// Whether a screen reads itself when it comes to the front.
   final bool autoRead;
 
-  SpeechSettings copyWith({String? locale, double? rate, bool? autoRead}) =>
-      SpeechSettings(
-        locale: locale ?? this.locale,
-        rate: rate ?? this.rate,
-        autoRead: autoRead ?? this.autoRead,
-      );
+  /// Which speaker a multi-speaker downloaded voice uses. The Kokoro pack has
+  /// eleven; every other voice has one and ignores this.
+  final int speaker;
+
+  SpeechSettings copyWith({
+    String? locale,
+    double? rate,
+    bool? autoRead,
+    int? speaker,
+  }) => SpeechSettings(
+    locale: locale ?? this.locale,
+    rate: rate ?? this.rate,
+    autoRead: autoRead ?? this.autoRead,
+    speaker: speaker ?? this.speaker,
+  );
 }
 
 /// A decoded list plus what went wrong on the way through.
@@ -115,6 +125,7 @@ abstract final class Storage {
   static const _kSpeechLocale = 'asvab.speech.locale.v1';
   static const _kSpeechRate = 'asvab.speech.rate.v1';
   static const _kSpeechAuto = 'asvab.speech.auto.v1';
+  static const _kSpeechSpeaker = 'asvab.speech.speaker.v1';
 
   /// Reads everything that survives a refresh.
   ///
@@ -317,6 +328,7 @@ abstract final class Storage {
         locale: prefs.getString(_kSpeechLocale) ?? '',
         rate: rate.clamp(0.7, 1.3),
         autoRead: prefs.getBool(_kSpeechAuto) ?? false,
+        speaker: (prefs.getInt(_kSpeechSpeaker) ?? 0).clamp(0, 15),
       );
     } catch (_) {
       return const SpeechSettings();
@@ -328,6 +340,7 @@ abstract final class Storage {
     await prefs.setString(_kSpeechLocale, settings.locale);
     await prefs.setDouble(_kSpeechRate, settings.rate);
     await prefs.setBool(_kSpeechAuto, settings.autoRead);
+    await prefs.setInt(_kSpeechSpeaker, settings.speaker);
   }
 
   static Future<void> saveTheme(bool dark) async {

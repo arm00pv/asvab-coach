@@ -409,15 +409,19 @@ class MainActivity : FlutterActivity() {
             }
             "speak" -> {
                 val id = call.argument<String>("id").orEmpty()
-                val text = call.argument<String>("text").orEmpty()
+                // The text arrives split at sentence boundaries, so the engine
+                // can speak the first piece while it makes the rest.
+                val chunks = call.argument<List<String>>("chunks").orEmpty()
+                val speaker = call.argument<Number>("speaker")?.toInt() ?: 0
                 val speed = (call.argument<Number>("speed") ?: 1.0).toFloat()
-                if (id.isEmpty() || text.isBlank()) {
+                if (id.isEmpty() || chunks.isEmpty()) {
                     result.success(false)
                     return
                 }
                 voice.speak(
                     id,
-                    text,
+                    chunks,
+                    speaker,
                     speed,
                     onStarted = {
                         emitVoice(mapOf("type" to "started", "id" to id))
