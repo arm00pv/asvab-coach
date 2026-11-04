@@ -12,6 +12,9 @@ import androidx.core.content.FileProvider
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import com.arm00pv.asvabcoach.llm.LlmTutor
+import com.arm00pv.asvabcoach.voice.NativeVoice
+import com.arm00pv.asvabcoach.voice.VoicePacks
+import com.arm00pv.asvabcoach.voice.VoiceTts
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -45,6 +48,11 @@ class MainActivity : FlutterActivity() {
     private var speechReady = false
     private var speechChannel: MethodChannel? = null
     private var utteranceCount = 0
+
+    /// The downloaded voices: sherpa-onnx on the phone, one pack per language.
+    private var voiceTts: VoiceTts? = null
+    private var voicePacks: VoicePacks? = null
+    private var voiceEvents: EventChannel.EventSink? = null
 
     /// Calls that arrived before the engine finished initialising. The engine
     /// reports readiness asynchronously, and the first call almost always
@@ -93,6 +101,27 @@ class MainActivity : FlutterActivity() {
             },
         )
 
+        // The neural voices. A pack is downloaded once, verified, and then spoken
+        // with by sherpa-onnx inside the app - no network, no system voice.
+        val packs = VoicePacks(this)
+        this.voicePacks = packs
+        val voice = VoiceTts(this)
+        this.voiceTts = voice
+        MethodChannel(messenger, "asvabcoach/voice").setMethodCallHandler { call, result ->
+            handleVoice(call, result, voice, packs)
+        }
+        EventChannel(messenger, "asvabcoach/voice_events").setStreamHandler(
+            object : EventChannel.StreamHandler {
+                override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+                    voiceEvents = events
+                }
+
+                override fun onCancel(arguments: Any?) {
+                    voiceEvents = null
+                }
+            },
+        )
+
         MethodChannel(messenger, "asvabcoach/update").setMethodCallHandler { call, result ->
             when (call.method) {
                 "version" -> result.success(versionName())
@@ -125,6 +154,11 @@ class MainActivity : FlutterActivity() {
         speechReady = false
         tutor?.dispose()
         tutor = null
+        voiceTts?.dispose()
+        voiceTts = null
+        voicePacks?.dispose()
+        voicePacks = null
+        voiceEvents = null
         super.onDestroy()
     }
 
@@ -292,6 +326,112 @@ class MainActivity : FlutterActivity() {
                     }
                 }
                 result.success(opened)
+            }
+            else -> result.notImplemented()
+        }
+    }
+
+    // ---- Downloaded voices -------------------------------------------------
+
+    private fun emitVoice(event: Map<String, Any?>) {
+        main.post { voiceEvents?.success(event) }
+    }
+
+    private fun handleVoice(
+        call: MethodCall,
+        result: MethodChannel.Result,
+        voice: VoiceTts,
+        packs: VoicePacks,
+    ) {
+        when (call.method) {
+            "status" -> {
+                val ids = call.argument<List<String>>("ids").orEmpty()
+                val states = HashMap<String, Map<String, Any?>>()
+                for (id in ids) {
+                    states[id] = mapOf(
+                        "installed" to packs.isInstalled(id),
+                        "bytes" to packs.sizeOf(id),
+                        "downloading" to packs.isDownloading(id),
+                    )
+                }
+                result.success(
+                    mapOf(
+                        "supported" to voice.isReady(),
+                        "error" to NativeVoice.loadError,
+                        "packs" to states,
+                    ),
+                )
+            }
+            "install" -> {
+                val id = call.argument<String>("id").orEmpty()
+                val url = call.argument<String>("url").orEmpty()
+                val bytes = call.argument<Number>("bytes")?.toLong() ?: 0L
+                val sha = call.argument<String>("sha256").orEmpty()
+                if (id.isEmpty() || url.isEmpty() || sha.isEmpty()) {
+                    result.error("bad_args", "A pack, an address and a checksum are needed.", null)
+                    return
+                }
+                packs.install(
+                    id,
+                    url,
+                    bytes,
+                    sha,
+                    onProgress = { received, total ->
+                        emitVoice(
+                            mapOf(
+                                "type" to "download",
+                                "id" to id,
+                                "received" to received,
+                                "total" to total,
+                            ),
+                        )
+                    },
+                    onDone = { failure ->
+                        if (failure.isEmpty()) {
+                            emitVoice(mapOf("type" to "installed", "id" to id))
+                        } else {
+                            emitVoice(
+                                mapOf("type" to "error", "id" to id, "message" to failure),
+                            )
+                        }
+                    },
+                )
+                result.success(true)
+            }
+            "cancelInstall" -> {
+                packs.cancel()
+                result.success(true)
+            }
+            "delete" -> {
+                val id = call.argument<String>("id").orEmpty()
+                voice.unload()
+                result.success(packs.delete(id))
+            }
+            "speak" -> {
+                val id = call.argument<String>("id").orEmpty()
+                val text = call.argument<String>("text").orEmpty()
+                val speed = (call.argument<Number>("speed") ?: 1.0).toFloat()
+                if (id.isEmpty() || text.isBlank()) {
+                    result.success(false)
+                    return
+                }
+                voice.speak(
+                    id,
+                    text,
+                    speed,
+                    onStarted = {
+                        emitVoice(mapOf("type" to "started", "id" to id))
+                    },
+                    onDone = {
+                        emitVoice(mapOf("type" to "finished", "id" to id))
+                    },
+                )
+                result.success(true)
+            }
+            "stop" -> {
+                voice.stop()
+                emitVoice(mapOf("type" to "finished", "id" to ""))
+                result.success(true)
             }
             else -> result.notImplemented()
         }

@@ -59,21 +59,51 @@ and SHA-256, the same contract the model already has:
 | Spanish | Piper `es_ES-davefx-medium-int8`, 21 MB | The tutor's Spanish answers read in Spanish |
 | Italian | Piper `it_IT-paola-medium-int8`, 21 MB | The same for Italian |
 
-Cost: roughly **+8 MB to the APK** for arm64 (the same `.so`+JNI pattern as the
-tutor), and up to ~145 MB of optional downloads. That is a bigger APK than the
-model work added, which is why it is a decision for the candidate to make, not
-something to slip into a patch release.
+## What shipped, and what it cost
 
-The alternative with no size cost at all is the one shipped now: point the
-candidate at Android's own voice settings and let them install Google's better
-voices. That is a real improvement for anyone willing to spend five minutes, and
-it is already in.
+v1.9.0 carries it: sherpa-onnx 1.13.8, arm64 only, with the packs as one-off
+downloads and the system engine kept as the fallback.
 
-## Open questions before building it
+| | Measured |
+| --- | --- |
+| APK | 29.3 MB to 38.8 MB (+9.5 MB: libonnxruntime 22.2 MB and libsherpa-onnx-c-api 4.5 MB, arm64, stored compressed) |
+| English | Kokoro 82 M int8, 94,210,357-byte download, speaks at 24 kHz |
+| Spanish | Piper `es_ES-davefx-medium` int8, 14,121,495 bytes, 22.05 kHz |
+| Italian | Piper `it_IT-paola-medium` int8, 14,060,490 bytes, 22.05 kHz |
+| Extraction | gzip and tar are done in Kotlin (no native extractor, no extra dependency) |
 
-1. Does `sherpa-onnx`'s Flutter package let the app point at model directories it
-   downloaded itself, and does it keep the app free of a network fetch at
-   `flutter pub get` time? Both matter for CI and for the offline promise.
-2. Voice licences per pack (Piper model cards differ; some are CC-BY-NC).
-3. Whether to keep the system engine as the fallback, and how the two are chosen
-   without a new setting nobody reads.
+Three decisions that came out of building it:
+
+1. **Not the Flutter package.** `sherpa_onnx` on pub.dev pulls seven per-platform
+   packages and its own prebuilt libraries; the app already has a working pattern
+   for a vendored arm64 `.so` and a JNI bridge, so the C API is called directly.
+   No new dependency, no fetch at build time, and the libraries stay under
+   `jniLibs` where the tutor's already live.
+2. **Pin 1.13.8, not 2.x.** sherpa-onnx 2.0 removed espeak-ng and piper-phonemize
+   from the library, which would mean shipping a phonemizer of our own. 1.13.8
+   still has it, so a pack only carries its model, tokens and a trimmed
+   `espeak-ng-data` (1.1 MB instead of 18 MB: the en/es/it dictionaries only).
+3. **Trim the espeak data.** Upstream packs carry 113 language dictionaries in
+   every voice. Trimming is what makes a Spanish pack 13 MB instead of 31 MB.
+
+Licences were checked before shipping, not after: Kokoro-82M's weights are
+Apache-2.0; the Spanish voice's dataset is CC0; the Italian voice's dataset card
+is CC0. Each archive carries its licence or model card. Details and digests in
+[VOICE-PACKS.md](VOICE-PACKS.md).
+
+The alternative with no size cost at all is still there and still shipped: point
+the candidate at Android's own voice settings and let them install Google's
+better voices.
+
+## Still open
+
+1. **The browser build has no neural voice.** sherpa-onnx does have a WASM
+   target, but adding a 30 MB model fetch to the web build is a separate
+   decision, and the web build is the one that runs on a phone that just opened a
+   link.
+2. **Voice selection per pack.** Kokoro has 11 speakers; the app uses speaker 0.
+   A row of voices is a real feature, not a setting nobody reads, and it is the
+   obvious next step for the English pack.
+3. **Streaming.** The engine generates the whole answer, then it plays - a
+   paragraph takes a second or two before the first sound. Generating sentence by
+   sentence through the C API's callback would start sooner.

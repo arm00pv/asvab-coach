@@ -136,8 +136,9 @@ connection, no account and no server.
 
 - **No permissions at all**, not even `INTERNET`. The app never opens a socket,
   so it has nothing to ask for, and it does not ask.
-- The APK lands at `build/app/outputs/flutter-apk/app-release.apk` (about 52 MB
-  universal; use `--split-per-abi` for ~18 MB per architecture).
+- The APK lands at `build/app/outputs/flutter-apk/app-release.apk`: about 39 MB
+  universal, of which 9.5 MB is the on-device speech engine and 11 MB the tutor's
+  llama.cpp; use `--split-per-abi` for a fraction of that per architecture.
 - Release signing uses a keystore kept out of version control; **back up
   `android/keystore.jks` and `android/key.properties`** or you will not be able
   to publish an update over an existing install.

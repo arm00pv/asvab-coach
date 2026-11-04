@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import '../data/repos/storage.dart';
 import '../engines/narration.dart';
+import 'neural_voice.dart';
 import 'speech_backend_web.dart' if (dart.library.io) 'speech_backend_io.dart';
 
 /// One voice the device can speak with.
@@ -281,7 +282,7 @@ class NoSpeechBackend implements SpeechBackend {
 /// reads itself - so the settings page, the speaker button and the screens that
 /// auto-read all read the same value and cannot disagree.
 class SpeechService extends ChangeNotifier {
-  SpeechService({SpeechBackend? backend, this.persist = true})
+  SpeechService({SpeechBackend? backend, this.persist = true, this.neural})
     : _backend = backend ?? createSpeechBackend() {
     _backend.onEvent = _onEvent;
   }
@@ -295,6 +296,11 @@ class SpeechService extends ChangeNotifier {
   );
 
   final SpeechBackend _backend;
+
+  /// The downloaded voices, when the app has them. A pack that is installed is
+  /// used instead of the system engine for its language: that is the whole
+  /// point of downloading it, and it needs no second switch.
+  final NeuralVoice? neural;
 
   /// Whether this instance writes preferences back. False in tests that only
   /// exercise the engine, and for [silent].
@@ -479,6 +485,9 @@ class SpeechService extends ChangeNotifier {
   Future<void> speakText(String text, {String screen = ''}) async {
     if (text.trim().isEmpty) return;
     if (!_initialised) await initialise();
+    // A downloaded English voice wins over the system one: the guide is written
+    // in English, and the pack is the reason the candidate spent 94 MB.
+    if (await _speakWithNeural(text, 'en', screen)) return;
     if (_voices.isEmpty) {
       _lastError = 'This device has no voice installed for the app to use.';
       notifyListeners();
@@ -502,6 +511,7 @@ class SpeechService extends ChangeNotifier {
   }) async {
     if (text.trim().isEmpty) return null;
     if (!_initialised) await initialise();
+    if (await _speakWithNeural(text, language, screen)) return null;
     final wanted = language.toLowerCase();
     final matching = voicesFor(wanted);
     if (matching.isEmpty) {
@@ -519,6 +529,33 @@ class SpeechService extends ChangeNotifier {
       screen: screen,
     );
     return started ? null : 'The voice stopped before it started.';
+  }
+
+  /// Speaks through a downloaded voice when one is installed for [language].
+  ///
+  /// Returns true when the neural engine took the utterance - successfully or
+  /// not - so the caller does not fall through to the system voice and say the
+  /// same sentence twice.
+  Future<bool> _speakWithNeural(
+    String text,
+    String language,
+    String screen,
+  ) async {
+    final neural = this.neural;
+    if (neural == null || !neural.supported) return false;
+    if (!neural.canSpeak(language)) return false;
+    _lastError = null;
+    _speaking = true;
+    _speakingScreen = screen;
+    notifyListeners();
+    // The speed control is shared: a candidate who slowed the guide down gets
+    // the same pace from the downloaded voice.
+    final problem = await neural.speak(language, text, speed: _rate);
+    _speaking = false;
+    _speakingScreen = null;
+    if (problem != null) _lastError = problem;
+    notifyListeners();
+    return true;
   }
 
   /// Hands one utterance to the engine. Returns false when it could not start.
@@ -571,6 +608,11 @@ class SpeechService extends ChangeNotifier {
       await _backend.stop();
     } catch (error) {
       debugPrint('ASVAB coach: could not stop speech: $error');
+    }
+    try {
+      await neural?.stop();
+    } catch (error) {
+      debugPrint('ASVAB coach: could not stop the downloaded voice: $error');
     }
   }
 

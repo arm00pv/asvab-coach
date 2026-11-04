@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import '../core/neural_voice.dart';
 import '../core/routes.dart';
 import '../core/speech.dart';
 import '../core/tutor.dart';
@@ -99,6 +100,8 @@ class SettingsScreen extends StatelessWidget {
               ),
               const SizedBox(height: Space.lg),
               _SpokenGuideSection(speech: speech),
+              const SizedBox(height: Space.lg),
+              const _NeuralVoiceSection(),
               const SizedBox(height: Space.lg),
               const _TutorSection(),
               const SizedBox(height: Space.lg),
@@ -542,6 +545,165 @@ class _Group extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// The downloaded voices, one row per language.
+///
+/// The system engine is the default because it is free and instant. These are
+/// the alternative for a candidate who wants a voice that sounds like a person,
+/// and who is willing to spend the download on it: they run on the phone, with
+/// no network, and the guide and the tutor both use them the moment one is
+/// installed.
+class _NeuralVoiceSection extends StatelessWidget {
+  const _NeuralVoiceSection();
+
+  @override
+  Widget build(BuildContext context) {
+    final NeuralVoice? neural = _neuralOf(context);
+    if (neural == null) return const SizedBox.shrink();
+    return ListenableBuilder(
+      listenable: neural,
+      builder: (BuildContext context, Widget? child) {
+        final c = context.colors;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Eyebrow('Downloaded voices'),
+            const SizedBox(height: Space.sm),
+            AppCard(
+              padding: const EdgeInsets.all(Space.lg),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'A voice that sounds like a person, running on this phone. '
+                    'Each one is downloaded once, checked against its checksum, '
+                    'and then used for speaking and for the tutor with no '
+                    'network at all.',
+                    style: context.text.bodySmall,
+                  ),
+                  const SizedBox(height: Space.md),
+                  if (!neural.supported)
+                    Text(
+                      'This build cannot run downloaded voices: the engine ships '
+                      'for 64-bit ARM phones only, and this device is something '
+                      'else.',
+                      style: context.text.bodySmall?.copyWith(color: c.warning),
+                    )
+                  else
+                    for (final pack in VoiceCatalogue.packs)
+                      _NeuralVoiceRow(pack: pack, neural: neural),
+                  if (neural.error != null) ...<Widget>[
+                    const SizedBox(height: Space.sm),
+                    Text(
+                      neural.error!,
+                      style: context.text.bodySmall?.copyWith(color: c.warning),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  NeuralVoice? _neuralOf(BuildContext context) {
+    try {
+      return Provider.of<NeuralVoice>(context, listen: false);
+    } catch (_) {
+      return null;
+    }
+  }
+}
+
+/// One language, one pack: what it is, how big it is, and the one action that
+/// makes sense for its state.
+class _NeuralVoiceRow extends StatelessWidget {
+  const _NeuralVoiceRow({required this.pack, required this.neural});
+
+  final VoicePack pack;
+  final NeuralVoice neural;
+
+  static const _samples = <String, String>{
+    'en':
+        'This is the voice that will explain your answers on the way to the '
+        'test.',
+    'es': 'Esta es la voz que leera las explicaciones en espanol.',
+    'it': 'Questa e la voce che leggera le spiegazioni in italiano.',
+  };
+
+  Future<void> _preview(BuildContext context, VoicePack pack) async {
+    final SpeechService speech = speechOf(context);
+    final String? problem = await speech.speakIn(
+      _samples[pack.language] ?? _samples['en']!,
+      pack.language,
+      screen: 'voice-preview',
+    );
+    if (!context.mounted || problem == null) return;
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(problem)));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final installed = neural.isInstalled(pack.id);
+    final downloading = neural.downloading == pack.id;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: Space.sm),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(pack.label, style: context.text.titleSmall),
+                    Text(
+                      '${pack.engine} - ${installed ? 'on this device' : pack.sizeLabel}',
+                      style: context.text.bodySmall?.copyWith(
+                        color: installed ? c.success : c.textMuted,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (downloading)
+                TextButton(
+                  onPressed: neural.cancel,
+                  child: const Text('Cancel'),
+                )
+              else if (installed) ...<Widget>[
+                // The only way to know a voice is worth using is to hear it.
+                TextButton(
+                  onPressed: () => _preview(context, pack),
+                  child: const Text('Hear it'),
+                ),
+                TextButton(
+                  onPressed: () => neural.remove(pack.id),
+                  child: const Text('Remove'),
+                ),
+              ] else
+                OutlinedButton(
+                  onPressed: neural.downloading == null
+                      ? () => neural.install(pack)
+                      : null,
+                  child: Text('Download ${pack.sizeLabel}'),
+                ),
+            ],
+          ),
+          if (downloading) ...<Widget>[
+            const SizedBox(height: Space.xs),
+            LinearProgressIndicator(value: neural.progressOf(pack.id)),
+          ],
+        ],
+      ),
     );
   }
 }
