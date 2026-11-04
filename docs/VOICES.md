@@ -124,3 +124,32 @@ engine - verified on the phone as `chunk 1/1: 89144 samples, sid=1`.
 
 The Italian pack was the one voice not tested on hardware in v1.9.0; it is now:
 `pack it-piper loaded: kind=0, 22050 Hz`, 58,368 samples.
+## Done since: the reason a voice said nothing (v1.11.2)
+
+v1.11.0 gave the native side a voice: it measures what it wrote, refuses to call
+silence a success, and reports the reason - "The media volume on this phone is at
+zero, so the voice cannot be heard", "The downloaded voice produced silence",
+"The downloaded voice could not be opened". On the phone that reason reached the
+Dart side and stopped there. `NeuralVoice.speak()` waited for the engine's
+completion gate and then returned `null` whichever way the utterance had gone,
+so:
+
+* the caller was told "spoken, no problem" about a failure;
+* `SpeechService` therefore did not fall back to the phone's voice, and the
+  candidate heard nothing at all;
+* the sheet and the settings page had nothing to show, because there was nothing
+  to show.
+
+That was the whole of "I cannot hear the downloaded voices". The fix is three
+lines of intent in three places: `speak()` returns `_error` after the gate,
+`SpeechService` treats a non-null reason as a failure (so the system voice reads
+the words), and the tutor sheet shows `problem ?? speech.lastError` - the settings
+page already drew `lastError`.
+
+The cause reproduced on the test phone was the media stream at zero while the app
+was open. A speech utterance is a media stream, so nothing is audible, and the
+app now says so instead of offering a button that appears to do nothing.
+
+Two tests pin it in `test/neural_voice_test.dart`: the engine's error message is
+returned from `speak()`, and a pack that cannot be heard still reads through the
+phone's voice while the screen keeps the reason.
