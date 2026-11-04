@@ -12,6 +12,38 @@ import 'package:asvab_guard_coach/core/speech.dart';
 /// place to find: a pack that is installed is used for its language, a download
 /// that is in progress reports progress and cannot be started twice, and a
 /// finished utterance releases whoever is waiting for it.
+/// A system engine that records what it was asked to say.
+class _SystemEngine implements SpeechBackend {
+  final List<String> spoken = <String>[];
+
+  @override
+  bool get isSupported => true;
+
+  @override
+  set onEvent(void Function(SpeechEvent event)? handler) {}
+
+  @override
+  Future<List<SpeechVoice>> voices() async => const <SpeechVoice>[
+    SpeechVoice(name: 'en-us-x-sfg', locale: 'en-US'),
+  ];
+
+  @override
+  Future<void> speak(
+    String text, {
+    required String locale,
+    required double rate,
+    required String voice,
+  }) async {
+    spoken.add(text);
+  }
+
+  @override
+  Future<void> stop() async {}
+
+  @override
+  Future<bool> openVoiceSettings() async => false;
+}
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -144,6 +176,34 @@ void main() {
     events!.success(<String, Object?>{'type': 'finished', 'id': 'en-kokoro'});
     expect(await spoken, isNull);
     expect(neural.speaking, isFalse);
+  });
+
+  test('a downloaded voice is preferred over the system one', () async {
+    statusPacks = <String, Object?>{
+      'en-kokoro': <String, Object?>{'installed': true, 'bytes': 94210357},
+    };
+    final NeuralVoice neural = NeuralVoice();
+    await neural.initialise();
+    await settle();
+    final _SystemEngine system = _SystemEngine();
+    final SpeechService speech = SpeechService(
+      backend: system,
+      persist: false,
+      neural: neural,
+    );
+    await speech.initialise();
+
+    final Future<void> spoken = speech.speakText('Read this, please.');
+    await settle();
+    expect(calls, contains('speak'), reason: 'the pack should be used');
+    events!.success(<String, Object?>{'type': 'finished', 'id': 'en-kokoro'});
+    await spoken;
+
+    expect(
+      system.spoken,
+      isEmpty,
+      reason: 'the system voice must not read the same sentence too',
+    );
   });
 
   test('a phone without the engine is asked for nothing', () async {
