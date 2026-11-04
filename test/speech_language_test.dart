@@ -32,6 +32,9 @@ class _FakeBackend implements SpeechBackend {
 
   @override
   Future<void> stop() async {}
+
+  @override
+  Future<bool> openVoiceSettings() async => false;
 }
 
 SpeechVoice _voice(String locale, {String? name, int quality = 0}) =>

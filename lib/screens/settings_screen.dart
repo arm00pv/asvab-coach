@@ -626,19 +626,25 @@ class _SpokenGuideSection extends StatelessWidget {
                   ),
                 ),
               ),
-              if (sameLanguage.length > 1) ...<Widget>[
-                const SizedBox(height: Space.xs),
-                // Counted, not listed. Google's engine installs dozens of
-                // English voices called things like "en-au-x-auc-local";
-                // printing them turned this card into a wall of identifiers and
-                // pushed the switch that matters off the screen. The sheet is
-                // where a voice is chosen, one row per language and region.
-                Text(
-                  '${sameLanguage.length} English voices are installed on this '
-                  'device. Tap the row above to choose which one reads to you.',
-                  style: context.text.bodySmall?.copyWith(color: c.textMuted),
+              const SizedBox(height: Space.xs),
+              // Counted, not listed. Google's engine installs dozens of English
+              // voices called things like "en-au-x-auc-local"; printing them
+              // turned this card into a wall of identifiers and pushed the switch
+              // that matters off the screen. The sheet is where a voice is
+              // chosen, one row per language and region.
+              Text(
+                _voiceSummary(speech, sameLanguage.length),
+                style: context.text.bodySmall?.copyWith(color: c.textMuted),
+              ),
+              const SizedBox(height: Space.xs),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton.icon(
+                  onPressed: () => _installVoices(context, speech),
+                  icon: const Icon(Icons.record_voice_over_outlined, size: 16),
+                  label: const Text('Install or change voices'),
                 ),
-              ],
+              ),
               const Divider(height: Space.xl),
               // Speed. Three stops, because a person choosing how fast an
               // explanation is read wants slower, as it is, or quicker - not a
@@ -719,6 +725,86 @@ class _SpokenGuideSection extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  /// What this phone has, in words.
+  ///
+  /// "Why is there only English here?" has a factual answer: the guide's scripts
+  /// are written in English only, and the picker offers voices for languages the
+  /// guide can actually speak. Reading English words with Spanish sounds is
+  /// noise, which is why the row is short - and why the phone's other voices are
+  /// named but not offered.
+  String _voiceSummary(SpeechService speech, int englishVoices) {
+    if (speech.voices.isEmpty) {
+      return 'This phone has no voice installed for the app to use. Android '
+          'installs them, and the button below goes straight there.';
+    }
+    final buffer = StringBuffer(
+      englishVoices == 1
+          ? 'One English voice is installed on this device.'
+          : '$englishVoices English voices are installed on this device. Tap '
+                'the row above to choose which one reads to you.',
+    );
+    // The tutor answers in these, so their voices matter more than the rest of
+    // the phone's inventory and are named first.
+    const tutorLanguages = <String, String>{'es': 'Spanish', 'it': 'Italian'};
+    final others = <String>{};
+    final tutorial = <String>[];
+    for (final voice in speech.voices) {
+      if (writtenLanguages.contains(voice.language)) continue;
+      final tutorName = tutorLanguages[voice.language];
+      if (tutorName != null) {
+        if (!tutorial.contains(tutorName)) tutorial.add(tutorName);
+        continue;
+      }
+      final name = SpeechLanguages.nameOf(voice.language);
+      // A code the app cannot name is not a language a candidate can act on;
+      // "BRX" on this card was noise of a different kind.
+      if (name.toUpperCase() == voice.language.toUpperCase()) continue;
+      others.add(name);
+    }
+    if (tutorial.isNotEmpty) {
+      buffer.write(
+        ' It has ${tutorial.join(' and ')} voices too, which is what the tutor '
+        'reads its answers with.',
+      );
+    }
+    if (others.isNotEmpty) {
+      final sorted = others.toList()..sort();
+      final names = sorted.take(3).join(', ');
+      final more = sorted.length > 3 ? ' and ${sorted.length - 3} more' : '';
+      buffer.write(
+        ' It also has voices in $names$more. They are not offered for the '
+        "guide: its scripts are only written in English, and English words read "
+        "with another language's sounds are noise.",
+      );
+    }
+    if (tutorial.isEmpty && others.isEmpty) {
+      buffer.write(
+        ' Android installs more languages from its own settings, and the button '
+        'below goes there. The tutor answers in English, Spanish or Italian and '
+        'reads the answer in the same language, so a voice for those is worth '
+        'installing.',
+      );
+    }
+    return buffer.toString();
+  }
+
+  Future<void> _installVoices(
+    BuildContext context,
+    SpeechService speech,
+  ) async {
+    final opened = await speech.openVoiceSettings();
+    if (!context.mounted || opened) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'This phone has no voice settings screen to open. Android Settings, '
+          'System, Languages and input, Text-to-speech is where voices are '
+          'installed.',
+        ),
+      ),
     );
   }
 

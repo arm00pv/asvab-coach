@@ -71,6 +71,17 @@ class ChannelSpeechBackend implements SpeechBackend {
   }
 
   @override
+  Future<bool> openVoiceSettings() async {
+    if (!isSupported) return false;
+    try {
+      return await _channel.invokeMethod<bool>('openVoiceSettings') ?? false;
+    } catch (error) {
+      debugPrint('ASVAB coach: could not open voice settings: $error');
+      return false;
+    }
+  }
+
+  @override
   Future<void> stop() async {
     if (!isSupported) return;
     try {

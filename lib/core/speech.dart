@@ -239,6 +239,13 @@ abstract class SpeechBackend {
   /// False where there is no engine at all, which is what the web build reports
   /// when the browser has no speech synthesiser.
   bool get isSupported;
+
+  /// Opens the system screen where voices are downloaded.
+  ///
+  /// Voices belong to the engine, not to this app: Google ships one language and
+  /// the rest are installed from Android's own settings. Returns false where
+  /// there is no such screen, which is the web build and every test.
+  Future<bool> openVoiceSettings() async => false;
 }
 
 /// A stand-in for a build with no engine behind it, and for a screen built
@@ -246,6 +253,9 @@ abstract class SpeechBackend {
 class NoSpeechBackend implements SpeechBackend {
   @override
   bool get isSupported => false;
+
+  @override
+  Future<bool> openVoiceSettings() async => false;
 
   @override
   set onEvent(void Function(SpeechEvent event)? handler) {}
@@ -531,6 +541,17 @@ class SpeechService extends ChangeNotifier {
       _lastError = 'The voice stopped before it started.';
       debugPrint('ASVAB coach: speech failed: $error');
       notifyListeners();
+      return false;
+    }
+  }
+
+  /// Takes the candidate to the phone's own voice settings, where more languages
+  /// and better voices can be installed. False when there is nowhere to go.
+  Future<bool> openVoiceSettings() async {
+    try {
+      return await _backend.openVoiceSettings();
+    } catch (error) {
+      debugPrint('ASVAB coach: could not open voice settings: $error');
       return false;
     }
   }

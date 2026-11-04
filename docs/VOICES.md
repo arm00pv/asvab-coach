@@ -1,0 +1,79 @@
+# Voices: what speaks, and what could
+
+Two questions came back from the phone: *why does Settings show only English?*
+and *can the voice be less robotic?* This records the honest answer to the first
+and the measured options for the second.
+
+## Why the guide lists one language
+
+There are two independent reasons, and only one of them is about the phone.
+
+1. **The guide is written in English.** Every spoken script in
+   `lib/engines/narration.dart` is an authored English text
+   (`writtenLanguages = ['en']`), and the voice picker offers only voices for
+   languages the guide can actually say. Handing Spanish words to an English
+   voice, or English words to a Spanish one, produces noise rather than an
+   explanation - so the row was deliberately short.
+2. **Google ships one language at a time.** The Pixel reported 52 English voices
+   and the voice file for other languages is a separate download in Android's own
+   settings. So even the tutor's Spanish answer had no Spanish voice to read it
+   until one is installed.
+
+What was missing was not the feature but the sentence explaining it. Settings now
+says how many English voices there are, names any other languages the phone has
+and why the guide does not offer them, and carries an **Install or change
+voices** button that opens Android's text-to-speech settings through a new
+`openVoiceSettings` call on the speech channel. Tests:
+`test/spoken_guide_settings_test.dart`.
+
+The tutor is a separate case and already speaks the language it answers in
+(`SpeechService.speakIn`, see [AI_TUTOR.md](AI_TUTOR.md)).
+
+## Why it sounds robotic, and what could replace it
+
+The guide uses the engine that is already on the phone. That engine is free,
+offline and instant, but the voices it keeps *on the device* are the small ones:
+Google's local voices are optimised for size, and the natural-sounding ones are
+either marked as needing a connection or come from a newer engine. The app
+already sorts local-first and then by the engine's own quality rating, so it is
+picking the best of what is installed - the ceiling is the engine, not the app.
+
+Free, offline, well-rated options that run inside an Android app, with the
+licences and the sizes that matter for a download:
+
+| Component | Licence | Size | Notes |
+| --- | --- | --- | --- |
+| [sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx) | Apache-2.0 | Android shared libs, all ABIs, 45 MB compressed | Offline TTS/ASR engine on onnxruntime, C/C++/Java/Kotlin/**Dart** bindings, official Flutter package `sherpa_onnx` and arm64/armv7/x86_64 prebuilt libraries. Same integration shape as the llama.cpp bridge: packaged `.so` plus a JNI call. |
+| [Kokoro-82M](https://github.com/hexgrad/kokoro) | Apache-2.0 weights | `kokoro-int8-en-v0_19` 103 MB; multi-lang v1.1 int8 147 MB | 82 M parameters, "comparable quality to larger models", 24 kHz. sherpa-onnx support is **Chinese + English only** today, so it would replace the English guide voice only. |
+| Piper/VITS voices | model cards vary (mostly CC-BY-4.0) | `en_US-lessac-high-int8` 35 MB, `es_ES-davefx-medium-int8` 21 MB, `it_IT-paola-medium-int8` 21 MB | The voices sherpa-onnx was built around. Spanish and Italian are covered properly here; quality is a clear step above the on-device Google voices, below Kokoro. |
+| [piper1-gpl](https://github.com/OHF-Voice/piper1-gpl) | GPL-3.0 | - | The successor to rhasspy/piper. GPL code in an APK is a licensing decision, not a technical one; sherpa-onnx avoids it. |
+| Kokoro via `kokoro-onnx` | Apache-2.0 | - | Python-first; on Android it would mean shipping onnxruntime and the G2P stack by hand. sherpa-onnx already does that work. |
+
+**Recommendation.** Ship sherpa-onnx arm64-only (a stub for other ABIs, exactly
+like llama.cpp) and let the voice pack be a one-time download with a pinned size
+and SHA-256, the same contract the model already has:
+
+| Pack | Download | What it buys |
+| --- | --- | --- |
+| English | Kokoro int8, 103 MB | The guide reads like a person; this is the voice the candidate hears on every screen |
+| Spanish | Piper `es_ES-davefx-medium-int8`, 21 MB | The tutor's Spanish answers read in Spanish |
+| Italian | Piper `it_IT-paola-medium-int8`, 21 MB | The same for Italian |
+
+Cost: roughly **+8 MB to the APK** for arm64 (the same `.so`+JNI pattern as the
+tutor), and up to ~145 MB of optional downloads. That is a bigger APK than the
+model work added, which is why it is a decision for the candidate to make, not
+something to slip into a patch release.
+
+The alternative with no size cost at all is the one shipped now: point the
+candidate at Android's own voice settings and let them install Google's better
+voices. That is a real improvement for anyone willing to spend five minutes, and
+it is already in.
+
+## Open questions before building it
+
+1. Does `sherpa-onnx`'s Flutter package let the app point at model directories it
+   downloaded itself, and does it keep the app free of a network fetch at
+   `flutter pub get` time? Both matter for CI and for the offline promise.
+2. Voice licences per pack (Piper model cards differ; some are CC-BY-NC).
+3. Whether to keep the system engine as the fallback, and how the two are chosen
+   without a new setting nobody reads.

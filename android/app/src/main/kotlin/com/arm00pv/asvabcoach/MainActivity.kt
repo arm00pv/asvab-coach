@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.view.WindowManager
@@ -264,6 +265,33 @@ class MainActivity : FlutterActivity() {
             "stop" -> {
                 speech?.stop()
                 result.success(true)
+            }
+            // The engine's own voice list lives in Android's settings, not in
+            // this app: Google ships one language per engine until the rest are
+            // downloaded, and that download has to be done there. Taking the
+            // candidate straight to it is more useful than explaining that this
+            // app cannot add voices it does not own.
+            "openVoiceSettings" -> {
+                val opened = try {
+                    startActivity(
+                        Intent("com.android.settings.TTS_SETTINGS").apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        },
+                    )
+                    true
+                } catch (error: Exception) {
+                    try {
+                        startActivity(
+                            Intent(Settings.ACTION_SETTINGS).apply {
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            },
+                        )
+                        true
+                    } catch (unlikely: Exception) {
+                        false
+                    }
+                }
+                result.success(opened)
             }
             else -> result.notImplemented()
         }

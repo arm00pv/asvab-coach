@@ -24,6 +24,11 @@ class BrowserSpeechBackend implements SpeechBackend {
   bool get isSupported =>
       _synthesis != null && globalContext['SpeechSynthesisUtterance'] != null;
 
+  /// The browser has no settings screen to open: its voices come with the
+  /// operating system and are chosen in the system, not in a page.
+  @override
+  Future<bool> openVoiceSettings() async => false;
+
   @override
   Future<List<SpeechVoice>> voices() async {
     final synth = _synthesis;

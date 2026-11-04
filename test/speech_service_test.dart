@@ -67,6 +67,14 @@ class FakeBackend implements SpeechBackend {
 
   @override
   Future<void> stop() async => stops++;
+
+  int voiceSettingsOpened = 0;
+
+  @override
+  Future<bool> openVoiceSettings() async {
+    voiceSettingsOpened += 1;
+    return true;
+  }
 }
 
 const _sample = NarrationDoc(
