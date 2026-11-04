@@ -276,4 +276,47 @@ void main() {
     expect(find.text(lesson.commonMistakes.first.why), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('every theme the app teaches can be handed to the tutor', (
+    tester,
+  ) async {
+    // The claim a candidate reads is "every theme". One lesson exists per skill,
+    // and the tutor button lives on the lesson screen, so walking the whole
+    // catalogue is the only honest way to check it: a count of lessons plus a
+    // count of skills would still pass if one screen never drew the button.
+    SharedPreferences.setMockInitialValues(<String, Object>{});
+    final AppState state = AppState();
+    await state.init();
+
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    for (final Lesson lesson in allLessons) {
+      await tester.pumpWidget(
+        ChangeNotifierProvider<AppState>.value(
+          value: state,
+          child: MaterialApp(
+            theme: AppTheme.build(Brightness.light),
+            home: LessonScreen(
+              key: ValueKey<String>(lesson.skillId),
+              skillId: lesson.skillId,
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+      expect(
+        find.text('Have the tutor explain this lesson'),
+        findsOneWidget,
+        reason: '${lesson.skillId} is a theme with no way to ask the tutor',
+      );
+      expect(
+        find.text(lesson.title),
+        findsOneWidget,
+        reason: 'the screen must be the lesson the tutor was asked about',
+      );
+      expect(tester.takeException(), isNull);
+    }
+  });
 }
