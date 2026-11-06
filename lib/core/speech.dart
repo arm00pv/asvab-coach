@@ -241,6 +241,15 @@ abstract class SpeechBackend {
   /// when the browser has no speech synthesiser.
   bool get isSupported;
 
+  /// Raises the phone's media volume until a voice is audible, with the system's
+  /// own slider on screen, and returns the volume afterwards.
+  ///
+  /// A speech utterance is a media stream, so a phone at media volume zero has no
+  /// voice whatever engine is behind it. This is the one speech failure the
+  /// candidate can fix from the screen that reports it. Zero where the platform
+  /// has no such control, which is the web build and every test.
+  Future<int> turnUpVolume() async => 0;
+
   /// Opens the system screen where voices are downloaded.
   ///
   /// Voices belong to the engine, not to this app: Google ships one language and
@@ -254,6 +263,9 @@ abstract class SpeechBackend {
 class NoSpeechBackend implements SpeechBackend {
   @override
   bool get isSupported => false;
+
+  @override
+  Future<int> turnUpVolume() async => 0;
 
   @override
   Future<bool> openVoiceSettings() async => false;
@@ -617,6 +629,32 @@ class SpeechService extends ChangeNotifier {
 
   /// Takes the candidate to the phone's own voice settings, where more languages
   /// and better voices can be installed. False when there is nowhere to go.
+  /// True when this sentence describes the phone's media volume being at zero.
+  ///
+  /// Public and static so the tests can check the engine's own wording against
+  /// the string the screens key on - a silent voice that cannot say why is the
+  /// failure this app has already been bitten by twice.
+  static bool isVolumeProblem(String? message) =>
+      (message ?? '').toLowerCase().contains('media volume');
+
+  /// True when the last speech failure was the phone's media volume being at
+  /// zero - the one cause a candidate can fix without leaving the screen.
+  bool get volumeProblem => isVolumeProblem(_lastError);
+
+  /// Turns the phone's media volume up enough for a voice to be heard, with the
+  /// system slider on screen. Returns the volume afterwards, or 0 where this
+  /// phone has no such control.
+  Future<int> turnUpVolume() async {
+    try {
+      final int volume = await _backend.turnUpVolume();
+      debugPrint('ASVAB coach: media volume is now $volume');
+      return volume;
+    } catch (error) {
+      debugPrint('ASVAB coach: could not turn the volume up: $error');
+      return 0;
+    }
+  }
+
   Future<bool> openVoiceSettings() async {
     try {
       return await _backend.openVoiceSettings();

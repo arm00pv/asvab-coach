@@ -70,6 +70,16 @@ class FakeBackend implements SpeechBackend {
 
   int voiceSettingsOpened = 0;
 
+  /// What the volume ends up at when the app asks, and how often it asked.
+  int volumeAfter = 7;
+  int volumeRaised = 0;
+
+  @override
+  Future<int> turnUpVolume() async {
+    volumeRaised += 1;
+    return volumeAfter;
+  }
+
   @override
   Future<bool> openVoiceSettings() async {
     voiceSettingsOpened += 1;
@@ -377,6 +387,36 @@ void main() {
       await tester.pump(const Duration(seconds: 3));
       expect(find.textContaining('no voice installed'), findsOneWidget);
       expect(backend.spoken, isEmpty);
+    });
+  });
+
+  group('a phone whose media volume is at zero', () {
+    test('the app can raise it and knows where it ended up', () async {
+      final backend = FakeBackend();
+      final speech = SpeechService(backend: backend, persist: false);
+      await speech.initialise();
+      expect(speech.volumeProblem, isFalse);
+      expect(await speech.turnUpVolume(), 7);
+      expect(backend.volumeRaised, 1);
+    });
+
+    test('the engine own sentence is recognised, and nothing else is', () {
+      // Exactly what VoiceTts.kt reports after the engine wrote no samples,
+      // and the reason the tutor sheet offers a button instead of advice.
+      expect(
+        SpeechService.isVolumeProblem(
+          'The media volume on this phone is at zero, so the voice cannot be '
+          'heard. Turn it up and try again.',
+        ),
+        isTrue,
+      );
+      expect(
+        SpeechService.isVolumeProblem(
+          'This phone has no Italian voice installed.',
+        ),
+        isFalse,
+      );
+      expect(SpeechService.isVolumeProblem(null), isFalse);
     });
   });
 }

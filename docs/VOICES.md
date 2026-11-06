@@ -153,3 +153,25 @@ app now says so instead of offering a button that appears to do nothing.
 Two tests pin it in `test/neural_voice_test.dart`: the engine's error message is
 returned from `speak()`, and a pack that cannot be heard still reads through the
 phone's voice while the screen keeps the reason.
+
+## Done since: the fix, next to the complaint (v1.12.0)
+
+Being told that the media volume is at zero was still a dead end: the candidate
+had to leave the tutor sheet, find the side button on a phone they were holding
+for something else, and come back to a sheet whose answer had scrolled away.
+
+`asvabcoach/speech` now has `turnUpVolume`: it reads `STREAM_MUSIC` through
+`AudioManager`, sets it to a third of the stream's range - or three steps on a
+short range, never below where the candidate already had it - with
+`FLAG_SHOW_UI` so Android's own volume panel is on screen, and returns where it
+ended up. `SpeechService.turnUpVolume()` reaches it through the same
+`SpeechBackend` seam as everything else, so the screens do not know whether a
+channel, a browser or a test is underneath.
+
+The button appears only when the failure is recognised as a volume failure:
+`SpeechService.isVolumeProblem` matches the engine's own sentence, and
+`test/native_contract_test.dart` reads `VoiceTts.kt`, `MainActivity.kt` and
+`speech_backend_io.dart` and fails if the wording, the method name or its
+capitalisation drifts. The tutor sheet retries the reading after raising the
+volume, because a candidate who has just been told why the voice was silent
+should not have to tap twice.

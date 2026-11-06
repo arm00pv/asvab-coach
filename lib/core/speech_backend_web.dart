@@ -29,6 +29,10 @@ class BrowserSpeechBackend implements SpeechBackend {
   @override
   Future<bool> openVoiceSettings() async => false;
 
+  /// A page cannot reach the device's volume: there is nothing here to raise.
+  @override
+  Future<int> turnUpVolume() async => 0;
+
   @override
   Future<List<SpeechVoice>> voices() async {
     final synth = _synthesis;

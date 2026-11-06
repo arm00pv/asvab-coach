@@ -71,6 +71,17 @@ class ChannelSpeechBackend implements SpeechBackend {
   }
 
   @override
+  Future<int> turnUpVolume() async {
+    if (!isSupported) return 0;
+    try {
+      return await _channel.invokeMethod<int>('turnUpVolume') ?? 0;
+    } catch (error) {
+      debugPrint('ASVAB coach: could not turn the volume up: $error');
+      return 0;
+    }
+  }
+
+  @override
   Future<bool> openVoiceSettings() async {
     if (!isSupported) return false;
     try {

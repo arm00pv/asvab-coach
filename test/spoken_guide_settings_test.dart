@@ -17,6 +17,9 @@ class _Phone implements SpeechBackend {
   int settingsOpened = 0;
 
   @override
+  Future<int> turnUpVolume() async => 0;
+
+  @override
   bool get isSupported => true;
 
   @override

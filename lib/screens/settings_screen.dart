@@ -643,9 +643,28 @@ class _NeuralVoiceRow extends StatelessWidget {
       pack.language,
       screen: 'voice-preview',
     );
-    if (!context.mounted || problem == null) return;
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(problem)));
+    if (!context.mounted) return;
+    // A pack that could not be heard still falls back to the phone's voice, so
+    // the failure lives on the service rather than in the return value. Both are
+    // shown: a candidate who taps "Hear it" and hears the system voice instead
+    // needs to know why the pack they just downloaded was not the one talking.
+    final String? shown = problem ?? speech.lastError;
+    if (shown == null) return;
+    final bool volume = speech.volumeProblem;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(shown),
+        action: volume
+            ? SnackBarAction(
+                label: 'Turn it up',
+                onPressed: () async {
+                  await speech.turnUpVolume();
+                  if (context.mounted) await _preview(context, pack);
+                },
+              )
+            : null,
+      ),
+    );
   }
 
   @override
@@ -912,6 +931,14 @@ class _SpokenGuideSection extends StatelessWidget {
                   speech.lastError!,
                   style: context.text.bodySmall?.copyWith(color: c.warning),
                 ),
+                // The one speech failure a candidate can fix without leaving
+                // this page: the media stream is at zero, and the app can raise
+                // it with the system slider on screen.
+                if (speech.volumeProblem)
+                  TextButton(
+                    onPressed: () => speech.turnUpVolume(),
+                    child: const Text('Turn the volume up'),
+                  ),
               ],
             ],
           ),

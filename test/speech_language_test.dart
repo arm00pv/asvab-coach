@@ -6,6 +6,9 @@ import 'package:asvab_guard_coach/core/speech.dart';
 class _FakeBackend implements SpeechBackend {
   _FakeBackend(this.installed);
 
+  @override
+  Future<int> turnUpVolume() async => 0;
+
   final List<SpeechVoice> installed;
   final List<String> said = <String>[];
   final List<String> used = <String>[];

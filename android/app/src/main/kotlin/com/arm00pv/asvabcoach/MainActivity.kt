@@ -1,6 +1,8 @@
 package com.arm00pv.asvabcoach
 
+import android.content.Context
 import android.content.Intent
+import android.media.AudioManager
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
@@ -327,7 +329,52 @@ class MainActivity : FlutterActivity() {
                 }
                 result.success(opened)
             }
+            // A speech utterance is a media stream, and a media stream at zero is
+            // the commonest reason a voice is silent. Raising it from here - with
+            // the system's own volume panel on screen - is the fix the candidate
+            // can make where the problem is shown, instead of being told to leave
+            // the sheet and find a side button.
+            "turnUpVolume" -> {
+                val audio =
+                    getSystemService(Context.AUDIO_SERVICE) as? AudioManager
+                if (audio == null) {
+                    result.success(0)
+                    return
+                }
+                result.success(raiseMediaVolume(audio))
+            }
             else -> result.notImplemented()
+        }
+    }
+
+    /// Raises the media stream until speech is audible, and returns where it
+    /// ended up.
+    ///
+    /// One step above zero is index 1 of 25 on a Pixel - technically on, still
+    /// inaudible across a room. The target is a third of the range, or three
+    /// steps when the range is short, and never lower than where the candidate
+    /// already had it: this button turns the volume up, it does not choose a
+    /// volume for them. FLAG_SHOW_UI puts the system slider on screen so the
+    /// change is visible and adjustable in the same gesture.
+    private fun raiseMediaVolume(audio: AudioManager): Int {
+        val max = audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        val current = audio.getStreamVolume(AudioManager.STREAM_MUSIC)
+        val target = maxOf(
+            current,
+            minOf(max, maxOf(3, Math.round(max * 0.3f))),
+        )
+        if (target <= current) return current
+        return try {
+            audio.setStreamVolume(
+                AudioManager.STREAM_MUSIC,
+                target,
+                AudioManager.FLAG_SHOW_UI,
+            )
+            audio.getStreamVolume(AudioManager.STREAM_MUSIC)
+        } catch (error: Exception) {
+            // Some OEMs refuse this without a foreground service. Nothing is lost:
+            // the caller shows the volume it read, and the message still stands.
+            current
         }
     }
 

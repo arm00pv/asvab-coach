@@ -17,6 +17,9 @@ class _SystemEngine implements SpeechBackend {
   final List<String> spoken = <String>[];
 
   @override
+  Future<int> turnUpVolume() async => 0;
+
+  @override
   bool get isSupported => true;
 
   @override
@@ -276,6 +279,11 @@ void main() {
         contains('media volume'),
         reason:
             'a silence the candidate cannot see is a silence they cannot fix',
+      );
+      expect(
+        speech.volumeProblem,
+        isTrue,
+        reason: 'this is the failure the sheet offers a button for',
       );
     },
   );

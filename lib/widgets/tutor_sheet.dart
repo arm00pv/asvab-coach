@@ -183,6 +183,17 @@ class _TutorSheetState extends State<_TutorSheet> {
     setState(() => _readProblem = problem ?? speech.lastError);
   }
 
+  /// Raises the phone's media volume and reads the answer again, because a
+  /// candidate who has just been told why the voice was silent should not have
+  /// to tap twice to hear it.
+  Future<void> _turnUpAndRead() async {
+    final speech = _speech ?? speechOf(context);
+    await speech.turnUpVolume();
+    if (!mounted) return;
+    setState(() => _readProblem = null);
+    await _toggleRead();
+  }
+
   Future<void> _run() async {
     // A reading of the previous answer would keep talking over the new one, and
     // on the phone it kept going after the language had been switched.
@@ -297,6 +308,20 @@ class _TutorSheetState extends State<_TutorSheet> {
                       if (_readProblem != null) ...<Widget>[
                         const SizedBox(height: Space.md),
                         Callout(text: _readProblem!),
+                        // The one speech failure the candidate can fix from
+                        // here. Telling them to leave the sheet and find the
+                        // side button is what made "I cannot hear it" a dead end.
+                        if (speech.volumeProblem) ...<Widget>[
+                          const SizedBox(height: Space.sm),
+                          FilledButton.tonalIcon(
+                            onPressed: _turnUpAndRead,
+                            icon: const Icon(
+                              Icons.volume_up_outlined,
+                              size: 16,
+                            ),
+                            label: const Text('Turn the volume up'),
+                          ),
+                        ],
                       ],
                       if (tutor.error != null) ...<Widget>[
                         const SizedBox(height: Space.md),
