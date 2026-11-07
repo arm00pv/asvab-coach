@@ -1251,12 +1251,7 @@ class _TutorSection extends StatelessWidget {
                         const SizedBox(width: Space.xs),
                         Expanded(
                           child: Text(
-                            status.gpu
-                                ? 'Running on this phone\'s GPU (Vulkan): faster '
-                                      'to write, and the CPU stays free.'
-                                : 'Running on this phone\'s CPU. No usable Vulkan '
-                                      'GPU was found, so this is the same path '
-                                      'every phone used before the GPU build.',
+                            _processorLine(status, tutor),
                             style: context.text.bodySmall?.copyWith(
                               color: status.gpu ? c.primary : c.textMuted,
                               height: 1.4,
@@ -1265,6 +1260,40 @@ class _TutorSection extends StatelessWidget {
                         ),
                       ],
                     ),
+                    // The choice is only offered where the phone has a GPU to
+                    // choose between. It is not a performance switch for its own
+                    // sake: the GPU writes about 45 % faster and starts about two
+                    // seconds later, and a driver that misbehaves needs a way out
+                    // that does not involve uninstalling the app.
+                    if (status.gpuAvailable) ...<Widget>[
+                      const SizedBox(height: Space.sm),
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Use the GPU',
+                                  style: context.text.titleSmall,
+                                ),
+                                Text(
+                                  'Writes about 45 % faster and starts about two '
+                                  'seconds later. Turn it off if this phone\'s '
+                                  'graphics driver misbehaves.',
+                                  style: context.text.bodySmall,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: Space.sm),
+                          Switch.adaptive(
+                            value: tutor.useGpu,
+                            onChanged: tutor.setUseGpu,
+                          ),
+                        ],
+                      ),
+                    ],
                     const SizedBox(height: Space.md),
                     _controls(context, tutor),
                   ],
@@ -1275,6 +1304,21 @@ class _TutorSection extends StatelessWidget {
         );
       },
     );
+  }
+
+  /// One sentence about which processor answers, told in the order it matters:
+  /// what it is doing, then why it is not on the GPU when the phone has one.
+  String _processorLine(TutorStatus status, TutorService tutor) {
+    if (status.gpu) {
+      return 'Running on this phone\'s GPU (Vulkan): faster to write, and the '
+          'CPU stays free.';
+    }
+    if (status.gpuAvailable && !tutor.useGpu) {
+      return 'Running on this phone\'s CPU because the GPU is switched off '
+          'below.';
+    }
+    return 'Running on this phone\'s CPU. No usable Vulkan GPU was found, so '
+        'this is the same path every phone used before the GPU build.';
   }
 
   String _description(TutorStatus status) {

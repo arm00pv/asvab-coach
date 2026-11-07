@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:asvab_guard_coach/core/tutor.dart';
 
@@ -21,6 +22,9 @@ void main() {
 
   late List<String> calls;
   late bool loaded;
+
+  /// What the last load asked the platform for, so a test can read the choice.
+  late Map<Object?, Object?> lastLoad;
   MockStreamHandlerEventSink? events;
 
   /// Lets the mock platform channels deliver everything they have queued.
@@ -34,6 +38,8 @@ void main() {
     calls = <String>[];
     loaded = false;
     events = null;
+    lastLoad = <Object?, Object?>{};
+    SharedPreferences.setMockInitialValues(<String, Object>{});
 
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(methodChannel, (MethodCall call) async {
@@ -51,6 +57,9 @@ void main() {
             case 'load':
               // The platform answers at once and loads on its own thread: that
               // asymmetry is the whole point of this test.
+              lastLoad =
+                  (call.arguments as Map<Object?, Object?>?) ??
+                  <Object?, Object?>{};
               return <String, Object?>{'started': true};
             case 'generate':
               return true;
@@ -294,6 +303,64 @@ void main() {
       reason: 'a loaded model must not forget which device it is on',
     );
     expect(tutor.status.loaded, isTrue);
+  });
+
+  test('the GPU can be turned off, and the next load honours it', () async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(methodChannel, (MethodCall call) async {
+          calls.add(call.method);
+          switch (call.method) {
+            case 'status':
+              return <String, Object?>{
+                'supported': true,
+                'gpuAvailable': true,
+                'gpu': loaded,
+                'installed': true,
+                'loaded': loaded,
+                'expectedBytes': 1099630080,
+              };
+            case 'load':
+              lastLoad =
+                  (call.arguments as Map<Object?, Object?>?) ??
+                  <Object?, Object?>{};
+              return <String, Object?>{'started': true};
+            case 'generate':
+              return true;
+            case 'unload':
+              loaded = false;
+              return null;
+          }
+          return null;
+        });
+
+    final TutorService tutor = TutorService();
+    await tutor.initialise();
+    await settle();
+    expect(tutor.status.gpuAvailable, isTrue);
+    expect(tutor.useGpu, isTrue);
+
+    // The default: the choice travels with the load.
+    unawaited(tutor.warmUp());
+    await settle();
+    expect(lastLoad['gpu'], isTrue);
+    loaded = true;
+    events!.success(<String, Object?>{'type': 'loaded', 'millis': 200});
+    await settle();
+
+    // Turned off while a model is in memory: it is unloaded, because its layers
+    // are already placed on the GPU and the next question must not reuse them.
+    await tutor.setUseGpu(false);
+    await settle();
+    expect(
+      calls,
+      contains('unload'),
+      reason: 'a loaded model keeps the device its layers went to',
+    );
+    expect(tutor.useGpu, isFalse);
+
+    unawaited(tutor.warmUp());
+    await settle();
+    expect(lastLoad['gpu'], isFalse);
   });
 
   test('a phone without the model is told where to get it', () async {

@@ -93,6 +93,26 @@ Note `int dot: 1` — integer dot-product is enabled in this build (`glslc` feat
 detection found it), which is what quantised matmul wants. The Termux build of
 the same backend reported `int dot: 0`.
 
+## Turning it off
+
+The GPU is the default, but it is a choice, not a verdict: on this phone it
+writes about 45 % faster and takes about two seconds longer to start, and a
+driver that misbehaves has to have a way out that is not "uninstall the app".
+
+The AI tutor card carries **Use the GPU** (only on phones where a Vulkan backend
+registered), stored as `asvab.tutor.gpu.v1` and defaulting to on. The choice
+travels with the load - `TutorService` sends `{'gpu': useGpu}` to the platform,
+Kotlin reads it from the call, and the bridge turns it into `n_gpu_layers = 0`
+when it is off. Because layers are placed when the model is read, changing the
+switch unloads a model that is already in memory; the next question reads it
+again onto the other processor. The card says which one that is, in the same
+place it said it before.
+
+`test/tutor_service_test.dart` holds the contract: the choice is sent with the
+load, a loaded model is unloaded when the choice changes, and the next load
+carries the new value. `test/native_contract_test.dart` reads all four layers -
+Dart, Kotlin, bridge, stub - and fails if any of them drifts.
+
 ## What the app says about it
 
 The AI tutor card in Settings now names the processor:

@@ -43,7 +43,7 @@ object NativeLlm {
     /// 1 when the tutor will run on the GPU, 0 when it runs on the CPU.
     external fun gpu(): Int
 
-    external fun load(path: String, nCtx: Int, nThreads: Int): Long
+    external fun load(path: String, nCtx: Int, nThreads: Int, useGpu: Boolean): Long
 
     external fun generate(
         handle: Long,
@@ -105,6 +105,14 @@ class LlmTutor(private val context: Context) {
     @Volatile private var loadingModel = false
     @Volatile private var generateCancel = AtomicBoolean(false)
 
+    /// The candidate's choice, sent with the load. True means "use the GPU when
+    /// the phone has one", which is not the same as "this phone has one".
+    @Volatile private var useGpu = true
+
+    /// Whether the load in memory actually went to the GPU. Kept so the status
+    /// can answer for the model that is running, not for one that might.
+    @Volatile private var loadedOnGpu = false
+
     private fun modelDir(): File = File(context.filesDir, "models").apply { mkdirs() }
 
     private fun modelFile(): File = File(modelDir(), MODEL_FILE)
@@ -143,12 +151,14 @@ class LlmTutor(private val context: Context) {
         val supported = NativeLlm.ensureLoaded() &&
             NativeLlm.probe(context.applicationInfo.nativeLibraryDir)
         val file = modelFile()
+        val gpuAvailable = supported && NativeLlm.gpu() == 1
         return mapOf(
             "supported" to supported,
-            // Which processor the next answer comes out of. The Vulkan build is
-            // in jniLibs and loads itself when the phone's driver takes it; this
-            // is how the screen can say which one it got.
-            "gpu" to (supported && NativeLlm.gpu() == 1),
+            // What the phone can do, and what it is doing: the settings switch is
+            // only offered where the backend registered, and the card says which
+            // processor the loaded model is on.
+            "gpuAvailable" to gpuAvailable,
+            "gpu" to if (handle != 0L) loadedOnGpu else (gpuAvailable && useGpu),
             "abi" to (Build.SUPPORTED_ABIS.firstOrNull() ?: "unknown"),
             "loaded" to (handle != 0L),
             "installed" to isInstalled(),
@@ -202,6 +212,9 @@ class LlmTutor(private val context: Context) {
                     result.error("missing", "The tutor model is not installed.", null)
                     return
                 }
+                // The candidate's choice travels with the load, because that is
+                // the moment the layers are placed.
+                useGpu = call.argument<Boolean>("gpu") ?: useGpu
                 loadingModel = true
                 result.success(mapOf("started" to true))
                 worker.execute { loadModel() }
@@ -246,7 +259,9 @@ class LlmTutor(private val context: Context) {
             }
             val cores = Runtime.getRuntime().availableProcessors().coerceIn(2, 6)
             val started = System.currentTimeMillis()
-            val loadedHandle = NativeLlm.load(modelFile().absolutePath, 2048, cores)
+            val loadedHandle =
+                NativeLlm.load(modelFile().absolutePath, 2048, cores, useGpu)
+            loadedOnGpu = useGpu && NativeLlm.gpu() == 1
             if (loadedHandle == 0L) {
                 emitError("The model could not be loaded into memory.")
                 return

@@ -58,10 +58,60 @@ void main() {
       'android/app/src/main/kotlin/com/arm00pv/asvabcoach/llm/LlmTutor.kt',
     ).readAsStringSync();
     expect(tutor, contains('external fun gpu(): Int'));
-    expect(tutor, contains('"gpu" to (supported && NativeLlm.gpu() == 1)'));
+    expect(
+      tutor,
+      contains('val gpuAvailable = supported && NativeLlm.gpu() == 1'),
+    );
+    expect(
+      tutor,
+      contains(
+        '"gpu" to if (handle != 0L) loadedOnGpu else (gpuAvailable && useGpu)',
+      ),
+      reason: 'the card must report the processor the model is actually on',
+    );
 
     final String status = File('lib/core/tutor.dart').readAsStringSync();
     expect(status, contains("gpu: map['gpu'] == true"));
+    expect(status, contains("gpuAvailable: map['gpuAvailable'] == true"));
+  });
+
+  test('the GPU choice reaches the load in every layer', () {
+    // One switch, four files: the setting is saved by the app, sent with the
+    // load, read by Kotlin, and passed to C++ as a jboolean. A mismatch would
+    // either crash the JNI call or leave the switch doing nothing.
+    final String bridge = File('android/app/src/main/cpp/llm_bridge.cpp')
+        .readAsStringSync();
+    expect(bridge, contains('jboolean use_gpu'));
+    expect(bridge, contains('use_gpu && llama_supports_gpu_offload()'));
+
+    final String stub = File('android/app/src/main/cpp/llm_bridge_stub.cpp')
+        .readAsStringSync();
+    expect(stub, contains('jstring, jint, jint, jboolean'));
+
+    final String tutor = File(
+      'android/app/src/main/kotlin/com/arm00pv/asvabcoach/llm/LlmTutor.kt',
+    ).readAsStringSync();
+    expect(
+      tutor,
+      contains(
+        'external fun load(path: String, nCtx: Int, nThreads: Int, '
+        'useGpu: Boolean): Long',
+      ),
+    );
+    expect(tutor, contains('call.argument<Boolean>("gpu")'));
+    expect(
+      tutor,
+      contains('NativeLlm.load(modelFile().absolutePath, 2048, cores, useGpu)'),
+    );
+
+    final String service = File('lib/core/tutor.dart').readAsStringSync();
+    expect(service, contains("'gpu': _useGpu"));
+    expect(service, contains('Storage.loadTutorGpu()'));
+
+    final String settings = File('lib/screens/settings_screen.dart')
+        .readAsStringSync();
+    expect(settings, contains('Use the GPU'));
+    expect(settings, contains('tutor.setUseGpu'));
   });
 
   test('the volume a silent voice is blamed on can be raised from the app', () {

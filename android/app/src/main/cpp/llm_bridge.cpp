@@ -107,7 +107,8 @@ Java_com_arm00pv_asvabcoach_llm_NativeLlm_gpu(JNIEnv *, jobject) {
 
 extern "C" JNIEXPORT jlong JNICALL
 Java_com_arm00pv_asvabcoach_llm_NativeLlm_load(
-        JNIEnv * env, jobject, jstring jpath, jint n_ctx, jint n_threads) {
+        JNIEnv * env, jobject, jstring jpath, jint n_ctx, jint n_threads,
+        jboolean use_gpu) {
     if (!g_backend_ready) {
         llama_log_set(log_to_android, nullptr);
         llama_backend_init();
@@ -126,7 +127,11 @@ Java_com_arm00pv_asvabcoach_llm_NativeLlm_load(
     // llama.cpp reports whether an offloading backend registered at all. The
     // Vulkan library ships beside this one in jniLibs; when a phone has no
     // usable driver the loader finds nothing and this stays on the CPU path.
-    const bool gpu_offload = llama_supports_gpu_offload();
+    // The candidate's own preference decides, not just what the phone can do:
+    // a driver that works but is slower to start is a choice, not a bug, and a
+    // driver that misbehaves has to have a way out that does not uninstall the
+    // app.
+    const bool gpu_offload = use_gpu && llama_supports_gpu_offload();
     mparams.n_gpu_layers = gpu_offload ? 999 : 0;
     LOGI("gpu offload: %d, n_gpu_layers=%d", gpu_offload ? 1 : 0, mparams.n_gpu_layers);
 

@@ -139,6 +139,7 @@ abstract final class Storage {
   static const _kSpeechAuto = 'asvab.speech.auto.v1';
   static const _kSpeechSpeaker = 'asvab.speech.speaker.v1';
   static const _kSpeechPack = 'asvab.speech.pack.v1';
+  static const _kTutorGpu = 'asvab.tutor.gpu.v1';
 
   /// Reads everything that survives a refresh.
   ///
@@ -356,6 +357,25 @@ abstract final class Storage {
     await prefs.setBool(_kSpeechAuto, settings.autoRead);
     await prefs.setInt(_kSpeechSpeaker, settings.speaker);
     await prefs.setString(_kSpeechPack, settings.preferredPack);
+  }
+
+  /// Whether the tutor should use the phone's GPU when it has one.
+  ///
+  /// Default true: most phones with Vulkan write the answer faster on it. The
+  /// switch exists for the ones where the driver is slower or broken, and its
+  /// state has to survive a relaunch like every other preference.
+  static Future<bool> loadTutorGpu() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getBool(_kTutorGpu) ?? true;
+    } catch (_) {
+      return true;
+    }
+  }
+
+  static Future<void> saveTutorGpu(bool enabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_kTutorGpu, enabled);
   }
 
   static Future<void> saveTheme(bool dark) async {

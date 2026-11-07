@@ -3,11 +3,14 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
+import '../data/repos/storage.dart';
+
 /// What the device can do right now, as the platform reports it.
 class TutorStatus {
   const TutorStatus({
     this.supported = false,
     this.gpu = false,
+    this.gpuAvailable = false,
     this.loaded = false,
     this.installed = false,
     this.downloading = false,
@@ -30,6 +33,12 @@ class TutorStatus {
   /// CPU path, which is what every phone had before the Vulkan build.
   final bool gpu;
 
+  /// The phone has a GPU the tutor could use (a Vulkan backend registered).
+  ///
+  /// This is the phone's capability, not the current choice: [gpu] is what the
+  /// model in memory is actually using.
+  final bool gpuAvailable;
+
   /// The model is in memory and answering.
   final bool loaded;
 
@@ -50,6 +59,7 @@ class TutorStatus {
   factory TutorStatus.fromMap(Map<Object?, Object?> map) => TutorStatus(
     supported: map['supported'] == true,
     gpu: map['gpu'] == true,
+    gpuAvailable: map['gpuAvailable'] == true,
     loaded: map['loaded'] == true,
     installed: map['installed'] == true,
     downloading: map['downloading'] == true,
@@ -89,6 +99,10 @@ class TutorService extends ChangeNotifier {
 
   TutorStatus _status = TutorStatus.unknown;
 
+  /// Whether the tutor should use the phone's GPU when it has one. The model's
+  /// layers are placed when it is read, so this is passed with the load.
+  bool _useGpu = true;
+
   /// The one and only startup call, shared by everyone who needs it.
   ///
   /// This was a plain bool, and that was a real bug on a real phone: the app's
@@ -121,6 +135,27 @@ class TutorService extends ChangeNotifier {
   Completer<void>? _loadGate;
 
   TutorStatus get status => _status;
+
+  /// Whether the GPU is to be used. False on a phone with no Vulkan, and false
+  /// when the candidate turned it off.
+  bool get useGpu => _useGpu;
+
+  /// Chooses the processor for the next answer.
+  ///
+  /// A loaded model keeps the device its layers were placed on: changing this
+  /// unloads, and the next question reads the model again onto the other one.
+  Future<void> setUseGpu(bool enabled) async {
+    if (_useGpu == enabled) return;
+    _useGpu = enabled;
+    notifyListeners();
+    try {
+      await Storage.saveTutorGpu(enabled);
+    } catch (error) {
+      debugPrint('ASVAB coach: could not save the GPU choice: $error');
+    }
+    if (_status.loaded) await unload();
+    await refresh();
+  }
 
   /// True once [initialise] has been called, whether or not it has finished.
   bool get ready => _init != null;
@@ -217,6 +252,11 @@ class TutorService extends ChangeNotifier {
 
   Future<void> _initialise() async {
     if (kIsWeb) return;
+    try {
+      _useGpu = await Storage.loadTutorGpu();
+    } catch (error) {
+      debugPrint('ASVAB coach: could not read the GPU choice: $error');
+    }
     try {
       _subscription = _events.receiveBroadcastStream().listen(
         _onEvent,
@@ -338,7 +378,9 @@ class TutorService extends ChangeNotifier {
     _loading = true;
     notifyListeners();
     try {
-      await _methods.invokeMethod<void>('load');
+      await _methods.invokeMethod<void>('load', <String, Object>{
+        'gpu': _useGpu,
+      });
     } catch (error) {
       _error = 'The tutor could not be loaded.';
       debugPrint('ASVAB coach: tutor load failed: $error');
@@ -485,6 +527,7 @@ class TutorService extends ChangeNotifier {
         _status = TutorStatus(
           supported: _status.supported,
           gpu: _status.gpu,
+          gpuAvailable: _status.gpuAvailable,
           loaded: true,
           installed: _status.installed,
           abi: _status.abi,
