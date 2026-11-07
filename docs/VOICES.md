@@ -175,3 +175,25 @@ The button appears only when the failure is recognised as a volume failure:
 capitalisation drifts. The tutor sheet retries the reading after raising the
 volume, because a candidate who has just been told why the voice was silent
 should not have to tap twice.
+
+## Two Spanish accents, and the choice between them (v1.13.0)
+
+There was one Spanish voice, and it was Castilian: it says "grathias" where a
+Mexican speaker says "gracias". Most Spanish speakers in the United States,
+and most of the National Guard's, say the second. The Mexican voice is not a
+replacement for the Castilian one - a candidate who learned in Spain keeps
+theirs - so both packs sit in the list, both are downloaded separately, and
+`SpeechService.choosePack` records which one speaks.
+
+The choice is one pack id in the speech settings, resolved against the language
+at the moment it is used: choosing the Mexican pack for Spanish must not make it
+the voice for English or Italian. If the chosen pack is removed, the app falls
+back to the other one for that language rather than going silent. "Hear it" on a
+row previews *that* pack even when another one is chosen, because a button that
+played the already-chosen voice would be a lie.
+
+The pack is `es-mx-piper`: Piper VITS `es_MX-ald-medium` int8, 14.2 MB,
+Unlicense (public domain) training data, and the espeak voice embedded in the
+model is `es-419`, which is what makes it sound Latin American rather than
+Castilian. `docs/VOICE-PACKS.md` carries the size, the checksum and how it was
+built.

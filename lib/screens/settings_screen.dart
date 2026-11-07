@@ -594,7 +594,11 @@ class _NeuralVoiceSection extends StatelessWidget {
                     )
                   else
                     for (final pack in VoiceCatalogue.packs)
-                      _NeuralVoiceRow(pack: pack, neural: neural),
+                      _NeuralVoiceRow(
+                        pack: pack,
+                        neural: neural,
+                        speech: speechOf(context),
+                      ),
                   if (neural.error != null) ...<Widget>[
                     const SizedBox(height: Space.sm),
                     Text(
@@ -623,10 +627,18 @@ class _NeuralVoiceSection extends StatelessWidget {
 /// One language, one pack: what it is, how big it is, and the one action that
 /// makes sense for its state.
 class _NeuralVoiceRow extends StatelessWidget {
-  const _NeuralVoiceRow({required this.pack, required this.neural});
+  const _NeuralVoiceRow({
+    required this.pack,
+    required this.neural,
+    required this.speech,
+  });
 
   final VoicePack pack;
   final NeuralVoice neural;
+
+  /// The spoken guide holds the choice of one pack over another, so the row that
+  /// offers the choice has to be able to make it.
+  final SpeechService speech;
 
   static const _samples = <String, String>{
     'en':
@@ -642,6 +654,7 @@ class _NeuralVoiceRow extends StatelessWidget {
       _samples[pack.language] ?? _samples['en']!,
       pack.language,
       screen: 'voice-preview',
+      packId: pack.id,
     );
     if (!context.mounted) return;
     // A pack that could not be heard still falls back to the phone's voice, so
@@ -699,6 +712,25 @@ class _NeuralVoiceRow extends StatelessWidget {
                   child: const Text('Cancel'),
                 )
               else if (installed) ...<Widget>[
+                // Two voices for one language is a choice only if the candidate
+                // can make it: the accent they study in is theirs, not the
+                // catalogue's.
+                if (VoiceCatalogue.packsFor(pack.language).length > 1 &&
+                    speech.packIdFor(pack.language) == pack.id)
+                  Padding(
+                    padding: const EdgeInsets.only(right: Space.sm),
+                    child: Text(
+                      'In use',
+                      style: context.text.labelSmall?.copyWith(
+                        color: c.success,
+                      ),
+                    ),
+                  )
+                else if (VoiceCatalogue.packsFor(pack.language).length > 1)
+                  TextButton(
+                    onPressed: () => speech.choosePack(pack.id),
+                    child: const Text('Use this voice'),
+                  ),
                 // The only way to know a voice is worth using is to hear it.
                 TextButton(
                   onPressed: () => _preview(context, pack),

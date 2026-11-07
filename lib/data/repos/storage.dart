@@ -75,6 +75,7 @@ class SpeechSettings {
     this.rate = 1.0,
     this.autoRead = false,
     this.speaker = 0,
+    this.preferredPack = '',
   });
 
   /// The voice's BCP-47 tag, or empty for "whatever the device speaks".
@@ -90,16 +91,27 @@ class SpeechSettings {
   /// eleven; every other voice has one and ignores this.
   final int speaker;
 
+  /// The downloaded voice the candidate chose, by pack id, or empty for "the
+  /// first installed pack for each language".
+  ///
+  /// One Spanish voice is Castilian and one is Mexican; the accent a candidate
+  /// studies in is their own choice, and it is remembered like the reading speed
+  /// is. A pack id from a language that is not being spoken is ignored, so one
+  /// choice cannot silence another language.
+  final String preferredPack;
+
   SpeechSettings copyWith({
     String? locale,
     double? rate,
     bool? autoRead,
     int? speaker,
+    String? preferredPack,
   }) => SpeechSettings(
     locale: locale ?? this.locale,
     rate: rate ?? this.rate,
     autoRead: autoRead ?? this.autoRead,
     speaker: speaker ?? this.speaker,
+    preferredPack: preferredPack ?? this.preferredPack,
   );
 }
 
@@ -126,6 +138,7 @@ abstract final class Storage {
   static const _kSpeechRate = 'asvab.speech.rate.v1';
   static const _kSpeechAuto = 'asvab.speech.auto.v1';
   static const _kSpeechSpeaker = 'asvab.speech.speaker.v1';
+  static const _kSpeechPack = 'asvab.speech.pack.v1';
 
   /// Reads everything that survives a refresh.
   ///
@@ -329,6 +342,7 @@ abstract final class Storage {
         rate: rate.clamp(0.7, 1.3),
         autoRead: prefs.getBool(_kSpeechAuto) ?? false,
         speaker: (prefs.getInt(_kSpeechSpeaker) ?? 0).clamp(0, 15),
+        preferredPack: prefs.getString(_kSpeechPack) ?? '',
       );
     } catch (_) {
       return const SpeechSettings();
@@ -341,6 +355,7 @@ abstract final class Storage {
     await prefs.setDouble(_kSpeechRate, settings.rate);
     await prefs.setBool(_kSpeechAuto, settings.autoRead);
     await prefs.setInt(_kSpeechSpeaker, settings.speaker);
+    await prefs.setString(_kSpeechPack, settings.preferredPack);
   }
 
   static Future<void> saveTheme(bool dark) async {

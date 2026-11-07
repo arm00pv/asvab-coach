@@ -332,6 +332,9 @@ class SpeechService extends ChangeNotifier {
   bool _autoRead = false;
   int _speaker = 0;
 
+  /// The downloaded voice the candidate chose, by pack id, or empty.
+  String _preferredPack = '';
+
   /// Why the downloaded voice did not speak, when it did not. Kept apart from
   /// [lastError] so the system voice can take over and still leave the reason
   /// on the screen.
@@ -369,6 +372,39 @@ class SpeechService extends ChangeNotifier {
 
   /// Whether a screen reads itself as soon as it is the one on show.
   bool get autoRead => _autoRead;
+
+  /// The downloaded voice the candidate chose, by pack id, or empty for the
+  /// first installed pack for each language.
+  String get preferredPack => _preferredPack;
+
+  /// The pack that will read [language] right now, for the settings row to mark.
+  String packIdFor(String language) =>
+      neural?.packIdFor(language, preferred: _preferredPack) ?? '';
+
+  /// Remembers a downloaded voice as the one to speak with.
+  ///
+  /// Only the pack's own id is stored: the accent a candidate chose for Spanish
+  /// must not become the voice for a language it does not speak, so the choice
+  /// is resolved against the language at the moment it is used.
+  Future<void> choosePack(String packId) async {
+    if (_preferredPack == packId) return;
+    _preferredPack = packId;
+    notifyListeners();
+    if (!persist) return;
+    try {
+      await Storage.saveSpeech(
+        SpeechSettings(
+          locale: _locale,
+          rate: _rate,
+          autoRead: _autoRead,
+          speaker: _speaker,
+          preferredPack: _preferredPack,
+        ),
+      );
+    } catch (error) {
+      debugPrint('ASVAB coach: could not save the chosen voice: $error');
+    }
+  }
 
   /// Why the last attempt to speak failed, or null.
   String? get lastError => _lastError;
@@ -427,6 +463,7 @@ class SpeechService extends ChangeNotifier {
     _rate = saved.rate;
     _autoRead = saved.autoRead;
     _speaker = saved.speaker;
+    _preferredPack = saved.preferredPack;
     await _loadVoices(preferred: saved.locale);
     _initialised = true;
     notifyListeners();
@@ -531,11 +568,22 @@ class SpeechService extends ChangeNotifier {
     String text,
     String language, {
     String screen = '',
+    String packId = '',
   }) async {
     if (text.trim().isEmpty) return null;
     if (!_initialised) await initialise();
     _neuralProblem = null;
-    if (await _speakWithNeural(text, language, screen)) return null;
+    // [packId] is for "Hear it" on a row: the candidate is asking to hear *that*
+    // pack, and hearing the one already chosen instead would make the button a
+    // lie. Everywhere else the choice made in settings decides.
+    if (await _speakWithNeural(
+      text,
+      language,
+      screen,
+      preferred: packId.isEmpty ? _preferredPack : packId,
+    )) {
+      return null;
+    }
     final wanted = language.toLowerCase();
     final matching = voicesFor(wanted);
     if (matching.isEmpty) {
@@ -564,8 +612,9 @@ class SpeechService extends ChangeNotifier {
   Future<bool> _speakWithNeural(
     String text,
     String language,
-    String screen,
-  ) async {
+    String screen, {
+    String preferred = '',
+  }) async {
     final neural = this.neural;
     if (neural == null || !neural.supported) return false;
     if (!neural.canSpeak(language)) return false;
@@ -580,6 +629,7 @@ class SpeechService extends ChangeNotifier {
       text,
       speed: _rate,
       speaker: _speaker,
+      preferred: preferred.isEmpty ? _preferredPack : preferred,
     );
     _speaking = false;
     _speakingScreen = null;

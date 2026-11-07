@@ -124,6 +124,71 @@ void main() {
     expect(neural.bytesOnDisk('en-kokoro'), 94210357);
   });
 
+  group('two voices for one language', () {
+    test(
+      'the catalogue offers both Spanish accents, and the choice is kept',
+      () {
+        expect(
+          VoiceCatalogue.packsFor('es').map((VoicePack p) => p.id),
+          <String>['es-piper', 'es-mx-piper'],
+        );
+        expect(
+          VoiceCatalogue.forLanguage('es', preferred: 'es-mx-piper')?.id,
+          'es-mx-piper',
+        );
+        // A choice made for one language must not become the voice for another.
+        expect(
+          VoiceCatalogue.forLanguage('en', preferred: 'es-mx-piper')?.id,
+          'en-kokoro',
+        );
+      },
+    );
+
+    test('the chosen pack is the one asked to speak', () async {
+      statusPacks = <String, Object?>{
+        'es-piper': <String, Object?>{'installed': true, 'bytes': 14121495},
+        'es-mx-piper': <String, Object?>{'installed': true, 'bytes': 14171852},
+      };
+      final NeuralVoice neural = NeuralVoice();
+      await neural.initialise();
+      await settle();
+
+      // Both are installed: the first one listed is the fallback, and the
+      // candidate's choice wins over it.
+      expect(neural.packIdFor('es'), 'es-piper');
+      expect(neural.packIdFor('es', preferred: 'es-mx-piper'), 'es-mx-piper');
+
+      final Future<String?> spoken = neural.speak(
+        'es',
+        'La respuesta es cuarenta y dos.',
+        preferred: 'es-mx-piper',
+      );
+      await settle();
+      expect(lastSpeak['id'], 'es-mx-piper');
+      events!.success(<String, Object?>{
+        'type': 'finished',
+        'id': 'es-mx-piper',
+      });
+      expect(await spoken, isNull);
+    });
+
+    test(
+      'a chosen pack that was removed falls back to the other one',
+      () async {
+        statusPacks = <String, Object?>{
+          'es-piper': <String, Object?>{'installed': true, 'bytes': 14121495},
+          'es-mx-piper': <String, Object?>{'installed': false, 'bytes': 0},
+        };
+        final NeuralVoice neural = NeuralVoice();
+        await neural.initialise();
+        await settle();
+
+        expect(neural.packIdFor('es', preferred: 'es-mx-piper'), 'es-piper');
+        expect(neural.canSpeak('es'), isTrue);
+      },
+    );
+  });
+
   test('a download reports progress, then installs', () async {
     final NeuralVoice neural = NeuralVoice();
     await neural.initialise();

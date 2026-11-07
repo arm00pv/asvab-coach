@@ -80,11 +80,25 @@ abstract final class VoiceCatalogue {
     VoicePack(
       id: 'es-piper',
       language: 'es',
-      label: 'Spanish',
+      label: 'Spanish (Spain)',
       engine: 'Piper VITS',
       bytes: 14121495,
       sha256:
           'b48cfc9f67b49bbbcb3560a8df8f296d35d781ef10f444e44c9280d3eb0dc629',
+    ),
+    // Most Spanish speakers in the United States hear Mexican Spanish, not the
+    // Castilian of the pack above: the two differ in the sound of c and z before
+    // e and i, and a tutor that says "grathias" to a candidate who says
+    // "gracias" is teaching in somebody else's accent. Both are offered, and the
+    // candidate picks; nothing is replaced.
+    VoicePack(
+      id: 'es-mx-piper',
+      language: 'es',
+      label: 'Spanish (Mexico)',
+      engine: 'Piper VITS',
+      bytes: 14171852,
+      sha256:
+          '8b5cfb86c266edd358f63c160729f8c60d10a8d078c3e0b629b7725626884d47',
     ),
     VoicePack(
       id: 'it-piper',
@@ -97,12 +111,24 @@ abstract final class VoiceCatalogue {
     ),
   ];
 
-  static VoicePack? forLanguage(String language) {
+  /// Every pack that speaks [language], in the order they are listed.
+  static List<VoicePack> packsFor(String language) {
     final wanted = language.toLowerCase();
-    for (final pack in packs) {
-      if (pack.language == wanted) return pack;
+    return <VoicePack>[
+      for (final pack in packs)
+        if (pack.language == wanted) pack,
+    ];
+  }
+
+  /// The pack for [language]: the candidate's choice when it speaks that
+  /// language, otherwise the first one listed.
+  static VoicePack? forLanguage(String language, {String preferred = ''}) {
+    final chosen = byId(preferred);
+    if (chosen != null && chosen.language == language.toLowerCase()) {
+      return chosen;
     }
-    return null;
+    final all = packsFor(language);
+    return all.isEmpty ? null : all.first;
   }
 
   static VoicePack? byId(String id) {
@@ -153,10 +179,22 @@ class NeuralVoice extends ChangeNotifier {
   bool isInstalled(String id) => _installed[id] ?? false;
 
   /// Whether a downloaded voice can read [language] right now.
-  bool canSpeak(String language) {
-    final pack = VoiceCatalogue.forLanguage(language);
-    return pack != null && isInstalled(pack.id);
+  bool canSpeak(String language) => installedPackFor(language) != null;
+
+  /// The installed pack [language] is read with: the candidate's choice when it
+  /// is installed, otherwise the first installed pack for that language.
+  VoicePack? installedPackFor(String language, {String preferred = ''}) {
+    final chosen = VoiceCatalogue.forLanguage(language, preferred: preferred);
+    if (chosen != null && isInstalled(chosen.id)) return chosen;
+    for (final pack in VoiceCatalogue.packsFor(language)) {
+      if (isInstalled(pack.id)) return pack;
+    }
+    return null;
   }
+
+  /// The id of the pack [language] is read with, for a settings row to mark.
+  String packIdFor(String language, {String preferred = ''}) =>
+      installedPackFor(language, preferred: preferred)?.id ?? '';
 
   /// How much of the pack is on disk, for the row that shows "141 MB".
   int bytesOnDisk(String id) => _onDisk[id] ?? 0;
@@ -272,9 +310,10 @@ class NeuralVoice extends ChangeNotifier {
     String text, {
     double speed = 1.0,
     int speaker = 0,
+    String preferred = '',
   }) async {
-    final pack = VoiceCatalogue.forLanguage(language);
-    if (pack == null || !isInstalled(pack.id)) {
+    final pack = installedPackFor(language, preferred: preferred);
+    if (pack == null) {
       return 'No downloaded voice for that language yet.';
     }
     final chunks = chunksOf(text);
