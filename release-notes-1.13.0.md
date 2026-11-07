@@ -37,5 +37,7 @@ ignored rather than trusted.
   the one asked to speak; a chosen pack that was removed falls back to the other.
 * The pack is verified the same way as the rest: size and SHA-256
   (`8b5cfb86…6884d47`, 14,171,852 bytes) before it is unpacked.
-* Full suite, audit and CI green; the release APK was installed over v1.12.0 and
-  driven on the phone.
+* 772 tests, audit and CI green, and the pack archive checked against the
+  uploaded asset (size and digest). The APK is built and waiting for the phone
+  to be plugged back in before this release is published - the download and the
+  extraction on hardware are the two things no test on this laptop can prove.
