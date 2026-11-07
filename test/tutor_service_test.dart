@@ -252,6 +252,50 @@ void main() {
     expect(tutor.usable, isTrue);
   });
 
+  test('the app is told which processor will answer', () async {
+    // The settings card says "GPU (Vulkan)" or "CPU", and the answer comes from
+    // the engine: the Vulkan backend ships in jniLibs and registers itself only
+    // where the phone's driver takes it.
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(methodChannel, (MethodCall call) async {
+          calls.add(call.method);
+          switch (call.method) {
+            case 'status':
+              return <String, Object?>{
+                'supported': true,
+                'gpu': true,
+                'installed': true,
+                'loaded': loaded,
+                'expectedBytes': 1099630080,
+                'abi': 'arm64-v8a',
+              };
+            case 'load':
+              return <String, Object?>{'started': true};
+            case 'generate':
+              return true;
+          }
+          return null;
+        });
+
+    final TutorService tutor = TutorService();
+    await tutor.initialise();
+    await settle();
+    expect(tutor.status.gpu, isTrue);
+
+    unawaited(tutor.warmUp());
+    await settle();
+    loaded = true;
+    events!.success(<String, Object?>{'type': 'loaded', 'millis': 300});
+    await settle();
+
+    expect(
+      tutor.status.gpu,
+      isTrue,
+      reason: 'a loaded model must not forget which device it is on',
+    );
+    expect(tutor.status.loaded, isTrue);
+  });
+
   test('a phone without the model is told where to get it', () async {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(methodChannel, (MethodCall call) async {

@@ -37,6 +37,33 @@ void main() {
     );
   });
 
+  test('the GPU the app reports is the one the engine registered', () {
+    // Three halves again: the bridge answers for real on arm64, the stub answers
+    // 0 elsewhere, and the Kotlin status the app reads says which. A drift here
+    // would leave the settings card claiming a GPU the tutor is not using.
+    final String bridge = File('android/app/src/main/cpp/llm_bridge.cpp')
+        .readAsStringSync();
+    expect(bridge, contains('NativeLlm_gpu'));
+    expect(bridge, contains('llama_supports_gpu_offload()'));
+
+    final String stub = File('android/app/src/main/cpp/llm_bridge_stub.cpp')
+        .readAsStringSync();
+    expect(
+      stub,
+      contains('NativeLlm_gpu'),
+      reason: 'every ABI must answer, or the app cannot build the status map',
+    );
+
+    final String tutor = File(
+      'android/app/src/main/kotlin/com/arm00pv/asvabcoach/llm/LlmTutor.kt',
+    ).readAsStringSync();
+    expect(tutor, contains('external fun gpu(): Int'));
+    expect(tutor, contains('"gpu" to (supported && NativeLlm.gpu() == 1)'));
+
+    final String status = File('lib/core/tutor.dart').readAsStringSync();
+    expect(status, contains("gpu: map['gpu'] == true"));
+  });
+
   test('the volume a silent voice is blamed on can be raised from the app', () {
     // Two halves of one fix: VoiceTts.kt refuses to play at media volume zero
     // and says so, and the app has to be able to raise it from the screen that

@@ -690,22 +690,26 @@ class _NeuralVoiceRow extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
+          // The name and what it is, on their own lines. Putting the buttons
+          // beside them left "Spanish (Mexico)" about four characters wide at 2x
+          // system text - it wrapped one syllable per line, which is what the
+          // phone actually drew before this.
+          Text(pack.label, style: context.text.titleSmall),
+          Text(
+            '${pack.engine} - ${installed ? 'on this device' : pack.sizeLabel}',
+            style: context.text.bodySmall?.copyWith(
+              color: installed ? c.success : c.textMuted,
+            ),
+          ),
+          const SizedBox(height: Space.xs),
+          // The actions wrap instead of squeezing: three buttons in a row is
+          // already tight at 1x on a 360 dp phone, and "Use this voice" is the
+          // longest of them.
+          Wrap(
+            spacing: Space.sm,
+            runSpacing: 0,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: <Widget>[
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(pack.label, style: context.text.titleSmall),
-                    Text(
-                      '${pack.engine} - ${installed ? 'on this device' : pack.sizeLabel}',
-                      style: context.text.bodySmall?.copyWith(
-                        color: installed ? c.success : c.textMuted,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
               if (downloading)
                 TextButton(
                   onPressed: neural.cancel,
@@ -1230,6 +1234,36 @@ class _TutorSection extends StatelessWidget {
                     Text(
                       _description(status),
                       style: context.text.bodySmall?.copyWith(height: 1.5),
+                    ),
+                    const SizedBox(height: Space.sm),
+                    // Which chip answers. The Vulkan build ships in jniLibs and
+                    // loads itself on phones whose driver takes it; saying which
+                    // one got it is the difference between "faster?" and knowing.
+                    Row(
+                      children: <Widget>[
+                        Icon(
+                          status.gpu
+                              ? Icons.memory_rounded
+                              : Icons.developer_board_outlined,
+                          size: 15,
+                          color: status.gpu ? c.primary : c.textMuted,
+                        ),
+                        const SizedBox(width: Space.xs),
+                        Expanded(
+                          child: Text(
+                            status.gpu
+                                ? 'Running on this phone\'s GPU (Vulkan): faster '
+                                      'to write, and the CPU stays free.'
+                                : 'Running on this phone\'s CPU. No usable Vulkan '
+                                      'GPU was found, so this is the same path '
+                                      'every phone used before the GPU build.',
+                            style: context.text.bodySmall?.copyWith(
+                              color: status.gpu ? c.primary : c.textMuted,
+                              height: 1.4,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: Space.md),
                     _controls(context, tutor),

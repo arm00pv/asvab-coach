@@ -19,6 +19,7 @@
 
 #define LOG_TAG "AsvabLlm"
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
+#define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 
 namespace {
@@ -42,6 +43,7 @@ struct Engine {
 };
 
 bool g_backend_ready = false;
+
 
 Engine * as_engine(jlong handle) {
     return reinterpret_cast<Engine *>(static_cast<intptr_t>(handle));
@@ -88,10 +90,19 @@ Java_com_arm00pv_asvabcoach_llm_NativeLlm_probe(
         } else {
             ggml_backend_load_all();
         }
-        LOGI("backend registry: %d", static_cast<int>(ggml_backend_reg_count()));
+        LOGI("backend registry: %d, gpu offload: %d",
+             static_cast<int>(ggml_backend_reg_count()),
+             llama_supports_gpu_offload() ? 1 : 0);
         g_backend_ready = true;
     }
     return ggml_backend_reg_count() > 0 ? JNI_TRUE : JNI_FALSE;
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_com_arm00pv_asvabcoach_llm_NativeLlm_gpu(JNIEnv *, jobject) {
+    // 1 when an offloading backend (Vulkan here) registered and the app will use
+    // it, 0 on the CPU path. Asked after probe(), which is what loads backends.
+    return llama_supports_gpu_offload() ? 1 : 0;
 }
 
 extern "C" JNIEXPORT jlong JNICALL
@@ -108,9 +119,25 @@ Java_com_arm00pv_asvabcoach_llm_NativeLlm_load(
     if (path.empty()) return 0;
 
     llama_model_params mparams = llama_model_default_params();
-    mparams.n_gpu_layers = 0;
+    // Offload every layer whenever a GPU backend registered. llama.cpp keeps
+    // any layer that does not fit on the device on the CPU, and a phone with no
+    // Vulkan driver registers no GPU at all, so this falls back to the old
+    // CPU-only behaviour on its own.
+    // llama.cpp reports whether an offloading backend registered at all. The
+    // Vulkan library ships beside this one in jniLibs; when a phone has no
+    // usable driver the loader finds nothing and this stays on the CPU path.
+    const bool gpu_offload = llama_supports_gpu_offload();
+    mparams.n_gpu_layers = gpu_offload ? 999 : 0;
+    LOGI("gpu offload: %d, n_gpu_layers=%d", gpu_offload ? 1 : 0, mparams.n_gpu_layers);
 
     llama_model * model = llama_model_load_from_file(path.c_str(), mparams);
+    if (model == nullptr && mparams.n_gpu_layers != 0) {
+        // A driver can advertise Vulkan and still refuse the allocation. That
+        // must not take the tutor down with it: retry on the CPU.
+        LOGW("GPU load failed; retrying on the CPU");
+        mparams.n_gpu_layers = 0;
+        model = llama_model_load_from_file(path.c_str(), mparams);
+    }
     if (model == nullptr) {
         LOGE("could not load the model at %s", path.c_str());
         return 0;
@@ -119,10 +146,19 @@ Java_com_arm00pv_asvabcoach_llm_NativeLlm_load(
     llama_context_params cparams = llama_context_default_params();
     cparams.n_ctx = static_cast<uint32_t>(n_ctx);
     cparams.n_batch = 512;
-    cparams.n_ubatch = 512;
+    // How much of the prompt one pass of the graph carries. On the CPU a wide
+    // pass is what makes reading the question fast. Vulkan dispatches a shader
+    // per operation instead of a loop per thread, and a 512-token pass spends
+    // its time in dispatch and memory traffic rather than arithmetic, which is
+    // why the GPU was slower to *start* answering than the CPU was. 128 is the
+    // width that measured fastest on the phone (docs/AI_GPU_VULKAN.md).
+    cparams.n_ubatch = gpu_offload ? 128 : 512;
     cparams.n_threads = n_threads;
     cparams.n_threads_batch = n_threads;
     cparams.no_perf = true;
+    // Flash attention was tried here and measured: 6.2 s to read the question
+    // with it and without it on the Pixel, so it is not enabled - it is one more
+    // thing that can differ from the CPU path for no gain.
 
     llama_context * ctx = llama_init_from_model(model, cparams);
     if (ctx == nullptr) {

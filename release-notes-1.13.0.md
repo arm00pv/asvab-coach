@@ -1,4 +1,4 @@
-# v1.13.0 - a Spanish voice that sounds like home
+# v1.13.0 - a Spanish voice that sounds like home, and the GPU
 
 ## Two Spanish voices, and the candidate picks
 
@@ -31,13 +31,51 @@ it is used - so choosing the Mexican voice for Spanish cannot make it the voice
 for English or Italian. A pack id for a language that is not being spoken is
 ignored rather than trusted.
 
+## The tutor runs on the GPU
+
+The phone's graphics processor is now used for the on-device tutor, through
+Vulkan. The backend ships inside the app, loads itself only where the phone's
+driver accepts it, and leaves every other phone on exactly the CPU path it had
+before - no setting, no crash, and the Settings card says which one you got.
+
+Measured on a Pixel 7 Pro with the same lesson question:
+
+| | CPU | GPU (Vulkan) |
+|---|---|---|
+| Reading the question | 3.9 - 4.2 s | 6.2 s |
+| Writing the answer | 5.9 - 7.0 tokens/s | **9.6 - 9.7 tokens/s** |
+| A 111-token answer, end to end | ~21 s | **~17.8 s** |
+
+The GPU writes about 45 % faster and takes about two seconds longer to start;
+for the tutor's answers that is a net 10-15 % quicker, with the words arriving at
+a steadier rate. All of it stays on the phone, with no network, like everything
+else in the tutor.
+
+Three details worth knowing, all measured rather than assumed:
+
+* the GPU batch is 128 tokens, not the CPU's 512: a wide batch spends its time
+  in shader dispatch, and on this phone it cost a second of latency;
+* flash attention was tried and dropped - identical timings, one more way the
+  GPU path could differ for nothing;
+* if a driver advertises Vulkan but cannot host the model, the engine retries on
+  the CPU instead of failing, and the Settings card reports the CPU.
+
+`docs/AI_GPU_VULKAN.md` carries the provenance of the backend build, the numbers
+above and the portability table (which phones get the GPU, and the Android 8
+caveat).
+
 ## Checks
 
 * The catalogue offers both accents and resolves the choice; the chosen pack is
   the one asked to speak; a chosen pack that was removed falls back to the other.
 * The pack is verified the same way as the rest: size and SHA-256
-  (`8b5cfb86…6884d47`, 14,171,852 bytes) before it is unpacked.
-* 772 tests, audit and CI green, and the pack archive checked against the
-  uploaded asset (size and digest). The APK is built and waiting for the phone
-  to be plugged back in before this release is published - the download and the
-  extraction on hardware are the two things no test on this laptop can prove.
+  (`8b5cfb86…6884d47`, 14,171,852 bytes) before it is unpacked, and it was
+  downloaded and heard on the phone: `pack es-mx-piper loaded: kind=0, 22050 Hz`,
+  78,592 samples, peak 0.71.
+* The GPU path was driven on the phone: `Found 1 Vulkan devices` (Mali-G710),
+  `loaded Vulkan backend`, `gpu offload: 1`, layers assigned to `Vulkan0`, and a
+  full lesson answer written at 9.6 tokens/s.
+* Two voice rows at 2x system text used to squeeze "Spanish (Mexico)" to four
+  characters a line; the row is now a name line and a wrapping action line, and
+  a widget test pins it.
+* 775 tests, audit and CI green.

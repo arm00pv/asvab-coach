@@ -40,6 +40,9 @@ object NativeLlm {
 
     external fun probe(libDir: String): Boolean
 
+    /// 1 when the tutor will run on the GPU, 0 when it runs on the CPU.
+    external fun gpu(): Int
+
     external fun load(path: String, nCtx: Int, nThreads: Int): Long
 
     external fun generate(
@@ -142,6 +145,10 @@ class LlmTutor(private val context: Context) {
         val file = modelFile()
         return mapOf(
             "supported" to supported,
+            // Which processor the next answer comes out of. The Vulkan build is
+            // in jniLibs and loads itself when the phone's driver takes it; this
+            // is how the screen can say which one it got.
+            "gpu" to (supported && NativeLlm.gpu() == 1),
             "abi" to (Build.SUPPORTED_ABIS.firstOrNull() ?: "unknown"),
             "loaded" to (handle != 0L),
             "installed" to isInstalled(),

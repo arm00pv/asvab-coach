@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 class TutorStatus {
   const TutorStatus({
     this.supported = false,
+    this.gpu = false,
     this.loaded = false,
     this.installed = false,
     this.downloading = false,
@@ -21,6 +22,13 @@ class TutorStatus {
   /// 32-bit phones, on the web build, and wherever the native library is not
   /// packaged.
   final bool supported;
+
+  /// The tutor will run on the phone's GPU rather than its CPU.
+  ///
+  /// True only when an offloading backend registered (Vulkan, shipped in
+  /// jniLibs) and the phone's driver took it. False is not a failure: it is the
+  /// CPU path, which is what every phone had before the Vulkan build.
+  final bool gpu;
 
   /// The model is in memory and answering.
   final bool loaded;
@@ -41,6 +49,7 @@ class TutorStatus {
 
   factory TutorStatus.fromMap(Map<Object?, Object?> map) => TutorStatus(
     supported: map['supported'] == true,
+    gpu: map['gpu'] == true,
     loaded: map['loaded'] == true,
     installed: map['installed'] == true,
     downloading: map['downloading'] == true,
@@ -475,6 +484,7 @@ class TutorService extends ChangeNotifier {
         _lastLoadMillis = (raw['millis'] as num?)?.toInt();
         _status = TutorStatus(
           supported: _status.supported,
+          gpu: _status.gpu,
           loaded: true,
           installed: _status.installed,
           abi: _status.abi,
