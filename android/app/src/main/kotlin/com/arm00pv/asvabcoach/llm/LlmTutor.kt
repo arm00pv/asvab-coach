@@ -40,8 +40,13 @@ object NativeLlm {
 
     external fun probe(libDir: String): Boolean
 
-    /// 1 when the tutor will run on the GPU, 0 when it runs on the CPU.
+    /// 1 when the phone has an offloading backend (Vulkan) registered, 0 when it
+    /// does not. What the phone can do, not what the loaded model is on.
     external fun gpu(): Int
+
+    /// 1 when the model currently in memory has its layers on the GPU, 0 when it
+    /// has none loaded or the load fell back to the CPU.
+    external fun modelGpu(): Int
 
     external fun load(path: String, nCtx: Int, nThreads: Int, useGpu: Boolean): Long
 
@@ -265,7 +270,11 @@ class LlmTutor(private val context: Context) {
             val started = System.currentTimeMillis()
             val loadedHandle =
                 NativeLlm.load(modelFile().absolutePath, 2048, cores, useGpu)
-            loadedOnGpu = useGpu && NativeLlm.gpu() == 1
+            // The bridge reports where the load actually put the layers, which
+            // is not the same question as "can this phone do it": a driver that
+            // advertises Vulkan can still refuse the allocation, and the load
+            // retries on the CPU when it does.
+            loadedOnGpu = NativeLlm.modelGpu() == 1
             if (loadedHandle == 0L) {
                 emitError("The model could not be loaded into memory.")
                 return
@@ -276,6 +285,11 @@ class LlmTutor(private val context: Context) {
                     "type" to "loaded",
                     "millis" to (System.currentTimeMillis() - started),
                     "cores" to cores,
+                    // The answer the card needs, carried with the event: the app
+                    // has no other way to know where this load landed without
+                    // asking again, and asking again is a frame of the wrong
+                    // sentence on the screen.
+                    "gpu" to loadedOnGpu,
                 ),
             )
         } finally {

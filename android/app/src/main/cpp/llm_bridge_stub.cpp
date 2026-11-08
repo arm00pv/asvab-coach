@@ -13,6 +13,9 @@ Java_com_arm00pv_asvabcoach_llm_NativeLlm_probe(JNIEnv *, jobject, jstring) {
 extern "C" JNIEXPORT jint JNICALL
 Java_com_arm00pv_asvabcoach_llm_NativeLlm_gpu(JNIEnv *, jobject) { return 0; }
 
+extern "C" JNIEXPORT jint JNICALL
+Java_com_arm00pv_asvabcoach_llm_NativeLlm_modelGpu(JNIEnv *, jobject) { return 0; }
+
 extern "C" JNIEXPORT jlong JNICALL
 Java_com_arm00pv_asvabcoach_llm_NativeLlm_load(
         JNIEnv *, jobject, jstring, jint, jint, jboolean) { return 0; }

@@ -272,7 +272,8 @@ void main() {
             case 'status':
               return <String, Object?>{
                 'supported': true,
-                'gpu': true,
+                'gpuAvailable': true,
+                'gpu': false,
                 'installed': true,
                 'loaded': loaded,
                 'expectedBytes': 1099630080,
@@ -289,12 +290,17 @@ void main() {
     final TutorService tutor = TutorService();
     await tutor.initialise();
     await settle();
-    expect(tutor.status.gpu, isTrue);
+    expect(tutor.status.gpuAvailable, isTrue);
+    expect(tutor.status.loaded, isFalse);
 
     unawaited(tutor.warmUp());
     await settle();
     loaded = true;
-    events!.success(<String, Object?>{'type': 'loaded', 'millis': 300});
+    events!.success(<String, Object?>{
+      'type': 'loaded',
+      'millis': 300,
+      'gpu': true,
+    });
     await settle();
 
     expect(
@@ -303,6 +309,54 @@ void main() {
       reason: 'a loaded model must not forget which device it is on',
     );
     expect(tutor.status.loaded, isTrue);
+  });
+
+  test('a load that fell back to the CPU says so', () async {
+    // The phone has Vulkan and the switch is on, so before the load the card
+    // reads "GPU". The driver then refuses the allocation and the bridge retries
+    // on the CPU. The load event is the only place that answer exists, and the
+    // card must not keep the guess it made before the load: the phone drew
+    // exactly that sentence - "no usable Vulkan GPU was found" - about a model
+    // whose layers were on the Vulkan device.
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(methodChannel, (MethodCall call) async {
+          calls.add(call.method);
+          switch (call.method) {
+            case 'status':
+              return <String, Object?>{
+                'supported': true,
+                'gpuAvailable': true,
+                'gpu': false,
+                'installed': true,
+                'loaded': loaded,
+                'expectedBytes': 1099630080,
+              };
+            case 'load':
+              return <String, Object?>{'started': true};
+          }
+          return null;
+        });
+
+    final TutorService tutor = TutorService();
+    await tutor.initialise();
+    await settle();
+
+    unawaited(tutor.warmUp());
+    await settle();
+    loaded = true;
+    events!.success(<String, Object?>{
+      'type': 'loaded',
+      'millis': 9000,
+      'gpu': false,
+    });
+    await settle();
+
+    expect(tutor.status.loaded, isTrue);
+    expect(
+      tutor.status.gpu,
+      isFalse,
+      reason: 'the load decides where the layers went, not the phone\'s spec',
+    );
   });
 
   test('the GPU can be turned off, and the next load honours it', () async {
@@ -344,7 +398,11 @@ void main() {
     await settle();
     expect(lastLoad['gpu'], isTrue);
     loaded = true;
-    events!.success(<String, Object?>{'type': 'loaded', 'millis': 200});
+    events!.success(<String, Object?>{
+      'type': 'loaded',
+      'millis': 200,
+      'gpu': true,
+    });
     await settle();
 
     // Turned off while a model is in memory: it is unloaded, because its layers

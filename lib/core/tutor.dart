@@ -435,7 +435,8 @@ class TutorService extends ChangeNotifier {
     }
     await ensureLoaded();
     debugPrint(
-      'ASVAB coach: after load (loaded=${_status.loaded} error=$_error)',
+      'ASVAB coach: after load (loaded=${_status.loaded}, '
+      'gpu=${_status.gpu}, gpuAvailable=${_status.gpuAvailable} error=$_error)',
     );
     if (!_status.loaded) {
       // Never ask an engine that has no model: the platform answers with an
@@ -526,7 +527,10 @@ class TutorService extends ChangeNotifier {
         _lastLoadMillis = (raw['millis'] as num?)?.toInt();
         _status = TutorStatus(
           supported: _status.supported,
-          gpu: _status.gpu,
+          // Carried by the event, because the load is what decided it. Taking it
+          // from the status before the load is how the card came to say "no
+          // usable GPU" about a model whose 25 layers were on the Vulkan device.
+          gpu: raw['gpu'] == true,
           gpuAvailable: _status.gpuAvailable,
           loaded: true,
           installed: _status.installed,

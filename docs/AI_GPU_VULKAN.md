@@ -1,16 +1,17 @@
 # GPU acceleration for the on-device tutor (Vulkan)
 
-Status: **implemented, measured on a Pixel 7 Pro (Mali-G710), and shipped in
-v1.13.0**.
+Status: **implemented, measured on a Pixel 7 Pro (Mali-G710), shipped in
+v1.13.0, made a switch in v1.14.0, and corrected in v1.14.1 so the card reports
+the processor the model is actually on.**
 
 ## What changed
 
 | File | Change |
 |---|---|
-| `android/app/src/main/cpp/llm_bridge.cpp` | Offloads all layers when an offloading backend registered; `n_ubatch` 128 on the GPU; retries CPU-only if the GPU load fails; answers `gpu()` for the app |
-| `android/app/src/main/cpp/llm_bridge_stub.cpp` | `gpu()` returns 0 on the ABIs that have no engine |
-| `android/app/src/main/kotlin/.../llm/LlmTutor.kt` | Reports `gpu` in the status map |
-| `lib/core/tutor.dart` | `TutorStatus.gpu`, kept across the `loaded` event |
+| `android/app/src/main/cpp/llm_bridge.cpp` | Offloads all layers when an offloading backend registered; `n_ubatch` 128 on the GPU; retries CPU-only if the GPU load fails; answers `gpu()` (can this phone?) and `modelGpu()` (where did this load put the layers?) |
+| `android/app/src/main/cpp/llm_bridge_stub.cpp` | Both answer 0 on the ABIs that have no engine |
+| `android/app/src/main/kotlin/.../llm/LlmTutor.kt` | Reports `gpuAvailable` and, for a loaded model, `gpu`; carries `gpu` in the `loaded` event |
+| `lib/core/tutor.dart` | `TutorStatus.gpu` comes from the `loaded` event, not from a guess made before the load |
 | `lib/screens/settings_screen.dart` | Says which processor answers, and why |
 | `android/app/src/main/jniLibs/arm64-v8a/libggml-vulkan.so` | **New** — the Vulkan backend, built from llama.cpp `b12032` |
 | `tools/build_ggml_vulkan_android.ps1` | Reproducible build script for the backend |
@@ -33,6 +34,22 @@ bridge does not link.
 
 A failed GPU load is retried with `n_gpu_layers = 0` so a driver that advertises
 Vulkan but cannot host the model never takes the tutor down.
+
+### Two questions, two entry points
+
+`gpu()` answers *can this phone run the model on the GPU?* It is what decides
+whether the settings switch is offered at all. `modelGpu()` answers *where are
+the layers of the model in memory?* It is what the card prints for a loaded
+model, and it is a global the load sets: 1 when the layers went to Vulkan, 0
+after the CPU fallback, 0 again when the model is freed.
+
+Keeping them apart is not tidiness. v1.14.0 shipped one entry point answering
+for both, and the app rebuilt the status from the pre-load value when the load
+event arrived. On the Pixel that printed "Running on this phone's CPU. No usable
+Vulkan GPU was found" while the log said `offloaded 25/25 layers to GPU`: the
+card was describing a decision nobody had asked the engine to make yet. The
+`loaded` event now carries `gpu`, so the sentence on screen comes from the load
+that produced it.
 
 ## Measured on the phone
 

@@ -71,6 +71,33 @@ void main() {
     final String status = File('lib/core/tutor.dart').readAsStringSync();
     expect(status, contains("gpu: map['gpu'] == true"));
     expect(status, contains("gpuAvailable: map['gpuAvailable'] == true"));
+    expect(
+      status,
+      contains("gpu: raw['gpu'] == true"),
+      reason:
+          'the load event carries where the layers went, and it is the truth',
+    );
+
+    // Two questions, two entry points. gpu() answers "can this phone run it?";
+    // modelGpu() answers "where are the layers of the model in memory?". The
+    // card needs the second for a loaded model, and the first only to decide
+    // whether to offer the switch. Conflating them is what made the phone say
+    // "no usable GPU was found" while the answer was on the GPU.
+    expect(bridge, contains('NativeLlm_modelGpu'));
+    expect(bridge, contains('g_model_gpu.store(gpu_offload ? 1 : 0)'));
+    expect(
+      bridge,
+      contains('gpu_offload = false;'),
+      reason: 'a load that falls back to the CPU must not claim the GPU',
+    );
+    expect(stub, contains('NativeLlm_modelGpu'));
+    expect(tutor, contains('external fun modelGpu(): Int'));
+    expect(tutor, contains('loadedOnGpu = NativeLlm.modelGpu() == 1'));
+    expect(
+      tutor,
+      contains('"gpu" to loadedOnGpu'),
+      reason: 'the load event has to say where this load landed',
+    );
   });
 
   test('the GPU choice reaches the load in every layer', () {

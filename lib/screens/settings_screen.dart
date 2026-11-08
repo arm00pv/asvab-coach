@@ -1327,6 +1327,14 @@ class _TutorSection extends StatelessWidget {
       return 'Running on this phone\'s CPU because the GPU is switched off '
           'below.';
     }
+    // Loaded, the phone has a GPU, the switch is on, and the model is still on
+    // the CPU: the driver took the request and not the layers, and the load
+    // fell back. Saying "no GPU was found" here would be a different, false
+    // sentence about a phone that has one.
+    if (status.loaded) {
+      return 'Running on this phone\'s CPU: the GPU was asked for and did not '
+          'take the model, so the load fell back.';
+    }
     return 'Running on this phone\'s CPU. No usable Vulkan GPU was found, so '
         'this is the same path every phone used before the GPU build.';
   }

@@ -44,6 +44,12 @@ struct Engine {
 
 bool g_backend_ready = false;
 
+// Where the model that is loaded now sits: 1 on the GPU, 0 on the CPU. It is a
+// separate answer from gpu() on purpose. gpu() says what the phone can do, this
+// says what the load actually got, and the two differ exactly when it matters -
+// a driver that advertises Vulkan and then refuses the allocation.
+std::atomic<int> g_model_gpu{0};
+
 
 Engine * as_engine(jlong handle) {
     return reinterpret_cast<Engine *>(static_cast<intptr_t>(handle));
@@ -105,6 +111,15 @@ Java_com_arm00pv_asvabcoach_llm_NativeLlm_gpu(JNIEnv *, jobject) {
     return llama_supports_gpu_offload() ? 1 : 0;
 }
 
+extern "C" JNIEXPORT jint JNICALL
+Java_com_arm00pv_asvabcoach_llm_NativeLlm_modelGpu(JNIEnv *, jobject) {
+    // 1 when the model in memory has its layers on the GPU. Reported by the load
+    // rather than guessed from the phone: a candidate whose card says "GPU"
+    // because the driver was asked is being told a measurement that was never
+    // taken.
+    return g_model_gpu.load();
+}
+
 extern "C" JNIEXPORT jlong JNICALL
 Java_com_arm00pv_asvabcoach_llm_NativeLlm_load(
         JNIEnv * env, jobject, jstring jpath, jint n_ctx, jint n_threads,
@@ -131,7 +146,8 @@ Java_com_arm00pv_asvabcoach_llm_NativeLlm_load(
     // a driver that works but is slower to start is a choice, not a bug, and a
     // driver that misbehaves has to have a way out that does not uninstall the
     // app.
-    const bool gpu_offload = use_gpu && llama_supports_gpu_offload();
+    g_model_gpu.store(0);
+    bool gpu_offload = use_gpu && llama_supports_gpu_offload();
     mparams.n_gpu_layers = gpu_offload ? 999 : 0;
     LOGI("gpu offload: %d, n_gpu_layers=%d", gpu_offload ? 1 : 0, mparams.n_gpu_layers);
 
@@ -140,6 +156,7 @@ Java_com_arm00pv_asvabcoach_llm_NativeLlm_load(
         // A driver can advertise Vulkan and still refuse the allocation. That
         // must not take the tutor down with it: retry on the CPU.
         LOGW("GPU load failed; retrying on the CPU");
+        gpu_offload = false;
         mparams.n_gpu_layers = 0;
         model = llama_model_load_from_file(path.c_str(), mparams);
     }
@@ -177,7 +194,9 @@ Java_com_arm00pv_asvabcoach_llm_NativeLlm_load(
     engine->ctx = ctx;
     engine->vocab = llama_model_get_vocab(model);
     engine->n_ctx = n_ctx;
-    LOGI("model loaded, n_ctx=%d threads=%d", n_ctx, n_threads);
+    g_model_gpu.store(gpu_offload ? 1 : 0);
+    LOGI("model loaded, n_ctx=%d threads=%d, on the %s", n_ctx, n_threads,
+         gpu_offload ? "GPU" : "CPU");
     return static_cast<jlong>(reinterpret_cast<intptr_t>(engine));
 }
 
@@ -315,5 +334,6 @@ Java_com_arm00pv_asvabcoach_llm_NativeLlm_free(JNIEnv *, jobject, jlong handle) 
     if (engine == nullptr) return;
     if (engine->ctx != nullptr) llama_free(engine->ctx);
     if (engine->model != nullptr) llama_model_free(engine->model);
+    g_model_gpu.store(0);
     delete engine;
 }
