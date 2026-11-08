@@ -35,6 +35,17 @@ is shorter. A candidate who asks one short question notices the wait; one who
 reads a 120-word explanation notices the pace. Both are legitimate, so both are
 available.
 
+## Fixed while testing on the phone
+
+Choosing between the two Spanish voices saved the choice and left the row
+looking untouched. The section listened to the downloaded packs; the choice
+lives on the speech service, so tapping **Use this voice** repainted nothing
+and "In use" stayed on the other accent until the page was opened again.
+
+The row that offers the choice now also marks it, at once: the section listens
+to both. A widget test drives the tap and checks that "In use" moves to the
+row that was chosen.
+
 ## Checks
 
 * The switch reaches every layer: Dart setting -> load argument -> Kotlin ->
@@ -45,4 +56,6 @@ available.
   host test cannot prove: `integration_test/gpu_load_test.dart` loads the model
   on the CPU and then on the GPU through the same path the app uses, and prints
   the timings. It needs a development install with the model already downloaded.
-* 777 tests, audit clean, CI green.
+* The voice row is covered by a widget test that taps **Use this voice** and
+  checks that "In use" moves to the chosen accent.
+* 778 tests, audit clean, CI green.
