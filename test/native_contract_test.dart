@@ -64,9 +64,7 @@ void main() {
     );
     expect(
       tutor,
-      contains(
-        '"gpu" to if (handle != 0L) loadedOnGpu else (gpuAvailable && useGpu)',
-      ),
+      contains('"gpu" to (handle != 0L && loadedOnGpu)'),
       reason: 'the card must report the processor the model is actually on',
     );
 

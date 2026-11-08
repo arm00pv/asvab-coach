@@ -563,8 +563,13 @@ class _NeuralVoiceSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final NeuralVoice? neural = _neuralOf(context);
     if (neural == null) return const SizedBox.shrink();
+    final SpeechService speech = speechOf(context);
     return ListenableBuilder(
-      listenable: neural,
+      // The row that offers the choice is also the row that marks it, and the
+      // choice is saved on the speech service, not on the packs: a listener on
+      // the packs alone left "Use this voice" looking untouched after it was
+      // tapped, which is what the phone drew.
+      listenable: Listenable.merge(<Listenable>[neural, speech]),
       builder: (BuildContext context, Widget? child) {
         final c = context.colors;
         return Column(
@@ -597,7 +602,7 @@ class _NeuralVoiceSection extends StatelessWidget {
                       _NeuralVoiceRow(
                         pack: pack,
                         neural: neural,
-                        speech: speechOf(context),
+                        speech: speech,
                       ),
                   if (neural.error != null) ...<Widget>[
                     const SizedBox(height: Space.sm),
@@ -1309,7 +1314,12 @@ class _TutorSection extends StatelessWidget {
   /// One sentence about which processor answers, told in the order it matters:
   /// what it is doing, then why it is not on the GPU when the phone has one.
   String _processorLine(TutorStatus status, TutorService tutor) {
-    if (status.gpu) {
+    // With a model in memory the engine is the authority on where its layers
+    // are; with none, the choice is, because the engine has never been asked.
+    final bool onGpu = status.loaded
+        ? status.gpu
+        : (status.gpuAvailable && tutor.useGpu);
+    if (onGpu) {
       return 'Running on this phone\'s GPU (Vulkan): faster to write, and the '
           'CPU stays free.';
     }

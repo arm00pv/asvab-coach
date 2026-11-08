@@ -158,7 +158,11 @@ class LlmTutor(private val context: Context) {
             // only offered where the backend registered, and the card says which
             // processor the loaded model is on.
             "gpuAvailable" to gpuAvailable,
-            "gpu" to if (handle != 0L) loadedOnGpu else (gpuAvailable && useGpu),
+            // What the loaded model is on, and nothing before one is loaded: the
+            // choice lives in the app, which can answer for a model that is not
+            // in memory yet. Claiming the GPU from a stale Kotlin field is what
+            // made the card say "GPU" after the switch was turned off.
+            "gpu" to (handle != 0L && loadedOnGpu),
             "abi" to (Build.SUPPORTED_ABIS.firstOrNull() ?: "unknown"),
             "loaded" to (handle != 0L),
             "installed" to isInstalled(),
